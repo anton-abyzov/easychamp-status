@@ -4,6 +4,7 @@ import { viewState, time, REASONS, STATUSES } from '../public/model.mjs';
 import { safeFetch, monitorHeaders } from './auth.mjs';
 import { publishHeartbeat } from './heartbeat.mjs';
 import { recordObservation, evidenceIdentity } from './observations.mjs';
+import { blockedRequestEvidence, initialRenderBlocked, blockedRequestCounts } from './render-coverage.mjs';
 
 const registry = JSON.parse(await readFile('config/components.json', 'utf8'));
 async function load(path, fallback) { try { return JSON.parse(await readFile(path, 'utf8')); } catch { return fallback; } }
@@ -53,8 +54,12 @@ if (browserRun) {
       const context = await browser.newContext({ viewport: { width: 1365, height: 900 } });
       if (probe.monitorAuth) await context.route('**/*', async route => { await route.continue({ headers: monitorHeaders(route.request().url(), process.env.STATUS_MONITOR_TOKEN, route.request().headers()) }); });
       const page = await context.newPage();
-      let protectedAssets = false;
-      page.on('response', async response => { if (response.status() === 429 && ['headless', 'ratelimit', 'fingerprint'].includes((await response.allHeaders())['x-ec-shed'])) protectedAssets = true; });
+      const blockedRequests = [];
+      page.on('response', response => {
+        if (response.status() !== 429 || !['headless', 'ratelimit', 'fingerprint'].includes(response.headers()['x-ec-shed'])) return;
+        const request = response.request();
+        blockedRequests.push(blockedRequestEvidence({ resourceType: request.resourceType(), headers: request.headers(), url: request.url() }));
+      });
       await page.addInitScript(() => {
         window.__statusLcp = 0;
         new PerformanceObserver(list => { for (const e of list.getEntries()) window.__statusLcp = e.startTime; }).observe({ type: 'largest-contentful-paint', buffered: true });
@@ -64,7 +69,7 @@ if (browserRun) {
         if (response?.status() === 429 && (await response.allHeaders())['x-ec-shed'] === 'headless') return evidence('unknown', 'automation_blocked');
         if (!response || response.status() !== 200) return evidence('major_outage', 'http_error', { httpStatus: response?.status() || 0 });
         await page.waitForTimeout(6000);
-        if (protectedAssets) return evidence('unknown', 'automation_blocked');
+        if (initialRenderBlocked(blockedRequests)) return evidence('unknown', 'automation_blocked');
         const title = await page.title();
         const metrics = await page.evaluate(() => ({ lcpMs: Math.round(window.__statusLcp || 0), textLength: document.body?.innerText.trim().length || 0, pendingVisibleImages: [...document.images].filter(i => { const r = i.getBoundingClientRect(); return r.width > 40 && r.height > 40 && r.top < innerHeight && r.bottom > 0 && (!i.complete || i.naturalWidth === 0); }).length }));
         if (!new RegExp(probe.titlePattern).test(title) || metrics.textLength < 30) return evidence('partial_outage', 'content_mismatch');
@@ -72,7 +77,10 @@ if (browserRun) {
         const slow = metrics.lcpMs > probe.maxLcpMs || metrics.pendingVisibleImages > 0;
         return evidence(slow ? 'degraded' : 'operational', slow ? 'rendering_slow' : 'ok', { lcpMs: metrics.lcpMs });
       } catch (error) { return evidence('unknown', error.name === 'TimeoutError' ? 'timeout' : 'browser_unavailable'); }
-      finally { await context.close(); }
+      finally {
+        if (probe.monitorAuth || blockedRequests.length) console.log(JSON.stringify({ probe: probe.id, blockedRequests: blockedRequestCounts(blockedRequests) }));
+        await context.close();
+      }
     }, 2);
   } catch { for (const p of registry.probes.filter(p => p.type === 'browser')) state.probes[p.id] = evidence('unknown', 'browser_unavailable'); }
   finally { await browser?.close(); }

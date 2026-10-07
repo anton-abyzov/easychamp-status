@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, appendFile, mkdir } from 'node:fs/promises';
 import { performance } from 'node:perf_hooks';
 import { viewState, time, REASONS, STATUSES } from '../public/model.mjs';
 import { safeFetch, monitorHeaders } from './auth.mjs';
@@ -125,5 +125,6 @@ for (const date of Object.keys(history.days)) if (Date.parse(`${date}T00:00:00Z`
 incidents.incidents = incidents.incidents.filter(i => !i.resolvedAt || time(i.resolvedAt) >= cutoff).slice(0, 300);
 await mkdir('data', { recursive: true });
 for (const [name, payload] of [['status', state], ['history', history], ['incidents', incidents]]) await writeFile(`data/${name}.json`, JSON.stringify(payload, null, 2) + '\n');
+if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `observed_at=${state.generatedAt}\n`);
 console.log(JSON.stringify({ at: state.generatedAt, components: view.components.length, known: view.components.filter(c => c.status !== 'unknown').length, browserRun }));
-console.log(JSON.stringify({ heartbeat: await publishHeartbeat(view, state.generatedAt) }));
+console.log(JSON.stringify({ heartbeat: await publishHeartbeat({ ...view, counters: state.counters }, state.generatedAt) }));

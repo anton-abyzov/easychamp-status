@@ -13,3 +13,9 @@ test('failure returns sanitized status without response bodies or exception text
   assert.deepEqual(await publishHeartbeat(view, new Date().toISOString(), env, async () => new Response('sensitive body', { status: 403 })), { status: 'rejected', httpStatus: 403 });
   assert.deepEqual(await publishHeartbeat(view, new Date().toISOString(), env, async () => { throw new Error('sensitive exception'); }), { status: 'unavailable' });
 });
+test('confirmed alert counts exclude first failures and currently unknown components', async () => {
+  let event;
+  const checked = { components: [{ id: 'a', status: 'major_outage' }, { id: 'b', status: 'degraded' }, { id: 'c', status: 'unknown' }, { id: 'd', status: 'partial_outage' }], counters: { a: { bad: 2 }, b: { bad: 1 }, c: { bad: 3 }, d: { bad: 2 } } };
+  await publishHeartbeat(checked, new Date().toISOString(), env, async (_url, options) => { event = JSON.parse(options.body)[0]; return new Response('', { status: 200 }); });
+  assert.equal(event.outageComponents, 2); assert.equal(event.confirmedOutageComponents, 2); assert.equal(event.degradedComponents, 1); assert.equal(event.confirmedDegradedComponents, 0);
+});

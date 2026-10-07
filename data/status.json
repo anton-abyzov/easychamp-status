@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-07T18:51:39.120Z",
+  "probes": {
+    "console-http": {
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-10-07T18:51:04.072Z",
+      "responseMs": 1219,
+      "httpStatus": 200
+    },
+    "home-http": {
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-10-07T18:51:04.690Z",
+      "responseMs": 1914,
+      "httpStatus": 200
+    },
+    "coach-http": {
+      "status": "degraded",
+      "reasonCode": "slow",
+      "observedAt": "2026-10-07T18:51:08.029Z",
+      "responseMs": 5175,
+      "httpStatus": 200
+    },
+    "club-http": {
+      "status": "degraded",
+      "reasonCode": "slow",
+      "observedAt": "2026-10-07T18:51:10.828Z",
+      "responseMs": 6138,
+      "httpStatus": 200
+    },
+    "sim-http": {
+      "status": "degraded",
+      "reasonCode": "slow",
+      "observedAt": "2026-10-07T18:51:10.906Z",
+      "responseMs": 8052,
+      "httpStatus": 200
+    },
+    "snap-http": {
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-10-07T18:51:11.105Z",
+      "responseMs": 3076,
+      "httpStatus": 200
+    },
+    "watch-http": {
+      "status": "degraded",
+      "reasonCode": "slow",
+      "observedAt": "2026-10-07T18:51:11.290Z",
+      "responseMs": 7218,
+      "httpStatus": 200
+    },
+    "predictions-http": {
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-10-07T18:51:11.304Z",
+      "responseMs": 398,
+      "httpStatus": 200
+    },
+    "signin-http": {
+      "status": "degraded",
+      "reasonCode": "slow",
+      "observedAt": "2026-10-07T18:51:14.386Z",
+      "responseMs": 3557,
+      "httpStatus": 200
+    },
+    "home-render": {
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-10-07T18:51:22.435Z",
+      "lcpMs": 2112
+    },
+    "console-render": {
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "observedAt": "2026-10-07T18:51:28.668Z",
+      "lcpMs": 7760
+    },
+    "coach-render": {
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-10-07T18:51:29.492Z",
+      "lcpMs": 1772
+    },
+    "watch-render": {
+      "status": "unknown",
+      "reasonCode": "automation_blocked",
+      "observedAt": "2026-10-07T18:51:29.591Z"
+    },
+    "club-render": {
+      "status": "unknown",
+      "reasonCode": "automation_blocked",
+      "observedAt": "2026-10-07T18:51:29.677Z"
+    },
+    "sim-render": {
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-10-07T18:51:36.244Z",
+      "lcpMs": 1348
+    },
+    "snap-render": {
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-10-07T18:51:38.892Z",
+      "lcpMs": 2476
+    }
+  },
+  "freshness": {
+    "feed-results": {
+      "status": "unknown",
+      "reasonCode": "collector_unavailable",
+      "observedAt": "2026-10-07T18:51:39.120Z"
+    },
+    "scraper-sofifa": {
+      "status": "unknown",
+      "reasonCode": "collector_unavailable",
+      "observedAt": "2026-10-07T18:51:39.120Z"
+    },
+    "scraper-pesmaster": {
+      "status": "unknown",
+      "reasonCode": "collector_unavailable",
+      "observedAt": "2026-10-07T18:51:39.120Z"
+    },
+    "scraper-fbref": {
+      "status": "unknown",
+      "reasonCode": "collector_unavailable",
+      "observedAt": "2026-10-07T18:51:39.120Z"
+    },
+    "scraper-fifaindex": {
+      "status": "unknown",
+      "reasonCode": "collector_unavailable",
+      "observedAt": "2026-10-07T18:51:39.120Z"
+    },
+    "scraper-news": {
+      "status": "unknown",
+      "reasonCode": "collector_unavailable",
+      "observedAt": "2026-10-07T18:51:39.120Z"
+    },
+    "player-catalogue-validation": {
+      "status": "unknown",
+      "reasonCode": "collector_unavailable",
+      "observedAt": "2026-10-07T18:51:39.120Z"
+    }
+  },
+  "counters": {
+    "home": {
+      "bad": 0,
+      "good": 1
+    },
+    "console": {
+      "bad": 1,
+      "good": 0
+    },
+    "watch": {
+      "bad": 1,
+      "good": 0
+    },
+    "club-sites": {
+      "bad": 1,
+      "good": 0
+    },
+    "snap": {
+      "bad": 0,
+      "good": 1
+    },
+    "signin": {
+      "bad": 1,
+      "good": 0
+    },
+    "organizer-data": {
+      "bad": 0,
+      "good": 0
+    },
+    "coach": {
+      "bad": 1,
+      "good": 0
+    },
+    "sim": {
+      "bad": 1,
+      "good": 0
+    },
+    "predictions": {
+      "bad": 0,
+      "good": 1
+    },
+    "chat": {
+      "bad": 0,
+      "good": 0
+    },
+    "media-playback": {
+      "bad": 0,
+      "good": 0
+    },
+    "media-processing": {
+      "bad": 0,
+      "good": 0
+    },
+    "feed-results": {
+      "bad": 0,
+      "good": 0
+    },
+    "scraper-sofifa": {
+      "bad": 0,
+      "good": 0
+    },
+    "scraper-pesmaster": {
+      "bad": 0,
+      "good": 0
+    },
+    "scraper-fbref": {
+      "bad": 0,
+      "good": 0
+    },
+    "scraper-fifaindex": {
+      "bad": 0,
+      "good": 0
+    },
+    "scraper-news": {
+      "bad": 0,
+      "good": 0
+    },
+    "player-catalogue-validation": {
+      "bad": 0,
+      "good": 0
+    }
+  }
+}

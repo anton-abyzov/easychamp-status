@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="EasyChamp service availability, page performance and scheduled data freshness.">
+  <meta name="color-scheme" content="light dark">
+  <title>EasyChamp Status</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="masthead"><a class="brand" href="https://easychamp.com"><span class="brand-mark" aria-hidden="true">E</span> EasyChamp <span class="brand-separator">/</span> <span class="brand-sub">Status</span></a><a class="incident-link" href="https://github.com/anton-abyzov/easychamp-status/issues">Incident updates <span aria-hidden="true">↗</span></a></header>
+  <main>
+    <div class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span> SERVICE OPERATIONS</div>
+    <section class="overview" aria-labelledby="overview-title" aria-live="polite"><div><h1 id="overview-title">Checking service status</h1><p id="overview-description">Waiting for verified monitoring evidence.</p></div><span id="overall-badge" class="badge unknown">Unknown</span></section>
+    <div class="meta-strip"><span id="collector-age">Latest collection: unavailable</span><span>External checks · no signed-in customer actions</span><button id="refresh" type="button">Refresh <span aria-hidden="true">↻</span></button></div>
+    <section id="active-incidents" aria-labelledby="active-title" hidden><h2 id="active-title">Active incidents</h2><div id="active-list"></div></section>
+    <section aria-labelledby="services-title"><div class="section-heading"><h2 id="services-title">Services</h2><span id="coverage-count">Coverage loading</span></div><div id="groups" class="groups"></div></section>
+    <section class="history-section" aria-labelledby="history-title"><div class="section-heading"><h2 id="history-title">Incident history</h2><span>Last 90 days</span></div><div id="incident-history"><p class="empty">No incident history has been collected yet.</p></div></section>
+    <details class="method"><summary>What these checks mean</summary><p>Each component shows the coverage actually checked. A page check validates content and bounded rendering; it does not prove every signed-in feature works. Import health requires a successful scheduled run and verified persisted destination data. A responding health endpoint alone cannot turn a feed green.</p><p>Unknown means evidence is missing, expired, invalid, or an automation policy prevents a check. Daily bars summarize observed checks, with unknown observations excluded from the success fraction. They are not a continuous availability SLA. Monitoring schedules can be delayed; evidence ages update even when collection stops.</p><div id="legend" class="legend"></div></details>
+  </main>
+  <footer><span>EasyChamp service status</span><a href="https://github.com/anton-abyzov/easychamp-status/tree/main/data">Timestamped data fallback ↗</a><a href="https://github.com/anton-abyzov/easychamp-status">Monitoring source ↗</a><span>Powered by Upptime &amp; GitHub Pages</span></footer>
+  <noscript><div class="noscript">Live status needs JavaScript to expire stale evidence. <a href="./data/status.json">View timestamped measurements</a> or <a href="https://github.com/anton-abyzov/easychamp-status/issues">incident updates</a>. Current service availability is Unknown here.</div></noscript>
+  <script type="module" src="./app.mjs"></script>
+</body></html>

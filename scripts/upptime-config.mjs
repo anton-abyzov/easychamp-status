@@ -1,0 +1,5 @@
+import { readFile, writeFile } from 'node:fs/promises';
+const registry = JSON.parse(await readFile('config/components.json', 'utf8'));
+const sites = registry.probes.filter(p => p.type === 'http' && (!p.monitorAuth || process.env.STATUS_MONITOR_TOKEN)).map(p => ({ name: registry.components.find(c => c.probes?.includes(p.id))?.name || p.id, slug: p.id, url: p.url, expectedStatusCodes: [200], maxResponseTime: p.maxResponseMs, ...(p.bodyIncludes ? { __dangerous__body_down_if_text_missing: p.bodyIncludes } : {}), ...(p.monitorAuth ? { headers: ['x-ec-status-monitor: $STATUS_MONITOR_TOKEN'] } : {}) }));
+await writeFile('.upptimerc.yml', JSON.stringify({ owner: 'anton-abyzov', repo: 'easychamp-status', secrets: ['STATUS_MONITOR_TOKEN'], skipDeleteIssues: true, sites, 'status-website': { baseUrl: '/easychamp-status', name: 'EasyChamp Status' } }, null, 2) + '\n');
+console.log(`Configured ${sites.length} public Upptime checks.`);

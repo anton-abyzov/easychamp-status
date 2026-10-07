@@ -1,0 +1,13 @@
+{
+  "name": "easychamp-status",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node scripts/validate.mjs",
+    "monitor": "node scripts/collect.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": { "playwright": "1.63.0" }
+}

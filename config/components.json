@@ -1,0 +1,360 @@
+{
+  "schemaVersion": 1,
+  "title": "EasyChamp Status",
+  "freshnessUrl": "https://scrapers.easychamp.com/api/public-status",
+  "groups": [
+    {
+      "id": "websites",
+      "name": "Websites & club apps",
+      "description": "Public pages and club websites"
+    },
+    {
+      "id": "accounts",
+      "name": "Accounts & core data",
+      "description": "Sign-in and organizer services"
+    },
+    {
+      "id": "interactive",
+      "name": "Interactive features",
+      "description": "Coaching, simulations and predictions"
+    },
+    {
+      "id": "media",
+      "name": "Media & processing",
+      "description": "Playback and video processing"
+    },
+    {
+      "id": "results",
+      "name": "Results & external feeds",
+      "description": "Match results and schedules"
+    },
+    {
+      "id": "player-data",
+      "name": "Player data & news",
+      "description": "Scheduled imports and destination freshness"
+    }
+  ],
+  "probes": [
+    {
+      "id": "home-http",
+      "type": "http",
+      "url": "https://easychamp.com/",
+      "bodyIncludes": "League management software",
+      "maxResponseMs": 4000,
+      "expiresSeconds": 900
+    },
+    {
+      "id": "console-http",
+      "type": "http",
+      "url": "https://console.easychamp.com/",
+      "bodyIncludes": "Organizer Console",
+      "maxResponseMs": 4000,
+      "expiresSeconds": 900
+    },
+    {
+      "id": "coach-http",
+      "type": "http",
+      "url": "https://coach.easychamp.com/",
+      "bodyIncludes": "EasyChamp Coach",
+      "maxResponseMs": 4000,
+      "expiresSeconds": 900
+    },
+    {
+      "id": "sim-http",
+      "type": "http",
+      "url": "https://sim.easychamp.com/",
+      "bodyIncludes": "EasyChamp SIM",
+      "maxResponseMs": 4000,
+      "expiresSeconds": 900
+    },
+    {
+      "id": "watch-http",
+      "type": "http",
+      "url": "https://watch.easychamp.com/",
+      "bodyIncludes": "EasyChamp",
+      "maxResponseMs": 4000,
+      "expiresSeconds": 900,
+      "monitorAuth": true
+    },
+    {
+      "id": "club-http",
+      "type": "http",
+      "url": "https://dcfc.at.easychamp.com/",
+      "bodyIncludes": "Dade County",
+      "maxResponseMs": 4000,
+      "expiresSeconds": 900,
+      "monitorAuth": true
+    },
+    {
+      "id": "snap-http",
+      "type": "http",
+      "url": "https://snap.easychamp.com/",
+      "bodyIncludes": "Snap to League",
+      "maxResponseMs": 4000,
+      "expiresSeconds": 900
+    },
+    {
+      "id": "signin-http",
+      "type": "http",
+      "url": "https://auth.easychamp.com/realms/easychamp/.well-known/openid-configuration",
+      "jsonFields": {
+        "issuer": "string",
+        "authorization_endpoint": "string",
+        "token_endpoint": "string"
+      },
+      "bodyIncludes": "https://auth.easychamp.com/realms/easychamp",
+      "maxResponseMs": 3000,
+      "expiresSeconds": 900
+    },
+    {
+      "id": "predictions-http",
+      "type": "http",
+      "url": "https://easychamp.com/ec-betting-api/api/v1/config/public",
+      "jsonFields": {
+        "predictionEnabled": "boolean",
+        "bettingEnabled": "boolean"
+      },
+      "maxResponseMs": 3000,
+      "expiresSeconds": 900
+    },
+    {
+      "id": "home-render",
+      "type": "browser",
+      "url": "https://easychamp.com/",
+      "titlePattern": "EasyChamp",
+      "maxLcpMs": 4000,
+      "expiresSeconds": 2100
+    },
+    {
+      "id": "console-render",
+      "type": "browser",
+      "url": "https://console.easychamp.com/",
+      "titlePattern": "[Ee]asy[Cc]hamp|Sign in",
+      "maxLcpMs": 4000,
+      "expiresSeconds": 2100
+    },
+    {
+      "id": "coach-render",
+      "type": "browser",
+      "url": "https://coach.easychamp.com/",
+      "titlePattern": "EasyChamp Coach",
+      "maxLcpMs": 4000,
+      "expiresSeconds": 2100
+    },
+    {
+      "id": "sim-render",
+      "type": "browser",
+      "url": "https://sim.easychamp.com/",
+      "titlePattern": "EasyChamp SIM",
+      "maxLcpMs": 4000,
+      "expiresSeconds": 2100
+    },
+    {
+      "id": "watch-render",
+      "type": "browser",
+      "url": "https://watch.easychamp.com/",
+      "titlePattern": "EasyChamp",
+      "maxLcpMs": 4000,
+      "expiresSeconds": 2100,
+      "monitorAuth": true
+    },
+    {
+      "id": "club-render",
+      "type": "browser",
+      "url": "https://dcfc.at.easychamp.com/",
+      "titlePattern": "Dade|DCFC",
+      "maxLcpMs": 4000,
+      "expiresSeconds": 2100,
+      "monitorAuth": true
+    },
+    {
+      "id": "snap-render",
+      "type": "browser",
+      "url": "https://snap.easychamp.com/",
+      "titlePattern": "Snap to League",
+      "maxLcpMs": 4000,
+      "expiresSeconds": 2100
+    }
+  ],
+  "components": [
+    {
+      "id": "home",
+      "group": "websites",
+      "name": "EasyChamp home",
+      "probes": [
+        "home-http",
+        "home-render"
+      ],
+      "coverage": "Public page content and rendering"
+    },
+    {
+      "id": "console",
+      "group": "websites",
+      "name": "Organizer Console",
+      "probes": [
+        "console-http",
+        "console-render"
+      ],
+      "coverage": "Entry and sign-in page rendering; signed-in workflows not checked"
+    },
+    {
+      "id": "watch",
+      "group": "websites",
+      "name": "Watch & competition pages",
+      "probes": [
+        "watch-http",
+        "watch-render"
+      ],
+      "coverage": "Public page rendering; automation protection may limit coverage"
+    },
+    {
+      "id": "club-sites",
+      "group": "websites",
+      "name": "Club websites",
+      "probes": [
+        "club-http",
+        "club-render"
+      ],
+      "coverage": "One representative club homepage; other tenants not checked"
+    },
+    {
+      "id": "snap",
+      "group": "websites",
+      "name": "Snap to League",
+      "probes": [
+        "snap-http",
+        "snap-render"
+      ],
+      "coverage": "Public entry page rendering; uploads not checked"
+    },
+    {
+      "id": "signin",
+      "group": "accounts",
+      "name": "Sign-in discovery",
+      "probes": [
+        "signin-http"
+      ],
+      "coverage": "Sign-in protocol discovery; credential login and token issuance not checked"
+    },
+    {
+      "id": "organizer-data",
+      "group": "accounts",
+      "name": "Organizer data & club accounts",
+      "probes": [],
+      "coverage": "Authenticated data journey awaiting a dedicated monitor"
+    },
+    {
+      "id": "coach",
+      "group": "interactive",
+      "name": "Coach",
+      "probes": [
+        "coach-http",
+        "coach-render"
+      ],
+      "coverage": "Public page content and rendering; gameplay not checked"
+    },
+    {
+      "id": "sim",
+      "group": "interactive",
+      "name": "Match Simulator",
+      "probes": [
+        "sim-http",
+        "sim-render"
+      ],
+      "coverage": "Public page content and rendering; simulation execution not checked"
+    },
+    {
+      "id": "predictions",
+      "group": "interactive",
+      "name": "Predictions configuration",
+      "probes": [
+        "predictions-http"
+      ],
+      "coverage": "Public configuration schema; purchases and prediction submission not checked"
+    },
+    {
+      "id": "chat",
+      "group": "interactive",
+      "name": "Club messaging",
+      "probes": [],
+      "coverage": "Authenticated messaging journey awaiting a dedicated monitor"
+    },
+    {
+      "id": "media-playback",
+      "group": "media",
+      "name": "Video playback",
+      "probes": [],
+      "coverage": "Playback journey awaiting a dedicated monitor"
+    },
+    {
+      "id": "media-processing",
+      "group": "media",
+      "name": "Video processing",
+      "probes": [],
+      "coverage": "Processing completion and destination evidence awaiting a monitor"
+    },
+    {
+      "id": "feed-results",
+      "group": "results",
+      "name": "Match results & schedules",
+      "freshness": true,
+      "coverage": "Scheduled result imports and verified destination freshness",
+      "maxSuccessHours": 8,
+      "maxDestinationHours": 1
+    },
+    {
+      "id": "scraper-sofifa",
+      "group": "player-data",
+      "name": "SoFIFA player data",
+      "freshness": true,
+      "coverage": "Successful import and verified destination freshness",
+      "maxSuccessHours": 336,
+      "maxDestinationHours": 26
+    },
+    {
+      "id": "scraper-pesmaster",
+      "group": "player-data",
+      "name": "PES Master player data",
+      "freshness": true,
+      "coverage": "Successful import and verified destination freshness",
+      "maxSuccessHours": 36,
+      "maxDestinationHours": 26
+    },
+    {
+      "id": "scraper-fbref",
+      "group": "player-data",
+      "name": "FBref statistics",
+      "freshness": true,
+      "coverage": "Successful import and verified destination freshness",
+      "maxSuccessHours": 192,
+      "maxDestinationHours": 26
+    },
+    {
+      "id": "scraper-fifaindex",
+      "group": "player-data",
+      "name": "FIFA Index player data",
+      "freshness": true,
+      "coverage": "Successful import and verified destination freshness",
+      "maxSuccessHours": 192,
+      "maxDestinationHours": 26
+    },
+    {
+      "id": "scraper-news",
+      "group": "player-data",
+      "name": "Football news",
+      "freshness": true,
+      "coverage": "Successful import and verified destination freshness",
+      "maxSuccessHours": 12,
+      "maxDestinationHours": 12
+    },
+    {
+      "id": "player-catalogue-validation",
+      "group": "player-data",
+      "name": "Player catalogue validation",
+      "freshness": true,
+      "coverage": "Daily authoritative player catalogue validation; does not prove every source import",
+      "maxSuccessHours": 28,
+      "maxDestinationHours": 28
+    }
+  ]
+}

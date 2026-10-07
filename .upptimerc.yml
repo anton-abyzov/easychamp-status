@@ -1,0 +1,83 @@
+{
+  "owner": "anton-abyzov",
+  "repo": "easychamp-status",
+  "secrets": [
+    "STATUS_MONITOR_TOKEN"
+  ],
+  "skipDeleteIssues": true,
+  "sites": [
+    {
+      "name": "EasyChamp home",
+      "slug": "home-http",
+      "url": "https://easychamp.com/",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 4000,
+      "__dangerous__body_down_if_text_missing": "League management software"
+    },
+    {
+      "name": "Organizer Console",
+      "slug": "console-http",
+      "url": "https://console.easychamp.com/",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 4000,
+      "__dangerous__body_down_if_text_missing": "Organizer Console"
+    },
+    {
+      "name": "Coach",
+      "slug": "coach-http",
+      "url": "https://coach.easychamp.com/",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 4000,
+      "__dangerous__body_down_if_text_missing": "EasyChamp Coach"
+    },
+    {
+      "name": "Match Simulator",
+      "slug": "sim-http",
+      "url": "https://sim.easychamp.com/",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 4000,
+      "__dangerous__body_down_if_text_missing": "EasyChamp SIM"
+    },
+    {
+      "name": "Snap to League",
+      "slug": "snap-http",
+      "url": "https://snap.easychamp.com/",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 4000,
+      "__dangerous__body_down_if_text_missing": "Snap to League"
+    },
+    {
+      "name": "Sign-in discovery",
+      "slug": "signin-http",
+      "url": "https://auth.easychamp.com/realms/easychamp/.well-known/openid-configuration",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 3000,
+      "__dangerous__body_down_if_text_missing": "https://auth.easychamp.com/realms/easychamp"
+    },
+    {
+      "name": "Predictions configuration",
+      "slug": "predictions-http",
+      "url": "https://easychamp.com/ec-betting-api/api/v1/config/public",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 3000
+    }
+  ],
+  "status-website": {
+    "baseUrl": "/easychamp-status",
+    "name": "EasyChamp Status"
+  }
+}

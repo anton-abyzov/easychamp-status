@@ -1,6 +1,6 @@
 import { mkdir, copyFile, readFile, writeFile } from 'node:fs/promises';
 await mkdir('dist/data', { recursive: true });
-for (const name of ['index.html', 'style.css', 'app.mjs', 'model.mjs', 'favicon.svg']) await copyFile(`public/${name}`, `dist/${name}`);
+for (const name of ['index.html', 'style.css', 'app.mjs', 'model.mjs', 'incident-model.mjs', 'favicon.svg']) await copyFile(`public/${name}`, `dist/${name}`);
 await copyFile('config/components.json', 'dist/data/components.json');
 for (const name of ['status', 'history', 'incidents']) {
   try { await copyFile(`data/${name}.json`, `dist/data/${name}.json`); }

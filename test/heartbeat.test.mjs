@@ -19,3 +19,9 @@ test('confirmed alert counts exclude first failures and currently unknown compon
   await publishHeartbeat(checked, new Date().toISOString(), env, async (_url, options) => { event = JSON.parse(options.body)[0]; return new Response('', { status: 200 }); });
   assert.equal(event.outageComponents, 2); assert.equal(event.confirmedOutageComponents, 2); assert.equal(event.degradedComponents, 1); assert.equal(event.confirmedDegradedComponents, 0);
 });
+test('confirmed incident alert counts remain active during unknown evidence and first recovery', async () => {
+  let event;
+  const checked = { components: [{ id: 'a', status: 'unknown' }, { id: 'b', status: 'operational' }, { id: 'c', status: 'operational' }], counters: { a: { bad: 0, good: 0, confirmedStatus: 'major_outage' }, b: { bad: 0, good: 1, confirmedStatus: 'degraded' }, c: { bad: 0, good: 2, confirmedStatus: null } } };
+  await publishHeartbeat(checked, new Date().toISOString(), env, async (_url, options) => { event = JSON.parse(options.body)[0]; return new Response('', { status: 200 }); });
+  assert.equal(event.confirmedOutageComponents, 1); assert.equal(event.confirmedDegradedComponents, 1); assert.equal(event.unknownComponents, 1); assert.equal(event.operationalComponents, 2);
+});

@@ -1,0 +1,53 @@
+import { chromium } from 'playwright';
+import { createServer } from 'node:http';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { resolve, sep } from 'node:path';
+import assert from 'node:assert/strict';
+const root=process.cwd();
+const evidence=resolve(process.env.STATUS_UI_EVIDENCE_DIR || 'test-results/ui');
+await mkdir(evidence,{recursive:true});
+// Fixture lifecycle screenshots are test evidence, not production write-ups.
+const server=createServer(async(req,res)=>{try{const path=new URL(req.url,'http://local').pathname;const file=path==='/'?'/index.html':path;const disk=resolve(root,'dist','.'+file); if(!disk.startsWith(resolve(root,'dist')+sep)) throw new Error('path'); const body=await readFile(disk);res.setHeader('Content-Type',file.endsWith('.mjs')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.json')?'application/json':'text/html');res.end(body);}catch{res.statusCode=404;res.end('Not found');}});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const base=`http://127.0.0.1:${server.address().port}`;
+const browser=await chromium.launch({headless:true,...(process.env.STATUS_BROWSER_CHANNEL==='chrome'?{channel:'chrome'}:{})});
+const checks=[],errors=[];
+try{
+ const page=await browser.newPage({viewport:{width:1440,height:1100},colorScheme:'light',reducedMotion:'reduce'});
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(base,{waitUntil:'networkidle'});
+ await page.locator('.group').first().waitFor();
+ assert.equal(await page.locator('.group').count(),6);assert.equal(await page.locator('.component-link').count(),21);assert.equal(await page.locator('.group-details[open]').count(),0);
+ await page.screenshot({path:evidence+'/desktop-light.png',fullPage:true});checks.push('six collapsed groups; 21 nested components');
+ await page.locator('.group-details summary').first().click();
+ await page.locator('.component-link').first().click();await page.locator('dialog[open]').waitFor();
+ assert.match(await page.locator('#detail-title').innerText(),/EasyChamp home/);assert.match(page.url(),/#component\/home/);
+ assert.equal(await page.locator('.day-button').count(),90);
+ await page.locator('.day-button[tabindex="0"]').focus();await page.keyboard.press('ArrowLeft');assert.match(page.url(),new RegExp(new Date(Date.now()-86400000).toISOString().slice(0,10)));
+ await page.screenshot({path:evidence+'/component-history.png',fullPage:true});
+ await page.keyboard.press('Escape');await page.locator('dialog').waitFor({state:'hidden'});assert.equal(await page.locator('.group-details[open]').count(),1);checks.push('component hash, daily keyboard history, Escape and group expansion preserved');
+ await page.locator('.group-history').first().click();await page.locator('dialog[open]').waitFor();assert.equal(await page.locator('.day-button').count(),90);await page.goBack();await page.locator('dialog').waitFor({state:'hidden'});checks.push('group observed history and browser Back');
+ await page.goto(base+'/#component/media-playback',{waitUntil:'networkidle'});await page.locator('dialog[open]').waitFor();assert.match(await page.locator('#detail-content').innerText(),/Unknown/);await page.keyboard.press('Escape');await page.locator('dialog').waitFor({state:'hidden'});checks.push('direct component route with unknown unconnected monitoring');
+ const incident={id:'fixture-incident',componentId:'scraper-pesmaster',title:'Player data import delayed',status:'degraded',reasonCode:'run_failed',openedAt:new Date(Date.now()-3600000).toISOString(),updatedAt:new Date().toISOString(),resolvedAt:null,stage:'monitoring',updates:[{id:'one',stage:'investigating',at:new Date(Date.now()-3600000).toISOString(),message:'The scheduled import check reported a failure. Cause is unconfirmed.',source:'monitor'},{id:'two',stage:'identified',at:new Date(Date.now()-1800000).toISOString(),message:'The affected import has been identified.',source:'owner'},{id:'three',stage:'monitoring',at:new Date().toISOString(),message:'A mitigation has been applied. Recovery checks are in progress.',source:'owner'}],postmortem:{state:'draft',summary:'Private draft must not render'},issue:{number:1,url:'https://github.com/anton-abyzov/easychamp-status/issues/1'}};
+ let data={schemaVersion:1,incidents:[incident]};
+ await page.route('**/data/incidents.json?*',r=>r.fulfill({json:data}));
+ await page.goto(base,{waitUntil:'networkidle'});await page.locator('#active-list a').click();await page.locator('dialog[open]').waitFor();assert.equal(await page.locator('.timeline li').count(),3);assert.equal(await page.getByText('Private draft must not render').count(),0);await page.screenshot({path:evidence+'/incident-monitoring.png',fullPage:true});checks.push('investigating, identified and monitoring timeline; draft postmortem hidden');
+ await page.goto(base+'/#incident/fixture-incident',{waitUntil:'networkidle'}); await page.locator('dialog[open]').waitFor(); await page.locator('.affected-links a').click(); await page.getByRole('button',{name:'Close details'}).click(); await page.locator('dialog').waitFor({state:'hidden'}); assert.equal(new URL(page.url()).hash,''); checks.push('direct detail followed by nested detail closes completely');
+ await page.clock.install({time:new Date()}); await page.goto(base,{waitUntil:'networkidle'}); const incidentHref=await page.locator('#active-list a').getAttribute('href'); await page.locator('#active-list a').focus(); await page.clock.fastForward(31000); assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('href')),incidentHref); checks.push('incident card retains keyboard focus during background repaint');
+ await page.goto(base+'/#incident/fixture-incident',{waitUntil:'networkidle'}); await page.locator('dialog[open]').waitFor(); await page.locator('.affected-links a').focus(); const affectedHref=await page.locator('.affected-links a').getAttribute('href'); await page.clock.fastForward(31000); assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('href')),affectedHref); checks.push('affected-service link retains modal keyboard focus during background repaint');
+ incident.resolvedAt=new Date().toISOString();incident.stage='writeup_published';incident.postmortem={state:'published',summary:'The scheduled import recovered after the source connector was repaired.',url:'https://github.com/anton-abyzov/easychamp-status/issues/1',generatedAt:incident.resolvedAt,publishedAt:incident.resolvedAt};incident.updates.push({id:'four',stage:'resolved',at:new Date().toISOString(),message:'Recovery checks passed.',source:'monitor'},{id:'five',stage:'writeup_published',at:new Date().toISOString(),message:'The postmortem has been published.',source:'owner'});
+ await page.reload({waitUntil:'networkidle'});await page.locator('dialog[open]').waitFor();assert.equal(await page.locator('.timeline li').count(),5);assert.equal(await page.getByRole('link',{name:'Read the postmortem'}).count(),1);await page.screenshot({path:evidence+'/incident-resolved-postmortem.png',fullPage:true});checks.push('resolved and published writeup timeline with public postmortem link');
+ await page.goto(base,{waitUntil:'networkidle'});await page.emulateMedia({colorScheme:'dark'});await page.screenshot({path:evidence+'/desktop-dark.png',fullPage:true});
+ for(const width of [390,320]){await page.setViewportSize({width,height:844});await page.emulateMedia({colorScheme:'light'});await page.goto(base,{waitUntil:'networkidle'});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:evidence+`/mobile-${width}-light.png`,fullPage:true});await page.emulateMedia({colorScheme:'dark'});await page.screenshot({path:evidence+`/mobile-${width}-dark.png`,fullPage:true});await page.locator('#incident-history .incident-card').click();await page.locator('dialog[open]').waitFor();assert.ok(await page.locator('dialog').evaluate(n=>n.scrollWidth<=n.clientWidth));await page.screenshot({path:evidence+`/mobile-${width}-incident.png`,fullPage:false});}
+ checks.push('320/390 mobile light/dark and incident dialog without overflow');
+ await page.goto(base,{waitUntil:'networkidle'});await page.route('**/data/status.json?*',r=>r.fulfill({status:503,body:'unavailable'}));await page.locator('#refresh').click();await page.getByText('Refresh failed · current evidence unavailable').waitFor();assert.equal(await page.locator('#overall-badge').innerText(),'Unknown');checks.push('failed refresh invalidates current evidence to Unknown');
+
+ const fresh=await browser.newPage({viewport:{width:390,height:844}});fresh.on('pageerror',e=>errors.push(e.message));const at=new Date().toISOString();
+ await fresh.route('**/data/status.json?*',r=>r.fulfill({json:{schemaVersion:1,generatedAt:at,probes:{'home-http':{status:'operational',reasonCode:'ok',observedAt:at},'home-render':{status:'operational',reasonCode:'ok',observedAt:at}},freshness:{}}}));
+ await fresh.clock.install({time:new Date()});await fresh.goto(base+'/#component/home',{waitUntil:'networkidle'});await fresh.locator('dialog[open]').waitFor();assert.equal(await fresh.locator('#detail-content > div > .badge').innerText(),'Operational');
+ await fresh.clock.fastForward(16*60000);await fresh.waitForFunction(()=>document.querySelector('#detail-content > div > .badge')?.textContent==='Unknown');checks.push('open Operational detail expires to Unknown after check TTL');
+ await fresh.close();
+ const failedPage=await browser.newPage();failedPage.on('pageerror',e=>errors.push(e.message));await failedPage.route('**/data/components.json?*',r=>r.fulfill({json:{groups:[null],components:[null],probes:[]}}));await failedPage.goto(base,{waitUntil:'networkidle'});await failedPage.getByText('Service status unavailable',{exact:true}).waitFor();assert.equal(await failedPage.locator('#overall-badge').innerText(),'Unknown');await failedPage.close();checks.push('invalid initial registry fails closed without uncaught error');
+ assert.deepEqual(errors,[]);checks.push('no uncaught browser errors');
+ await writeFile(evidence+'/report.json',JSON.stringify({headless:true,checks,errors,browser:browser.version(),at:new Date().toISOString()},null,2));console.log(JSON.stringify({checks,errors}));
+}finally{await browser.close();await new Promise(r=>server.close(r));}

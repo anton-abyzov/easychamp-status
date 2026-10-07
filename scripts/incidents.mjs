@@ -71,6 +71,7 @@ export function applyOwnerUpdate(payload, input, context) {
   const url = input.stage === 'writeup_published' ? safePublicUrl(input.url) : null;
   if (input.stage === 'writeup_published' && (!incident.resolvedAt || !url)) throw new Error('published_writeup_requires_resolved_incident_and_safe_url');
   if (input.stage !== 'writeup_published' && input.url) throw new Error('unexpected_writeup_url');
+  if (incident.updates.some(update => update.id === context.updateId)) return { schemaVersion: 1, incidents };
   const last = incident.updates.at(-1);
   if (last?.id === context.updateId || (last?.source === 'owner' && last.stage === input.stage && last.message === input.message.trim() && (input.stage !== 'writeup_published' || incident.postmortem?.url === url))) return { schemaVersion: 1, incidents };
   appendIncidentUpdate(incident, { stage: input.stage, at: context.at, message: input.message.trim(), source: 'owner', author: { login: context.login }, id: context.updateId });

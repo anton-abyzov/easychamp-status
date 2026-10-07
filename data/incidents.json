@@ -8,8 +8,22 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-07T20:50:56.233Z",
-      "resolvedAt": null
+      "updatedAt": "2026-10-07T21:07:40.805Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "scraper-pesmaster-1791401507529-legacy-open",
+          "stage": "investigating",
+          "at": "2026-10-07T19:31:47.528Z",
+          "message": "The monitor confirmed a service issue. Earlier detailed observations are unavailable.",
+          "source": "monitor"
+        }
+      ],
+      "issue": {
+        "number": 4,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
     }
   ]
 }

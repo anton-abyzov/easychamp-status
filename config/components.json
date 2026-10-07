@@ -273,11 +273,11 @@
       "coverage": "Public configuration schema; purchases and prediction submission not checked"
     },
     {
-      "id": "chat",
+      "id": "assistant",
       "group": "interactive",
-      "name": "Club messaging",
+      "name": "AI assistant",
       "probes": [],
-      "coverage": "Authenticated messaging journey awaiting a dedicated monitor"
+      "coverage": "Assistant response journey awaiting a dedicated monitor; user-to-user messaging is not covered"
     },
     {
       "id": "media-playback",
@@ -300,7 +300,8 @@
       "freshness": true,
       "coverage": "Scheduled result imports and verified destination freshness",
       "maxSuccessHours": 8,
-      "maxDestinationHours": 1
+      "maxDestinationHours": 1,
+      "maxGraceSeconds": 3600
     },
     {
       "id": "scraper-sofifa",
@@ -309,7 +310,8 @@
       "freshness": true,
       "coverage": "Successful import and verified destination freshness",
       "maxSuccessHours": 336,
-      "maxDestinationHours": 26
+      "maxDestinationHours": 26,
+      "maxGraceSeconds": 86400
     },
     {
       "id": "scraper-pesmaster",
@@ -318,7 +320,8 @@
       "freshness": true,
       "coverage": "Successful import and verified destination freshness",
       "maxSuccessHours": 36,
-      "maxDestinationHours": 26
+      "maxDestinationHours": 26,
+      "maxGraceSeconds": 28800
     },
     {
       "id": "scraper-fbref",
@@ -327,7 +330,8 @@
       "freshness": true,
       "coverage": "Successful import and verified destination freshness",
       "maxSuccessHours": 192,
-      "maxDestinationHours": 26
+      "maxDestinationHours": 26,
+      "maxGraceSeconds": 86400
     },
     {
       "id": "scraper-fifaindex",
@@ -336,7 +340,8 @@
       "freshness": true,
       "coverage": "Successful import and verified destination freshness",
       "maxSuccessHours": 192,
-      "maxDestinationHours": 26
+      "maxDestinationHours": 26,
+      "maxGraceSeconds": 86400
     },
     {
       "id": "scraper-news",
@@ -345,7 +350,8 @@
       "freshness": true,
       "coverage": "Successful import and verified destination freshness",
       "maxSuccessHours": 12,
-      "maxDestinationHours": 12
+      "maxDestinationHours": 12,
+      "maxGraceSeconds": 7200
     },
     {
       "id": "player-catalogue-validation",
@@ -354,7 +360,8 @@
       "freshness": true,
       "coverage": "Daily authoritative player catalogue validation; does not prove every source import",
       "maxSuccessHours": 28,
-      "maxDestinationHours": 28
+      "maxDestinationHours": 28,
+      "maxGraceSeconds": 14400
     }
   ]
 }

@@ -3,6 +3,7 @@ import { performance } from 'node:perf_hooks';
 import { viewState, time, REASONS, STATUSES } from '../public/model.mjs';
 import { safeFetch, monitorHeaders } from './auth.mjs';
 import { publishHeartbeat } from './heartbeat.mjs';
+import { recordObservation, evidenceIdentity } from './observations.mjs';
 
 const registry = JSON.parse(await readFile('config/components.json', 'utf8'));
 async function load(path, fallback) { try { return JSON.parse(await readFile(path, 'utf8')); } catch { return fallback; } }
@@ -24,7 +25,7 @@ async function httpProbe(probe) {
   const start = performance.now();
   try {
     const response = await safeFetch(probe.url, { signal: AbortSignal.timeout(18000), headers: { 'User-Agent': 'EasyChamp-Status-Monitor/1.0 (+https://status.easychamp.com)', Accept: probe.jsonFields ? 'application/json' : 'text/html' } }, probe.monitorAuth ? process.env.STATUS_MONITOR_TOKEN : null);
-    if (response.status === 429 && response.headers.get('x-ec-shed') === 'headless') { await response.body?.cancel(); return evidence('unknown', 'automation_blocked'); }
+    if (response.status === 429 && (response.headers.get('x-ec-shed') === 'headless' || (probe.monitorAuth && process.env.STATUS_MONITOR_TOKEN && response.headers.get('x-ec-shed') === 'ratelimit'))) { await response.body?.cancel(); return evidence('unknown', 'automation_blocked'); }
     if (response.status !== 200) { await response.body?.cancel(); return evidence('major_outage', 'http_error', { httpStatus: response.status }); }
     const body = await boundedBody(response);
     const responseMs = Math.round(performance.now() - start);
@@ -52,6 +53,8 @@ if (browserRun) {
       const context = await browser.newContext({ viewport: { width: 1365, height: 900 } });
       if (probe.monitorAuth) await context.route('**/*', async route => { await route.continue({ headers: monitorHeaders(route.request().url(), process.env.STATUS_MONITOR_TOKEN, route.request().headers()) }); });
       const page = await context.newPage();
+      let protectedAssets = false;
+      page.on('response', async response => { if (response.status() === 429 && ['headless', 'ratelimit', 'fingerprint'].includes((await response.allHeaders())['x-ec-shed'])) protectedAssets = true; });
       await page.addInitScript(() => {
         window.__statusLcp = 0;
         new PerformanceObserver(list => { for (const e of list.getEntries()) window.__statusLcp = e.startTime; }).observe({ type: 'largest-contentful-paint', buffered: true });
@@ -61,6 +64,7 @@ if (browserRun) {
         if (response?.status() === 429 && (await response.allHeaders())['x-ec-shed'] === 'headless') return evidence('unknown', 'automation_blocked');
         if (!response || response.status() !== 200) return evidence('major_outage', 'http_error', { httpStatus: response?.status() || 0 });
         await page.waitForTimeout(6000);
+        if (protectedAssets) return evidence('unknown', 'automation_blocked');
         const title = await page.title();
         const metrics = await page.evaluate(() => ({ lcpMs: Math.round(window.__statusLcp || 0), textLength: document.body?.innerText.trim().length || 0, pendingVisibleImages: [...document.images].filter(i => { const r = i.getBoundingClientRect(); return r.width > 40 && r.height > 40 && r.top < innerHeight && r.bottom > 0 && (!i.complete || i.naturalWidth === 0); }).length }));
         if (!new RegExp(probe.titlePattern).test(title) || metrics.textLength < 30) return evidence('partial_outage', 'content_mismatch');
@@ -96,16 +100,20 @@ for (const id of allowedFreshness) if (!state.freshness[id]) state.freshness[id]
 
 state.generatedAt = new Date().toISOString();
 const view = viewState(registry, state);
+const oldView = viewState(registry, previous, time(previous.generatedAt) || Date.now());
 const history = await load('data/history.json', { schemaVersion: 1, days: {} });
 const incidents = await load('data/incidents.json', { schemaVersion: 1, incidents: [] });
 const day = state.generatedAt.slice(0, 10);
 history.days[day] ||= {};
 for (const component of view.components) {
-  const counts = history.days[day][component.id] ||= {};
-  counts[component.status] = (counts[component.status] || 0) + 1;
   const bad = ['degraded', 'partial_outage', 'major_outage'].includes(component.status);
   const before = state.counters[component.id] || { bad: 0, good: 0 };
-  state.counters[component.id] = { bad: bad ? before.bad + 1 : 0, good: component.status === 'operational' ? before.good + 1 : 0 };
+  if (!before.evidence && previous.generatedAt) before.evidence = evidenceIdentity(oldView.components.find(c => c.id === component.id));
+  const observation = recordObservation(component, before);
+  state.counters[component.id] = observation.counter;
+  if (!observation.isNew) continue;
+  const counts = history.days[day][component.id] ||= {};
+  counts[component.status] = (counts[component.status] || 0) + 1;
   const open = incidents.incidents.find(i => i.componentId === component.id && !i.resolvedAt);
   if (bad && state.counters[component.id].bad >= 2) {
     if (!open) incidents.incidents.unshift({ id: `${component.id}-${Date.now()}`, componentId: component.id, title: `${component.name}: ${component.status === 'degraded' ? 'degraded performance' : 'availability issue'}`, status: component.status, reasonCode: component.reasonCode, openedAt: state.generatedAt, updatedAt: state.generatedAt, resolvedAt: null });

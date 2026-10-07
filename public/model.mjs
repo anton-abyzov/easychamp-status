@@ -31,15 +31,16 @@ export function verifyFreshness(sample, now = Date.now(), limits = {}) {
   const maxSuccess = (limits.maxSuccessHours || 360) * 3600000;
   const maxDestination = (limits.maxDestinationHours || 28) * 3600000;
   if (now - time(sample.lastCompletedSuccessAt) > maxSuccess || now - time(sample.lastDestinationVerifiedAt) > maxDestination) return { ...base, status: 'degraded', reasonCode: 'freshness_late' };
-  if (!Number.isInteger(sample.graceSeconds) || sample.graceSeconds < 0 || sample.graceSeconds > 172800 || time(sample.nextDueAt) < time(sample.lastCompletedSuccessAt) || time(sample.nextDueAt) - time(sample.lastCompletedSuccessAt) > maxSuccess + 172800000) return unknown('invalid_evidence', base.observedAt);
+  const maxGrace = limits.maxGraceSeconds || 86400;
+  if (!Number.isInteger(sample.graceSeconds) || sample.graceSeconds < 0 || sample.graceSeconds > maxGrace || time(sample.nextDueAt) < time(sample.lastCompletedSuccessAt) || time(sample.nextDueAt) - time(sample.lastCompletedSuccessAt) > maxSuccess + maxGrace * 1000) return unknown('invalid_evidence', base.observedAt);
   if (now > time(sample.nextDueAt) + sample.graceSeconds * 1000) return { ...base, status: 'degraded', reasonCode: 'freshness_late' };
   return base;
 }
 
 export function componentState(component, state, registry, now = Date.now()) {
   let samples;
-  if (component.freshness) samples = [verifyFreshness(state.freshness?.[component.id], now, component)];
-  else samples = (component.probes || []).map(id => currentEvidence(state.probes?.[id], registry.probes.find(p => p.id === id)?.expiresSeconds || 0, now));
+  if (component.freshness) samples = [{ ...verifyFreshness(state.freshness?.[component.id], now, component), sourceId: component.id }];
+  else samples = (component.probes || []).map(id => ({ ...currentEvidence(state.probes?.[id], registry.probes.find(p => p.id === id)?.expiresSeconds || 0, now), sourceId: id }));
   if (!samples.length) samples = [unknown('not_monitored')];
   const status = rollup(samples);
   const dominant = samples.find(s => s.status === status) || samples[0];

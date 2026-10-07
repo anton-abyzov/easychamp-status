@@ -19,6 +19,7 @@ test('schedule grace, source age and destination age are enforced', () => {
   assert.equal(verifyFreshness({ ...good, nextDueAt: stamp(-6) }, now).status, 'degraded');
   assert.equal(verifyFreshness({ ...good, lastCompletedSuccessAt: stamp(-200), lastDestinationVerifiedAt: stamp(-100) }, now, { maxSuccessHours: 2, maxDestinationHours: 1 }).status, 'degraded');
   assert.equal(verifyFreshness({ ...good, observedAt: stamp(-21) }, now).status, 'unknown');
+  assert.equal(verifyFreshness({ ...good, graceSeconds: 28801 }, now, { maxGraceSeconds: 28800 }).status, 'unknown');
 });
 test('a valid no-change import stays healthy and inactive seasonal feeds are explicit', () => {
   assert.equal(verifyFreshness(good, now).status, 'operational');

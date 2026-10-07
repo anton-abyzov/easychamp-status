@@ -63,6 +63,9 @@ test('a write-up becomes published only through a reviewed owner update with a s
   assert.throws(() => applyOwnerUpdate(run.payload, { incidentId: id, stage: 'writeup_published', message: 'Reviewed', url: 'javascript:alert(1)' }, context), /safe_url/);
   const published = applyOwnerUpdate(run.payload, { incidentId: id, stage: 'writeup_published', message: 'Owner-reviewed incident findings.', url: 'https://example.com/postmortems/test' }, context);
   const row = normalizeIncident(published.incidents[0]); assert.equal(row.stage, 'writeup_published'); assert.equal(row.postmortem.state, 'published'); assert.equal(row.postmortem.publishedAt, at(20));
+  const newer = applyOwnerUpdate(published, { incidentId: id, stage: 'writeup_published', message: 'Updated owner-reviewed findings.', url: 'https://example.com/postmortems/newer' }, { login: 'owner', at: at(25), updateId: 'owner-789' });
+  const replay = applyOwnerUpdate(newer, { incidentId: id, stage: 'writeup_published', message: 'Owner-reviewed incident findings.', url: 'https://example.com/postmortems/test' }, { ...context, at: at(30) });
+  assert.equal(replay.incidents[0].postmortem.url, 'https://example.com/postmortems/newer'); assert.equal(replay.incidents[0].updates.length, newer.incidents[0].updates.length);
   assert.throws(() => applyOwnerUpdate(published, { incidentId: id, stage: 'identified', message: 'Changed' }, context), /immutable/);
 });
 test('legacy normalization preserves facts without inventing detailed observations or a published write-up', () => {

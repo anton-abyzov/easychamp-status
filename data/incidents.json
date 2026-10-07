@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-07T21:07:40.805Z",
+      "updatedAt": "2026-10-07T21:09:16.105Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -18,6 +18,16 @@
           "at": "2026-10-07T19:31:47.528Z",
           "message": "The monitor confirmed a service issue. Earlier detailed observations are unavailable.",
           "source": "monitor"
+        },
+        {
+          "id": "owner-37687326341",
+          "stage": "investigating",
+          "at": "2026-10-07T21:09:16.105Z",
+          "message": "The PES Master scheduled import is reporting a failure. Destination freshness and the cause remain unverified; recovery has not been confirmed.",
+          "source": "owner",
+          "author": {
+            "login": "anton-abyzov"
+          }
         }
       ],
       "issue": {

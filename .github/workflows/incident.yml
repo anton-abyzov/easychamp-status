@@ -10,7 +10,7 @@ on:
         description: Owner update; recovery is confirmed automatically by observations
         required: true
         type: choice
-        options: [identified, monitoring, writeup_published]
+        options: [investigating, identified, monitoring, writeup_published]
       message:
         description: Reviewed public-safe update, one paragraph (maximum 1200 characters)
         required: true

@@ -49,6 +49,8 @@ test('legacy unresolved incidents seed confirmation even after old unknown count
 test('owner stages are audited, idempotent, and cannot bypass automatic recovery', () => {
   const run = harness(); run.step('degraded', 0); const id = run.step('degraded', 5).incident.id;
   const context = { login: 'owner', at: at(7), updateId: 'owner-123' };
+  const investigating = applyOwnerUpdate(run.payload, { incidentId: id, stage: 'investigating', message: 'The failed import remains under investigation; recovery is unconfirmed.' }, { ...context, updateId: 'owner-investigating' });
+  assert.equal(investigating.incidents[0].stage, 'investigating'); assert.equal(investigating.incidents[0].updates.at(-1).source, 'owner');
   const identified = applyOwnerUpdate(run.payload, { incidentId: id, stage: 'identified', message: 'The owner identified a cause and is reviewing the repair.' }, context);
   assert.equal(identified.incidents[0].stage, 'identified'); assert.deepEqual(identified.incidents[0].updates.at(-1).author, { login: 'owner' });
   assert.equal(applyOwnerUpdate(identified, { incidentId: id, stage: 'identified', message: 'The owner identified a cause and is reviewing the repair.' }, { ...context, at: at(8) }).incidents[0].updates.length, 2);
@@ -87,4 +89,13 @@ test('public owner prose rejects common provider credentials, private keys and c
 test('public write-up URLs reject credentials, private address forms and credential query strings', () => {
   for (const value of ['http://example.com/report', 'https://user:pass@example.com/report', 'https://localhost/report', 'https://10.0.0.1/report', 'https://[::1]/report', 'https://app.internal/report', 'https://example.com/report?token=private', 'https://example.com/report#token=private', 'https://example.com/report#%74oken=private', 'https://example.com/' + 'NRII-' + 'a'.repeat(32), 'https://example.com:8443/report']) assert.equal(safePublicUrl(value), null, value);
   assert.equal(safePublicUrl('https://github.com/org/repo/blob/main/docs/report.md'), 'https://github.com/org/repo/blob/main/docs/report.md');
+});
+
+test('confirmed outage severity stays latched through lesser failures until two fresh passing checks', () => {
+  const run = harness(); run.step('major_outage', 0); run.step('major_outage', 5);
+  assert.equal(run.step('degraded', 10).counter.confirmedStatus, 'major_outage');
+  assert.equal(run.step('partial_outage', 15).counter.confirmedStatus, 'major_outage');
+  assert.equal(run.step('unknown', 20).counter.confirmedStatus, 'major_outage');
+  assert.equal(run.step('operational', 25).counter.confirmedStatus, 'major_outage');
+  assert.equal(run.step('operational', 30).counter.confirmedStatus, null); assert.ok(run.payload.incidents[0].resolvedAt);
 });

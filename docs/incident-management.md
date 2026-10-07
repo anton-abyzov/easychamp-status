@@ -1,6 +1,6 @@
 # Incident management
 
-The component collector is the single incident authority. Two fresh complete component observations confirm a failure. Two fresh complete successful observations confirm recovery. Every required probe must advance; cached rendering, replayed destination samples, missing evidence, maintenance and `unknown` do not resolve an incident. An intervening unknown or maintenance observation breaks the recovery streak. Confirmation counters retain the open incident severity through unknown evidence and the first recovery observation, so aggregate New Relic recovery notifications cannot precede confirmed public recovery.
+The component collector is the single incident authority. Two fresh complete component observations confirm a failure. Two fresh complete successful observations confirm recovery. Every required probe must advance; cached rendering, replayed destination samples, missing evidence, maintenance and `unknown` do not resolve an incident. An intervening unknown or maintenance observation breaks the recovery streak. Confirmation counters retain the highest confirmed incident severity through lower-severity failures, unknown evidence and the first recovery observation, so aggregate New Relic recovery notifications cannot precede confirmed public recovery.
 
 Upptime's pinned `update` and `response-time` commands also create issues on raw HTTP transitions; neither supports an issue-disable switch. The workflow therefore preserves endpoint history directly from the same collected HTTP samples. It makes no additional HTTP calls. The historical `history/*.yml` format remains readable, with unavailable evidence explicitly `unknown`. These individual endpoint records are diagnostic observations, not separate customer incident declarations. Existing old Upptime issues require an owner reconciliation; the new writer never edits unrelated issues.
 
@@ -11,7 +11,7 @@ Upptime's pinned `update` and `response-time` commands also create issues on raw
 - `stage`: `investigating`, `identified`, `monitoring`, `resolved` or `writeup_published`.
 - `updates`: chronological `{id, stage, at, message, source}` entries. `source` is `monitor` or `owner`; owner entries include `{author: {login}}`. Monitor entries may contain public-safe `{evidence: {status, reasonCode, observedAt}}`. Repeated stable failures update `updatedAt` without flooding the timeline.
 - `deadlineAt`: the public scheduled-update deadline observed when an import incident opened, if supplied by the existing freshness projection. It does not establish a root cause.
-- `postmortem`: `{state: 'draft' | 'published', generatedAt, summary, url?, publishedAt?}`. A published write-up requires a resolved incident, a safe HTTPS URL and an audited owner action.
+- `postmortem`: `{state: 'draft' | 'published', generatedAt, summary, url?, publishedAt?}`. A published write-up requires a resolved incident, a safe HTTPS URL, a publication timestamp at or after resolution, and an audited owner action.
 - `issue`: `{number, url}` persisted only after GitHub accepts the canonical issue mutation.
 
 `public/incident-model.mjs` exports `normalizeIncident`, `normalizeIncidents`, `INCIDENT_STAGES`, `STAGE_LABELS` and `safePublicUrl`. Legacy incidents display a synthetic opening and, when present, resolution entry that explicitly says earlier detailed observations are unavailable. Legacy fields are not evidence of a published postmortem. Invalid documents and duplicate open incident records stop durable writes instead of silently discarding incidents. All open incidents remain retained; the newest 300 resolved incidents remain in the live projection, and Git history preserves older records.
@@ -30,9 +30,10 @@ The workflow uses the existing `GITHUB_TOKEN` with `contents: write` and `issues
 
 Open **Actions → Manage incident → Run workflow**, select `main`, and enter the existing incident ID and one of:
 
-1. `identified`: a reviewed public update describing what the owner has established.
-2. `monitoring`: a reviewed public update about the owner's observation period. This does not close the incident or clear confirmed alert counts.
-3. `writeup_published`: after automatic resolution, a reviewed public summary and the public HTTPS URL of the completed write-up.
+1. `investigating`: a reviewed public update while cause or recovery remains unconfirmed.
+2. `identified`: a reviewed public update describing what the owner has established.
+3. `monitoring`: a reviewed public update about the owner's observation period. This does not close the incident or clear confirmed alert counts.
+4. `writeup_published`: after automatic resolution, a reviewed public summary and the public HTTPS URL of the completed write-up.
 
 The workflow requires `workflow_dispatch` on the repository default branch, a matching human actor, and current repository `write`, `maintain` or `admin` collaborator permission. It records the GitHub login and workflow-run update ID, rejects old timestamps and deduplicates reruns. It does not accept a manual `resolved` stage. Owner updates and monitoring share the `independent-status` concurrency group, with no running-run cancellation. Both check out current `main` after obtaining the concurrency slot; pushes reject any intervening remote change instead of force-pushing. The owner workflow requests a fresh collection and Pages publication after committing its update.
 

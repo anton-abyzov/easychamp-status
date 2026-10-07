@@ -21,5 +21,8 @@ export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   if (!isNew) return { isNew: false, counter: component.status === 'unknown' ? { ...previous, bad: 0, good: 0, confirmedStatus: confirmed } : previous };
   const bad = FAILURE_STATUSES.includes(component.status) ? (previous.bad || 0) + 1 : 0;
   const good = component.status === 'operational' ? (previous.good || 0) + 1 : 0;
-  return { isNew: true, counter: { evidence, bad, good, confirmedStatus: bad >= 2 ? component.status : good >= 2 ? null : confirmed } };
+  // Keep the highest confirmed severity until actual recovery. A lesser failure
+  // must not close an outage alert while its incident is still unresolved.
+  const nextConfirmed = bad >= 2 ? rollup([{ status: confirmed || component.status }, { status: component.status }]) : good >= 2 ? null : confirmed;
+  return { isNew: true, counter: { evidence, bad, good, confirmedStatus: nextConfirmed } };
 }

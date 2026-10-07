@@ -56,6 +56,7 @@ function render() {
   const activeElement = document.activeElement;
   const focusedGroup = activeElement?.closest('.group-details')?.dataset.group;
   const focusedHref = activeElement?.getAttribute('href');
+  const focusedIncidentHref = activeElement?.closest('.incident-list') ? focusedHref : null;
   groups.replaceChildren(); groups.setAttribute('aria-busy', 'false');
   for (const group of currentView.groups) {
     const card = el('div', 'group'), details = el('details', 'group-details'); details.dataset.group = group.id; details.open = open.has(group.id);
@@ -82,14 +83,16 @@ function render() {
   $('#active-incidents').hidden = !active.length; $('#active-count').textContent = active.length === 1 ? '1 ongoing' : `${active.length} ongoing`;
   $('#active-list').replaceChildren(...active.map(incidentCard));
   $('#incident-history').replaceChildren(...(past.length ? past.map(incidentCard) : [el('p', 'empty', 'No resolved incidents in the collected history.')]));
+  if (focusedIncidentHref) [...document.querySelectorAll('.incident-list a')].find(a => a.getAttribute('href') === focusedIncidentHref)?.focus({ preventScroll: true });
   $('#legend').replaceChildren(...Object.keys(LABELS).map(badge));
   // Re-evaluate open details too: a passing check must expire while it is being read.
   const dialog = $('#detail-dialog'), scroll = dialog.scrollTop;
   const focusId = dialog.contains(document.activeElement) ? document.activeElement.id : '';
   const focusedDay = dialog.contains(document.activeElement) ? document.activeElement.getAttribute('aria-label') : '';
+  const focusedDetailHref = dialog.contains(document.activeElement) ? document.activeElement.getAttribute('href') : '';
   if (dialog.open) renderedRoute = '';
   showRoute();
-  if (dialog.open) { dialog.scrollTop = scroll; if (focusId) document.getElementById(focusId)?.focus({ preventScroll: true }); else if (focusedDay) [...dialog.querySelectorAll('[aria-label]')].find(n => n.getAttribute('aria-label') === focusedDay)?.focus({ preventScroll: true }); }
+  if (dialog.open) { dialog.scrollTop = scroll; if (focusId) document.getElementById(focusId)?.focus({ preventScroll: true }); else if (focusedDay) [...dialog.querySelectorAll('[aria-label]')].find(n => n.getAttribute('aria-label') === focusedDay)?.focus({ preventScroll: true }); else if (focusedDetailHref) [...dialog.querySelectorAll('a[href]')].find(n => n.getAttribute('href') === focusedDetailHref)?.focus({ preventScroll: true }); }
 }
 function section(title) { const node = el('section', 'detail-section'); node.append(el('h3', '', title)); return node; }
 function addHistory(parent, ids, kind, id, selectedDay) {
@@ -154,11 +157,11 @@ function showRoute() {
   dialog.scrollTop = 0;
 }
 function closeDetail() {
-  // Click-opened routes have a same-page history entry; direct links close in place.
-  if (window.history.state?.statusDetail) window.history.go(-window.history.state.statusDetail);
-  else { window.history.replaceState(window.history.state, '', `${location.pathname}${location.search}${previousHash}`); showRoute(); }
+  // Close dismisses the entire detail layer. Browser Back remains available for
+  // navigating between detail entries, including links opened directly.
+  window.history.replaceState(null, '', `${location.pathname}${location.search}${previousHash}`); showRoute();
 }
-document.addEventListener('click', event => { const a = event.target.closest('a[href^="#"]'); if (!a || !/^#(component|group|incident)\//.test(a.getAttribute('href')) || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); if (!$('#detail-dialog').open) previousHash = location.hash; window.history.pushState({ statusDetail: (window.history.state?.statusDetail || 0) + 1 }, '', a.getAttribute('href')); renderedRoute = ''; showRoute(); });
+document.addEventListener('click', event => { const a = event.target.closest('a[href^="#"]'); if (!a || !/^#(component|group|incident)\//.test(a.getAttribute('href')) || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); if (!$('#detail-dialog').open) previousHash = location.hash; window.history.pushState(null, '', a.getAttribute('href')); renderedRoute = ''; showRoute(); });
 document.querySelector('a[href="#method"]').addEventListener('click', () => { $('#method').open = true; });
 $('#close-detail').addEventListener('click', closeDetail);
 $('#detail-dialog').addEventListener('cancel', event => { event.preventDefault(); closeDetail(); });

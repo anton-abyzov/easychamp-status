@@ -65,7 +65,7 @@ export function applyOwnerUpdate(payload, input, context) {
   const incidents = incidentDocument(payload).incidents;
   const incident = incidents.find(row => row.id === input.incidentId);
   if (!incident) throw new Error('incident_not_found');
-  if (!['identified', 'monitoring', 'writeup_published'].includes(input.stage) || !safeText(input.message)) throw new Error('invalid_owner_update');
+  if (!['investigating', 'identified', 'monitoring', 'writeup_published'].includes(input.stage) || !safeText(input.message)) throw new Error('invalid_owner_update');
   if (!/^[a-zA-Z0-9][a-zA-Z0-9-]{0,38}$/.test(context.login || '') || time(context.at) === null || time(context.at) < time(incident.updatedAt)) throw new Error('invalid_owner_context');
   if (incident.resolvedAt && input.stage !== 'writeup_published') throw new Error('resolved_incident_immutable');
   const url = input.stage === 'writeup_published' ? safePublicUrl(input.url) : null;

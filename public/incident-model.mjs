@@ -5,12 +5,13 @@ export const STAGE_LABELS = { investigating: 'Investigating', identified: 'Ident
 export const incidentId = value => typeof value === 'string' && /^[a-z0-9][a-z0-9-]{1,159}$/.test(value);
 export const safeText = (value, max = 1200) => typeof value === 'string' && value.trim().length > 0 && value.length <= max && !/[\u0000-\u001f\u007f<>]/.test(value) && !/(?:gh[pousr]_[\w]{20,}|github_pat_[\w]{20,}|SG\.[\w-]{20,}|NR(?:AK|AL|II)-[\w-]{16,}|AKIA[A-Z0-9]{16}|AIza[\w-]{30,}|ya29\.[\w-]{20,}|BEGIN (?:[A-Z ]+ )?PRIVATE KEY|BEGIN CERTIFICATE|Bearer\s+\S+|(?:password|api[_-]?key|token|secret)\s*[=:]\s*\S+|svc\.cluster\.local|[a-z][a-z0-9+.-]*:\/\/[^\s/]*@)/i.test(value);
 export function safePublicUrl(value) {
-  if (typeof value !== 'string' || value.length > 2000) return null;
+  if (!safeText(value, 2000)) return null;
   try {
     const url = new URL(value);
     if (url.protocol !== 'https:' || url.username || url.password || (url.port && url.port !== '443')) return null;
     if (!url.hostname.includes('.') || /(?:^|\.)(?:localhost|internal|local|test|invalid)$/.test(url.hostname) || /^[\d.]+$/.test(url.hostname) || url.hostname.includes(':')) return null;
     if ([...url.searchParams.keys()].some(key => /token|secret|password|key|auth/i.test(key))) return null;
+    if ([...new URLSearchParams(url.hash.slice(1)).keys()].some(key => /token|secret|password|key|auth/i.test(key))) return null;
     return url.href;
   } catch { return null; }
 }

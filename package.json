@@ -7,7 +7,10 @@
     "test": "node --test test/*.test.mjs",
     "check": "node scripts/validate.mjs",
     "monitor": "node scripts/collect.mjs",
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "check:ui": "node scripts/ui-check.mjs"
   },
-  "devDependencies": { "playwright": "1.63.0" }
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
 }

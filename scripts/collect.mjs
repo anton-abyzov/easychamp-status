@@ -4,6 +4,7 @@ import { viewState, time, REASONS, STATUSES } from '../public/model.mjs';
 import { safeFetch, monitorHeaders } from './auth.mjs';
 import { publishHeartbeat } from './heartbeat.mjs';
 import { recordObservation, evidenceIdentity } from './observations.mjs';
+import { advanceIncidents, seedConfirmedIncidents, incidentDocument } from './incidents.mjs';
 import { blockedRequestEvidence, initialRenderBlocked, blockedRequestCounts } from './render-coverage.mjs';
 
 const registry = JSON.parse(await readFile('config/components.json', 'utf8'));
@@ -110,27 +111,27 @@ state.generatedAt = new Date().toISOString();
 const view = viewState(registry, state);
 const oldView = viewState(registry, previous, time(previous.generatedAt) || Date.now());
 const history = await load('data/history.json', { schemaVersion: 1, days: {} });
-const incidents = await load('data/incidents.json', { schemaVersion: 1, incidents: [] });
+let incidentPayload;
+try { incidentPayload = JSON.parse(await readFile('data/incidents.json', 'utf8')); }
+catch (error) { if (error.code !== 'ENOENT') throw new Error('invalid_incident_document'); incidentPayload = { schemaVersion: 1, incidents: [] }; }
+const incidents = incidentDocument(incidentPayload);
+seedConfirmedIncidents(state.counters, incidents);
 const day = state.generatedAt.slice(0, 10);
 history.days[day] ||= {};
 for (const component of view.components) {
-  const bad = ['degraded', 'partial_outage', 'major_outage'].includes(component.status);
   const before = state.counters[component.id] || { bad: 0, good: 0 };
   if (!before.evidence && previous.generatedAt) before.evidence = evidenceIdentity(oldView.components.find(c => c.id === component.id));
   const observation = recordObservation(component, before);
   state.counters[component.id] = observation.counter;
+  advanceIncidents(incidents, component, observation, state.generatedAt);
   if (!observation.isNew) continue;
   const counts = history.days[day][component.id] ||= {};
   counts[component.status] = (counts[component.status] || 0) + 1;
-  const open = incidents.incidents.find(i => i.componentId === component.id && !i.resolvedAt);
-  if (bad && state.counters[component.id].bad >= 2) {
-    if (!open) incidents.incidents.unshift({ id: `${component.id}-${Date.now()}`, componentId: component.id, title: `${component.name}: ${component.status === 'degraded' ? 'degraded performance' : 'availability issue'}`, status: component.status, reasonCode: component.reasonCode, openedAt: state.generatedAt, updatedAt: state.generatedAt, resolvedAt: null });
-    else { open.status = component.status; open.reasonCode = component.reasonCode; open.updatedAt = state.generatedAt; }
-  } else if (open && state.counters[component.id].good >= 2) { open.updatedAt = state.generatedAt; open.resolvedAt = state.generatedAt; }
 }
 const cutoff = Date.now() - 90 * 86400000;
 for (const date of Object.keys(history.days)) if (Date.parse(`${date}T00:00:00Z`) < cutoff) delete history.days[date];
-incidents.incidents = incidents.incidents.filter(i => !i.resolvedAt || time(i.resolvedAt) >= cutoff).slice(0, 300);
+// Never evict an unresolved incident because newer incidents consumed a cap.
+incidents.incidents = [...incidents.incidents.filter(i => !i.resolvedAt), ...incidents.incidents.filter(i => i.resolvedAt).slice(0, 300)];
 await mkdir('data', { recursive: true });
 for (const [name, payload] of [['status', state], ['history', history], ['incidents', incidents]]) await writeFile(`data/${name}.json`, JSON.stringify(payload, null, 2) + '\n');
 if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `observed_at=${state.generatedAt}\n`);

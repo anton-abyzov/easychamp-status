@@ -30,6 +30,7 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: true
+          ref: main
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
@@ -44,13 +45,6 @@ jobs:
         run: node scripts/upptime-config.mjs
         env:
           STATUS_MONITOR_TOKEN: ${{ secrets.STATUS_MONITOR_TOKEN }}
-      - name: Persist Upptime endpoint history and issues
-        uses: upptime/uptime-monitor@8be193bbcb957a3a917d2bb16a0c96959778a889 # v1.44.1
-        with:
-          command: update
-        env:
-          GH_PAT: ${{ github.token }}
-          SECRETS_CONTEXT: '{"STATUS_MONITOR_TOKEN":${{ toJson(secrets.STATUS_MONITOR_TOKEN) }}}'
       - name: Collect functional, destination and optional headless rendering evidence
         id: collect
         run: |
@@ -64,11 +58,22 @@ jobs:
           RUN_BROWSER: ${{ github.event_name != 'schedule' || github.event.schedule == '2,17,32,47 * * * *' }}
           NEW_RELIC_STATUS_LICENSE_KEY: ${{ secrets.NEW_RELIC_STATUS_LICENSE_KEY }}
           NEW_RELIC_STATUS_ACCOUNT_ID: ${{ vars.NEW_RELIC_STATUS_ACCOUNT_ID }}
+      - name: Persist endpoint history from the same collected evidence
+        run: node scripts/incidents-history.mjs
+      - name: Synchronize confirmed incident issues and postmortem drafts
+        id: incidents
+        continue-on-error: true
+        run: node scripts/incidents-sync.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Record retryable incident issue synchronization failure
+        if: steps.incidents.outcome == 'failure'
+        run: echo '::warning::Incident issue synchronization unavailable; public status is preserved and the next run retries by deterministic marker.'
       - name: Keep timestamped history
         run: |
           git config user.name 'EasyChamp Status'
           git config user.email 'status@users.noreply.github.com'
-          git add data .upptimerc.yml
+          git add data history .upptimerc.yml
           if ! git diff --cached --quiet; then
             git commit -m 'Record service status observations'
             git push origin HEAD:main

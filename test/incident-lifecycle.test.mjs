@@ -85,6 +85,6 @@ test('public owner prose rejects common provider credentials, private keys and c
   assert.equal(safeText('The owner is reviewing the failed import.'), true);
 });
 test('public write-up URLs reject credentials, private address forms and credential query strings', () => {
-  for (const value of ['http://example.com/report', 'https://user:pass@example.com/report', 'https://localhost/report', 'https://10.0.0.1/report', 'https://[::1]/report', 'https://app.internal/report', 'https://example.com/report?token=private', 'https://example.com:8443/report']) assert.equal(safePublicUrl(value), null, value);
+  for (const value of ['http://example.com/report', 'https://user:pass@example.com/report', 'https://localhost/report', 'https://10.0.0.1/report', 'https://[::1]/report', 'https://app.internal/report', 'https://example.com/report?token=private', 'https://example.com/report#token=private', 'https://example.com/report#%74oken=private', 'https://example.com/' + 'NRII-' + 'a'.repeat(32), 'https://example.com:8443/report']) assert.equal(safePublicUrl(value), null, value);
   assert.equal(safePublicUrl('https://github.com/org/repo/blob/main/docs/report.md'), 'https://github.com/org/repo/blob/main/docs/report.md');
 });

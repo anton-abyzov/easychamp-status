@@ -59,6 +59,38 @@
       "__dangerous__body_down_if_text_missing": "EasyChamp SIM"
     },
     {
+      "name": "Watch entry page",
+      "slug": "watch-http",
+      "url": "https://watch.easychamp.com/",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 4000,
+      "maxRedirects": 0,
+      "connectTimeout": 5,
+      "requestTimeout": 15,
+      "__dangerous__body_down_if_text_missing": "EasyChamp",
+      "headers": [
+        "x-ec-status-monitor: $STATUS_MONITOR_TOKEN"
+      ]
+    },
+    {
+      "name": "Club websites",
+      "slug": "club-http",
+      "url": "https://dcfc.at.easychamp.com/",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 4000,
+      "maxRedirects": 0,
+      "connectTimeout": 5,
+      "requestTimeout": 15,
+      "__dangerous__body_down_if_text_missing": "Dade County",
+      "headers": [
+        "x-ec-status-monitor: $STATUS_MONITOR_TOKEN"
+      ]
+    },
+    {
       "name": "Snap to League",
       "slug": "snap-http",
       "url": "https://snap.easychamp.com/",
@@ -95,6 +127,22 @@
       "maxRedirects": 3,
       "connectTimeout": 5,
       "requestTimeout": 15
+    },
+    {
+      "name": "Soccer Nationals league site",
+      "slug": "soccer-nationals-http",
+      "url": "https://soccer-nationals.easychamp.com/",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 4000,
+      "maxRedirects": 0,
+      "connectTimeout": 5,
+      "requestTimeout": 15,
+      "__dangerous__body_down_if_text_missing": "fixtures, results &amp; standings",
+      "headers": [
+        "x-ec-status-monitor: $STATUS_MONITOR_TOKEN"
+      ]
     }
   ],
   "status-website": {

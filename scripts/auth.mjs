@@ -1,7 +1,7 @@
 const HOSTS = new Set(['watch.easychamp.com', 'dcfc.at.easychamp.com', 'dcfc.easychamp.com', 'ps23-soccer-league.easychamp.com', 'soccer-nationals.easychamp.com']);
 const PAGES = new Set(['/', '/main', '/schedule', '/competitions']);
 export function allowMonitorHeader(value) {
-  try { const url = new URL(value); return url.protocol === 'https:' && HOSTS.has(url.hostname) && !url.username && !url.password && ((PAGES.has(url.pathname) && !url.search) || /^\/_next\/(static\/|data\/|image(?:\/|$))/.test(url.pathname)); } catch { return false; }
+  try { const url = new URL(value); return url.protocol === 'https:' && HOSTS.has(url.hostname) && !url.port && !url.username && !url.password && ((PAGES.has(url.pathname) && !url.search) || /^\/_next\/(static\/|data\/)/.test(url.pathname) || ['/_next/image', '/_next/img.webp'].includes(url.pathname)); } catch { return false; }
 }
 export function monitorHeaders(url, token, headers = {}) {
   const clean = Object.fromEntries(Object.entries(headers).filter(([key]) => key.toLowerCase() !== 'x-ec-status-monitor'));

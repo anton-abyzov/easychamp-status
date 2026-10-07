@@ -22,6 +22,7 @@ jobs:
     env:
       PWDEBUG: '0'
       PLAYWRIGHT_HTML_OPEN: never
+      STATUS_BROWSER_CHANNEL: chrome
     outputs:
       artifact: ${{ steps.upload.outputs.artifact_id }}
       observed_at: ${{ steps.collect.outputs.observed_at }}
@@ -36,9 +37,9 @@ jobs:
       - run: npm ci
       - name: Validate public code and contracts
         run: npm test && npm run check
-      - name: Install headless browser for rendering pass
+      - name: Verify runner Chrome launches headlessly
         if: github.event_name != 'schedule' || github.event.schedule == '2,17,32,47 * * * *'
-        run: npx playwright install --with-deps chromium
+        run: node scripts/browser-smoke.mjs
       - name: Generate strict Upptime configuration
         run: node scripts/upptime-config.mjs
         env:

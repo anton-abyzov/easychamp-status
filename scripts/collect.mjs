@@ -48,7 +48,7 @@ if (browserRun) {
   const { chromium } = await import('playwright');
   let browser;
   try {
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, ...(process.env.STATUS_BROWSER_CHANNEL === 'chrome' ? { channel: 'chrome' } : {}) });
     await batch(registry.probes.filter(p => p.type === 'browser'), async probe => {
       const context = await browser.newContext({ viewport: { width: 1365, height: 900 } });
       if (probe.monitorAuth) await context.route('**/*', async route => { await route.continue({ headers: monitorHeaders(route.request().url(), process.env.STATUS_MONITOR_TOKEN, route.request().headers()) }); });

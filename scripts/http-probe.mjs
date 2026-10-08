@@ -4,7 +4,8 @@ import { safeFetch } from './auth.mjs';
 const HEALTH_REASONS = new Set(['ok', 'assistant_disabled', 'assistant_storage_unavailable',
   'assistant_health_unverified', 'assistant_budget_unverified', 'assistant_budget_exhausted',
   'provider_health_unsupported', 'provider_not_configured', 'provider_authentication_failed',
-  'provider_unavailable', 'provider_funding_exhausted', 'provider_capacity_low', 'provider_health_unverified']);
+  'provider_unavailable', 'provider_funding_exhausted', 'provider_capacity_low', 'provider_health_unverified',
+  'provider_inference_key_required', 'domain_unavailable', 'domain_health_unverified']);
 
 export async function boundedBody(response, max = 2_000_000) {
   const reader = response.body?.getReader();
@@ -27,10 +28,11 @@ export async function boundedBody(response, max = 2_000_000) {
 export function assistantHealthEvidence(data, now = Date.now()) {
   const invalid = { status: 'unknown', reasonCode: 'invalid_evidence' };
   if (!data || typeof data !== 'object' || Array.isArray(data)
-      || !['operational', 'degraded', 'unavailable'].includes(data.status)
+      || !['operational', 'degraded', 'unavailable', 'unknown'].includes(data.status)
       || typeof data.ready !== 'boolean'
-      || !['operational', 'unavailable'].includes(data.storage)
-      || !['operational', 'degraded', 'unavailable'].includes(data.provider)
+      || !['operational', 'unavailable', 'unknown'].includes(data.storage)
+      || !['operational', 'unavailable', 'unknown'].includes(data.domain)
+      || !['operational', 'degraded', 'unavailable', 'unknown'].includes(data.provider)
       || !HEALTH_REASONS.has(data.reasonCode)
       || typeof data.checkedAt !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|\+00:00)$/.test(data.checkedAt)
       || !Number.isInteger(data.cacheSeconds) || data.cacheSeconds < 1 || data.cacheSeconds > 60) return invalid;
@@ -39,15 +41,23 @@ export function assistantHealthEvidence(data, now = Date.now()) {
   if (now - checked > (data.cacheSeconds + 60) * 1000) return { status: 'unknown', reasonCode: 'stale', observedAt: new Date(checked).toISOString() };
   const observedAt = new Date(checked).toISOString();
   if (data.status === 'operational') {
-    if (!data.ready || data.storage !== 'operational' || data.provider !== 'operational' || data.reasonCode !== 'ok') return invalid;
+    if (!data.ready || data.storage !== 'operational' || data.domain !== 'operational'
+        || data.provider !== 'operational' || data.reasonCode !== 'ok') return invalid;
     return { status: 'operational', reasonCode: 'ok', observedAt };
   }
   if (data.ready) return invalid;
   if (data.status === 'degraded') {
-    if (data.storage !== 'operational' || data.provider !== 'degraded' || data.reasonCode !== 'provider_capacity_low') return invalid;
+    if (data.storage !== 'operational' || data.domain !== 'operational'
+        || data.provider !== 'degraded' || data.reasonCode !== 'provider_capacity_low') return invalid;
     return { status: 'degraded', reasonCode: data.reasonCode, observedAt };
   }
-  if ((data.storage !== 'unavailable' && data.provider !== 'unavailable') || ['ok', 'provider_capacity_low'].includes(data.reasonCode)) return invalid;
+  const dependencies = [data.storage, data.domain, data.provider];
+  if (data.reasonCode === 'ok') return invalid;
+  if (data.status === 'unknown') {
+    if (!dependencies.includes('unknown') || dependencies.includes('unavailable')) return invalid;
+    return { status: 'unknown', reasonCode: data.reasonCode, observedAt };
+  }
+  if (!dependencies.includes('unavailable')) return invalid;
   return { status: 'major_outage', reasonCode: data.reasonCode, observedAt };
 }
 

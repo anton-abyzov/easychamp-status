@@ -6,13 +6,13 @@ import { componentState } from '../public/model.mjs';
 
 const now = Date.parse('2026-10-08T04:00:00Z');
 const at = new Date(now).toISOString();
-const good = { status: 'operational', ready: true, storage: 'operational', provider: 'operational', reasonCode: 'ok', checkedAt: at, cacheSeconds: 60 };
+const good = { status: 'operational', ready: true, storage: 'operational', domain: 'operational', provider: 'operational', reasonCode: 'ok', checkedAt: at, cacheSeconds: 60 };
 const probe = { id: 'assistant-health', type: 'http', url: 'https://easychamp.com/ec-chat-api/assistant/v1/health', semanticHealth: true, maxResponseMs: 5000, expiresSeconds: 900 };
 const options = body => ({ now: () => now, fetcher: async () => Response.json(body), token: 'never-send-this-secret' });
 
 test('assistant readiness requires semantic values, not HTTP 200 or field types', async () => {
   assert.equal((await httpProbe(probe, options(good))).status, 'operational');
-  for (const change of [{ ready: false }, { storage: 'unavailable' }, { provider: 'unavailable' }, { reasonCode: 'provider_funding_exhausted' }]) {
+  for (const change of [{ ready: false }, { storage: 'unavailable' }, { provider: 'unavailable' }, { domain: 'unavailable' }, { domain: 'unknown' }, { domain: undefined }, { reasonCode: 'provider_funding_exhausted' }]) {
     const sample = await httpProbe(probe, options({ ...good, ...change }));
     assert.equal(sample.status, 'unknown');
     assert.equal(sample.reasonCode, 'invalid_evidence');
@@ -30,6 +30,9 @@ test('provider low capacity degrades and exhausted funding reports outage despit
   const storage = await httpProbe(probe, options({ ...good, status: 'unavailable', ready: false, storage: 'unavailable', provider: 'unavailable', reasonCode: 'assistant_storage_unavailable' }));
   assert.equal(storage.status, 'major_outage');
   assert.equal(storage.reasonCode, 'assistant_storage_unavailable');
+  const domain = await httpProbe(probe, options({ ...good, status: 'unavailable', ready: false, domain: 'unavailable', reasonCode: 'domain_unavailable' }));
+  assert.equal(domain.status, 'major_outage');
+  assert.equal(domain.reasonCode, 'domain_unavailable');
 });
 
 test('contradictory degradation and failure statuses are not accepted', () => {
@@ -37,9 +40,46 @@ test('contradictory degradation and failure statuses are not accepted', () => {
     { status: 'degraded', ready: true, provider: 'degraded', reasonCode: 'provider_capacity_low' },
     { status: 'degraded', ready: false, provider: 'operational', reasonCode: 'provider_capacity_low' },
     { status: 'degraded', ready: false, provider: 'degraded', reasonCode: 'ok' },
+    { status: 'degraded', ready: false, domain: 'unknown', provider: 'degraded', reasonCode: 'provider_capacity_low' },
     { status: 'unavailable', ready: false, reasonCode: 'provider_unavailable' },
     { status: 'unavailable', ready: false, provider: 'unavailable', reasonCode: 'ok' },
+    { status: 'unknown', ready: true, provider: 'unknown', reasonCode: 'provider_health_unverified' },
+    { status: 'unknown', ready: false, reasonCode: 'provider_health_unverified' },
+    { status: 'unknown', ready: false, provider: 'unknown', domain: 'unavailable', reasonCode: 'domain_unavailable' },
+    { status: 'unknown', ready: false, provider: 'unknown', reasonCode: 'ok' },
   ]) assert.equal(assistantHealthEvidence({ ...good, ...change }, now).status, 'unknown');
+});
+
+test('missing balance monitor access is Unknown rather than an inference outage', async () => {
+  const sample = await httpProbe(probe, options({ ...good, status: 'unknown', ready: false, provider: 'unknown', reasonCode: 'provider_health_unverified' }));
+  assert.equal(sample.status, 'unknown');
+  assert.equal(sample.reasonCode, 'provider_health_unverified');
+  const domain = await httpProbe(probe, options({ ...good, status: 'unknown', ready: false, domain: 'unknown', reasonCode: 'domain_health_unverified' }));
+  assert.equal(domain.status, 'unknown');
+  assert.equal(domain.reasonCode, 'domain_health_unverified');
+  const timeout = await httpProbe(probe, options({ ...good, status: 'unknown', ready: false, storage: 'unknown', domain: 'unknown', provider: 'unknown', reasonCode: 'assistant_health_unverified' }));
+  assert.equal(timeout.status, 'unknown');
+  const wrongKey = await httpProbe(probe, options({ ...good, status: 'unavailable', ready: false, provider: 'unavailable', reasonCode: 'provider_inference_key_required' }));
+  assert.equal(wrongKey.status, 'major_outage');
+  assert.equal(wrongKey.reasonCode, 'provider_inference_key_required');
+});
+
+test('dependency states exhaustively enforce healthy, degraded, unavailable and Unknown consistency', () => {
+  for (const storage of ['operational', 'unknown', 'unavailable'])
+    for (const domain of ['operational', 'unknown', 'unavailable'])
+      for (const provider of ['operational', 'degraded', 'unknown', 'unavailable']) {
+        const dependencies = [storage, domain, provider];
+        const common = { ...good, storage, domain, provider };
+        const unavailable = dependencies.includes('unavailable');
+        const unknown = dependencies.includes('unknown');
+        const healthy = dependencies.every(value => value === 'operational');
+        const degraded = storage === 'operational' && domain === 'operational' && provider === 'degraded';
+        assert.equal(assistantHealthEvidence(common, now).status === 'operational', healthy);
+        assert.equal(assistantHealthEvidence({ ...common, status: 'degraded', ready: false, reasonCode: 'provider_capacity_low' }, now).status === 'degraded', degraded);
+        assert.equal(assistantHealthEvidence({ ...common, status: 'unavailable', ready: false, reasonCode: 'provider_unavailable' }, now).status === 'major_outage', unavailable);
+        const uncertain = assistantHealthEvidence({ ...common, status: 'unknown', ready: false, reasonCode: 'provider_health_unverified' }, now);
+        assert.equal(uncertain.reasonCode === 'provider_health_unverified', unknown && !unavailable);
+      }
 });
 
 test('stale, future, invalid and malformed assistant evidence fails closed', async () => {

@@ -1063,7 +1063,7 @@ dialog::backdrop {
   margin-bottom:1.75rem
 }
 .measurement-grid {
-  grid-template-columns:repeat(5,minmax(0,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,9.5rem),1fr));
   gap:.6rem;
   margin:0
 }
@@ -1088,7 +1088,7 @@ dialog::backdrop {
 }
 @media(max-width:800px) {
   .measurement-grid {
-    grid-template-columns:repeat(2,minmax(0,1fr))
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,9.5rem),1fr))
   }
   .measurement-card:last-child:nth-child(odd) {
     grid-column:1/-1
@@ -1238,3 +1238,19 @@ dialog::backdrop {
     padding-right:16px
   }
 }
+.signal-summary { font-size:var(--text-caption); margin-top:.5rem; overflow-wrap:anywhere; }
+.measurement-evidence { margin-top:1.25rem; border-top:1px solid var(--line); }
+.measurement-evidence>summary { min-height:2.75rem; padding:.75rem 0; font-weight:500; }
+.check-list li>div { min-width:0; }
+
+/* Intrinsic wrapping also adapts to enlarged text, independent of viewport breakpoints. */
+.overview { display:flex; flex-wrap:wrap; }
+.overview-copy { flex:1 1 24rem; }
+.platform-preview { flex:0 1 14rem; max-width:100%; }
+.measurement-card .badge { max-width:100%; overflow-wrap:anywhere; }
+@media(max-width:600px) {
+  .measurement-card { display:flex; flex-wrap:wrap; }
+  .measurement-card h3 { flex:1 1 8rem; }
+  .measurement-card p { flex-basis:100%; }
+}
+.dialog-toolbar .eyebrow { min-width:0; overflow-wrap:anywhere; flex:1; }

@@ -2,6 +2,66 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "feed-external-sync-1791424102502",
+      "componentId": "feed-external-sync",
+      "title": "External league sync: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-08T01:48:22.502Z",
+      "updatedAt": "2026-10-08T01:48:22.502Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-10-07T06:00:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "feed-external-sync-1791424102502-monitor-2026-10-08T01:48:22.502Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-08T01:48:22.502Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-10-08T01:40:06.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 6,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/6"
+      }
+    },
+    {
+      "id": "feed-results-1791424102502",
+      "componentId": "feed-results",
+      "title": "Match results & schedules: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-08T01:48:22.502Z",
+      "updatedAt": "2026-10-08T01:48:22.502Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-10-07T06:00:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "feed-results-1791424102502-monitor-2026-10-08T01:48:22.502Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-08T01:48:22.502Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-10-08T01:40:06.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 7,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/7"
+      }
+    },
+    {
       "id": "scraper-pesmaster-1791401507529",
       "componentId": "scraper-pesmaster",
       "title": "PES Master player data: degraded performance",

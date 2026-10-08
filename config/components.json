@@ -41,6 +41,14 @@
   ],
   "probes": [
     {
+      "id": "assistant-health",
+      "type": "http",
+      "url": "https://easychamp.com/ec-chat-api/assistant/v1/health",
+      "semanticHealth": true,
+      "maxResponseMs": 5000,
+      "expiresSeconds": 900
+    },
+    {
       "id": "home-http",
       "type": "http",
       "url": "https://easychamp.com/",
@@ -309,8 +317,8 @@
       "id": "assistant",
       "group": "interactive",
       "name": "AI assistant",
-      "probes": [],
-      "coverage": "Assistant response journey awaiting a dedicated monitor; user-to-user messaging is not covered"
+      "probes": ["assistant-health"],
+      "coverage": "Database, core data service and platform-funded provider account readiness; authenticated questions and model generation are not continuously checked. User-to-user messaging is not covered."
     },
     {
       "id": "media-playback",

@@ -1,0 +1,1395 @@
+/* ============================================================================
+   MATCHDAY — the EasyChamp design system token layer (light + dark, 0145)
+   ============================================================================
+
+   "Broadcast scorebug meets matchday programme" — data-dense, sharp-edged,
+   professional. Distinctly NOT FotMob-green and NOT generic-AI dark.
+   Supersedes the dark-only "Desk" system (Desk tokens seed Matchday-dark).
+
+   THEMING MECHANISM (FotMob attribute-selector pattern, zero JavaScript):
+   - `:root, [data-theme="light"]`  → the full LIGHT palette (default).
+   - `:root[data-theme="dark"], [data-theme="dark"]` → DARK overrides.
+   - `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) }`
+     → OS-preference fallback when no explicit attribute is set.
+   Toggling `data-theme` on <html> re-themes every component. The bare
+   `[data-theme]` selectors additionally allow scoped sub-tree theming
+   (side-by-side light/dark panels in Storybook and docs).
+
+   BRAND: the EasyChamp logo indigo family is canonical (webcore audit —
+   logo.svg: #5D62D3 / #61AAFF / #6B40C8 / #39447C). The webcore orange
+   #FF6B35 is NOT a brand default — it survives only as --accent-tenant.
+   Accents brighten in dark (FotMob's proven pattern): #5D62D3 → #7B82FF.
+
+   PER-PRODUCT ACCENT: --accent-product defaults to brand indigo (coach /
+   core / landing). The sim product pack overrides it to Signal Amber
+   #f2b01e at the app root. No product ever overrides neutrals or semantics.
+   ========================================================================== */
+
+/* ============================================================================
+   LIGHT (default) — #FAFAFA canvas, white cards, 1px #F0F0F0 borders.
+   ========================================================================== */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* ----- Surfaces (light = bordered cards; elevation via 1px hairlines) --- */
+  --color-ground: #fafafa; /* page canvas */
+  --color-surface: #ffffff; /* primary card / panel */
+  --color-surface-2: #f4f6f9; /* raised rows, popovers, scorebug body */
+  --color-surface-fc26: #f2f5fa; /* FC26 cooler stat-grid tint (+2 blue) */
+  --color-scrim: rgba(15, 20, 30, 0.52); /* dialog/sheet backdrop: neutral, never tinted */
+
+  /* ----- Text ----- */
+  --color-ink: #22263b; /* near-navy body ink — never pure #000 */
+  --color-muted: #5a6478; /* labels, captions (AA 4.5:1 on all surfaces) */
+  --color-muted-2: #667084; /* secondary small text, AA on every light surface */
+
+  /* ----- Structure ----- */
+  --color-line: #f0f0f0; /* 1px card border — the light-theme hairline */
+  --color-line-strong: #dfe3ea; /* table rules / dividers needing more weight */
+
+  /* ----- Brand (logo indigo family — canonical per webcore audit) ----- */
+  --color-brand: #595ecc; /* primary — logo indigo, AA on 10% brand tint */
+  --color-brand-cool: #61aaff; /* supporting / info — logo cool blue */
+  --color-brand-deep: #6b40c8; /* depth — logo violet */
+  --color-brand-navy: #39447c; /* logo navy */
+  --color-brand-ink: #373947; /* logo ink */
+  --color-on-brand: #ffffff; /* text/icon ON a brand fill */
+
+  /* ----- Accent slots ----- */
+  --accent-product: var(--color-brand); /* per-product slot: sim pack sets
+                                           #f2b01e; coach/core/landing keep
+                                           brand indigo. Never neutrals. */
+  --accent-tenant: #ff6b35; /* demoted webcore orange — OPTIONAL tenant
+                                           accent only, no default usage */
+  --color-accent-cool: #0284c7; /* broadcast cyan, darkened for light */
+
+  /* ----- Semantic results (webcore/Desk lineage; darkened for AA on white:
+           win #22C55E-family → text-grade green-700, etc.) ----- */
+  --color-win: #15803d; /* win / ledger WIN */
+  --color-draw: #64748b; /* draw / ledger DRAW (desaturated middle) */
+  --color-warning: #b45309; /* attention / recoverable warning, AA on light */
+  --color-loss: #dc2626; /* loss / ledger LOSS */
+  --color-live: #e11d48; /* LIVE dot + clock (not loss, not brand) */
+  --color-data-2: #0f766e; /* xG teal — AA small text on light surfaces */
+
+  /* ----- Honesty planes (0931 Match Night) — product-independent: an Arena
+     or Watch embed of a simulated match stays amber. Sim plane = amber word
+     chip + hatch behind the digits + 3px inline-start rule; Real plane =
+     cyan "REAL" chip + rule (deliberately not the --color-win green of W
+     pips). Never colour alone: the word always ships with the colour.
+     Gated >= 4.5:1 in both themes (tokens-contrast.test.ts):
+       --color-simulated on --color-surface (5.02) and on
+       --color-simulated-surface (4.64 at the 8-bit rendered tint),
+       --color-on-simulated on --color-simulated (5.02),
+       --color-real on --color-surface (5.93) and --color-real-surface (5.44).
+     The simulated tint is 6%, not 8%: an 8% mix renders #f9f1eb, where
+     #b45309 measures 4.498:1, under AA once quantised to 8-bit.
+     The color-mix() derivations are re-declared in both dark blocks so a
+     scoped [data-theme] subtree re-derives them from its own palette. ----- */
+  --color-simulated: #b45309; /* amber-700: sim word chip fill, sim rule, sim ink */
+  --color-on-simulated: #ffffff; /* text on a --color-simulated fill */
+  --color-simulated-surface: color-mix(in srgb, var(--color-simulated) 6%, var(--color-surface));
+  --pattern-simulated-hatch: repeating-linear-gradient(135deg, color-mix(in srgb, var(--color-simulated) 10%, transparent) 0 6px, transparent 6px 12px);
+  --color-real: #0369a1; /* sky-700: REAL chip, real-plane rule */
+  --color-real-surface: color-mix(in srgb, var(--color-real) 6%, var(--color-surface));
+
+  /* ----- Focus (fixed across themes — a11y ring #38bdf8 + offset) ----- */
+  --color-focus: #38bdf8;
+
+  /* ----- Event-type accents (timeline + pitch markers) ----- */
+  --color-ev-goal: #15803d;
+  --color-ev-yellow: #b45309; /* amber-700 — yellow-card text/icon grade */
+  --color-ev-yellow-fill: #f5c33b; /* the card glyph fill itself */
+  --color-ev-red: #dc2626;
+  --color-ev-sub: #0284c7;
+  --color-ev-injury: #64748b;
+  --color-ev-save: #0f766e; /* keeper save / clean sheet — teal text grade */
+
+  /* ----- Team rings on the pitch ----- */
+  --color-home: #3e7cc0;
+  --color-away: #c7515f;
+  --color-third: #8b5cf6; /* third team, servers and jokers: violet reads on grass (pitch green hid them) */
+
+  /* ----- Qualification colors (standings position dots + legend) ----- */
+  --color-qual-promotion: #15803d; /* direct qualification / promotion */
+  --color-qual-playoff: #2563eb; /* playoff / intermediate berth */
+  --color-qual-relegation: #dc2626; /* elimination / relegation */
+
+  /* ----- Pitch (light = real green, FotMob #01935C family) ----- */
+  --pitch-surface: #01935c; /* base grass */
+  --pitch-stripe: #029960; /* alternating mowing stripe */
+  --pitch-line: rgba(255, 255, 255, 0.92); /* pitch markings — real pitches chalk white */
+  --pitch-ink: #ffffff; /* player labels ON the pitch */
+  --pitch-ink-muted: rgba(255, 255, 255, 0.72); /* shirt numbers on pitch */
+  --pitch-halo: rgba(1, 57, 36, 0.55); /* label contrast scrim/halo */
+  --pitch-chip-ink: #0c2e1f; /* text on a light chip over grass */
+  --pitch-gk: #f2b01e; /* goalkeeper disc — high-viz amber, never grey */
+  --pitch-cone: #ff8a1f; /* training cones and markers — the orange of a real cone */
+  --pitch-gk-ink: #1d1602; /* text on the GK disc */
+  --pitch-label-bg: rgba(10, 14, 12, 0.72); /* scrim pill behind on-pitch labels */
+  --pitch-label-ink: #ffffff; /* text on the scrim pill */
+  /* Indoor court (futsal) — warm parquet; same label/halo tokens as grass. */
+  --court-surface: #b97f46; /* base parquet */
+  --court-stripe: #b3783f; /* plank seams */
+  --court-line: rgba(255, 255, 255, 0.95); /* court markings (#f6ead6 sat at 2.9:1) */
+
+  /* ----- Typography (0777: Inter Tight display / Inter body and data;
+           self-hosted via @fontsource-variable by the CONSUMER — never a CDN).
+     Archivo at 800 and IBM Plex Mono read heavy and wide next to the
+     reference sports products (FotMob): one grotesque family now carries
+     every role. Inter Tight is Inter's display cut (tighter default spacing
+     for large sizes); data keeps its column alignment through tabular
+     figures (the body rule at the end of this file), not a monospace face.
+     `--font-mono` keeps its name so every existing consumer follows; it is
+     the DATA face, not a code face. Inter also carries Cyrillic, Greek and
+     Vietnamese, which the Latin-only Archivo / Public Sans pair did not.
+     The "Variable" names are the @fontsource-variable family names; the
+     static names follow for hosts that load the static cut. ----- */
+  --font-display: "Inter Tight Variable", "Inter Tight", "Inter Variable", "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Inter Variable", "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Inter Variable", "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Type scale (Desk lineage). Tabular numerals MANDATORY in standings/scores
+     — apply `font-variant-numeric: tabular-nums` with --font-mono. */
+  --text-kicker: 0.6875rem; /* 11px uppercase 0.14em / 600 */
+  --text-caption: 0.75rem; /* 12px */
+  --text-cell: 0.8125rem; /* 13px tabular */
+  --text-base: 0.875rem; /* 14px / 1.55 */
+  --text-md: 1rem; /* 16px */
+  --text-section: 1.125rem; /* 18px / 600 */
+  --text-team: 1.3125rem; /* 21px / 700 team name */
+  --text-lg: 1.625rem; /* 26px */
+  --text-xl: 2.125rem; /* 34px */
+  --text-2xl: 2.75rem; /* 44px */
+  --text-scoreline: 3.75rem; /* 60px hero scoreline (Plex Mono 600) */
+  --text-scoreline-share: 4.75rem; /* 76px share-card scoreline */
+  /* 0689 — fluid display sizes for page and hero headings. The ceilings are
+     today's top steps (--text-2xl 44px, --text-xl 34px), reached at 1235px
+     and 1245px of viewport, so every width >= 1280 computes exactly the
+     fixed step; below that they shrink linearly to a 28px / 24px phone floor.
+     Viewport units on purpose: a heading keeps one size wherever it sits on
+     the page, while component layout still composes by container width (§4).
+     The ceilings are literals, not var(--text-2xl): a var() here would be
+     resolved once on :root and silently ignore a subtree override. */
+  --text-display-1: clamp(1.75rem, 1.4rem + 1.75vw, 2.75rem); /* 28 → 44px */
+  --text-display-2: clamp(1.5rem, 1.25rem + 1.125vw, 2.125rem); /* 24 → 34px */
+  /* 0775 — the 10px step the kit and console already use ~250 times as a
+     literal (axis ticks, badge counts, pitch chip labels). Below --text-kicker
+     on purpose: never body copy, never a tap target label. */
+  --text-micro: 0.625rem; /* 10px */
+
+  /* 0775 — type roles. Line-height, weight and tracking were comments next to
+     each size ("14px / 1.55", "uppercase 0.14em / 600"); they are tokens now
+     so web and the club app pair size and rhythm from one place. Names avoid
+     Tailwind's own --leading-tight/--tracking-tight/--font-weight-* keys on
+     purpose: this file is unlayered, so a shared name would silently retune
+     every existing `leading-tight` in every consumer. */
+  --leading-display: 1.1; /* hero headings, scorelines */
+  --leading-heading: 1.25; /* section, team, card titles */
+  --leading-data: 1.35; /* table cells, captions, chips */
+  --leading-body: 1.55; /* running text */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 800;
+  --tracking-kicker: 0.06em; /* uppercase kicker labels (0777: Inter caps need far less air than Plex Mono did) */
+  --tracking-heading: -0.01em;
+  --tracking-display: -0.02em;
+
+  /* ----- Radii (TV-hardware restraint — the sharp scorebug IS the brand;
+           deliberately NOT FotMob's soft 16px) ----- */
+  --radius-scorebug: 0px;
+  --radius-chip: 2px;
+  --radius-control: 4px;
+  --radius-card: 8px;
+  --radius-pill: 999px;
+
+  /* ----- Elevation (float + the small hover pop — no glows, no colors) ---- */
+  --shadow-float: 0 8px 24px rgba(23, 26, 45, 0.12);
+  --shadow-pop: 0 2px 8px rgba(23, 26, 45, 0.18);
+
+  /* ----- 0219 FotMob-soft public-surface additions (ADDITIVE — the sharp
+           scorebug radii above are untouched; public-site match/player cards
+           opt in). --radius-card-lg is theme-invariant so it lives only here. */
+  --radius-card-lg: 16px;
+  --shadow-card: 0 1px 3px rgba(23, 26, 45, 0.08), 0 4px 16px rgba(23, 26, 45, 0.06);
+
+  /* ----- 0294 reconciled semantic additions (design-competition report).
+           Ink-inversion is the house "active" treatment: the fill is always
+           `--color-ink` (there is deliberately NO --color-invert alias) and
+           the label ink on it is --color-on-invert.
+     · --color-on-invert  — label ink ON an ink-inversion fill: 14.9:1 light /
+       16.8:1 dark. Consumers: calendar selected day, active filter pills,
+       primary buttons, match-row + entity-card score pills, chip invert.
+     · --color-elevated   — floating-surface body (popover/dropdown/menu), the
+       FotMob --color-popover analogue. Ink on it: 14.9:1 L / 13.4:1 D.
+     · --card-border(-hover) — card edge; in dark it resolves border == bg
+       (borderless card) and the hairline appears on intent only.
+     · --color-on-sig     — MANDATORY partner ink for any --sig fill. Tenant /
+       product packs override --sig and --color-on-sig AS A PAIR (sim amber
+       #f2b01e must pair #0c0f14 — white on amber is 1.91:1, an AA fail).
+     · --radius-button    — FotMob rounded-md; no existing 6px token and
+       re-radiusing --radius-control consumers is out of scope. Theme-invariant
+       (declared here only — the --radius-card-lg precedent). ----- */
+  --color-on-invert: #ffffff;
+  --color-elevated: var(--color-surface);
+  --card-border: var(--color-line);
+  --card-border-hover: var(--color-line-strong);
+  --color-on-sig: var(--color-on-brand);
+  --radius-button: 6px;
+
+  /* ----- 0294 stacking ladder (theme-invariant — stacking is structural,
+           never a palette concern). 40 is the HEADER CEILING: every known host
+           header sits at or below it (kit GlobalHeader 40, arena 30, landing
+           40), so every floating surface above 40 clears host chrome without a
+           4-digit arms race. Ascending, one rung per surface class:
+             float    30  in-page floating affordances that live UNDER headers
+                         (bet-slip launcher, mobile playback bar)
+             header   40  sticky app chrome — the ceiling
+             dropdown 50  menus/listboxes anchored to a trigger
+             popover  60  calendars/tooltips — may overlay an open dropdown
+             modal    70  dialogs + their scrim (one rung: DOM order separates)
+             toast    80  consent banner / transient notices — always on top
+           Local stacking inside a positioned parent (z-[1], z-10) is NOT part
+           of this ladder and stays as-is. ----- */
+  --z-float: 30;
+  --z-header: 40;
+  --z-dropdown: 50;
+  --z-popover: 60;
+  --z-modal: 70;
+  --z-toast: 80;
+
+  /* ----- On-colors for win/draw/loss FILLS (0165 foundation) — label ink
+           with ≥4.5:1 on each fill in this theme (verified: white on
+           #15803d ≈ 5.0, #64748b ≈ 4.8, #dc2626 ≈ 4.8). ----- */
+  --color-on-win: #ffffff;
+  --color-on-draw: #ffffff;
+  --color-on-loss: #ffffff;
+
+  /* ----- Spacing (4px base — editorial-generous) ----- */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-24: 6rem;
+
+  /* ----- 0775 layout breakpoints — the ONE width ladder for every app.
+     Values equal Tailwind v4's default screens (sm md lg xl 2xl), so kit
+     utilities and these tokens never disagree. A custom property cannot sit
+     inside a @media condition: web code reads these for JS (matchMedia,
+     ResizeObserver) and as the documented ladder for literal media queries;
+     the club app reads them as points from the mobile module.
+       phone   < 40rem (640)   one column
+       sm      ≥ 40rem (640)   large phone landscape, iPad mini portrait (744)
+       md      ≥ 48rem (768)   iPad portrait
+       lg      ≥ 64rem (1024)  iPad landscape, small laptop
+       xl      ≥ 80rem (1280)  desktop
+       2xl     ≥ 96rem (1536)  wide desktop
+     Content caps pair with them: reading copy stops at --measure, app
+     content at --content-max. ----- */
+  --bp-sm: 40rem;
+  --bp-md: 48rem;
+  --bp-lg: 64rem;
+  --bp-xl: 80rem;
+  --bp-2xl: 96rem;
+  --measure: 42rem; /* ~70 characters of body copy */
+  --content-max: 80rem;
+
+  /* ----- Match pages (0931 Match Night) — one cap shared by masthead, stage,
+     page grid and Keep going, so no band is wider than the reading grid.
+     Content never grows past --content-match-wide; extra width is margin.
+     The rail widths step by breakpoint (pick per media query); gutter and
+     chapter gap step up in the MATCH PAGE LAYOUT media block below. ----- */
+  --content-match: 72rem; /* 1152px page cap, lg..2xl */
+  --content-match-wide: 76rem; /* 1216px page cap, >= --bp-2xl */
+  --content-match-narrow: 46rem; /* 736px single column, sm..lg */
+  --rail-match: 18rem; /* 288px rail, lg */
+  --rail-match-xl: 20rem; /* 320px rail, xl */
+  --rail-match-2xl: 22rem; /* 352px rail, 2xl */
+  --gutter-page: 1rem; /* 1.5rem >= --bp-sm, 2rem >= --bp-lg */
+  --chapter-gap: 2.5rem; /* 3.5rem >= --bp-lg */
+
+  /* ----- Touch target (WCAG 2.2 SC 2.5.8, minimum 24x24; our floor is the
+     stricter 44x44 AAA/mobile convention) -----
+     Deliberately 45px, ONE pixel of headroom over the 44 the guard asserts.
+     A component sized to exactly 44 (`h-11` = 2.75rem) has zero tolerance:
+     any fractional flex distribution or font-metric rounding measures
+     43.99996… and fails a `>= 44` check — observed intermittently on the
+     console league/competition row actions under parallel-worker load.
+     Absolute px on purpose: a rem step re-derives from the root font-size,
+     which is exactly what rounds. Use for square icon buttons and any
+     pointer target that must clear the floor. */
+  --size-tap: 45px;
+
+  /* ----- Motion ----- */
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-micro: 120ms;
+  --duration-standard: 220ms;
+  --duration-emphasis: 300ms; /* value-change pulses, flashes */
+  --duration-reveal: 480ms;
+  --duration-drawn: 600ms; /* count-ups, sweeps, coin flip */
+  --duration-wash: 900ms; /* row wash, score-plaque settle */
+  --duration-loop-pulse: 1600ms; /* LiveDot ring */
+  --duration-loop-shimmer: 1200ms; /* avatar skeleton sweep */
+
+  /* Stagger convention (0165 foundation): a parent stamps an inline `--i`
+     (or `--entrance-delay`) per child; the ec-enter-* classes in entry.css
+     resolve `animation-delay: min(calc(var(--i) * var(--stagger-step)),
+     var(--stagger-cap))`. Never derive delays from data-* attributes. */
+  --stagger-step: 40ms;
+  --stagger-step-tight: 30ms;
+  --stagger-cap: 360ms;
+
+  /* ----- Runtime "signal" alias (Desk lineage) — tracks the product accent */
+  --sig: var(--accent-product);
+
+  /* ----- Accent fill (0162 elevation wave 1) — the FILLED CTA gradient + its
+           hover lift, derived from --sig so it flips per product (indigo on
+           web/coach, amber on sim) AND per theme (--sig brightens in dark).
+           The inner var(--sig) resolves lazily on the consuming element, so a
+           single :root definition re-themes with zero duplication. Neutral
+           white/black alpha stops give the top highlight + bottom seat; no new
+           hue is introduced (accent-discipline safe). */
+  --sig-fill: linear-gradient(
+    180deg,
+    color-mix(in srgb, #ffffff 16%, var(--sig)),
+    color-mix(in srgb, #000000 6%, var(--sig))
+  );
+  --sig-fill-hover: linear-gradient(
+    180deg,
+    color-mix(in srgb, #ffffff 26%, var(--sig)),
+    color-mix(in srgb, #ffffff 4%, var(--sig))
+  );
+
+  /* Elevation primitives (0162 wave 1) — neutral highlight+shadow layers for
+     FILLED controls and segmented thumbs, plus the recessed-well inset and the
+     sheen band. Tokenized so component source stays colour-literal-free (purity
+     rubric) and the ramp is tuned in one place. White/black alpha only — the
+     depth reads on the button's own fill in either theme, no new hue. */
+  --btn-elev: inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
+    0 2px 6px -1px rgba(0, 0, 0, 0.32);
+  --btn-elev-hover: inset 0 1px 0 0 rgba(255, 255, 255, 0.24),
+    0 8px 18px -4px rgba(0, 0, 0, 0.42);
+  --btn-elev-active: inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --thumb-elev: inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
+    0 1px 3px -1px rgba(0, 0, 0, 0.35);
+  --well-inset: inset 0 2px 4px -2px rgba(0, 0, 0, 0.35);
+  --sheen-band: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 65%
+  );
+
+  /* ----- Media overlay (0196) — neutral scrim + fixed light ink for text
+           OVER photography (announcement hero). Deliberately theme-fixed:
+           the scrim always darkens the image bottom, so on-media ink stays
+           light in both themes (the --pitch-ink precedent). Not part of the
+           token-pair contrast matrix — legibility comes from the scrim. --- */
+  --scrim-media: linear-gradient(
+    180deg,
+    rgba(10, 12, 18, 0) 34%,
+    rgba(10, 12, 18, 0.42) 62%,
+    rgba(10, 12, 18, 0.86) 100%
+  );
+  --color-on-media: #ffffff;
+  --color-on-media-muted: rgba(255, 255, 255, 0.8);
+  /* 0227's second scrim stop — the dark band pinned to the TEXT edge of a
+     media card, on top of --scrim-media, because the single token gradient
+     washed out over a bright photo. Tokenized in 0531 when the purity gate
+     was widened to cover src/public-site (it was an inline rgba() triple
+     living in FeaturedNews and nothing was checking). Theme-fixed for the
+     same reason as --scrim-media: the scrim darkens the photo in both
+     appearances, so the ink over it stays light. */
+  --scrim-media-edge: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.82),
+    rgba(0, 0, 0, 0.5) 55%,
+    transparent
+  );
+  --shadow-on-media: 0 2px 16px rgba(0, 0, 0, 0.7);
+
+  /* ----- Cover art (0206) — deterministic gradient covers (EntityCard /
+           CoverBanner). Components stamp element-level --ec-cover-light /
+           --ec-cover-dark (both appearances from coverArt()); the
+           theme-scoped .ec-cover-media rules in entry.css pick the active
+           one per element. Do NOT reintroduce a `--ec-cover: var(...)`
+           indirection here: custom properties substitute var() at
+           computed-value time on :root, where --ec-cover-light is
+           undefined, so descendants inherit guaranteed-invalid emptiness.
+           --noise-media is a tiny theme-invariant feTurbulence SVG grain;
+           only its opacity and the sport-watermark opacity step per
+           theme. ----- */
+  --noise-media: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  --noise-media-opacity: 0.05;
+  --cover-watermark-opacity: 0.1;
+}
+
+/* ============================================================================
+   DARK — Desk's indigo-tinted studio near-black (NOT pure black: deliberate
+   differentiation from FotMob's #000). Borderless cards; elevation via
+   lightness steps. Accents brighten (#5D62D3 → #7B82FF).
+   NOTE: this override block is duplicated verbatim inside the
+   prefers-color-scheme fallback below — keep the two in sync.
+   ========================================================================== */
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces — flat dark system, depth via luminance steps + hairlines */
+  --color-ground: #12161c;
+  --color-surface: #1a1f27;
+  --color-surface-2: #232a34;
+  --color-surface-fc26: #181d26;
+  --color-scrim: rgba(0, 0, 0, 0.72);
+
+  /* Text */
+  --color-ink: #f4f6f8; /* broadcast white — never pure #FFF */
+  --color-muted: #9aa6b4;
+  --color-muted-2: #8996a6; /* secondary small text, AA on every dark surface */
+
+  /* Structure — hairline is the primary structural device in dark */
+  --color-line: #2c333d;
+  --color-line-strong: #3a4250;
+
+  /* Brand — brightened for dark (FotMob pattern) */
+  --color-brand: #7d84ff;
+  --color-brand-cool: #7cbcff;
+  --color-brand-deep: #9a74ea;
+  --color-brand-navy: #8d9ad4;
+  --color-brand-ink: #c8cad8;
+  --color-on-brand: #12161c;
+
+  /* Accent slots — --accent-product tracks --color-brand automatically */
+  --accent-tenant: #ff8a5c; /* tenant orange, brightened */
+  --color-accent-cool: #38bdf8;
+
+  /* Semantic results — the exact Desk/webcore values (AC-US1-05) */
+  --color-win: #3dd68c;
+  --color-draw: #8794a2;
+  --color-warning: #fbbf24;
+  --color-loss: #f4515c;
+  --color-live: #ff2e63;
+  --color-data-2: #3dd6d0;
+
+  /* Honesty planes — sim amber and real cyan brighten for dark */
+  --color-simulated: #f2b01e;
+  --color-on-simulated: #12161c;
+  --color-simulated-surface: color-mix(in srgb, var(--color-simulated) 6%, var(--color-surface));
+  --pattern-simulated-hatch: repeating-linear-gradient(135deg, color-mix(in srgb, var(--color-simulated) 10%, transparent) 0 6px, transparent 6px 12px);
+  --color-real: #38bdf8;
+  --color-real-surface: color-mix(in srgb, var(--color-real) 6%, var(--color-surface));
+
+  /* Event-type accents */
+  --color-ev-goal: #3dd68c;
+  --color-ev-yellow: #f5c33b;
+  --color-ev-yellow-fill: #f5c33b;
+  --color-ev-red: #f4515c;
+  --color-ev-sub: #38bdf8;
+  --color-ev-injury: #9aa6b4;
+  --color-ev-save: #2dd4bf;
+
+  /* Team rings */
+  --color-home: #7fb0e6;
+  --color-away: #e06b78;
+  --color-third: #b69cff;
+
+  /* Qualification colors — brightened for dark surfaces */
+  --color-qual-promotion: #3dd68c;
+  --color-qual-playoff: #61aaff;
+  --color-qual-relegation: #f4515c;
+
+  /* Pitch — deep desaturated green: still calm in a dark UI, but markings,
+     boxes and the goal mouth stay VISIBLE (the 0463 near-black #2c2c2c pitch
+     rendered #343434 lines at ~1.06:1 — invisible; 0466 AC-US1-01). */
+  --pitch-surface: #1d4a30;
+  --pitch-stripe: #215134;
+  --pitch-line: rgba(244, 246, 248, 0.62);
+  --pitch-ink: #f4f6f8;
+  --pitch-ink-muted: rgba(244, 246, 248, 0.64);
+  --pitch-halo: rgba(0, 0, 0, 0.55);
+  --pitch-chip-ink: #0c0f14; /* the ex-hardcoded sim-ui literal, tokenized */
+  --pitch-gk: #f5c33b;
+  --pitch-gk-ink: #1a1402;
+  --pitch-label-bg: rgba(10, 14, 12, 0.72);
+  --pitch-label-ink: #ffffff;
+  --court-surface: #4a3a29;
+  --court-stripe: #503f2c;
+  --court-line: rgba(246, 234, 214, 0.66);
+
+  /* Elevation */
+  --shadow-float: 0 8px 24px rgba(8, 11, 15, 0.55);
+  --shadow-pop: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+  /* 0219 soft public-surface shadow — dark variant */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.35);
+
+  /* 0294 reconciled semantic additions — contracts documented in the light
+     block. on-invert = ground (dark ink #f4f6f8 fill → 16.8:1); card border
+     resolves == card bg (borderless dark), hairline appears on hover only. */
+  --color-on-invert: #12161c;
+  --color-elevated: var(--color-surface-2);
+  --card-border: var(--color-surface);
+  --card-border-hover: var(--color-line);
+  --color-on-sig: var(--color-on-brand);
+
+  /* On-colors for win/draw/loss fills — dark ink (the rating-ink value)
+     clears ≥4.5:1 on the brightened dark fills (#3dd68c ≈ 10.2,
+     #8794a2 ≈ 6.2, #f4515c ≈ 5.6). */
+  --color-on-win: #0c0f14;
+  --color-on-draw: #0c0f14;
+  --color-on-loss: #0c0f14;
+
+  /* Cover art (0206) — dark appearance + slightly stronger grain/watermark */
+  --noise-media-opacity: 0.08;
+  --cover-watermark-opacity: 0.14;
+}
+
+/* ============================================================================
+   OS fallback — dark palette when the OS prefers dark and no explicit
+   data-theme="light" opts out. MUST stay byte-identical to the block above.
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    /* Surfaces */
+    --color-ground: #12161c;
+    --color-surface: #1a1f27;
+    --color-surface-2: #232a34;
+    --color-surface-fc26: #181d26;
+    --color-scrim: rgba(0, 0, 0, 0.72);
+
+    /* Text */
+    --color-ink: #f4f6f8;
+    --color-muted: #9aa6b4;
+    --color-muted-2: #8996a6; /* secondary small text, AA on every dark surface */
+
+    /* Structure */
+    --color-line: #2c333d;
+    --color-line-strong: #3a4250;
+
+    /* Brand */
+    --color-brand: #7d84ff;
+    --color-brand-cool: #7cbcff;
+    --color-brand-deep: #9a74ea;
+    --color-brand-navy: #8d9ad4;
+    --color-brand-ink: #c8cad8;
+    --color-on-brand: #12161c;
+
+    /* Accent slots */
+    --accent-tenant: #ff8a5c;
+    --color-accent-cool: #38bdf8;
+
+    /* Semantic results */
+    --color-win: #3dd68c;
+    --color-draw: #8794a2;
+    --color-warning: #fbbf24;
+    --color-loss: #f4515c;
+    --color-live: #ff2e63;
+    --color-data-2: #3dd6d0;
+
+    /* Honesty planes — sim amber and real cyan brighten for dark */
+    --color-simulated: #f2b01e;
+    --color-on-simulated: #12161c;
+    --color-simulated-surface: color-mix(in srgb, var(--color-simulated) 6%, var(--color-surface));
+    --pattern-simulated-hatch: repeating-linear-gradient(135deg, color-mix(in srgb, var(--color-simulated) 10%, transparent) 0 6px, transparent 6px 12px);
+    --color-real: #38bdf8;
+    --color-real-surface: color-mix(in srgb, var(--color-real) 6%, var(--color-surface));
+
+    /* Event-type accents */
+    --color-ev-goal: #3dd68c;
+    --color-ev-yellow: #f5c33b;
+    --color-ev-yellow-fill: #f5c33b;
+    --color-ev-red: #f4515c;
+    --color-ev-sub: #38bdf8;
+    --color-ev-injury: #9aa6b4;
+    --color-ev-save: #2dd4bf;
+
+    /* Team rings */
+    --color-home: #7fb0e6;
+    --color-away: #e06b78;
+    --color-third: #b69cff;
+
+    /* Qualification colors */
+    --color-qual-promotion: #3dd68c;
+    --color-qual-playoff: #61aaff;
+    --color-qual-relegation: #f4515c;
+
+    /* Pitch */
+    --pitch-surface: #1d4a30;
+    --pitch-stripe: #215134;
+    --pitch-line: rgba(244, 246, 248, 0.62);
+    --pitch-ink: #f4f6f8;
+    --pitch-ink-muted: rgba(244, 246, 248, 0.64);
+    --pitch-halo: rgba(0, 0, 0, 0.55);
+    --pitch-chip-ink: #0c0f14;
+    --pitch-gk: #f5c33b;
+    --pitch-gk-ink: #1a1402;
+    --pitch-label-bg: rgba(10, 14, 12, 0.72);
+    --pitch-label-ink: #ffffff;
+    --court-surface: #4a3a29;
+    --court-stripe: #503f2c;
+    --court-line: rgba(246, 234, 214, 0.66);
+
+    /* Elevation */
+    --shadow-float: 0 8px 24px rgba(8, 11, 15, 0.55);
+    --shadow-pop: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+    /* 0219 soft public-surface shadow — dark variant */
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.35);
+
+    /* 0294 reconciled semantic additions — contracts documented in the light
+     block. on-invert = ground (dark ink #f4f6f8 fill → 16.8:1); card border
+     resolves == card bg (borderless dark), hairline appears on hover only. */
+    --color-on-invert: #12161c;
+    --color-elevated: var(--color-surface-2);
+    --card-border: var(--color-surface);
+    --card-border-hover: var(--color-line);
+    --color-on-sig: var(--color-on-brand);
+
+    /* On-colors for win/draw/loss fills — dark ink (the rating-ink value)
+     clears ≥4.5:1 on the brightened dark fills (#3dd68c ≈ 10.2,
+     #8794a2 ≈ 6.2, #f4515c ≈ 5.6). */
+    --color-on-win: #0c0f14;
+    --color-on-draw: #0c0f14;
+    --color-on-loss: #0c0f14;
+
+    /* Cover art (0206) — dark appearance + slightly stronger grain/watermark */
+      --noise-media-opacity: 0.08;
+    --cover-watermark-opacity: 0.14;
+  }
+}
+
+/* ============================================================================
+   PHONE TYPE (0775) — the reading sizes step up one notch below --bp-sm.
+   ============================================================================
+   Measured on easychamp.com at 375px (2026-09-26): a third of all rendered
+   text sat at 12.5px or smaller and 70% at 14px or smaller, sizes tuned for a
+   1440 desk read at arm's length. Phones get the two small READING steps one
+   notch up; iPad and desktop keep the dense broadcast scale:
+     caption 12 → 13   cell 13 → 14
+   Deliberately unchanged: --text-micro / --text-kicker (uppercase labels and
+   chart ticks, sized for scanning not reading), --text-base (a 15px body
+   clipped tab strips and team names in 375px rows, measured on Watch), and
+   --text-md and up. The compact match row gave back its empty 56px trailing
+   rail in the same change (MatchList.tsx), so team names gain more width
+   than the 1px costs them. 39.99rem is the --bp-sm edge (a custom
+   property cannot sit in a media condition). The selector repeats the theme
+   selectors so a subtree [data-theme] re-declaration of the base scale cannot
+   out-rank it; the mobile export never sees this block, native type is set by
+   the club app. */
+@media (max-width: 39.99rem) {
+  :root,
+  [data-theme="light"],
+  [data-theme="dark"] {
+    --text-caption: 0.8125rem; /* 13px */
+    --text-cell: 0.875rem; /* 14px */
+  }
+}
+
+/* ============================================================================
+   MATCH PAGE LAYOUT (0931) — page gutter and chapter gap step up with the
+   width ladder: gutter 16 -> 24px at --bp-sm (40rem) -> 32px at --bp-lg
+   (64rem); chapter gap 40 -> 56px at --bp-lg. Same selector trio as PHONE
+   TYPE above so a subtree [data-theme] cannot out-rank the step; the mobile
+   export never sees these blocks and keeps the base values.
+   ========================================================================== */
+@media (min-width: 40rem) {
+  :root,
+  [data-theme="light"],
+  [data-theme="dark"] {
+    --gutter-page: 1.5rem; /* 24px */
+  }
+}
+@media (min-width: 64rem) {
+  :root,
+  [data-theme="light"],
+  [data-theme="dark"] {
+    --gutter-page: 2rem; /* 32px */
+    --chapter-gap: 3.5rem; /* 56px */
+  }
+}
+
+/* ============================================================================
+   RATING PILL — FotMob 4-tier match-rating scale (0145 T-005, primitives area).
+   Drives <RatingBadge>: red <5 · orange 5–7 · green 7–9 · blue ≥9 (top).
+   Fills are vivid and BRIGHTEN in dark (FotMob's dark-mode lift); the fixed
+   dark --rating-ink text stays ≥4.5:1 on every fill in BOTH themes. Kept as a
+   trailing, self-contained block (three selectors, in sync) so the token-pair
+   contrast matrix parses only the core palette above — these are pill-fill
+   tokens whose text pairing the RatingBadge component owns.
+   ========================================================================== */
+:root,
+[data-theme="light"] {
+  --rating-blue: #14a0ff; /* top rating (FotMob isTopRating) */
+  --rating-green: #33c771; /* strong */
+  --rating-orange: #f08022; /* average */
+  --rating-red: #f04444; /* poor (lifted so dark ink stays AA) */
+  --rating-ink: #0c0f14; /* pill text — dark ink, AA on every fill */
+}
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  --rating-blue: #38bdf8;
+  --rating-green: #3dd68c;
+  --rating-orange: #ff963f;
+  --rating-red: #ff5a5a;
+  --rating-ink: #0c0f14;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --rating-blue: #38bdf8;
+    --rating-green: #3dd68c;
+    --rating-orange: #ff963f;
+    --rating-red: #ff5a5a;
+    --rating-ink: #0c0f14;
+  }
+}
+
+/* ============================================================================
+   BETTING — the virtual-coin sportsbook token layer (0148 FOUNDATION).
+   Kept as a trailing, self-contained block (three synced selectors) exactly
+   like RATING PILL above, so the core contrast matrix parses only the base
+   palette. Semantics:
+     · --color-odds-up / --color-odds-down  — the bet365 price-flash pair
+       (green = price lengthened ▲, red = price shortened ▼). Deliberately the
+       SAME hue values as --color-win / --color-loss (own tokens so betting can
+       retint without disturbing match results), so they inherit the win/loss
+       AA verification: both pass ≥3:1 as UI/large text on every surface in
+       BOTH themes (odds-up light #15803d / dark #3dd68c ≈ win; odds-down light
+       #dc2626 / dark #f4515c ≈ loss — already in the tokens-contrast matrix).
+     · --color-coin — the coin-balance ink (WalletBadge, stake/return figures).
+       Light is #92400e (amber-800) — DARKER than the #a16207 reference that was
+       measured at ≈4.9:1 on white, so its contrast only increases; dark #f2c14e
+       on --color-surface-2 ≈ 8.6:1. Comfortably clears the 3:1 UI/large-text
+       bar in both themes.
+     · --color-coin-fill (#f2b01e both themes) — the COIN GLYPH fill, a
+       non-text decorative mark (NOT a text pairing): ≈1.9:1 on white, so the
+       coin glyph MUST carry a 1px hairline ring on light surfaces (mirrors the
+       --color-ev-yellow-fill precedent). Fixed across themes = a stable brand
+       gold independent of --accent-product (amber on sim / indigo on web).
+   ========================================================================== */
+:root,
+[data-theme="light"] {
+  --color-odds-up: #15803d;
+  --color-odds-down: #dc2626;
+  --color-coin: #92400e;
+  --color-coin-fill: #f2b01e;
+}
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  --color-odds-up: #3dd68c;
+  --color-odds-down: #f4515c;
+  --color-coin: #f2c14e;
+  --color-coin-fill: #f2b01e;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-odds-up: #3dd68c;
+    --color-odds-down: #f4515c;
+    --color-coin: #f2c14e;
+    --color-coin-fill: #f2b01e;
+  }
+}
+
+/* ============================================================================
+   NOTIFICATIONS — the in-app notification-center unread signal (0159 US-003).
+   A trailing, self-contained 3-selector block (like RATING PILL / BETTING
+   above) so the core contrast matrix parses only the base palette. The unread
+   red is INDEPENDENT of --accent-product (which flips amber on sim), so the
+   bell badge + unread dot read the same on every product. Two paired tokens:
+     · --color-notify-unread — the badge FILL + the item accent dot. As a
+       non-text UI graphic it clears 3:1 on every surface in BOTH themes:
+       light #dc2626 ≈ 4.5–4.8:1 on white/ground/surface-2; dark #f4515c IS the
+       --color-loss dark value, already AA-verified ≥3:1 on all dark surfaces.
+     · --color-notify-on — the badge COUNT text ON that fill, theme-flipped so
+       small bold text clears 4.5:1 both ways: light #ffffff on #dc2626 ≈
+       4.8:1; dark #0c0f14 (the rating-ink) on #f4515c ≈ 5.5:1.
+   ========================================================================== */
+:root,
+[data-theme="light"] {
+  --color-notify-unread: #dc2626;
+  --color-notify-on: #ffffff;
+}
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  --color-notify-unread: #f4515c;
+  --color-notify-on: #0c0f14;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-notify-unread: #f4515c;
+    --color-notify-on: #0c0f14;
+  }
+}
+
+/* ============================================================================
+   MATCH ROW — FotMob livescore strip (0294 T-009, match-row brief "Scoreline
+   Strip"). Theme-invariant BY CONSTRUCTION: every value aliases a semantic
+   token that already flips per theme, so this block needs no dark branch
+   (RATING PILL precedent, degenerate case). The score pill pairs the ink
+   fill with --color-on-invert (14.9:1 L / 16.8:1 D) so no tenant accent can
+   ever break the row's highest-contrast element.
+
+   Accent contract: --match-row-accent and --match-row-on-accent are overridden
+   AS A PAIR by a league/tenant scope. The selected bar is non-text UI and
+   needs ≥3:1 against --color-surface; a tenant whose accent cannot clear it
+   sets data-accent-safety="tint-only" (bar falls back to --color-ink).
+   --color-focus is NEVER re-tinted by a league/tenant accent.
+
+   NOTE on the pill radius: --radius-pill (999px) IS the right token — CSS
+   clamps border-radius to height/2, so on a ≤24px pill it renders FotMob's
+   rounded-xl capsule. Do NOT "fix" this to a 12px literal.
+   ========================================================================== */
+.ec-match-row {
+  --match-row-h: var(--size-tap); /* 45px, tap-target headroom */
+  --match-row-h-lg: 3.5rem; /* 56px at the wide container step */
+  /* Trailing rail track, MIRRORED on the leading edge so the wide step's
+     centre column keeps one x whether or not a row carries a trailing
+     control. 2.75rem because a trailing action is a 44px tap target. */
+  --match-trail-col: 2.75rem;
+  --match-row-bg: transparent;
+  --match-row-bg-hover: var(--color-surface-2);
+  --match-row-bg-press: var(--color-surface-2); /* flat; @supports upgrade below */
+  --match-row-divider: var(--color-line);
+  --match-row-time: var(--color-muted);
+  --match-row-name: var(--color-ink);
+  --match-row-name-dim: var(--color-muted);
+  --match-row-score-bg: var(--color-ink);
+  --match-row-score-ink: var(--color-on-invert);
+  --match-row-accent: var(--league-accent, var(--sig)); /* league/tenant hook */
+  --match-row-on-accent: var(--color-on-sig);
+}
+/* Custom properties take ANY value at parse time, so a same-block
+   "flat fallback first, color-mix second" pair is dead — the last declaration
+   always wins. The @supports gate is the real fallback (--bk-slot-hover
+   precedent). */
+@supports (background: color-mix(in srgb, red 6%, red)) {
+  .ec-match-row {
+    --match-row-bg-press: color-mix(in srgb, var(--color-ink) 6%, var(--color-surface-2));
+  }
+}
+
+/* ============================================================================
+   PILLS + SEGMENTED — filter pills, segmented controls, tab strips (0294
+   T-009, pills-tabs brief "Invert"). Trailing self-contained block (RATING
+   PILL precedent), three synced selectors + a @supports flat fallback.
+
+   The split (port of FotMob's reasoning, not just its numbers):
+     · FILTER pills are binary on/off → the active pill INVERTS to solid ink
+       (--pill-bg-active/--pill-ink-active — one theme-invariant declaration,
+       14.9:1 L / 16.8:1 D, immune to any tenant accent).
+     · SEGMENTED + TABS are "where am I" → the moving surface carries
+       position, color carries identity: the accent hook colors the segmented
+       active label and the tab underline only.
+   Accent hooks: segmented active label + soft-pill accents read
+   var(--league-accent, var(--color-brand)) so the sim amber --accent-product
+   pack never reaches small text; the tab underline reads
+   var(--league-accent, var(--sig)). Never `--color-accent` — not a token.
+   ========================================================================== */
+:root,
+[data-theme="light"] {
+  /* invert pair — theme-invariant BY DESIGN: --color-ink/--color-on-invert */
+  --pill-bg-active: var(--color-ink);
+  --pill-ink-active: var(--color-on-invert);
+  --pill-bg-active-hover: color-mix(in srgb, var(--color-on-invert) 12%, var(--color-ink));
+  --pill-bg-active-press: color-mix(in srgb, var(--color-on-invert) 20%, var(--color-ink));
+  --pill-ink: var(--color-ink);
+  /* multi-select soft grammar — 12% tint EXACT (thinnest margin ≈4.98:1 on
+     surface-2); never deepened, never nested in a tinted container */
+  --pill-soft-bg: color-mix(in srgb, var(--league-accent, var(--color-brand)) 12%, var(--color-surface));
+  --pill-soft-border: color-mix(in srgb, var(--league-accent, var(--color-brand)) 38%, transparent);
+  --pill-soft-ink: var(--league-accent, var(--color-brand));
+  /* live pill — the ONE permitted non-invert active fill (AA both themes) */
+  --pill-bg-live: var(--color-live);
+  --pill-ink-live: var(--color-on-loss);
+  --pill-count-rule: color-mix(in srgb, currentColor 28%, transparent);
+  --seg-ink: var(--color-ink);
+  --seg-ink-active: var(--league-accent, var(--color-brand));
+  --seg-hover-ghost: color-mix(in srgb, var(--seg-thumb) 45%, transparent);
+  /* light rest surfaces (bordered white — --color-line is too faint for a
+     control edge, so the hairline is line-strong) */
+  --pill-bg: var(--color-surface);
+  --pill-border: var(--color-line-strong);
+  --pill-bg-hover: var(--color-surface-2);
+  --pill-bg-press: var(--color-line-strong);
+  --seg-track: var(--color-line-strong);
+  --seg-thumb: var(--color-surface);
+}
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  /* dark = borderless luminance steps; NON-MONOTONIC ladder by design:
+     rest #232a34 < pressed #2c333d < hover #3a4250 (FotMob dark) */
+  --pill-bg: var(--color-surface-2);
+  --pill-border: transparent;
+  --pill-bg-hover: var(--color-line-strong);
+  --pill-bg-press: var(--color-line);
+  --seg-track: var(--color-ground);
+  --seg-thumb: var(--color-surface-2);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --pill-bg: var(--color-surface-2);
+    --pill-border: transparent;
+    --pill-bg-hover: var(--color-line-strong);
+    --pill-bg-press: var(--color-line);
+    --seg-track: var(--color-ground);
+    --seg-thumb: var(--color-surface-2);
+  }
+}
+/* color-mix fallback — feedback degrades to flat tokens, never disappears. */
+@supports not (color: color-mix(in srgb, red, blue)) {
+  :root, [data-theme="light"], :root[data-theme="dark"], [data-theme="dark"] {
+    --pill-bg-active-hover: var(--color-ink);
+    --pill-bg-active-press: var(--color-ink);
+    --pill-soft-bg: var(--color-surface-2);
+    --pill-soft-border: var(--color-line-strong);
+    --pill-count-rule: currentColor;
+    --seg-hover-ghost: var(--color-line);
+  }
+}
+
+/* ============================================================================
+   BUTTON — Inkwell (0294 T-009/T-010, buttons brief). Component tier, RATING
+   PILL precedent: three synced selectors + prefers-contrast + a @supports
+   flat fallback. The solid button is the INK, inverted: `primary` =
+   --color-ink fill + --color-on-invert label — one theme-invariant pair that
+   auto-flips. Brand indigo is demoted to a capped `accent` variant (at most
+   ONE per view) reading var(--league-accent, var(--sig)) + --color-on-sig.
+   Universal state formula: hover mixes the fill 14% toward --color-ink,
+   active 24% (primary moves toward --color-ground instead — it already IS
+   ink). No gradient, shadow, translate or sheen on any button.
+   ========================================================================== */
+:root,
+[data-theme="light"] {
+  --btn-hairline: 1px;
+  --btn-ring: 2px;
+  --btn-ring-offset: 2px;
+
+  --btn-primary-bg: var(--color-ink);
+  --btn-primary-fg: var(--color-on-invert);
+  --btn-primary-bg-hover: color-mix(in srgb, var(--color-ink) 86%, var(--color-ground));
+  --btn-primary-bg-active: color-mix(in srgb, var(--color-ink) 76%, var(--color-ground));
+
+  --btn-accent-bg: var(--league-accent, var(--sig));
+  --btn-accent-fg: var(--color-on-sig);
+  --btn-accent-bg-hover: color-mix(in srgb, var(--btn-accent-bg) 86%, var(--color-ink));
+  --btn-accent-bg-active: color-mix(in srgb, var(--btn-accent-bg) 76%, var(--color-ink));
+
+  /* ≈3.2:1 light / ≈5.2:1 dark — the first button boundary passing SC 1.4.11 */
+  --btn-stroke: color-mix(in srgb, var(--color-ink) 52%, var(--color-surface));
+  --btn-secondary-bg: var(--color-surface);
+  --btn-secondary-fg: var(--color-ink);
+  --btn-secondary-border: var(--btn-stroke);
+  --btn-secondary-border-quiet: var(--color-line-strong); /* data-quiet opt-down */
+  --btn-secondary-bg-hover: var(--color-surface-2);
+  --btn-secondary-bg-active: var(--color-line-strong);
+
+  --btn-ghost-fg: var(--color-ink);
+  --btn-ghost-bg-hover: var(--color-surface-2);
+  --btn-ghost-bg-active: var(--color-line);
+
+  --btn-danger-bg: var(--color-loss);
+  --btn-danger-fg: var(--color-on-loss);
+  --btn-danger-bg-hover: color-mix(in srgb, var(--color-loss) 86%, var(--color-ink));
+  --btn-danger-bg-active: color-mix(in srgb, var(--color-loss) 76%, var(--color-ink));
+  /* Keep text-grade loss ink ≥4.5:1; heavier tints erase small labels. */
+  --btn-danger-wash: color-mix(in srgb, var(--color-loss) 3%, transparent);
+  --btn-danger-wash-active: color-mix(in srgb, var(--color-loss) 4%, transparent);
+
+  /* token disabled — NEVER opacity (an opacity wash picks up photo/tinted
+     backgrounds and stops reading as a control). ≈4.9:1 L / ≈5.4:1 D. */
+  --btn-disabled-bg: var(--color-surface-2);
+  --btn-disabled-fg: var(--color-muted-2);
+  --btn-disabled-border: var(--color-line);
+}
+/* Neutral and semantic button aliases must resolve inside an explicit dark
+   subtree rather than inherit computed light colors. Keep the accent fill/ink
+   pair and structural tokens inherited: hosts own those overrides at app root. */
+[data-theme="dark"] {
+  --btn-primary-bg: var(--color-ink);
+  --btn-primary-fg: var(--color-on-invert);
+  --btn-primary-bg-hover: color-mix(in srgb, var(--color-ink) 86%, var(--color-ground));
+  --btn-primary-bg-active: color-mix(in srgb, var(--color-ink) 76%, var(--color-ground));
+  --btn-stroke: color-mix(in srgb, var(--color-ink) 52%, var(--color-surface));
+  --btn-secondary-fg: var(--color-ink);
+  --btn-secondary-border: var(--btn-stroke);
+  --btn-ghost-fg: var(--color-ink);
+  --btn-danger-bg: var(--color-loss);
+  --btn-danger-fg: var(--color-on-loss);
+  --btn-danger-bg-hover: color-mix(in srgb, var(--color-loss) 86%, var(--color-ink));
+  --btn-danger-bg-active: color-mix(in srgb, var(--color-loss) 76%, var(--color-ink));
+  --btn-danger-wash: color-mix(in srgb, var(--color-loss) 3%, transparent);
+  --btn-danger-wash-active: color-mix(in srgb, var(--color-loss) 4%, transparent);
+  --btn-disabled-bg: var(--color-surface-2);
+  --btn-disabled-fg: var(--color-muted-2);
+  --btn-disabled-border: var(--color-line);
+}
+
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  /* dark secondary ladder is deliberately NON-MONOTONIC: rest #232a34 →
+     hover #3a4250 → pressed ≈#2e3540 (FotMob dark). Everything else
+     re-resolves: ink/ground/on-invert/sig flip automatically. */
+  --btn-secondary-bg: var(--color-surface-2);
+  --btn-secondary-border-quiet: var(--color-line);
+  --btn-secondary-bg-hover: var(--color-line-strong);
+  --btn-secondary-bg-active: color-mix(in srgb, var(--color-surface-2) 50%, var(--color-line-strong));
+  --btn-ghost-bg-hover: color-mix(in srgb, var(--color-surface-2) 88%, var(--color-ink));
+  --btn-ghost-bg-active: var(--color-surface-2);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --btn-secondary-bg: var(--color-surface-2);
+    --btn-secondary-border-quiet: var(--color-line);
+    --btn-secondary-bg-hover: var(--color-line-strong);
+    --btn-secondary-bg-active: color-mix(in srgb, var(--color-surface-2) 50%, var(--color-line-strong));
+    --btn-ghost-bg-hover: color-mix(in srgb, var(--color-surface-2) 88%, var(--color-ink));
+    --btn-ghost-bg-active: var(--color-surface-2);
+  }
+}
+@media (prefers-contrast: more) {
+  :root, [data-theme] {
+    --btn-secondary-border: var(--color-muted);
+    --btn-secondary-border-quiet: var(--color-muted);
+  }
+}
+@supports not (color: color-mix(in srgb, red, blue)) {
+  :root, [data-theme] {
+    --btn-stroke: var(--color-muted);
+    --btn-primary-bg-hover: var(--color-ink);
+    --btn-primary-bg-active: var(--color-ink);
+    --btn-accent-bg-hover: var(--btn-accent-bg);
+    --btn-accent-bg-active: var(--btn-accent-bg);
+    --btn-danger-bg-hover: var(--color-loss);
+    --btn-danger-bg-active: var(--color-loss);
+    --btn-danger-wash: transparent;
+    --btn-danger-wash-active: transparent;
+    --btn-secondary-bg-active: var(--color-line-strong);
+    --btn-ghost-bg-hover: var(--color-surface-2);
+  }
+}
+
+@keyframes ec-btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================================
+   CHIP — badge/chip family (0294 T-010/T-011, badges-chips brief "Capsule").
+   One chip idea: a capsule, sized to one of three heights, filled one of four
+   ways — 15%-alpha semantic tint, resting outline, achromatic ink-inversion,
+   or solid accent. DATA chips (a value read in a column) are SHARP
+   (--radius-chip); OBJECT chips (names/states) are capsules (--radius-pill).
+   Labels AND numerals ship uniformly at weight 500 (every chip text size sits
+   below the WCAG bold large-text threshold, so no ratio depends on weight).
+
+   DO NOT add a `--chip-tone`/`--chip-ink` indirection slot resolved via
+   var() at :root: custom properties substitute var() at computed-value time
+   on :root, where per-element tone vars are undefined, so descendants inherit
+   guaranteed-invalid emptiness (same trap as the --ec-cover warning above).
+   Tone mapping lives in entry.css attribute selectors, never in a token
+   indirection. Hex literals are permitted ONLY inside this block (RATING PILL
+   precedent) and every literal pair enters chips-contrast.test.ts.
+   ========================================================================== */
+:root,
+[data-theme="light"] {
+  /* theme-invariant size ladder (declared once, light block only). 26/32px
+     are measured reference heights, deliberately off the 4px grid. */
+  --chip-h-xs: 20px;
+  --chip-h-sm: 26px;
+  --chip-h-md: 32px;
+  --chip-minw-xs: 20px;
+  --chip-minw-sm: 26px;
+  --chip-minw-md: 32px;
+  --chip-px-xs: 6px;
+  --chip-px-sm: 8px;
+  --chip-px-md: 14px;
+  --chip-gap-xs: 3px;
+  --chip-gap-sm: 4px;
+  --chip-gap-md: 6px;
+  --chip-text-xs: 11px;
+  --chip-text-sm: 12px;
+  --chip-text-md: 13px;
+  --chip-icon-xs: 12px;
+  --chip-icon-sm: 14px;
+  --chip-icon-md: 16px;
+  --chip-max: 160px; /* truncation cap — USER-AUTHORED content only */
+  /* tint = 15% alpha of the semantic token; hover step = 22% (entry.css) */
+  --chip-tint-win: color-mix(in srgb, var(--color-win) 15%, transparent);
+  --chip-tint-draw: color-mix(in srgb, var(--color-draw) 15%, transparent);
+  --chip-tint-loss: color-mix(in srgb, var(--color-loss) 15%, transparent);
+  --chip-tint-live: color-mix(in srgb, var(--color-live) 15%, transparent);
+  --chip-tint-neutral: color-mix(in srgb, var(--color-muted) 15%, transparent);
+  --chip-tint-qual-playoff: color-mix(in srgb, var(--color-qual-playoff) 15%, transparent);
+  --chip-invert-bg: var(--color-ink);
+  --chip-invert-ink: var(--color-on-invert);
+  /* LIGHT theme values */
+  --chip-rest-bg: var(--color-surface);
+  --chip-rest-border: var(--color-line-strong);
+  --chip-rest-hover-bg: var(--color-surface-2);
+  --chip-press-bg: var(--color-line);
+  --chip-ink-win: #0f6b33; /* 5.53:1 on tint over #ffffff */
+  --chip-ink-draw: #4d586c; /* 5.96:1 */
+  /* #a91717, not the brief's #b81c1c: the alpha-ledger guard (22% hover
+     composited over ground/surface-2) measures that value at 4.28:1 — this
+     one holds ≥4.88:1 across the full alpha × surface matrix. */
+  --chip-ink-loss: #a91717;
+  --chip-ink-live: #b01038; /* 5.56:1 */
+  /* #515b6f, not the brief's var(--color-muted): muted composites to 4.08:1
+     under the 22% hover tint over ground — this literal holds ≥4.68:1. */
+  --chip-ink-neutral: #515b6f;
+  --chip-ink-qual-playoff: #1d4ed8; /* ≈6.8:1 — verified in the matrix */
+  --chip-ink-on-live: #ffffff; /* 4.70:1 on --color-live #e11d48 */
+}
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  --chip-rest-bg: var(--color-surface-2); /* dark rest = luminance step */
+  /* borderless dark; transparent (not none) keeps 1px in the box model so
+     --chip-h-* is identical across themes */
+  --chip-rest-border: transparent;
+  --chip-rest-hover-bg: var(--color-line-strong);
+  --chip-press-bg: var(--color-line);
+  /* dark-only alias: #3dd68c measures 5.63:1 on its tint over surface-2.
+     Do NOT "clean up" into a literal or copy to light. */
+  --chip-ink-win: var(--color-win);
+  --chip-ink-draw: #b6c2d0; /* 6.36:1 */
+  --chip-ink-loss: #ff8a90; /* 5.42:1 */
+  --chip-ink-live: #ff7d99; /* 5.23:1 */
+  --chip-ink-neutral: #c3cdd8; /* 7.01:1 */
+  --chip-ink-qual-playoff: var(--color-brand-cool); /* ≈5.2:1 — in matrix */
+  --chip-ink-on-live: var(--color-ground); /* 5.03:1 on dark live #ff2e63 */
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --chip-rest-bg: var(--color-surface-2); /* dark rest = luminance step */
+    /* borderless dark; transparent (not none) keeps 1px in the box model so
+     --chip-h-* is identical across themes */
+    --chip-rest-border: transparent;
+    --chip-rest-hover-bg: var(--color-line-strong);
+    --chip-press-bg: var(--color-line);
+    /* dark-only alias: #3dd68c measures 5.63:1 on its tint over surface-2.
+     Do NOT "clean up" into a literal or copy to light. */
+    --chip-ink-win: var(--color-win);
+    --chip-ink-draw: #b6c2d0; /* 6.36:1 */
+    --chip-ink-loss: #ff8a90; /* 5.42:1 */
+    --chip-ink-live: #ff7d99; /* 5.23:1 */
+    --chip-ink-neutral: #c3cdd8; /* 7.01:1 */
+    --chip-ink-qual-playoff: var(--color-brand-cool); /* ≈5.2:1 — in matrix */
+    --chip-ink-on-live: var(--color-ground); /* 5.03:1 on dark live #ff2e63 */
+  }
+}
+
+/* ============================================================================
+   STANDINGS — Matchday Ledger (0294 T-010, standings brief). Trailing
+   self-contained component block: a ledger, not a card list — flat,
+   hairline-ruled, zero shadows, no zebra; elevation is a background-lightness
+   step; ink inversion (never green) marks "active". Every value aliases a
+   semantic token or is a dimension. The ONLY theme-conditional value is
+   --st-band-ink (FotMob's deliberate light-dark group-header asymmetry);
+   --st-card-border theme-flips via --card-border itself. Tenant boundary:
+   --st-pad-x, --st-row-h, --st-sticky-top and --st-font-num are the layout
+   escape hatches; --color-qual-*, --color-win/draw/loss and --color-live are
+   NOT tenant surface.
+   ========================================================================== */
+.ec-standings {
+  --st-card-bg: var(--color-surface);
+  --st-card-border: var(--card-border); /* light hairline; dark borderless */
+  --st-divider: var(--color-line);
+  --st-band-bg: var(--color-surface-2);
+  --st-band-ink: var(--color-ink);
+  --st-num-ink: var(--color-muted);
+  --st-pts-ink: var(--color-ink);
+  --st-accent: var(--league-accent, var(--sig));
+  --st-font-num: var(--font-mono); /* system default; public/arena roots may
+                                      opt into var(--font-body) per surface */
+  --st-pad-x: 12px;
+  --st-rail-w: 4px;
+  --st-head-h: 32px;
+  --st-band-h: 48px;
+  --st-row-h: 44px; /* 36px dense via container query */
+  --st-sticky-top: 0px; /* host sets to its sticky chrome height */
+}
+:root[data-theme="dark"] .ec-standings,
+[data-theme="dark"] .ec-standings {
+  --st-band-ink: var(--color-muted);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .ec-standings {
+    --st-band-ink: var(--color-muted);
+  }
+}
+@media (any-pointer: coarse) {
+  .ec-standings {
+    --st-row-h: var(--size-tap) !important;
+  }
+}
+
+/* ============================================================================
+   BRACKET — Drawsheet (0298 T-002, bracket brief). Trailing self-contained
+   component block: ONE --color-surface canvas, --color-surface-2 tie cards
+   with --card-border (the token already encodes FotMob's light-hairline /
+   dark-borderless asymmetry — zero theme branches), elevation is a
+   background-luminance step, never a shadow. Theme-invariant BY CONSTRUCTION:
+   every value aliases a semantic token or is a dimension, so there is no dark
+   block to drift. The winner mark is ink-inversion (--bk-score-bg/-ink, the
+   same object as .ec-match-row's score pill) — NEVER accent; accent appears
+   only on the winner-path connector + Simulate CTA via --bk-connector-win,
+   and data-accent-safety="tint-only" collapses that to ink. Geometry and
+   density live ONLY in the JS constants (graft 2 — resolved before layout so
+   the SVG connectors can never desync); the former dimension twins here were
+   dead declarations and were removed (0298 F3).
+   ========================================================================== */
+/* The bracket canvas centres a draw that is NARROWER than it: a three-round
+   tree is ~684px inside a 1080px card, and left-aligning it stranded a third
+   of the canvas empty beside the final.
+
+   `safe` is load-bearing, not decoration. Plain `center` on a scroll container
+   pushes the overflowing start off the left edge, where no amount of scrolling
+   reaches it — a 32-entrant draw would lose its first round. The keyword falls
+   the alignment back to `start` the moment the content is wider than the box.
+   Written here rather than as a utility class because the arbitrary-value form
+   does not survive the build. */
+.ec-bracket-canvas {
+  justify-content: safe center;
+}
+
+/* 0460: the SAME measurement that engages round-snap also decides alignment.
+   `safe center` and a JS overflow predicate flip at the same boundary but not
+   on the same pixel — subpixel widths, `scrollbar-gutter: stable` and the 12px
+   padding all land between them — and disagreeing there ships either a centred
+   draw under mandatory snap (whose first round is then unreachable) or an
+   overflowing draw with no snap at all. Stating both from one stamped
+   attribute removes the second opinion. `safe center` stays above as the
+   pre-measurement default, so first paint is unchanged. */
+.ec-bracket-canvas[data-overflow="true"] {
+  justify-content: flex-start;
+}
+.ec-bracket-canvas[data-overflow="false"] {
+  justify-content: safe center;
+}
+
+/* 0689: a tree NARROWER than its frame also centres by its own auto margins.
+   Same position `safe center` gives (auto margins absorb the free space
+   first), but it no longer depends on the canvas keeping `justify-content`:
+   a host rule that resets the flex alignment cannot strand the draw left.
+   Auto margins are safe by definition — they collapse to 0 on overflow. */
+.ec-bracket-canvas[data-verify-bracket-tree][data-overflow="false"] > :first-child {
+  margin-inline: auto;
+}
+
+/* 0689: `edgeFade` — one fade per edge that still has draw behind it,
+   stamped from the scroll position (`data-at-start` / `data-at-end`). Painted
+   in the canvas surface, inset by the 1px border and the 12px padding so the
+   rounded frame itself never fades. Hidden until the first stamp, so the
+   server frame and a draw that fits show none. */
+.ec-bracket-fade {
+  position: absolute;
+  top: 13px;
+  bottom: 13px;
+  width: 2rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-micro) var(--ease-standard);
+}
+.ec-bracket-fade[data-edge="start"] {
+  inset-inline-start: 1px;
+  background: linear-gradient(to right, var(--bk-canvas), transparent);
+}
+.ec-bracket-fade[data-edge="end"] {
+  inset-inline-end: 1px;
+  background: linear-gradient(to left, var(--bk-canvas), transparent);
+}
+.ec-bracket-fade[data-edge="start"]:dir(rtl) {
+  background: linear-gradient(to left, var(--bk-canvas), transparent);
+}
+.ec-bracket-fade[data-edge="end"]:dir(rtl) {
+  background: linear-gradient(to right, var(--bk-canvas), transparent);
+}
+.ec-bracket-canvas[data-at-start="false"] ~ .ec-bracket-fade[data-edge="start"],
+.ec-bracket-canvas[data-at-end="false"] ~ .ec-bracket-fade[data-edge="end"] {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ec-bracket-fade {
+    transition: none;
+  }
+}
+
+/* The round rail hides its own scrollbar: it is a chip strip, not a document,
+   and a 15px gutter under seven 32px pills is most of a phone row. The chips
+   remain reachable by drag, by the arrow keys (roving tabindex) and by tapping
+   through the canvas, so nothing depends on the bar being visible. */
+.ec-bracket-rail {
+  scrollbar-width: none;
+}
+.ec-bracket-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.ec-bracket {
+  --bk-canvas: var(--color-surface);
+  --bk-canvas-border: var(--card-border);
+  --bk-node-bg: var(--color-surface-2);
+  --bk-node-border: var(--card-border);
+  --bk-node-border-hover: var(--card-border-hover);
+  --bk-connector: var(--color-line-strong);
+  --bk-connector-win: var(--league-accent, var(--sig));
+  /* 0528: the 3px band on the champion plaque — the same league-then-product
+     accent the winner path uses, and the same tint-only collapse below. */
+  --bk-plaque-band: var(--league-accent, var(--sig));
+  --bk-score-bg: var(--color-ink);
+  --bk-score-ink: var(--color-on-invert);
+  --bk-score-live-bg: var(--pill-bg-live);
+  --bk-score-live-ink: var(--pill-ink-live);
+  --bk-slot-hover: var(--color-surface-2); /* flat fallback (no color-mix) */
+  /* 0611: drop-target tint — the winner-path accent washed into the node
+     surface, so it reads as "this is where the team lands" in both themes
+     and collapses to an ink wash under tint-only safety. */
+  --bk-slot-drop: var(--color-surface-2); /* flat fallback (no color-mix) */
+}
+@supports (background: color-mix(in srgb, red 6%, red)) {
+  .ec-bracket {
+    --bk-slot-hover: color-mix(in srgb, var(--color-ink) 6%, var(--color-surface-2));
+    --bk-slot-drop: color-mix(in srgb, var(--bk-connector-win) 14%, var(--color-surface-2));
+  }
+}
+/* 0611 — drop-target hook for HOST-driven drag-and-drop. The kit binds no
+   DnD library: a host toggles this class on the slot button under the
+   pointer through `slotAttributes` (or on its own tray items). Strong dashed
+   outline in the accent + the tinted fill. This file is unlayered, so the
+   rule beats the slot's utility-layer `hover:bg-*` while the pointer sits on
+   the target — no `:hover` twin needed. Outside `.ec-bracket` the vars fall
+   back to the raw accent and a flat surface. */
+.ec-bracket-slot--drop {
+  outline: 2px dashed var(--bk-connector-win, var(--league-accent, var(--sig)));
+  outline-offset: -2px;
+  background-color: var(--bk-slot-drop, var(--color-surface-2));
+}
+[data-accent-safety="tint-only"] .ec-bracket,
+.ec-bracket[data-accent-safety="tint-only"] {
+  --bk-connector-win: var(--color-ink);
+  --bk-plaque-band: var(--color-ink);
+}
+
+/* ============================================================================
+   0777 — figures line up everywhere. Scores, clocks, standings and dates
+   used IBM Plex Mono for alignment; with one proportional family the same
+   job is done by Inter's tabular figures, set once on the page so every
+   table, row and chip inherits them. `proportional-nums` on an element still
+   opts out (prose that wants old-style spacing).
+   ========================================================================== */
+body {
+  font-variant-numeric: tabular-nums;
+}
+

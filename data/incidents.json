@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-08T01:48:22.502Z",
-      "updatedAt": "2026-10-08T02:41:20.726Z",
+      "updatedAt": "2026-10-08T03:00:39.476Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-07T06:00:00.000Z",
       "stage": "investigating",
@@ -47,6 +47,18 @@
             "status": "degraded",
             "reasonCode": "run_failed",
             "observedAt": "2026-10-08T02:40:06.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1791424102502-monitor-2026-10-08T03:00:39.476Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-08T03:00:39.476Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-08T03:00:06.000Z"
           }
         }
       ],
@@ -104,7 +116,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-08T02:41:20.726Z",
+      "updatedAt": "2026-10-08T03:00:39.476Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

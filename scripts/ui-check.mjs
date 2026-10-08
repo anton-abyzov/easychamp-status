@@ -57,7 +57,7 @@ try{
  await page.goto(base,{waitUntil:'networkidle'});await page.route('**/data/status.json?*',r=>r.fulfill({status:503,body:'unavailable'}));await page.locator('#refresh').click();await page.getByText('Refresh failed · current evidence unavailable').waitFor();assert.equal(await page.locator('#overall-badge').innerText(),'Unknown');checks.push('failed refresh invalidates current evidence to Unknown');
 
  const fresh=await browser.newPage({viewport:{width:390,height:844}});fresh.on('pageerror',e=>errors.push(e.message));const at=new Date().toISOString();
- await fresh.route('**/data/status.json?*',r=>r.fulfill({json:{schemaVersion:1,generatedAt:at,probes:{'home-http':{status:'operational',reasonCode:'ok',observedAt:at},'home-render':{status:'operational',reasonCode:'ok',observedAt:at}},freshness:{}}}));
+ await fresh.route('**/data/status.json?*',r=>r.fulfill({json:{schemaVersion:1,generatedAt:at,probes:{'home-http':{status:'operational',reasonCode:'ok',observedAt:at,httpStatus:200,responseMs:150},'home-render':{status:'operational',reasonCode:'ok',observedAt:at,lcpMs:700}},freshness:{}}}));
  await fresh.clock.install({time:new Date()});await fresh.goto(base+'/#component/home',{waitUntil:'networkidle'});await fresh.locator('dialog[open]').waitFor();assert.equal(await fresh.locator('#detail-content > div > .badge').innerText(),'Operational');
  await fresh.clock.fastForward(16*60000);await fresh.waitForFunction(()=>document.querySelector('#detail-content > div > .badge')?.textContent==='Unknown');checks.push('open Operational detail expires to Unknown after check TTL');
  await fresh.close();

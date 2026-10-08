@@ -1,6 +1,7 @@
+import { verifyScheduledRun, verifyResources, componentMeasurements, measurementOverview, overviewSummary, runningEvidence } from './measurements.mjs';
 export const STATUSES = ['operational', 'degraded', 'partial_outage', 'major_outage', 'maintenance', 'unknown'];
-export const LABELS = { operational: 'Operational', degraded: 'Degraded performance', partial_outage: 'Partial outage', major_outage: 'Major outage', maintenance: 'Maintenance', unknown: 'Unknown' };
-export const REASONS = { ok: 'Checks passed', verified: 'Successful run and destination verified', not_configured: 'Destination monitor not connected', collector_stale: 'Collector evidence expired', verification_unavailable: 'Destination freshness unverified', run_failed: 'Scheduled import failed', destination_stale: 'Persisted destination data is stale', schedule_missed: 'Scheduled update overdue', dependency_unavailable: 'Required data source unavailable', slow: 'Response slower than target', rendering_slow: 'Page rendering slower than target', http_error: 'Unexpected HTTP response', content_mismatch: 'Expected content missing', schema_mismatch: 'Unexpected response format', timeout: 'Check timed out', network_error: 'Connection failed', automation_blocked: 'Automation protected; customer availability unverified', not_monitored: 'Functional monitor not connected', stale: 'Latest evidence expired', invalid_evidence: 'Evidence could not be verified', no_destination_evidence: 'Destination freshness unverified', freshness_late: 'Scheduled update overdue', source_blocked: 'Data source unavailable', unexpected_empty: 'Unexpected empty import', import_failed: 'Import failed', inactive: 'Scheduled feed inactive', collector_unavailable: 'Freshness collector unavailable', browser_unavailable: 'Rendering check unavailable' };
+export const LABELS = { operational: 'Operational', degraded: 'Needs attention', partial_outage: 'Partial outage', major_outage: 'Major outage', maintenance: 'Maintenance', unknown: 'Unknown' };
+export const REASONS = { ok: 'Checks passed', verified: 'Configured evidence verified', in_progress: 'Latest scheduled run is in progress', resource_pressure: 'Node readiness or sustained resource alert needs attention', rendering_incomplete: 'Visible images did not finish loading', not_configured: 'Destination monitor not connected', collector_stale: 'Collector evidence expired', verification_unavailable: 'Destination freshness unverified', run_failed: 'Scheduled import failed', destination_stale: 'Persisted destination data is stale', schedule_missed: 'Scheduled update overdue', dependency_unavailable: 'Required data source unavailable', slow: 'Response slower than target', rendering_slow: 'Page rendering slower than target', http_error: 'Unexpected HTTP response', content_mismatch: 'Expected content missing', schema_mismatch: 'Unexpected response format', timeout: 'Check timed out', network_error: 'Connection failed', automation_blocked: 'Automation protected; customer availability unverified', not_monitored: 'Functional monitor not connected', stale: 'Latest evidence expired', invalid_evidence: 'Evidence could not be verified', no_destination_evidence: 'Destination freshness unverified', freshness_late: 'Scheduled update overdue', source_blocked: 'Data source unavailable', unexpected_empty: 'Unexpected empty import', import_failed: 'Import failed', inactive: 'Scheduled feed inactive', collector_unavailable: 'Freshness collector unavailable', browser_unavailable: 'Rendering check unavailable' };
 
 export function time(value) { const t = typeof value === 'string' ? Date.parse(value) : NaN; return Number.isFinite(t) ? t : null; }
 export function validTime(value, now = Date.now()) { const t = time(value); return t !== null && t <= now + 60000; }
@@ -20,7 +21,11 @@ export function rollup(samples) {
 
 export function verifyFreshness(sample, now = Date.now(), limits = {}) {
   const base = currentEvidence(sample, 1200, now);
-  if (base.status === 'unknown') return base;
+  if (base.status === 'unknown') return { ...sample, ...base };
+  if (sample.measurementKind && sample.measurementKind !== 'destination_validation') return unknown('invalid_evidence', base.observedAt);
+  if (sample.lastAttemptOutcome === 'running') return { ...sample, ...runningEvidence(sample, now) };
+  if (sample.suspended === true) return { ...sample, ...unknown('inactive', base.observedAt) };
+  if (sample.lastAttemptOutcome === 'failed' && base.status === 'operational') return { ...sample, status: 'degraded', reasonCode: 'run_failed' };
   if (base.status === 'maintenance' && base.reasonCode === 'inactive') return base;
   if (!['operational', 'degraded', 'partial_outage', 'major_outage'].includes(base.status)) return unknown();
   if (base.status !== 'operational') return base;
@@ -39,17 +44,25 @@ export function verifyFreshness(sample, now = Date.now(), limits = {}) {
 
 export function componentState(component, state, registry, now = Date.now()) {
   let samples;
-  if (component.freshness) samples = [{ ...verifyFreshness(state.freshness?.[component.id], now, component), sourceId: component.id }];
+  if (component.freshness) {
+    const sample = state.freshness?.[component.id];
+    const verify = component.measurementKind === 'scheduled_run' ? verifyScheduledRun : component.measurementKind === 'cluster_resources' ? verifyResources : verifyFreshness;
+    samples = [{ ...verify(sample, now, component), sourceId: component.id }];
+  }
   else samples = (component.probes || []).map(id => ({ ...currentEvidence(state.probes?.[id], registry.probes.find(p => p.id === id)?.expiresSeconds || 0, now), sourceId: id }));
   if (!samples.length) samples = [unknown('not_monitored')];
   const status = rollup(samples);
   const dominant = samples.find(s => s.status === status) || samples[0];
   const checked = samples.filter(s => validTime(s.observedAt, now)).map(s => time(s.observedAt));
-  return { id: component.id, status, reasonCode: dominant.reasonCode, observedAt: checked.length ? new Date(Math.min(...checked)).toISOString() : null, samples };
+  const result = { id: component.id, status, reasonCode: dominant.reasonCode, observedAt: checked.length ? new Date(Math.min(...checked)).toISOString() : null, samples };
+  return { ...result, checkScope: component.coverage || 'Functional coverage is not connected', measurements: componentMeasurements(component, result, registry, now) };
 }
 
 export function viewState(registry, state, now = Date.now()) {
   const components = registry.components.map(c => ({ ...c, ...componentState(c, state, registry, now) }));
   const groups = registry.groups.map(g => ({ ...g, components: components.filter(c => c.group === g.id), status: rollup(components.filter(c => c.group === g.id)) }));
-  return { components, groups, status: rollup(components), collector: currentEvidence({ status: 'operational', reasonCode: 'ok', observedAt: state.generatedAt }, 900, now) };
+  const view = { components, groups, status: rollup(components), collector: currentEvidence({ status: 'operational', reasonCode: 'ok', observedAt: state.generatedAt }, 900, now) };
+  view.measurements = measurementOverview(registry, state, components, now);
+  view.summary = overviewSummary(view);
+  return view;
 }

@@ -1,5 +1,5 @@
 import { viewState, LABELS, REASONS, rollup, time } from './model.mjs';
-import { normalizeIncidents, STAGE_LABELS, safePublicUrl } from './incident-model.mjs';
+import { normalizeIncidents, STAGE_LABELS, safePublicUrl, displayIncidentTitle } from './incident-model.mjs';
 
 let registry, state, history, incidents, currentView, loading = false, failed = false;
 let detailOrigin = null, previousHash = '', renderedRoute = '';
@@ -33,7 +33,7 @@ function historyStrip(ids) {
 }
 function incidentCard(i) {
   const card = link('', route('incident', i.id), 'incident-card');
-  const top = el('div', 'incident-title-row'); top.append(el('h3', '', i.title), el('span', 'row-arrow', '›'));
+  const top = el('div', 'incident-title-row'); top.append(el('h3', '', displayIncidentTitle(i, currentView?.components.find(c=>c.id===i.componentId))), el('span', 'row-arrow', '›'));
   const meta = el('div', 'incident-meta');
   meta.append(el('span', `incident-stage ${i.resolvedAt ? 'resolved' : 'active'}`, STAGE_LABELS[i.stage] || (i.resolvedAt ? 'Resolved' : 'Investigating')), el('time', '', stamp(i.updatedAt || i.openedAt)));
   if (i.postmortem?.state === 'published') meta.append(el('span', '', 'Postmortem published'));
@@ -142,7 +142,7 @@ function groupDetail(g, selectedDay) {
   addHistory(body, g.components.map(c => c.id), 'group', g.id, selectedDay); return body;
 }
 function incidentDetail(i) {
-  const body = el('div'), title = el('h2', 'detail-title', i.title); title.id = 'detail-title'; body.append(title, el('span', `incident-stage ${i.resolvedAt ? 'resolved' : 'active'}`, STAGE_LABELS[i.stage] || 'Investigating'), el('p', 'detail-meta', `Opened ${stamp(i.openedAt)}${i.resolvedAt ? ` · Resolved ${stamp(i.resolvedAt)}` : ''}`));
+  const body = el('div'), title = el('h2', 'detail-title', displayIncidentTitle(i, currentView?.components.find(c=>c.id===i.componentId))); title.id = 'detail-title'; body.append(title, el('span', `incident-stage ${i.resolvedAt ? 'resolved' : 'active'}`, STAGE_LABELS[i.stage] || 'Investigating'), el('p', 'detail-meta', `Opened ${stamp(i.openedAt)}${i.resolvedAt ? ` · Resolved ${stamp(i.resolvedAt)}` : ''}`));
   const affected = section('Affected services'), links = el('div', 'affected-links'); const ids = new Set([i.componentId, ...(i.componentIds || [])].filter(Boolean));
   for (const id of ids) { const c = currentView.components.find(c => c.id === id); if (c) links.append(link(c.name, route('component', id))); } affected.append(links); if (links.children.length) body.append(affected);
   const sec = section('Updates'), timeline = el('ol', 'timeline');

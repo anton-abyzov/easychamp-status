@@ -39,3 +39,13 @@ export function normalizeIncidents(payload) {
   const rows = Array.isArray(payload) ? payload : payload?.incidents;
   return (Array.isArray(rows) ? rows : []).map(normalizeIncident).filter(Boolean);
 }
+
+// The original record and timeline stay intact. Correct only legacy generic
+// performance labels when their recorded evidence explicitly concerns data jobs.
+export function displayIncidentTitle(incident, component) {
+  if (component?.freshness && incident.title.endsWith(': degraded performance')) {
+    if (['run_failed','schedule_missed'].includes(incident.reasonCode)) return `${component.name}: scheduled import issue`;
+    if (['destination_stale','freshness_late'].includes(incident.reasonCode)) return `${component.name}: data freshness issue`;
+  }
+  return incident.title;
+}

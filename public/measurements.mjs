@@ -85,7 +85,10 @@ function execution(component, sample, now) {
   if (sample.suspended === true) return unknown('inactive', sample.observedAt);
   if (sample.lastAttemptOutcome === 'running') return runningEvidence(sample, now);
   if (sample.lastAttemptOutcome === 'failed') return dated(sample, 'lastAttemptAt', now) ? { ...sample, status: 'degraded', reasonCode: 'run_failed' } : unknown('invalid_evidence', sample.observedAt);
-  if (!dated(sample, 'lastCompletedSuccessAt', now) || time(sample.nextDueAt) === null || !Number.isInteger(sample.graceSeconds)) return unknown('verification_unavailable', sample.observedAt);
+  if (sample.lastAttemptOutcome !== 'succeeded' || !dated(sample, 'lastAttemptAt', now) || !dated(sample, 'lastCompletedSuccessAt', now)
+      || time(sample.lastAttemptAt) > time(sample.lastCompletedSuccessAt) || time(sample.nextDueAt) === null
+      || time(sample.nextDueAt) < time(sample.lastCompletedSuccessAt) || !Number.isInteger(sample.graceSeconds)
+      || sample.graceSeconds < 0 || sample.graceSeconds > (component.maxGraceSeconds || 86400)) return unknown('verification_unavailable', sample.observedAt);
   if (now > time(sample.nextDueAt) + sample.graceSeconds * 1000 || now - time(sample.lastCompletedSuccessAt) > (component.maxSuccessHours || 192) * 3600000) return { ...sample, status: 'degraded', reasonCode: 'schedule_missed' };
   return { ...sample, status: 'operational', reasonCode: 'verified' };
 }

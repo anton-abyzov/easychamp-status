@@ -78,3 +78,14 @@ test('legacy import incident labels describe their recorded failure without chan
   assert.equal(incident.title,'PES Master: degraded performance');
   assert.equal(displayIncidentTitle({...incident,reasonCode:'rendering_slow'},{freshness:false,name:'Home'}),incident.title);
 });
+
+test('destination aggregate historical completion cannot certify the latest execution', () => {
+  const c={id:'feed-results',name:'Aggregated results',group:'data',freshness:true,measurementKind:'destination_validation',maxSuccessHours:8,maxDestinationHours:1,maxGraceSeconds:3600};
+  const r={groups:registry.groups,probes:[],components:[c]};
+  const receipt={...good,id:c.id,measurementKind:c.measurementKind,lastDestinationVerifiedAt:at(-5),destinationVerification:'verified'};
+  for(const change of [{lastAttemptOutcome:'unknown',lastAttemptAt:null},{lastAttemptAt:at(-2)},{lastAttemptAt:at(2)}]) {
+    const v=viewState(r,{generatedAt:at(-1),probes:{},freshness:{[c.id]:{...receipt,...change}}},now);
+    assert.equal(v.measurements.find(m=>m.id==='scheduled-runs').status,'unknown');
+  }
+  assert.equal(viewState(r,{generatedAt:at(-1),probes:{},freshness:{[c.id]:receipt}},now).measurements.find(m=>m.id==='scheduled-runs').status,'operational');
+});

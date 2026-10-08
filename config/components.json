@@ -32,6 +32,11 @@
       "id": "player-data",
       "name": "Player data & news",
       "description": "Scheduled imports and destination freshness"
+    },
+    {
+      "id": "platform",
+      "name": "Platform & monitoring",
+      "description": "Kubernetes resource and monitoring coverage"
     }
   ],
   "probes": [
@@ -329,7 +334,8 @@
       "coverage": "Scheduled result imports and verified destination freshness",
       "maxSuccessHours": 8,
       "maxDestinationHours": 1,
-      "maxGraceSeconds": 3600
+      "maxGraceSeconds": 3600,
+      "measurementKind": "destination_validation"
     },
     {
       "id": "scraper-sofifa",
@@ -339,7 +345,8 @@
       "coverage": "Successful import and verified destination freshness",
       "maxSuccessHours": 336,
       "maxDestinationHours": 26,
-      "maxGraceSeconds": 86400
+      "maxGraceSeconds": 86400,
+      "measurementKind": "destination_validation"
     },
     {
       "id": "scraper-pesmaster",
@@ -349,7 +356,8 @@
       "coverage": "Successful import and verified destination freshness",
       "maxSuccessHours": 36,
       "maxDestinationHours": 26,
-      "maxGraceSeconds": 28800
+      "maxGraceSeconds": 28800,
+      "measurementKind": "destination_validation"
     },
     {
       "id": "scraper-fbref",
@@ -359,7 +367,8 @@
       "coverage": "Successful import and verified destination freshness",
       "maxSuccessHours": 192,
       "maxDestinationHours": 26,
-      "maxGraceSeconds": 86400
+      "maxGraceSeconds": 86400,
+      "measurementKind": "destination_validation"
     },
     {
       "id": "scraper-fifaindex",
@@ -369,7 +378,8 @@
       "coverage": "Successful import and verified destination freshness",
       "maxSuccessHours": 192,
       "maxDestinationHours": 26,
-      "maxGraceSeconds": 86400
+      "maxGraceSeconds": 86400,
+      "measurementKind": "destination_validation"
     },
     {
       "id": "scraper-news",
@@ -379,7 +389,8 @@
       "coverage": "Successful import and verified destination freshness",
       "maxSuccessHours": 12,
       "maxDestinationHours": 12,
-      "maxGraceSeconds": 7200
+      "maxGraceSeconds": 7200,
+      "measurementKind": "destination_validation"
     },
     {
       "id": "player-catalogue-validation",
@@ -389,7 +400,269 @@
       "coverage": "Daily authoritative player catalogue validation; does not prove every source import",
       "maxSuccessHours": 28,
       "maxDestinationHours": 28,
-      "maxGraceSeconds": 14400
+      "maxGraceSeconds": 14400,
+      "measurementKind": "destination_validation"
+    },
+    {
+      "id": "feed-england",
+      "name": "England results",
+      "measurementKind": "scheduled_run",
+      "schedule": "2,17,32,47 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-spain",
+      "name": "Spain results",
+      "measurementKind": "scheduled_run",
+      "schedule": "0,15,30,45 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-france",
+      "name": "France results",
+      "measurementKind": "scheduled_run",
+      "schedule": "8,23,38,53 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-germany",
+      "name": "Germany results",
+      "measurementKind": "scheduled_run",
+      "schedule": "6,21,36,51 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-italy",
+      "name": "Italy results",
+      "measurementKind": "scheduled_run",
+      "schedule": "4,19,34,49 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-mls",
+      "name": "MLS results",
+      "measurementKind": "scheduled_run",
+      "schedule": "12,27,42,57 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-ucl",
+      "name": "Champions League results",
+      "measurementKind": "scheduled_run",
+      "schedule": "10,25,40,55 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-ligamx-apertura",
+      "name": "Liga MX Apertura",
+      "measurementKind": "scheduled_run",
+      "schedule": "14,29,44,59 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-ligamx-clausura",
+      "name": "Liga MX Clausura",
+      "measurementKind": "scheduled_run",
+      "schedule": "1,16,31,46 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-nations-league",
+      "name": "Nations League results",
+      "measurementKind": "scheduled_run",
+      "schedule": "3,18,33,48 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-upsl",
+      "name": "UPSL results",
+      "measurementKind": "scheduled_run",
+      "schedule": "17 */2 * * *",
+      "timeZone": "America/New_York",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-ussl",
+      "name": "USSL results",
+      "measurementKind": "scheduled_run",
+      "schedule": "37 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-world-cup",
+      "name": "World Cup results",
+      "measurementKind": "scheduled_run",
+      "schedule": "*/15 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-external-sync",
+      "name": "External league sync",
+      "measurementKind": "scheduled_run",
+      "schedule": "0 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-external-demand",
+      "name": "External league requests",
+      "measurementKind": "scheduled_run",
+      "schedule": "5-55/10 * * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-upsl-demand",
+      "name": "UPSL requests",
+      "measurementKind": "scheduled_run",
+      "schedule": "*/10 * * * *",
+      "timeZone": "America/New_York",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-reconcile",
+      "name": "League reconciliation",
+      "measurementKind": "scheduled_run",
+      "schedule": "35 6 * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "feed-reconcile-nations",
+      "name": "Nations League reconciliation",
+      "measurementKind": "scheduled_run",
+      "schedule": "40 6 * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "results",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "player-ratings-scrape",
+      "name": "Player ratings scrape",
+      "measurementKind": "scheduled_run",
+      "schedule": "0 3 * * 1",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "player-data",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "player-ratings-import",
+      "name": "Player ratings import",
+      "measurementKind": "scheduled_run",
+      "schedule": "0 7 * * *",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "player-data",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "news-seo-refresh",
+      "name": "News SEO refresh",
+      "measurementKind": "scheduled_run",
+      "schedule": "0 7 * * 1",
+      "timeZone": "Etc/UTC",
+      "maxSuccessHours": 192,
+      "maxGraceSeconds": 43200,
+      "group": "player-data",
+      "freshness": true,
+      "coverage": "Scheduled-job execution and next due only; persisted destination data is not independently verified"
+    },
+    {
+      "id": "cluster-resources",
+      "group": "platform",
+      "name": "Kubernetes resources",
+      "freshness": true,
+      "measurementKind": "cluster_resources",
+      "maxGraceSeconds": 0,
+      "coverage": "Node readiness, fixed firing resource alerts and fresh aggregate CPU/memory/disk measurements from Prometheus; application workflows are checked separately"
     }
   ]
 }

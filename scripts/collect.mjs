@@ -4,6 +4,7 @@ import { viewState, time, REASONS, STATUSES } from '../public/model.mjs';
 import { safeFetch, monitorHeaders } from './auth.mjs';
 import { publishHeartbeat } from './heartbeat.mjs';
 import { recordObservation, evidenceIdentity } from './observations.mjs';
+import { sanitizeFreshness } from './freshness-contract.mjs';
 import { advanceIncidents, seedConfirmedIncidents, incidentDocument } from './incidents.mjs';
 import { blockedRequestEvidence, initialRenderBlocked, blockedRequestCounts } from './render-coverage.mjs';
 
@@ -75,8 +76,9 @@ if (browserRun) {
         const metrics = await page.evaluate(() => ({ lcpMs: Math.round(window.__statusLcp || 0), textLength: document.body?.innerText.trim().length || 0, pendingVisibleImages: [...document.images].filter(i => { const r = i.getBoundingClientRect(); return r.width > 40 && r.height > 40 && r.top < innerHeight && r.bottom > 0 && (!i.complete || i.naturalWidth === 0); }).length }));
         if (!new RegExp(probe.titlePattern).test(title) || metrics.textLength < 30) return evidence('partial_outage', 'content_mismatch');
         if (metrics.lcpMs <= 0) return evidence('unknown', 'invalid_evidence');
-        const slow = metrics.lcpMs > probe.maxLcpMs || metrics.pendingVisibleImages > 0;
-        return evidence(slow ? 'degraded' : 'operational', slow ? 'rendering_slow' : 'ok', { lcpMs: metrics.lcpMs });
+        const slow = metrics.lcpMs > probe.maxLcpMs;
+        const incomplete = metrics.pendingVisibleImages > 0;
+        return evidence(slow || incomplete ? 'degraded' : 'operational', slow ? 'rendering_slow' : incomplete ? 'rendering_incomplete' : 'ok', { lcpMs: metrics.lcpMs });
       } catch (error) { return evidence('unknown', error.name === 'TimeoutError' ? 'timeout' : 'browser_unavailable'); }
       finally {
         if (probe.monitorAuth || blockedRequests.length) console.log(JSON.stringify({ probe: probe.id, blockedRequests: blockedRequestCounts(blockedRequests) }));
@@ -88,24 +90,19 @@ if (browserRun) {
 }
 
 const allowedFreshness = new Set(registry.components.filter(c => c.freshness).map(c => c.id));
-const allowedFields = ['id', 'status', 'observedAt', 'lastCompletedSuccessAt', 'lastDestinationVerifiedAt', 'nextDueAt', 'graceSeconds', 'reasonCode'];
+function validPayloadIdentity(components) { return new Set(components.map(c => c?.id)).size === allowedFreshness.size && components.every(c => c && allowedFreshness.has(c.id)); }
 try {
   const response = await fetch(registry.freshnessUrl, { signal: AbortSignal.timeout(12000), headers: { Accept: 'application/json' } });
   if (!response.ok) throw new Error('unavailable');
-  const payload = JSON.parse(await boundedBody(response, 100000));
-  if (payload.schemaVersion !== 1 || !Array.isArray(payload.components)) throw new Error('invalid');
-  for (const component of payload.components) {
-    if (!allowedFreshness.has(component.id) || state.freshness[component.id]) continue;
-    const safe = Object.fromEntries(allowedFields.filter(k => Object.hasOwn(component, k)).map(k => [k, component[k]]));
-    if (!STATUSES.includes(safe.status) || !Object.hasOwn(REASONS, safe.reasonCode)) continue;
-    if (Object.entries(safe).some(([k, v]) => k !== 'graceSeconds' && typeof v !== 'string' && v !== null)) continue;
-    for (const key of ['observedAt', 'lastCompletedSuccessAt', 'lastDestinationVerifiedAt', 'nextDueAt']) safe[key] = time(safe[key]) === null ? null : new Date(time(safe[key])).toISOString();
-    if (!Number.isInteger(safe.graceSeconds) || safe.graceSeconds < 0 || safe.graceSeconds > 604800) { safe.graceSeconds = 0; safe.status = 'unknown'; safe.reasonCode = 'invalid_evidence'; }
-    if (!safe.observedAt) { safe.status = 'unknown'; safe.reasonCode = 'invalid_evidence'; }
-    state.freshness[component.id] = safe;
+  const payload = JSON.parse(await boundedBody(response, 40000));
+  if (payload.schemaVersion !== 1 || !Array.isArray(payload.components) || payload.components.length !== allowedFreshness.size
+      || !validPayloadIdentity(payload.components)) throw new Error('invalid');
+  for (const raw of payload.components) {
+    const component = registry.components.find(c => c.id === raw.id);
+    state.freshness[raw.id] = sanitizeFreshness(raw, component);
   }
 } catch { /* Preserve explicit missing evidence, never last known green. */ }
-for (const id of allowedFreshness) if (!state.freshness[id]) state.freshness[id] = evidence('unknown', 'collector_unavailable');
+for (const id of allowedFreshness) if (!state.freshness[id]) { const c=registry.components.find(c=>c.id===id); state.freshness[id] = { ...sanitizeFreshness(null,c), reasonCode:'collector_unavailable' }; }
 
 state.generatedAt = new Date().toISOString();
 const view = viewState(registry, state);

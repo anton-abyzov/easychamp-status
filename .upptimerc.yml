@@ -7,6 +7,18 @@
   "skipDeleteIssues": true,
   "sites": [
     {
+      "name": "AI assistant",
+      "slug": "assistant-health",
+      "url": "https://easychamp.com/ec-chat-api/assistant/v1/health",
+      "expectedStatusCodes": [
+        200
+      ],
+      "maxResponseTime": 5000,
+      "maxRedirects": 3,
+      "connectTimeout": 5,
+      "requestTimeout": 15
+    },
+    {
       "name": "EasyChamp home",
       "slug": "home-http",
       "url": "https://easychamp.com/",

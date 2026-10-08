@@ -4,7 +4,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
 import assert from 'node:assert/strict';
 const root=process.cwd();
-const registry = JSON.parse(await readFile(resolve(root,'config/components.json'),'utf8'));
+const registry = JSON.parse(await readFile(resolve(root,'dist/data/components.json'),'utf8'));
 process.env.PWDEBUG='0'; process.env.PLAYWRIGHT_HTML_OPEN='never';
 const evidence=resolve(process.env.STATUS_UI_EVIDENCE_DIR || 'test-results/ui');
 await mkdir(evidence,{recursive:true});
@@ -21,6 +21,18 @@ try{
  await page.locator('.group').first().waitFor();
  assert.equal(await page.locator('.group').count(),registry.groups.length);assert.equal(await page.locator('#groups .component-link').count(),registry.components.length);assert.equal(await page.locator('.group-details[open]').count(),0);
  await page.screenshot({path:evidence+'/desktop-light.png',fullPage:true});checks.push(`${registry.groups.length} collapsed groups; ${registry.components.length} nested components`);
+ if(await page.locator('.measurement-card').count()) {
+  const dimensions=await page.locator('.measurement-card').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('href')));
+  for(const href of dimensions) {
+   await page.locator(`a[href="${href}"]`).click();await page.locator('dialog[open]').waitFor();
+   assert.ok(await page.locator('#detail-content .component-link').count()>0,`missing service rollups for ${href}`);
+   assert.ok(!/undefined|NaN/.test(await page.locator('#detail-content').innerText()));
+   await page.locator('.measurement-evidence summary').click();assert.ok(await page.locator('.measurement-evidence li').count()>0);
+   await page.keyboard.press('Escape');await page.locator('dialog').waitFor({state:'hidden'});
+  }
+  checks.push('measurement dimensions link to services and expose detailed evidence without invalid values');
+ }
+
  await page.locator('.group-details summary').first().click();
  await page.locator('.component-link').first().click();await page.locator('dialog[open]').waitFor();
  assert.match(await page.locator('#detail-title').innerText(),/EasyChamp home/);assert.match(page.url(),/#component\/home/);
@@ -52,7 +64,7 @@ try{
  const failedPage=await browser.newPage();failedPage.on('pageerror',e=>errors.push(e.message));await failedPage.route('**/data/components.json?*',r=>r.fulfill({json:{groups:[null],components:[null],probes:[]}}));await failedPage.goto(base,{waitUntil:'networkidle'});await failedPage.getByText('Service status unavailable',{exact:true}).waitFor();assert.equal(await failedPage.locator('#overall-badge').innerText(),'Unknown');await failedPage.close();checks.push('invalid initial registry fails closed without uncaught error');
 
  const readable=await browser.newPage({viewport:{width:390,height:844},reducedMotion:'reduce'});readable.on('pageerror',e=>errors.push(e.message));await readable.goto(base,{waitUntil:'networkidle'});await readable.evaluate(()=>document.fonts.ready);assert.ok(await readable.evaluate(()=>document.fonts.check('500 16px "Inter Variable"')&&document.fonts.check('600 28px "Inter Tight Variable"')));assert.ok(await readable.locator('img').evaluateAll(nodes=>nodes.every(n=>n.complete&&n.naturalWidth>0)));assert.equal(await readable.locator('.brand-mark').count(),0);checks.push('real SVG brand and theme-aware product images load; both self-hosted variable fonts render');
- for(const width of [1440,820,390,320])for(const theme of ['light','dark']){await readable.setViewportSize({width,height:1000});await readable.emulateMedia({colorScheme:theme});await readable.goto(base,{waitUntil:'networkidle'});await readable.evaluate(()=>document.documentElement.style.fontSize='200%');if (!(await readable.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))) { await readable.screenshot({path:evidence+`/failure-text-200-${width}-${theme}.png`,fullPage:true}); console.log(await readable.evaluate(()=>[...document.querySelectorAll('body *')].filter(n=>n.getBoundingClientRect().right>innerWidth+1).map(n=>({tag:n.tagName,class:n.className,width:n.getBoundingClientRect().width,right:n.getBoundingClientRect().right})).slice(0,20))); } assert.ok(await readable.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`200% text overflow ${width} ${theme}`);await readable.screenshot({path:evidence+`/text-200-${width}-${theme}.png`,fullPage:true});await readable.locator('.group-history').first().click();await readable.locator('dialog[open]').waitFor();assert.ok(await readable.locator('dialog').evaluate(n=>n.scrollWidth<=n.clientWidth),`200% dialog overflow ${width} ${theme}`);await readable.getByRole('button',{name:'Previous day',exact:true}).click();await readable.getByRole('button',{name:'Next day',exact:true}).click();await readable.getByRole('button',{name:'Close details'}).click();await readable.locator('dialog').waitFor({state:'hidden'});}
+ for(const width of [1440,820,390,320])for(const theme of ['light','dark']){await readable.setViewportSize({width,height:1000});await readable.emulateMedia({colorScheme:theme});await readable.goto(base,{waitUntil:'networkidle'});await readable.evaluate(()=>document.documentElement.style.fontSize='200%');if (!(await readable.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))) { await readable.screenshot({path:evidence+`/failure-text-200-${width}-${theme}.png`,fullPage:true}); console.log(await readable.evaluate(()=>[...document.querySelectorAll('body *')].filter(n=>n.getBoundingClientRect().right>innerWidth+1).map(n=>({tag:n.tagName,class:n.className,width:n.getBoundingClientRect().width,right:n.getBoundingClientRect().right})).slice(0,20))); } assert.ok(await readable.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`200% text overflow ${width} ${theme}`);await readable.screenshot({path:evidence+`/text-200-${width}-${theme}.png`,fullPage:true});await readable.screenshot({path:evidence+`/text-200-${width}-${theme}-viewport.png`,fullPage:false});await readable.locator('.group-history').first().click();await readable.locator('dialog[open]').waitFor();assert.ok(await readable.locator('dialog').evaluate(n=>n.scrollWidth<=n.clientWidth),`200% dialog overflow ${width} ${theme}`);await readable.getByRole('button',{name:'Previous day',exact:true}).click();await readable.getByRole('button',{name:'Next day',exact:true}).click();await readable.getByRole('button',{name:'Close details'}).click();await readable.locator('dialog').waitFor({state:'hidden'});}
  checks.push('200% text at 1440/820/390/320 in both themes; no overflow and touch-sized previous/next date controls work');await readable.close();
  assert.deepEqual(errors,[]);checks.push('no uncaught browser errors');
  await writeFile(evidence+'/report.json',JSON.stringify({headless:true,checks,errors,browser:browser.version(),at:new Date().toISOString()},null,2));console.log(JSON.stringify({checks,errors}));

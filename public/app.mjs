@@ -94,12 +94,13 @@ function render() {
   $('#legend').replaceChildren(...Object.keys(LABELS).map(badge));
   // Re-evaluate open details too: a passing check must expire while it is being read.
   const dialog = $('#detail-dialog'), scroll = dialog.scrollTop;
+  const expandedEvidence = dialog.querySelector('.measurement-evidence')?.open;
   const focusId = dialog.contains(document.activeElement) ? document.activeElement.id : '';
   const focusedDay = dialog.contains(document.activeElement) ? document.activeElement.getAttribute('aria-label') : '';
   const focusedDetailHref = dialog.contains(document.activeElement) ? document.activeElement.getAttribute('href') : '';
   if (dialog.open) renderedRoute = '';
   showRoute();
-  if (dialog.open) { dialog.scrollTop = scroll; if (focusId) document.getElementById(focusId)?.focus({ preventScroll: true }); else if (focusedDay) [...dialog.querySelectorAll('[aria-label]')].find(n => n.getAttribute('aria-label') === focusedDay)?.focus({ preventScroll: true }); else if (focusedDetailHref) [...dialog.querySelectorAll('a[href]')].find(n => n.getAttribute('href') === focusedDetailHref)?.focus({ preventScroll: true }); }
+  if (dialog.open) { const evidence = dialog.querySelector('.measurement-evidence'); if (evidence && expandedEvidence) evidence.open = true; dialog.scrollTop = scroll; if (focusId) document.getElementById(focusId)?.focus({ preventScroll: true }); else if (focusedDay) [...dialog.querySelectorAll('[aria-label]')].find(n => n.getAttribute('aria-label') === focusedDay)?.focus({ preventScroll: true }); else if (focusedDetailHref) [...dialog.querySelectorAll('a[href]')].find(n => n.getAttribute('href') === focusedDetailHref)?.focus({ preventScroll: true }); }
 }
 function section(title) { const node = el('section', 'detail-section'); node.append(el('h3', '', title)); return node; }
 function addHistory(parent, ids, kind, id, selectedDay) {
@@ -124,12 +125,12 @@ function componentDetail(c, selectedDay) {
   const body = el('div'); body.append(el('h2', 'detail-title', c.name), badge(c.status)); body.querySelector('h2').id = 'detail-title';
   const scope = section('What is checked'); scope.append(el('p', '', c.checkScope || c.coverage), el('div', 'detail-meta', `Last observation: ${stamp(c.observedAt)} · ${age(c.observedAt)}`)); body.append(scope);
   const checks = section('Current checks'), list = el('ul', 'check-list');
-  c.samples.forEach(sample => { const probe = registry.probes.find(p => p.id === sample.sourceId); const item = el('li'), text = el('div'); const name = c.freshness ? 'Scheduled import & destination' : probe?.type === 'browser' ? 'Page rendering' : probe?.type === 'http' ? 'HTTP content check' : 'Functional monitoring';
+  c.samples.forEach(sample => { const probe = registry.probes.find(p => p.id === sample.sourceId); const item = el('li'), text = el('div'); const name = c.freshness ? (c.measurements?.[0]?.label || 'Data freshness check') : probe?.type === 'browser' ? 'Page rendering' : probe?.type === 'http' ? 'HTTP content check' : 'Functional monitoring';
     text.append(el('div', 'check-name', name), el('div', 'check-reason', REASONS[sample.reasonCode] || 'Evidence unavailable'));
     const metrics = [sample.lcpMs ? `LCP ${(sample.lcpMs/1000).toFixed(1)}s` : '', sample.responseMs ? `Response ${(sample.responseMs/1000).toFixed(1)}s` : ''].filter(Boolean);
     if (metrics.length) text.append(el('div', 'check-reason', metrics.join(' · '))); item.append(text, badge(sample.status)); list.append(item);
   }); checks.append(list); body.append(checks);
-  if (c.measurements?.length) { const measured = section('Measured signals'), rows = el('ul', 'check-list'); c.measurements.forEach(m => { const row = el('li'), copy = el('div'); copy.append(el('div', 'check-name', m.label), el('div', 'check-reason', m.scope || REASONS[m.reasonCode] || 'No current evidence')); if (m.value !== undefined && m.value !== null) copy.append(el('div', 'metric-value', metric(m.value, m.unit))); if (m.target !== undefined && m.target !== null) copy.append(el('div', 'check-reason', `${m.unit === 'nodes' ? 'Total' : 'Target'}: ${metric(m.target, m.unit)}`)); row.append(copy, badge(m.status)); rows.append(row); }); measured.append(rows); body.append(measured); }
+  if (c.measurements?.length) { const measured = section('Measured signals'), rows = el('ul', 'check-list'); c.measurements.forEach(m => { const row = el('li'), copy = el('div'); copy.append(el('div', 'check-name', m.label), el('div', 'check-reason', m.scope || REASONS[m.reasonCode] || 'No current evidence')); if (m.value !== undefined && m.value !== null) copy.append(el('div', 'metric-value', metric(m.value, m.unit))); if (m.target !== undefined && m.target !== null) copy.append(el('div', 'check-reason', `${m.unit === 'nodes' ? 'Total' : 'Target'}: ${metric(m.target, m.unit)}`)); if (m.summary) copy.append(el('p', 'signal-summary', m.summary)); copy.append(el('div', 'check-reason', `Checked ${stamp(m.observedAt)}`)); row.append(copy, badge(m.status)); rows.append(row); }); measured.append(rows); body.append(measured); }
   addHistory(body, [c.id], 'component', c.id, selectedDay);
   const related = normalizeIncidents(incidents).filter(i => i.componentId === c.id || i.componentIds?.includes(c.id));
   if (related.length) { const updates = section('Incident updates'); related.slice(0,10).forEach(i => updates.append(incidentCard(i))); body.append(updates); }
@@ -155,8 +156,25 @@ function measurementDetail(m) {
   body.append(title, badge(m.status));
   if (m.summary) body.append(el('p', 'detail-lead', m.summary));
   const scope = section('What this signal covers'); scope.append(el('p', '', m.scope || 'Coverage is limited to the configured checks.'), el('div', 'detail-meta', `Last observation: ${stamp(m.observedAt)}`)); body.append(scope);
-  const services = currentView.components.filter(c => c.measurements?.some(signal => signal.id === m.id));
-  if (services.length) { const measured = section('Services'); for (const c of services) { const a = link('', route('component', c.id), 'component-link'); a.append(el('span', 'component-name', c.name), badge(c.measurements.find(signal => signal.id === m.id).status)); measured.append(a); } body.append(measured); }
+  const services = currentView.components.filter(c => c.measurements?.some(signal => signal.dimension === m.id));
+  if (services.length) { const measured = section('Services'); for (const c of services) { const a = link('', route('component', c.id), 'component-link'); a.append(el('span', 'component-name', c.name), badge(rollup(c.measurements.filter(signal => signal.dimension === m.id)))); measured.append(a); } body.append(measured); }
+  if (m.rows?.length) {
+    const details = el('details', 'measurement-evidence'), toggle = el('summary', '', `Detailed observations (${m.rows.length})`); toggle.id = 'measurement-evidence-toggle'; details.append(toggle);
+    const rows = el('ul', 'check-list');
+    for (const r of m.rows) {
+      const row = el('li'), copy = el('div'), probe = registry.probes.find(p => p.id === r.id), component = currentView.components.find(c => c.id === r.componentId || c.id === r.id || c.probes?.includes(r.id));
+      const label = probe && component ? `${component.name} · ${probe.type === 'browser' ? 'Page rendering' : 'HTTP check'}` : r.label || component?.name || 'Configured observation';
+      copy.append(el('div', 'check-name', label));
+      if (Number.isFinite(r.value)) copy.append(el('div', 'metric-value', metric(r.value, r.unit)));
+      if (Number.isFinite(r.target)) copy.append(el('div', 'check-reason', `${r.unit === 'nodes' ? 'Total' : 'Target'}: ${metric(r.target, r.unit)}`));
+      if (r.summary) copy.append(el('p', 'signal-summary', r.summary));
+      if (r.scope) copy.append(el('div', 'check-reason', r.scope));
+      copy.append(el('div', 'check-reason', `Checked ${stamp(r.observedAt)}`));
+      if (component) copy.append(link('Service details →', route('component', component.id), 'detail-link'));
+      row.append(copy, badge(r.status)); rows.append(row);
+    }
+    details.append(rows); body.append(details);
+  }
   return body;
 }
 function showRoute() {
@@ -169,7 +187,7 @@ function showRoute() {
   const item = kind === 'measurement' ? currentView.measurements?.find(m => m.id === id) : kind === 'component' ? currentView.components.find(c => c.id === id) : kind === 'group' ? currentView.groups.find(g => g.id === id) : normalizeIncidents(incidents).find(i => i.id === id);
   if (item) body = kind === 'measurement' ? measurementDetail(item) : kind === 'component' ? componentDetail(item, day) : kind === 'group' ? groupDetail(item, day) : incidentDetail(item);
   else { body = el('div'); const title = el('h2', 'detail-title', 'Details unavailable'); title.id = 'detail-title'; body.append(title, el('p', '', 'This service or incident is not present in the current monitoring data.')); }
-  $('#detail-kind').textContent = kind === 'measurement' ? 'MONITORING SIGNAL' : kind === 'incident' ? 'INCIDENT DETAILS' : kind === 'group' ? 'GROUP HISTORY' : 'SERVICE DETAILS';
+  $('#detail-kind').textContent = kind === 'measurement' ? 'SIGNAL DETAILS' : kind === 'incident' ? 'INCIDENT DETAILS' : kind === 'group' ? 'GROUP HISTORY' : 'SERVICE DETAILS';
   $('#detail-content').replaceChildren(body); renderedRoute = location.hash;
   if (!dialog.open) { detailOrigin = document.activeElement; dialog.showModal(); $('#close-detail').focus(); }
   dialog.scrollTop = 0;

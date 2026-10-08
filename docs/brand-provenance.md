@@ -13,3 +13,9 @@ This independent status site vendors a small, pinned snapshot of the supported E
 ## Status-specific adaptation
 
 The status stylesheet maps existing neutral/brand/semantic UIKit tokens to the status vocabulary. Green means configured checks passed; the brand accent remains indigo. Body and control sizes use rem-based UIKit roles, mobile captions follow UIKit's larger mobile token, controls have 44px minimum targets, and reduced-motion is respected. Observed-history strips read the published monitoring records and never use the product-preview images as evidence.
+
+## Verification boundary
+
+The branding and signal UI were checked headlessly at 1440, 820, 390 and 320 CSS pixels in both themes, with 100% and 200% text. The regression harness checks dynamic registry counts, keyboard history, nested routes, Escape/Close/Back, stale-check invalidation, invalid data, actual assets and fonts, and signal detail rows. Run `npm run check:ui` against the built distribution.
+
+Integration screenshots under `status-redesign-20261007/brand-candidate` use actual captured monitoring observations with an explicitly fixed as-of clock (`2026-10-08T00:05:00Z`): the public generation is `2026-10-07T23:54:04.889Z`, combined with the actual cluster observation at `2026-10-08T00:04:52Z`. Original observation timestamps are preserved. These prove candidate UI behavior, not a deployed release or current production health. The saved report includes input/source SHA-256 identities and the captured inputs are retained beside it. Early overflow failures remain in the evidence directory; intrinsic reflow fixes were retested without weakening assertions.

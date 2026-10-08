@@ -2,16 +2,104 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "feed-results-1791424102502",
+      "componentId": "feed-results",
+      "title": "Match results & schedules: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-08T01:48:22.502Z",
+      "updatedAt": "2026-10-08T02:41:20.726Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-10-07T06:00:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "feed-results-1791424102502-monitor-2026-10-08T01:48:22.502Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-08T01:48:22.502Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-10-08T01:40:06.000Z"
+          }
+        },
+        {
+          "id": "feed-results-1791424102502-monitor-2026-10-08T02:10:31.413Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-08T02:10:31.413Z",
+          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-08T02:10:06.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 7,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/7"
+      }
+    },
+    {
+      "id": "scraper-pesmaster-1791401507529",
+      "componentId": "scraper-pesmaster",
+      "title": "PES Master player data: degraded performance",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-07T19:31:47.528Z",
+      "updatedAt": "2026-10-08T03:48:21.631Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "scraper-pesmaster-1791401507529-legacy-open",
+          "stage": "investigating",
+          "at": "2026-10-07T19:31:47.528Z",
+          "message": "The monitor confirmed a service issue. Earlier detailed observations are unavailable.",
+          "source": "monitor"
+        },
+        {
+          "id": "owner-37687326341",
+          "stage": "investigating",
+          "at": "2026-10-07T21:09:16.105Z",
+          "message": "The PES Master scheduled import is reporting a failure. Destination freshness and the cause remain unverified; recovery has not been confirmed.",
+          "source": "owner",
+          "author": {
+            "login": "anton-abyzov"
+          }
+        },
+        {
+          "id": "scraper-pesmaster-1791401507529-monitor-2026-10-08T00:32:47.908Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-08T00:32:47.908Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-08T00:30:06.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 4,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
       "id": "feed-external-sync-1791424102502",
       "componentId": "feed-external-sync",
       "title": "External league sync: degraded service",
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-08T01:48:22.502Z",
-      "updatedAt": "2026-10-08T03:28:12.454Z",
-      "resolvedAt": null,
+      "updatedAt": "2026-10-08T03:48:21.631Z",
+      "resolvedAt": "2026-10-08T03:48:21.631Z",
       "deadlineAt": "2026-10-07T06:00:00.000Z",
-      "stage": "monitoring",
+      "stage": "resolved",
       "updates": [
         {
           "id": "feed-external-sync-1791424102502-monitor-2026-10-08T01:48:22.502Z-investigating",
@@ -72,99 +160,28 @@
             "reasonCode": "verified",
             "observedAt": "2026-10-08T03:20:06.000Z"
           }
+        },
+        {
+          "id": "feed-external-sync-1791424102502-monitor-2026-10-08T03:48:21.631Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-08T03:48:21.631Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-08T03:40:06.000Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. External league sync: degraded service. First confirmed issue: 2026-10-08T01:48:22.502Z. Recovery confirmed by two fresh successful observations: 2026-10-08T03:48:21.631Z. Confirmed incident duration: 120 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-08T03:48:21.631Z"
+      },
       "issue": {
         "number": 6,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/6"
-      }
-    },
-    {
-      "id": "feed-results-1791424102502",
-      "componentId": "feed-results",
-      "title": "Match results & schedules: degraded service",
-      "status": "degraded",
-      "reasonCode": "run_failed",
-      "openedAt": "2026-10-08T01:48:22.502Z",
-      "updatedAt": "2026-10-08T02:41:20.726Z",
-      "resolvedAt": null,
-      "deadlineAt": "2026-10-07T06:00:00.000Z",
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "feed-results-1791424102502-monitor-2026-10-08T01:48:22.502Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-08T01:48:22.502Z",
-          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "run_failed",
-            "observedAt": "2026-10-08T01:40:06.000Z"
-          }
-        },
-        {
-          "id": "feed-results-1791424102502-monitor-2026-10-08T02:10:31.413Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-08T02:10:31.413Z",
-          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "verification_unavailable",
-            "observedAt": "2026-10-08T02:10:06.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 7,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/7"
-      }
-    },
-    {
-      "id": "scraper-pesmaster-1791401507529",
-      "componentId": "scraper-pesmaster",
-      "title": "PES Master player data: degraded performance",
-      "status": "degraded",
-      "reasonCode": "run_failed",
-      "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-08T03:28:12.454Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "scraper-pesmaster-1791401507529-legacy-open",
-          "stage": "investigating",
-          "at": "2026-10-07T19:31:47.528Z",
-          "message": "The monitor confirmed a service issue. Earlier detailed observations are unavailable.",
-          "source": "monitor"
-        },
-        {
-          "id": "owner-37687326341",
-          "stage": "investigating",
-          "at": "2026-10-07T21:09:16.105Z",
-          "message": "The PES Master scheduled import is reporting a failure. Destination freshness and the cause remain unverified; recovery has not been confirmed.",
-          "source": "owner",
-          "author": {
-            "login": "anton-abyzov"
-          }
-        },
-        {
-          "id": "scraper-pesmaster-1791401507529-monitor-2026-10-08T00:32:47.908Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-08T00:32:47.908Z",
-          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "in_progress",
-            "observedAt": "2026-10-08T00:30:06.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 4,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
       }
     }
   ]

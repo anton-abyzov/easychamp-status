@@ -1,7 +1,7 @@
 import { readFile, writeFile, appendFile, mkdir } from 'node:fs/promises';
-import { performance } from 'node:perf_hooks';
 import { viewState, time, REASONS, STATUSES } from '../public/model.mjs';
-import { safeFetch, monitorHeaders } from './auth.mjs';
+import { monitorHeaders } from './auth.mjs';
+import { boundedBody, httpProbe } from './http-probe.mjs';
 import { publishHeartbeat } from './heartbeat.mjs';
 import { recordObservation, evidenceIdentity } from './observations.mjs';
 import { sanitizeFreshness } from './freshness-contract.mjs';
@@ -14,32 +14,6 @@ const previous = await load('data/status.json', { probes: {}, freshness: {}, cou
 const state = { schemaVersion: 1, generatedAt: new Date().toISOString(), probes: { ...previous.probes }, freshness: {}, counters: { ...previous.counters } };
 const browserRun = process.argv.includes('--browser');
 const evidence = (status, reasonCode, extra = {}) => ({ status, reasonCode, observedAt: new Date().toISOString(), ...extra });
-
-async function boundedBody(response, max = 2000000) {
-  const reader = response.body?.getReader();
-  if (!reader) return '';
-  let bytes = 0; const chunks = [];
-  try { while (true) { const { value, done } = await reader.read(); if (done) break; bytes += value.length; if (bytes > max) throw new Error('body_limit'); chunks.push(value); } }
-  finally { reader.releaseLock(); }
-  return Buffer.concat(chunks).toString('utf8');
-}
-
-async function httpProbe(probe) {
-  const start = performance.now();
-  try {
-    const response = await safeFetch(probe.url, { signal: AbortSignal.timeout(18000), headers: { 'User-Agent': 'EasyChamp-Status-Monitor/1.0 (+https://status.easychamp.com)', Accept: probe.jsonFields ? 'application/json' : 'text/html' } }, probe.monitorAuth ? process.env.STATUS_MONITOR_TOKEN : null);
-    if (response.status === 429 && (response.headers.get('x-ec-shed') === 'headless' || (probe.monitorAuth && process.env.STATUS_MONITOR_TOKEN && response.headers.get('x-ec-shed') === 'ratelimit'))) { await response.body?.cancel(); return evidence('unknown', 'automation_blocked'); }
-    if (response.status !== 200) { await response.body?.cancel(); return evidence('major_outage', 'http_error', { httpStatus: response.status }); }
-    const body = await boundedBody(response);
-    const responseMs = Math.round(performance.now() - start);
-    if (probe.bodyIncludes && !body.includes(probe.bodyIncludes)) return evidence('partial_outage', 'content_mismatch', { responseMs });
-    if (probe.jsonFields) {
-      let data; try { data = JSON.parse(body); } catch { return evidence('partial_outage', 'schema_mismatch', { responseMs }); }
-      if (!data || Object.entries(probe.jsonFields).some(([key, type]) => typeof data[key] !== type)) return evidence('partial_outage', 'schema_mismatch', { responseMs });
-    }
-    return evidence(responseMs > probe.maxResponseMs ? 'degraded' : 'operational', responseMs > probe.maxResponseMs ? 'slow' : 'ok', { responseMs, httpStatus: 200 });
-  } catch (error) { return evidence('major_outage', error.name === 'TimeoutError' || error.name === 'AbortError' ? 'timeout' : 'network_error'); }
-}
 
 async function batch(items, action, concurrency = 4) {
   let next = 0;

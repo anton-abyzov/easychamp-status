@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-09T07:34:35.921Z",
-      "updatedAt": "2026-10-09T09:38:05.717Z",
+      "updatedAt": "2026-10-09T09:48:47.413Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -22,6 +22,18 @@
             "status": "degraded",
             "reasonCode": "provider_capacity_low",
             "observedAt": "2026-10-09T07:34:34.840Z"
+          }
+        },
+        {
+          "id": "assistant-1791531275921-monitor-2026-10-09T09:48:47.413Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-09T09:48:47.413Z",
+          "message": "Latest evidence is unknown: Core data service readiness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "domain_health_unverified",
+            "observedAt": "2026-10-09T09:48:39.748Z"
           }
         }
       ],
@@ -79,7 +91,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-09T09:38:05.717Z",
+      "updatedAt": "2026-10-09T09:48:47.413Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

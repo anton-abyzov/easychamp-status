@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "assistant-1791531275921",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-09T07:34:35.921Z",
+      "updatedAt": "2026-10-09T07:34:35.921Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1791531275921-monitor-2026-10-09T07:34:35.921Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-09T07:34:35.921Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-09T07:34:34.840Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 10,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/10"
+      }
+    },
+    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
@@ -50,7 +79,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-09T07:27:04.846Z",
+      "updatedAt": "2026-10-09T07:34:35.921Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

@@ -14,6 +14,10 @@ export function seedConfirmedIncidents(counters, payload) {
   for (const incident of normalizeIncidents(payload).filter(row => !row.resolvedAt)) {
     const counter = counters[incident.componentId] ||= { bad: 0, good: 0 };
     if (!Object.hasOwn(counter, 'confirmedStatus')) counter.confirmedStatus = incident.status;
+    // Counters written before failedAttemptAt existed: the failed attempt that opened a
+    // run_failed incident happened no later than the incident, so a success after
+    // openedAt is newer than it.
+    if (incident.reasonCode === 'run_failed' && counter.confirmedStatus && !Object.hasOwn(counter, 'failedAttemptAt')) counter.failedAttemptAt = incident.openedAt;
   }
 }
 export function postmortemDraft(incident, at = incident.resolvedAt) {

@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-10-13T16:56:01.469Z",
-      "updatedAt": "2026-10-13T16:56:01.469Z",
+      "updatedAt": "2026-10-13T17:12:00.381Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "sim-1791910561469-monitor-2026-10-13T16:56:01.469Z-investigating",
@@ -22,6 +22,18 @@
             "status": "degraded",
             "reasonCode": "rendering_slow",
             "observedAt": "2026-10-13T16:54:40.038Z"
+          }
+        },
+        {
+          "id": "sim-1791910561469-monitor-2026-10-13T17:12:00.381Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-13T17:12:00.381Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-13T17:11:23.295Z"
           }
         }
       ],
@@ -37,9 +49,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-13T16:56:01.469Z",
-      "updatedAt": "2026-10-13T16:56:01.469Z",
+      "updatedAt": "2026-10-13T17:12:00.381Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "coach-1791910561469-monitor-2026-10-13T16:56:01.469Z-investigating",
@@ -51,6 +63,18 @@
             "status": "degraded",
             "reasonCode": "slow",
             "observedAt": "2026-10-13T16:54:42.070Z"
+          }
+        },
+        {
+          "id": "coach-1791910561469-monitor-2026-10-13T17:12:00.381Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-13T17:12:00.381Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-13T17:11:22.091Z"
           }
         }
       ],
@@ -66,9 +90,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-13T16:56:01.469Z",
-      "updatedAt": "2026-10-13T16:56:01.469Z",
+      "updatedAt": "2026-10-13T17:12:00.381Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "club-sites-1791910561469-monitor-2026-10-13T16:56:01.469Z-investigating",
@@ -80,6 +104,18 @@
             "status": "degraded",
             "reasonCode": "slow",
             "observedAt": "2026-10-13T16:54:47.500Z"
+          }
+        },
+        {
+          "id": "club-sites-1791910561469-monitor-2026-10-13T17:12:00.381Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-13T17:12:00.381Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-13T17:11:23.144Z"
           }
         }
       ],
@@ -95,7 +131,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-13T16:56:01.469Z",
-      "updatedAt": "2026-10-13T16:56:01.469Z",
+      "updatedAt": "2026-10-13T17:12:00.381Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -109,6 +145,18 @@
             "status": "major_outage",
             "reasonCode": "timeout",
             "observedAt": "2026-10-13T16:55:01.696Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1791910561469-monitor-2026-10-13T17:12:00.381Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-13T17:12:00.381Z",
+          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "automation_blocked",
+            "observedAt": "2026-10-13T17:11:25.045Z"
           }
         }
       ],

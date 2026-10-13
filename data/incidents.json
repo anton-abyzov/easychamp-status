@@ -47,10 +47,10 @@
       "id": "assistant-1791531275921",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
+      "status": "major_outage",
+      "reasonCode": "provider_funding_exhausted",
       "openedAt": "2026-10-09T07:34:35.921Z",
-      "updatedAt": "2026-10-13T10:00:13.634Z",
+      "updatedAt": "2026-10-13T10:20:20.875Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -76,6 +76,18 @@
             "status": "unknown",
             "reasonCode": "domain_health_unverified",
             "observedAt": "2026-10-09T09:48:39.748Z"
+          }
+        },
+        {
+          "id": "assistant-1791531275921-monitor-2026-10-13T10:20:20.875Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-13T10:20:20.875Z",
+          "message": "Fresh observations continue to confirm major outage: AI provider allowance exhausted.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "provider_funding_exhausted",
+            "observedAt": "2026-10-13T10:19:50.471Z"
           }
         }
       ],

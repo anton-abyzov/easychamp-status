@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-12T09:42:33.489Z",
-      "updatedAt": "2026-10-13T11:50:39.432Z",
+      "updatedAt": "2026-10-13T12:36:33.679Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-12T09:00:00.000Z",
       "stage": "investigating",
@@ -47,10 +47,10 @@
       "id": "assistant-1791531275921",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
-      "status": "major_outage",
-      "reasonCode": "provider_funding_exhausted",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-09T07:34:35.921Z",
-      "updatedAt": "2026-10-13T12:19:24.231Z",
+      "updatedAt": "2026-10-13T12:36:33.679Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -89,6 +89,18 @@
             "reasonCode": "provider_funding_exhausted",
             "observedAt": "2026-10-13T10:19:50.471Z"
           }
+        },
+        {
+          "id": "assistant-1791531275921-monitor-2026-10-13T12:36:33.679Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-13T12:36:33.679Z",
+          "message": "Fresh observations continue to confirm needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-13T12:36:31.397Z"
+          }
         }
       ],
       "issue": {
@@ -103,7 +115,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-08T01:48:22.502Z",
-      "updatedAt": "2026-10-13T11:50:39.432Z",
+      "updatedAt": "2026-10-13T12:36:33.679Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-07T06:00:00.000Z",
       "stage": "investigating",

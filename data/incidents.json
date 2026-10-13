@@ -2,13 +2,129 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "sim-1791910561469",
+      "componentId": "sim",
+      "title": "Match Simulator: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-10-13T16:56:01.469Z",
+      "updatedAt": "2026-10-13T16:56:01.469Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "sim-1791910561469-monitor-2026-10-13T16:56:01.469Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-13T16:56:01.469Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-10-13T16:54:40.038Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 14,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/14"
+      }
+    },
+    {
+      "id": "coach-1791910561469",
+      "componentId": "coach",
+      "title": "Coach: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-13T16:56:01.469Z",
+      "updatedAt": "2026-10-13T16:56:01.469Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "coach-1791910561469-monitor-2026-10-13T16:56:01.469Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-13T16:56:01.469Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-13T16:54:42.070Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 15,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/15"
+      }
+    },
+    {
+      "id": "club-sites-1791910561469",
+      "componentId": "club-sites",
+      "title": "Club websites: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-13T16:56:01.469Z",
+      "updatedAt": "2026-10-13T16:56:01.469Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "club-sites-1791910561469-monitor-2026-10-13T16:56:01.469Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-13T16:56:01.469Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-13T16:54:47.500Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 16,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/16"
+      }
+    },
+    {
+      "id": "soccer-nationals-1791910561469",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-13T16:56:01.469Z",
+      "updatedAt": "2026-10-13T16:56:01.469Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1791910561469-monitor-2026-10-13T16:56:01.469Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-13T16:56:01.469Z",
+          "message": "Two fresh observations confirmed major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-13T16:55:01.696Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 17,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/17"
+      }
+    },
+    {
       "id": "feed-external-sync-1791798153489",
       "componentId": "feed-external-sync",
       "title": "External league sync: degraded service",
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-12T09:42:33.489Z",
-      "updatedAt": "2026-10-13T16:40:18.696Z",
+      "updatedAt": "2026-10-13T16:56:01.469Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-12T09:00:00.000Z",
       "stage": "investigating",
@@ -50,7 +166,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-09T07:34:35.921Z",
-      "updatedAt": "2026-10-13T16:40:18.696Z",
+      "updatedAt": "2026-10-13T16:56:01.469Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -115,7 +231,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-08T01:48:22.502Z",
-      "updatedAt": "2026-10-13T16:40:18.696Z",
+      "updatedAt": "2026-10-13T16:56:01.469Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-07T06:00:00.000Z",
       "stage": "investigating",

@@ -2,47 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "soccer-nationals-1792085089219",
-      "componentId": "soccer-nationals",
-      "title": "Soccer Nationals league site: degraded performance",
-      "status": "degraded",
-      "reasonCode": "slow",
-      "openedAt": "2026-10-15T17:24:49.219Z",
-      "updatedAt": "2026-10-15T17:38:12.023Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "soccer-nationals-1792085089219-monitor-2026-10-15T17:24:49.219Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-15T17:24:49.219Z",
-          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "slow",
-            "observedAt": "2026-10-15T17:24:16.794Z"
-          }
-        },
-        {
-          "id": "soccer-nationals-1792085089219-monitor-2026-10-15T17:38:12.023Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-15T17:38:12.023Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-15T17:37:39.332Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 18,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/18"
-      }
-    },
-    {
       "id": "feed-external-sync-1791798153489",
       "componentId": "feed-external-sync",
       "title": "External league sync: degraded service",
@@ -278,6 +237,64 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "soccer-nationals-1792085089219",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-15T17:24:49.219Z",
+      "updatedAt": "2026-10-15T17:49:46.183Z",
+      "resolvedAt": "2026-10-15T17:49:46.183Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "soccer-nationals-1792085089219-monitor-2026-10-15T17:24:49.219Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-15T17:24:49.219Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-15T17:24:16.794Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1792085089219-monitor-2026-10-15T17:38:12.023Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-15T17:38:12.023Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-15T17:37:39.332Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1792085089219-monitor-2026-10-15T17:49:46.183Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-15T17:49:46.183Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-15T17:49:12.952Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Soccer Nationals league site: degraded performance. First confirmed issue: 2026-10-15T17:24:49.219Z. Recovery confirmed by two fresh successful observations: 2026-10-15T17:49:46.183Z. Confirmed incident duration: 25 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-15T17:49:46.183Z"
+      },
+      "issue": {
+        "number": 18,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/18"
       }
     },
     {

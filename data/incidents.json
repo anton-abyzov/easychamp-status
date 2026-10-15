@@ -44,83 +44,6 @@
       }
     },
     {
-      "id": "assistant-1791531275921",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-09T07:34:35.921Z",
-      "updatedAt": "2026-10-15T07:10:42.156Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "assistant-1791531275921-monitor-2026-10-09T07:34:35.921Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-09T07:34:35.921Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-09T07:34:34.840Z"
-          }
-        },
-        {
-          "id": "assistant-1791531275921-monitor-2026-10-09T09:48:47.413Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-09T09:48:47.413Z",
-          "message": "Latest evidence is unknown: Core data service readiness unverified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "domain_health_unverified",
-            "observedAt": "2026-10-09T09:48:39.748Z"
-          }
-        },
-        {
-          "id": "assistant-1791531275921-monitor-2026-10-13T10:20:20.875Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-13T10:20:20.875Z",
-          "message": "Fresh observations continue to confirm major outage: AI provider allowance exhausted.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "provider_funding_exhausted",
-            "observedAt": "2026-10-13T10:19:50.471Z"
-          }
-        },
-        {
-          "id": "assistant-1791531275921-monitor-2026-10-13T12:36:33.679Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-13T12:36:33.679Z",
-          "message": "Fresh observations continue to confirm needs attention: AI provider balance is low.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-13T12:36:31.397Z"
-          }
-        },
-        {
-          "id": "assistant-1791531275921-monitor-2026-10-15T07:10:42.156Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-15T07:10:42.156Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-15T07:10:38.862Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 10,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/10"
-      }
-    },
-    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
@@ -314,6 +237,100 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "assistant-1791531275921",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-09T07:34:35.921Z",
+      "updatedAt": "2026-10-15T07:16:09.415Z",
+      "resolvedAt": "2026-10-15T07:16:09.415Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "assistant-1791531275921-monitor-2026-10-09T07:34:35.921Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-09T07:34:35.921Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-09T07:34:34.840Z"
+          }
+        },
+        {
+          "id": "assistant-1791531275921-monitor-2026-10-09T09:48:47.413Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-09T09:48:47.413Z",
+          "message": "Latest evidence is unknown: Core data service readiness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "domain_health_unverified",
+            "observedAt": "2026-10-09T09:48:39.748Z"
+          }
+        },
+        {
+          "id": "assistant-1791531275921-monitor-2026-10-13T10:20:20.875Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-13T10:20:20.875Z",
+          "message": "Fresh observations continue to confirm major outage: AI provider allowance exhausted.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "provider_funding_exhausted",
+            "observedAt": "2026-10-13T10:19:50.471Z"
+          }
+        },
+        {
+          "id": "assistant-1791531275921-monitor-2026-10-13T12:36:33.679Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-13T12:36:33.679Z",
+          "message": "Fresh observations continue to confirm needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-13T12:36:31.397Z"
+          }
+        },
+        {
+          "id": "assistant-1791531275921-monitor-2026-10-15T07:10:42.156Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-15T07:10:42.156Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-15T07:10:38.862Z"
+          }
+        },
+        {
+          "id": "assistant-1791531275921-monitor-2026-10-15T07:16:09.415Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-15T07:16:09.415Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-15T07:15:39.660Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. AI assistant: degraded service. First confirmed issue: 2026-10-09T07:34:35.921Z. Recovery confirmed by two fresh successful observations: 2026-10-15T07:16:09.415Z. Confirmed incident duration: 8622 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-15T07:16:09.415Z"
+      },
+      "issue": {
+        "number": 10,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/10"
       }
     },
     {

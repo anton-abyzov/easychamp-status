@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-12T09:42:33.489Z",
-      "updatedAt": "2026-10-15T21:55:23.528Z",
+      "updatedAt": "2026-10-15T22:11:08.789Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-12T09:00:00.000Z",
       "stage": "investigating",
@@ -50,7 +50,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-08T01:48:22.502Z",
-      "updatedAt": "2026-10-15T21:55:23.528Z",
+      "updatedAt": "2026-10-15T22:11:08.789Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-07T06:00:00.000Z",
       "stage": "investigating",
@@ -92,7 +92,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-15T01:33:01.994Z",
+      "updatedAt": "2026-10-15T22:11:08.789Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -231,6 +231,18 @@
             "status": "unknown",
             "reasonCode": "verification_unavailable",
             "observedAt": "2026-10-15T01:30:09.000Z"
+          }
+        },
+        {
+          "id": "scraper-pesmaster-1791401507529-monitor-2026-10-15T22:11:08.789Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-15T22:11:08.789Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-15T22:10:09.000Z"
           }
         }
       ],

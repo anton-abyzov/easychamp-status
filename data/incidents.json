@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "assistant-1792141953585",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-16T09:12:33.585Z",
+      "updatedAt": "2026-10-16T09:12:33.585Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1792141953585-monitor-2026-10-16T09:12:33.585Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-16T09:12:33.585Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-16T09:12:03.664Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 19,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/19"
+      }
+    },
+    {
       "id": "feed-external-sync-1791798153489",
       "componentId": "feed-external-sync",
       "title": "External league sync: degraded service",

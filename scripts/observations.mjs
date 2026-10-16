@@ -22,7 +22,10 @@ function failedAttemptTime(component) {
 // destination cannot be verified. Success times later than the sample itself are ignored.
 function supersededBySuccess(component, failedAt) {
   if (failedAt === null) return false;
+  // Only a sample whose sole gap is the unverifiable destination may clear it;
+  // invalid, inactive or in-progress evidence carries unchecked success times.
   return component.samples.some(s => {
+    if (s.status !== 'unknown' || s.reasonCode !== 'verification_unavailable') return false;
     const ceiling = time(s.observedAt) + 60000;
     const completed = time(s.lastCompletedSuccessAt);
     const attempt = s.lastAttemptOutcome === 'succeeded' ? time(s.lastAttemptAt) : null;

@@ -45,6 +45,13 @@ test('a newer succeeded attempt clears a run_failed confirmation', () => {
   const recovered = recordObservation(job(70, 'unknown', { lastAttemptOutcome: 'succeeded', lastAttemptAt: stamp(60) }), confirmFailure());
   assert.equal(recovered.counter.confirmedStatus, null);
 });
+test('unchecked evidence (invalid, inactive, in progress) never clears a run_failed confirmation', () => {
+  for (const reasonCode of ['invalid_evidence', 'inactive', 'in_progress']) {
+    const sample = { reasonCode, lastCompletedSuccessAt: stamp(60) };
+    const next = recordObservation({ ...job(70, 'unknown', sample), reasonCode }, confirmFailure());
+    assert.equal(next.counter.confirmedStatus, 'degraded', reasonCode);
+  }
+});
 test('a success older than the failed attempt, or future-dated, keeps the confirmation', () => {
   for (const success of [-30, 200]) assert.equal(recordObservation(job(70, 'unknown', { lastCompletedSuccessAt: stamp(success) }), confirmFailure()).counter.confirmedStatus, 'degraded');
 });

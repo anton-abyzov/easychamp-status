@@ -2,47 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "assistant-1792141953585",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-16T09:12:33.585Z",
-      "updatedAt": "2026-10-18T07:22:26.587Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "assistant-1792141953585-monitor-2026-10-16T09:12:33.585Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-16T09:12:33.585Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-16T09:12:03.664Z"
-          }
-        },
-        {
-          "id": "assistant-1792141953585-monitor-2026-10-18T07:22:26.587Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-18T07:22:26.587Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-18T07:22:24.739Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 19,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/19"
-      }
-    },
-    {
       "id": "feed-external-sync-1791798153489",
       "componentId": "feed-external-sync",
       "title": "External league sync: degraded service",
@@ -350,6 +309,64 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "assistant-1792141953585",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-16T09:12:33.585Z",
+      "updatedAt": "2026-10-18T07:25:53.044Z",
+      "resolvedAt": "2026-10-18T07:25:53.044Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "assistant-1792141953585-monitor-2026-10-16T09:12:33.585Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-16T09:12:33.585Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-16T09:12:03.664Z"
+          }
+        },
+        {
+          "id": "assistant-1792141953585-monitor-2026-10-18T07:22:26.587Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-18T07:22:26.587Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-18T07:22:24.739Z"
+          }
+        },
+        {
+          "id": "assistant-1792141953585-monitor-2026-10-18T07:25:53.044Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-18T07:25:53.044Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-18T07:25:22.992Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. AI assistant: degraded service. First confirmed issue: 2026-10-16T09:12:33.585Z. Recovery confirmed by two fresh successful observations: 2026-10-18T07:25:53.044Z. Confirmed incident duration: 2773 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-18T07:25:53.044Z"
+      },
+      "issue": {
+        "number": 19,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/19"
       }
     },
     {

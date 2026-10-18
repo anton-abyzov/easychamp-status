@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-16T09:12:33.585Z",
-      "updatedAt": "2026-10-17T23:57:11.199Z",
+      "updatedAt": "2026-10-18T00:31:18.623Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +37,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-12T09:42:33.489Z",
-      "updatedAt": "2026-10-17T23:50:08.121Z",
+      "updatedAt": "2026-10-18T00:31:18.623Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-12T09:00:00.000Z",
       "stage": "investigating",
@@ -79,7 +79,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-08T01:48:22.502Z",
-      "updatedAt": "2026-10-17T23:50:08.121Z",
+      "updatedAt": "2026-10-18T00:31:18.623Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-07T06:00:00.000Z",
       "stage": "investigating",
@@ -121,7 +121,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-17T22:09:22.766Z",
+      "updatedAt": "2026-10-18T00:31:18.623Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -320,6 +320,18 @@
             "status": "unknown",
             "reasonCode": "in_progress",
             "observedAt": "2026-10-17T22:00:07.000Z"
+          }
+        },
+        {
+          "id": "scraper-pesmaster-1791401507529-monitor-2026-10-18T00:31:18.623Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-18T00:31:18.623Z",
+          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-18T00:30:08.000Z"
           }
         }
       ],

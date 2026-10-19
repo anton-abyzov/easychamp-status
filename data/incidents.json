@@ -50,7 +50,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-19T00:31:18.612Z",
+      "updatedAt": "2026-10-19T22:11:30.503Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -285,6 +285,18 @@
             "status": "unknown",
             "reasonCode": "verification_unavailable",
             "observedAt": "2026-10-19T00:30:09.000Z"
+          }
+        },
+        {
+          "id": "scraper-pesmaster-1791401507529-monitor-2026-10-19T22:11:30.503Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T22:11:30.503Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-19T22:10:07.000Z"
           }
         }
       ],

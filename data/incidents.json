@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-19T18:36:46.892Z",
-      "updatedAt": "2026-10-19T18:36:46.892Z",
+      "updatedAt": "2026-10-19T18:56:23.015Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "snap-1792435006892-monitor-2026-10-19T18:36:46.892Z-investigating",
@@ -22,6 +22,18 @@
             "status": "degraded",
             "reasonCode": "slow",
             "observedAt": "2026-10-19T18:36:11.111Z"
+          }
+        },
+        {
+          "id": "snap-1792435006892-monitor-2026-10-19T18:56:23.015Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-19T18:56:23.015Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-19T18:55:44.056Z"
           }
         }
       ],
@@ -69,59 +81,6 @@
       "issue": {
         "number": 25,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/25"
-      }
-    },
-    {
-      "id": "console-1792431539975",
-      "componentId": "console",
-      "title": "Organizer Console: degraded performance",
-      "status": "degraded",
-      "reasonCode": "slow",
-      "openedAt": "2026-10-19T17:38:59.975Z",
-      "updatedAt": "2026-10-19T18:36:46.892Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "console-1792431539975-monitor-2026-10-19T17:38:59.975Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-19T17:38:59.975Z",
-          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "slow",
-            "observedAt": "2026-10-19T17:38:21.670Z"
-          }
-        },
-        {
-          "id": "console-1792431539975-monitor-2026-10-19T17:49:33.648Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-19T17:49:33.648Z",
-          "message": "Latest evidence is unknown: Rendering check unavailable. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "browser_unavailable",
-            "observedAt": "2026-10-19T17:48:44.949Z"
-          }
-        },
-        {
-          "id": "console-1792431539975-monitor-2026-10-19T18:36:46.892Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-19T18:36:46.892Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-19T18:36:02.312Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 23,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/23"
       }
     },
     {
@@ -414,6 +373,76 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "console-1792431539975",
+      "componentId": "console",
+      "title": "Organizer Console: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-19T17:38:59.975Z",
+      "updatedAt": "2026-10-19T18:56:23.015Z",
+      "resolvedAt": "2026-10-19T18:56:23.015Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "console-1792431539975-monitor-2026-10-19T17:38:59.975Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T17:38:59.975Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-19T17:38:21.670Z"
+          }
+        },
+        {
+          "id": "console-1792431539975-monitor-2026-10-19T17:49:33.648Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T17:49:33.648Z",
+          "message": "Latest evidence is unknown: Rendering check unavailable. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "browser_unavailable",
+            "observedAt": "2026-10-19T17:48:44.949Z"
+          }
+        },
+        {
+          "id": "console-1792431539975-monitor-2026-10-19T18:36:46.892Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-19T18:36:46.892Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-19T18:36:02.312Z"
+          }
+        },
+        {
+          "id": "console-1792431539975-monitor-2026-10-19T18:56:23.015Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-19T18:56:23.015Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-19T18:55:42.290Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Organizer Console: degraded performance. First confirmed issue: 2026-10-19T17:38:59.975Z. Recovery confirmed by two fresh successful observations: 2026-10-19T18:56:23.015Z. Confirmed incident duration: 77 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-19T18:56:23.015Z"
+      },
+      "issue": {
+        "number": 23,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/23"
       }
     },
     {

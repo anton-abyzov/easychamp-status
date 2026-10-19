@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-19T19:50:57.390Z",
-      "updatedAt": "2026-10-19T21:10:55.957Z",
+      "updatedAt": "2026-10-19T21:37:58.568Z",
       "resolvedAt": null,
       "stage": "monitoring",
       "updates": [
@@ -70,6 +70,18 @@
             "status": "unknown",
             "reasonCode": "invalid_evidence",
             "observedAt": "2026-10-19T21:10:20.109Z"
+          }
+        },
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T21:37:58.568Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-19T21:37:58.568Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-19T21:37:23.695Z"
           }
         }
       ],

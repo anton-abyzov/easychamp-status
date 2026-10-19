@@ -5,10 +5,10 @@
       "id": "console-1792439457390",
       "componentId": "console",
       "title": "Organizer Console: degraded performance",
-      "status": "degraded",
-      "reasonCode": "rendering_slow",
+      "status": "partial_outage",
+      "reasonCode": "content_mismatch",
       "openedAt": "2026-10-19T19:50:57.390Z",
-      "updatedAt": "2026-10-19T19:50:57.390Z",
+      "updatedAt": "2026-10-19T20:12:07.213Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -22,6 +22,18 @@
             "status": "degraded",
             "reasonCode": "rendering_slow",
             "observedAt": "2026-10-19T19:50:19.664Z"
+          }
+        },
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T20:12:07.213Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T20:12:07.213Z",
+          "message": "Fresh observations continue to confirm partial outage: Expected content missing.",
+          "source": "monitor",
+          "evidence": {
+            "status": "partial_outage",
+            "reasonCode": "content_mismatch",
+            "observedAt": "2026-10-19T20:11:31.608Z"
           }
         }
       ],

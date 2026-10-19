@@ -2,48 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "feed-external-sync-1792419721301",
-      "componentId": "feed-external-sync",
-      "title": "External league sync: degraded service",
-      "status": "degraded",
-      "reasonCode": "run_failed",
-      "openedAt": "2026-10-19T14:22:01.301Z",
-      "updatedAt": "2026-10-19T15:11:37.767Z",
-      "resolvedAt": null,
-      "deadlineAt": "2026-10-19T14:00:00.000Z",
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "feed-external-sync-1792419721301-monitor-2026-10-19T14:22:01.301Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-19T14:22:01.301Z",
-          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "run_failed",
-            "observedAt": "2026-10-19T14:20:06.000Z"
-          }
-        },
-        {
-          "id": "feed-external-sync-1792419721301-monitor-2026-10-19T15:11:37.767Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-19T15:11:37.767Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "verified",
-            "observedAt": "2026-10-19T15:10:07.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 21,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/21"
-      }
-    },
-    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
@@ -333,6 +291,65 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "feed-external-sync-1792419721301",
+      "componentId": "feed-external-sync",
+      "title": "External league sync: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-19T14:22:01.301Z",
+      "updatedAt": "2026-10-19T15:21:14.604Z",
+      "resolvedAt": "2026-10-19T15:21:14.604Z",
+      "deadlineAt": "2026-10-19T14:00:00.000Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "feed-external-sync-1792419721301-monitor-2026-10-19T14:22:01.301Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T14:22:01.301Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-10-19T14:20:06.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792419721301-monitor-2026-10-19T15:11:37.767Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-19T15:11:37.767Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-19T15:10:07.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792419721301-monitor-2026-10-19T15:21:14.604Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-19T15:21:14.604Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-19T15:20:06.000Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. External league sync: degraded service. First confirmed issue: 2026-10-19T14:22:01.301Z. Recovery confirmed by two fresh successful observations: 2026-10-19T15:21:14.604Z. Confirmed incident duration: 59 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-19T15:21:14.604Z"
+      },
+      "issue": {
+        "number": 21,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/21"
       }
     },
     {

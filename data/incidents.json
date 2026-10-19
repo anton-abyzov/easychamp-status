@@ -5,10 +5,10 @@
       "id": "console-1792439457390",
       "componentId": "console",
       "title": "Organizer Console: degraded performance",
-      "status": "partial_outage",
-      "reasonCode": "content_mismatch",
+      "status": "degraded",
+      "reasonCode": "slow",
       "openedAt": "2026-10-19T19:50:57.390Z",
-      "updatedAt": "2026-10-19T20:28:19.063Z",
+      "updatedAt": "2026-10-19T20:41:26.245Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -34,6 +34,18 @@
             "status": "partial_outage",
             "reasonCode": "content_mismatch",
             "observedAt": "2026-10-19T20:11:31.608Z"
+          }
+        },
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T20:41:26.245Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T20:41:26.245Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-19T20:40:41.256Z"
           }
         }
       ],

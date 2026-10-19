@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "console-1792439457390",
+      "componentId": "console",
+      "title": "Organizer Console: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-10-19T19:50:57.390Z",
+      "updatedAt": "2026-10-19T19:50:57.390Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T19:50:57.390Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T19:50:57.390Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-10-19T19:50:19.664Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 27,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/27"
+      }
+    },
+    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",

@@ -2,15 +2,44 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "console-1792431539975",
+      "componentId": "console",
+      "title": "Organizer Console: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-19T17:38:59.975Z",
+      "updatedAt": "2026-10-19T17:38:59.975Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "console-1792431539975-monitor-2026-10-19T17:38:59.975Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T17:38:59.975Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-19T17:38:21.670Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 23,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/23"
+      }
+    },
+    {
       "id": "sim-1792430731092",
       "componentId": "sim",
       "title": "Match Simulator: degraded performance",
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-10-19T17:25:31.092Z",
-      "updatedAt": "2026-10-19T17:25:31.092Z",
+      "updatedAt": "2026-10-19T17:38:59.975Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "sim-1792430731092-monitor-2026-10-19T17:25:31.092Z-investigating",
@@ -22,6 +51,18 @@
             "status": "degraded",
             "reasonCode": "rendering_slow",
             "observedAt": "2026-10-19T17:24:47.421Z"
+          }
+        },
+        {
+          "id": "sim-1792430731092-monitor-2026-10-19T17:38:59.975Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-19T17:38:59.975Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-19T17:38:19.695Z"
           }
         }
       ],

@@ -2,95 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "console-1792439457390",
-      "componentId": "console",
-      "title": "Organizer Console: degraded performance",
-      "status": "degraded",
-      "reasonCode": "slow",
-      "openedAt": "2026-10-19T19:50:57.390Z",
-      "updatedAt": "2026-10-19T21:37:58.568Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "console-1792439457390-monitor-2026-10-19T19:50:57.390Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-19T19:50:57.390Z",
-          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "rendering_slow",
-            "observedAt": "2026-10-19T19:50:19.664Z"
-          }
-        },
-        {
-          "id": "console-1792439457390-monitor-2026-10-19T20:12:07.213Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-19T20:12:07.213Z",
-          "message": "Fresh observations continue to confirm partial outage: Expected content missing.",
-          "source": "monitor",
-          "evidence": {
-            "status": "partial_outage",
-            "reasonCode": "content_mismatch",
-            "observedAt": "2026-10-19T20:11:31.608Z"
-          }
-        },
-        {
-          "id": "console-1792439457390-monitor-2026-10-19T20:41:26.245Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-19T20:41:26.245Z",
-          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "slow",
-            "observedAt": "2026-10-19T20:40:41.256Z"
-          }
-        },
-        {
-          "id": "console-1792439457390-monitor-2026-10-19T20:50:21.633Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-19T20:50:21.633Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-19T20:49:50.398Z"
-          }
-        },
-        {
-          "id": "console-1792439457390-monitor-2026-10-19T21:10:55.957Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-19T21:10:55.957Z",
-          "message": "Latest evidence is unknown: Evidence could not be verified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "invalid_evidence",
-            "observedAt": "2026-10-19T21:10:20.109Z"
-          }
-        },
-        {
-          "id": "console-1792439457390-monitor-2026-10-19T21:37:58.568Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-19T21:37:58.568Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-19T21:37:23.695Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 27,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/27"
-      }
-    },
-    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
@@ -380,6 +291,112 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "console-1792439457390",
+      "componentId": "console",
+      "title": "Organizer Console: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-19T19:50:57.390Z",
+      "updatedAt": "2026-10-19T21:49:43.621Z",
+      "resolvedAt": "2026-10-19T21:49:43.621Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T19:50:57.390Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T19:50:57.390Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-10-19T19:50:19.664Z"
+          }
+        },
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T20:12:07.213Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T20:12:07.213Z",
+          "message": "Fresh observations continue to confirm partial outage: Expected content missing.",
+          "source": "monitor",
+          "evidence": {
+            "status": "partial_outage",
+            "reasonCode": "content_mismatch",
+            "observedAt": "2026-10-19T20:11:31.608Z"
+          }
+        },
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T20:41:26.245Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T20:41:26.245Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-19T20:40:41.256Z"
+          }
+        },
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T20:50:21.633Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-19T20:50:21.633Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-19T20:49:50.398Z"
+          }
+        },
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T21:10:55.957Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-19T21:10:55.957Z",
+          "message": "Latest evidence is unknown: Evidence could not be verified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "invalid_evidence",
+            "observedAt": "2026-10-19T21:10:20.109Z"
+          }
+        },
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T21:37:58.568Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-19T21:37:58.568Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-19T21:37:23.695Z"
+          }
+        },
+        {
+          "id": "console-1792439457390-monitor-2026-10-19T21:49:43.621Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-19T21:49:43.621Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-19T21:49:06.810Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Organizer Console: degraded performance. First confirmed issue: 2026-10-19T19:50:57.390Z. Recovery confirmed by two fresh successful observations: 2026-10-19T21:49:43.621Z. Confirmed incident duration: 119 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-19T21:49:43.621Z"
+      },
+      "issue": {
+        "number": 27,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/27"
       }
     },
     {

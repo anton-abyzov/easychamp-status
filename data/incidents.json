@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-19T23:31:22.802Z",
-      "updatedAt": "2026-10-19T23:43:03.632Z",
+      "updatedAt": "2026-10-19T23:51:34.855Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-19T14:00:00.000Z",
       "stage": "investigating",
@@ -23,6 +23,18 @@
             "status": "degraded",
             "reasonCode": "run_failed",
             "observedAt": "2026-10-19T23:30:06.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792452682802-monitor-2026-10-19T23:51:34.855Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T23:51:34.855Z",
+          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-19T23:50:09.000Z"
           }
         }
       ],

@@ -2,13 +2,43 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "feed-external-sync-1792419721301",
+      "componentId": "feed-external-sync",
+      "title": "External league sync: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-19T14:22:01.301Z",
+      "updatedAt": "2026-10-19T14:22:01.301Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-10-19T14:00:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "feed-external-sync-1792419721301-monitor-2026-10-19T14:22:01.301Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T14:22:01.301Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-10-19T14:20:06.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 21,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/21"
+      }
+    },
+    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-08T01:48:22.502Z",
-      "updatedAt": "2026-10-19T08:53:11.733Z",
+      "updatedAt": "2026-10-19T14:22:01.301Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-07T06:00:00.000Z",
       "stage": "investigating",

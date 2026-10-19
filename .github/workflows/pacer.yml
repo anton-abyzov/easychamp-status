@@ -1,0 +1,55 @@
+name: Keep status publication on time
+# GitHub drops or delays scheduled runs by 15-70 minutes, which trips the
+# 20-minute publication heartbeat alert. This job fills those gaps: it starts
+# status.yml only when no run started in the last five and a half minutes, then
+# hands over to a fresh copy of itself. GITHUB_TOKEN workflow_dispatch events
+# are allowed to start runs, and the schedule below restarts a broken chain.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '9,39 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: status-pacer
+  cancel-in-progress: false
+jobs:
+  pace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 58
+    permissions:
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Start status runs that the schedule missed
+        run: |
+          end=$(( $(date +%s) + 45 * 60 ))
+          while [ "$(date +%s)" -lt "$end" ]; do
+            if ! latest=$(timeout 30 gh run list --workflow status.yml --limit 1 --json createdAt,status --jq '.[0] // {} | [.createdAt // "", .status // ""] | @tsv'); then
+              echo '::warning::Run list unavailable; retrying next minute.'
+              sleep 60
+              continue
+            fi
+            created=$(printf '%s' "$latest" | cut -f1)
+            state=$(printf '%s' "$latest" | cut -f2)
+            age=999999
+            if [ -n "$created" ] && createdAt=$(date -d "$created" +%s 2>/dev/null); then age=$(( $(date +%s) - createdAt )); fi
+            if [ "$state" != queued ] && [ "$state" != in_progress ] && [ "$state" != pending ] && [ "$state" != waiting ] && [ "$state" != requested ] && [ "$age" -gt 330 ]; then
+              browser=false
+              if [ $(( 10#$(date -u +%M) % 15 )) -lt 5 ]; then browser=true; fi
+              echo "Last status run ${age}s ago (${state:-none}); starting one (browser=$browser)."
+              timeout 30 gh workflow run status.yml --ref main -f browser="$browser" || echo '::warning::Dispatch failed; retrying next minute.'
+            fi
+            sleep 60
+          done
+      - name: Hand over to the next pacer
+        if: always()
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if timeout 30 gh workflow run pacer.yml --ref main; then exit 0; fi
+            echo "::warning::Handover attempt $attempt failed."
+            sleep 20
+          done
+          exit 1

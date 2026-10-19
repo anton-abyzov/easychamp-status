@@ -1,6 +1,11 @@
 name: Collect and publish service status
 on:
   workflow_dispatch:
+    inputs:
+      browser:
+        description: Run the headless browser checks
+        type: boolean
+        default: true
   schedule:
     - cron: '3-58/5 * * * *'
     - cron: '2,17,32,47 * * * *'
@@ -39,7 +44,7 @@ jobs:
       - name: Validate public code and contracts
         run: npm test && npm run check
       - name: Verify runner Chrome launches headlessly
-        if: github.event_name != 'schedule' || github.event.schedule == '2,17,32,47 * * * *'
+        if: (github.event_name == 'workflow_dispatch' && inputs.browser) || (github.event_name != 'schedule' && github.event_name != 'workflow_dispatch') || github.event.schedule == '2,17,32,47 * * * *'
         run: node scripts/browser-smoke.mjs
       - name: Generate strict Upptime configuration
         run: node scripts/upptime-config.mjs
@@ -55,7 +60,7 @@ jobs:
           fi
         env:
           STATUS_MONITOR_TOKEN: ${{ secrets.STATUS_MONITOR_TOKEN }}
-          RUN_BROWSER: ${{ github.event_name != 'schedule' || github.event.schedule == '2,17,32,47 * * * *' }}
+          RUN_BROWSER: ${{ (github.event_name == 'workflow_dispatch' && inputs.browser) || (github.event_name != 'schedule' && github.event_name != 'workflow_dispatch') || github.event.schedule == '2,17,32,47 * * * *' }}
           NEW_RELIC_STATUS_LICENSE_KEY: ${{ secrets.NEW_RELIC_STATUS_LICENSE_KEY }}
           NEW_RELIC_STATUS_ACCOUNT_ID: ${{ vars.NEW_RELIC_STATUS_ACCOUNT_ID }}
       - name: Persist endpoint history from the same collected evidence

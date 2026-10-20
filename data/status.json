@@ -1,68 +1,68 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-20T16:35:27.182Z",
+  "generatedAt": "2026-10-20T16:36:09.741Z",
   "probes": {
     "console-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-20T16:35:21.635Z",
-      "responseMs": 1613,
+      "observedAt": "2026-10-20T16:36:06.052Z",
+      "responseMs": 1785,
       "httpStatus": 200
     },
     "home-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-20T16:35:22.200Z",
-      "responseMs": 2179,
+      "observedAt": "2026-10-20T16:36:05.450Z",
+      "responseMs": 1184,
       "httpStatus": 200
     },
     "coach-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-20T16:35:23.751Z",
-      "responseMs": 3727,
+      "observedAt": "2026-10-20T16:36:05.453Z",
+      "responseMs": 1186,
       "httpStatus": 200
     },
     "club-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-20T16:35:25.620Z",
-      "responseMs": 3420,
+      "observedAt": "2026-10-20T16:36:08.211Z",
+      "responseMs": 2757,
       "httpStatus": 200
     },
     "sim-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-20T16:35:25.190Z",
-      "responseMs": 3952,
+      "observedAt": "2026-10-20T16:36:05.614Z",
+      "responseMs": 818,
       "httpStatus": 200
     },
     "snap-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-20T16:35:24.365Z",
-      "responseMs": 829,
+      "observedAt": "2026-10-20T16:36:07.332Z",
+      "responseMs": 1718,
       "httpStatus": 200
     },
     "watch-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-20T16:35:23.536Z",
-      "responseMs": 1900,
+      "observedAt": "2026-10-20T16:36:07.123Z",
+      "responseMs": 1673,
       "httpStatus": 200
     },
     "predictions-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-20T16:35:24.590Z",
-      "responseMs": 225,
+      "observedAt": "2026-10-20T16:36:06.776Z",
+      "responseMs": 349,
       "httpStatus": 200
     },
     "signin-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-20T16:35:24.541Z",
-      "responseMs": 791,
+      "observedAt": "2026-10-20T16:36:06.427Z",
+      "responseMs": 375,
       "httpStatus": 200
     },
     "home-render": {
@@ -109,8 +109,8 @@
     "soccer-nationals-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-20T16:35:26.842Z",
-      "responseMs": 2301,
+      "observedAt": "2026-10-20T16:36:09.382Z",
+      "responseMs": 2606,
       "httpStatus": 200
     },
     "soccer-nationals-render": {
@@ -122,8 +122,8 @@
     "assistant-health": {
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
-      "observedAt": "2026-10-20T16:35:21.179Z",
-      "responseMs": 1254,
+      "observedAt": "2026-10-20T16:36:04.717Z",
+      "responseMs": 568,
       "httpStatus": 200
     }
   },
@@ -806,12 +806,12 @@
     "signin": {
       "evidence": {
         "signin-http": {
-          "observedAt": "2026-10-20T16:35:24.541Z",
+          "observedAt": "2026-10-20T16:36:06.427Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 18,
+      "good": 19,
       "confirmedStatus": null,
       "failedAttemptAt": null
     },
@@ -856,12 +856,12 @@
     "predictions": {
       "evidence": {
         "predictions-http": {
-          "observedAt": "2026-10-20T16:35:24.590Z",
+          "observedAt": "2026-10-20T16:36:06.776Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 271,
+      "good": 272,
       "confirmedStatus": null,
       "failedAttemptAt": null
     },
@@ -984,11 +984,11 @@
     "assistant": {
       "evidence": {
         "assistant-health": {
-          "observedAt": "2026-10-20T16:35:21.179Z",
+          "observedAt": "2026-10-20T16:36:04.717Z",
           "status": "degraded"
         }
       },
-      "bad": 121,
+      "bad": 122,
       "good": 0,
       "confirmedStatus": "degraded",
       "failedAttemptAt": null

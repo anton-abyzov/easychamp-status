@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "club-sites-1792506863213",
+      "componentId": "club-sites",
+      "title": "Club websites: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-10-20T14:34:23.213Z",
+      "updatedAt": "2026-10-20T14:34:23.213Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "club-sites-1792506863213-monitor-2026-10-20T14:34:23.213Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-20T14:34:23.213Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-10-20T14:33:40.670Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 36,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/36"
+      }
+    },
+    {
       "id": "console-1792506496812",
       "componentId": "console",
       "title": "Organizer Console: degraded performance",
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-10-20T14:28:16.812Z",
-      "updatedAt": "2026-10-20T14:28:16.812Z",
+      "updatedAt": "2026-10-20T14:34:23.213Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +66,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-20T14:28:16.812Z",
+      "updatedAt": "2026-10-20T14:34:23.213Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

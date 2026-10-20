@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-20T15:46:22.905Z",
-      "updatedAt": "2026-10-20T15:46:22.905Z",
+      "updatedAt": "2026-10-20T15:51:52.748Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "sim-1792511182905-monitor-2026-10-20T15:46:22.905Z-investigating",
@@ -22,6 +22,18 @@
             "status": "degraded",
             "reasonCode": "slow",
             "observedAt": "2026-10-20T15:45:43.899Z"
+          }
+        },
+        {
+          "id": "sim-1792511182905-monitor-2026-10-20T15:51:52.748Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-20T15:51:52.748Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-20T15:51:18.953Z"
           }
         }
       ],
@@ -37,9 +49,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-20T15:46:22.905Z",
-      "updatedAt": "2026-10-20T15:46:22.905Z",
+      "updatedAt": "2026-10-20T15:51:52.748Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "home-1792511182905-monitor-2026-10-20T15:46:22.905Z-investigating",
@@ -51,6 +63,18 @@
             "status": "degraded",
             "reasonCode": "slow",
             "observedAt": "2026-10-20T15:45:45.460Z"
+          }
+        },
+        {
+          "id": "home-1792511182905-monitor-2026-10-20T15:51:52.748Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-20T15:51:52.748Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-20T15:51:16.358Z"
           }
         }
       ],
@@ -66,7 +90,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-20T15:47:00.618Z",
+      "updatedAt": "2026-10-20T15:51:52.748Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

@@ -2,96 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "feed-external-sync-1792452682802",
-      "componentId": "feed-external-sync",
-      "title": "External league sync: degraded service",
-      "status": "degraded",
-      "reasonCode": "run_failed",
-      "openedAt": "2026-10-19T23:31:22.802Z",
-      "updatedAt": "2026-10-20T01:12:36.807Z",
-      "resolvedAt": null,
-      "deadlineAt": "2026-10-19T14:00:00.000Z",
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "feed-external-sync-1792452682802-monitor-2026-10-19T23:31:22.802Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-19T23:31:22.802Z",
-          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "run_failed",
-            "observedAt": "2026-10-19T23:30:06.000Z"
-          }
-        },
-        {
-          "id": "feed-external-sync-1792452682802-monitor-2026-10-19T23:51:34.855Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-19T23:51:34.855Z",
-          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "verification_unavailable",
-            "observedAt": "2026-10-19T23:50:09.000Z"
-          }
-        },
-        {
-          "id": "feed-external-sync-1792452682802-monitor-2026-10-20T00:00:11.939Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-20T00:00:11.939Z",
-          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "in_progress",
-            "observedAt": "2026-10-20T00:00:09.000Z"
-          }
-        },
-        {
-          "id": "feed-external-sync-1792452682802-monitor-2026-10-20T00:11:48.457Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-20T00:11:48.457Z",
-          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "verification_unavailable",
-            "observedAt": "2026-10-20T00:10:05.000Z"
-          }
-        },
-        {
-          "id": "feed-external-sync-1792452682802-monitor-2026-10-20T01:04:14.908Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-20T01:04:14.908Z",
-          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "in_progress",
-            "observedAt": "2026-10-20T01:00:07.000Z"
-          }
-        },
-        {
-          "id": "feed-external-sync-1792452682802-monitor-2026-10-20T01:12:36.807Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-20T01:12:36.807Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "verified",
-            "observedAt": "2026-10-20T01:10:07.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 28,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/28"
-      }
-    },
-    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
@@ -393,6 +303,113 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "feed-external-sync-1792452682802",
+      "componentId": "feed-external-sync",
+      "title": "External league sync: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-19T23:31:22.802Z",
+      "updatedAt": "2026-10-20T01:20:22.038Z",
+      "resolvedAt": "2026-10-20T01:20:22.038Z",
+      "deadlineAt": "2026-10-19T14:00:00.000Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "feed-external-sync-1792452682802-monitor-2026-10-19T23:31:22.802Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T23:31:22.802Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-10-19T23:30:06.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792452682802-monitor-2026-10-19T23:51:34.855Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-19T23:51:34.855Z",
+          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-19T23:50:09.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792452682802-monitor-2026-10-20T00:00:11.939Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-20T00:00:11.939Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-20T00:00:09.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792452682802-monitor-2026-10-20T00:11:48.457Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-20T00:11:48.457Z",
+          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-20T00:10:05.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792452682802-monitor-2026-10-20T01:04:14.908Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-20T01:04:14.908Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-20T01:00:07.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792452682802-monitor-2026-10-20T01:12:36.807Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-20T01:12:36.807Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-20T01:10:07.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792452682802-monitor-2026-10-20T01:20:22.038Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-20T01:20:22.038Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-20T01:20:06.000Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. External league sync: degraded service. First confirmed issue: 2026-10-19T23:31:22.802Z. Recovery confirmed by two fresh successful observations: 2026-10-20T01:20:22.038Z. Confirmed incident duration: 109 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-20T01:20:22.038Z"
+      },
+      "issue": {
+        "number": 28,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/28"
       }
     },
     {

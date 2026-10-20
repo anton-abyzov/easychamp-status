@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-10-20T02:31:30.236Z",
-      "updatedAt": "2026-10-20T02:31:30.236Z",
+      "updatedAt": "2026-10-20T02:36:16.130Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "soccer-nationals-1792463490236-monitor-2026-10-20T02:31:30.236Z-investigating",
@@ -22,6 +22,18 @@
             "status": "degraded",
             "reasonCode": "rendering_slow",
             "observedAt": "2026-10-20T02:30:55.341Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1792463490236-monitor-2026-10-20T02:36:16.130Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-20T02:36:16.130Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-20T02:35:46.744Z"
           }
         }
       ],

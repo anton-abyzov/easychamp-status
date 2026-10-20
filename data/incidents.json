@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "console-1792506496812",
+      "componentId": "console",
+      "title": "Organizer Console: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-10-20T14:28:16.812Z",
+      "updatedAt": "2026-10-20T14:28:16.812Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "console-1792506496812-monitor-2026-10-20T14:28:16.812Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-20T14:28:16.812Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-10-20T14:27:22.065Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 35,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/35"
+      }
+    },
+    {
       "id": "assistant-1792480163237",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-20T14:22:32.671Z",
+      "updatedAt": "2026-10-20T14:28:16.812Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

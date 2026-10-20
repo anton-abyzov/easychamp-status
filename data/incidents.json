@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "soccer-nationals-1792463490236",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-10-20T02:31:30.236Z",
+      "updatedAt": "2026-10-20T02:31:30.236Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1792463490236-monitor-2026-10-20T02:31:30.236Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-20T02:31:30.236Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-10-20T02:30:55.341Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 30,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/30"
+      }
+    },
+    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",

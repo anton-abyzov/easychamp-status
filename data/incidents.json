@@ -2,15 +2,44 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "soccer-nationals-1792517940001",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-20T17:39:00.001Z",
+      "updatedAt": "2026-10-20T17:39:00.001Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1792517940001-monitor-2026-10-20T17:39:00.001Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-20T17:39:00.001Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-20T17:38:20.008Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 42,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/42"
+      }
+    },
+    {
       "id": "console-1792515919915",
       "componentId": "console",
       "title": "Organizer Console: degraded performance",
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-10-20T17:05:19.915Z",
-      "updatedAt": "2026-10-20T17:13:45.792Z",
+      "updatedAt": "2026-10-20T17:39:00.001Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "console-1792515919915-monitor-2026-10-20T17:05:19.915Z-investigating",
@@ -35,6 +64,18 @@
             "reasonCode": "invalid_evidence",
             "observedAt": "2026-10-20T17:13:03.845Z"
           }
+        },
+        {
+          "id": "console-1792515919915-monitor-2026-10-20T17:39:00.001Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-20T17:39:00.001Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-20T17:38:12.609Z"
+          }
         }
       ],
       "issue": {
@@ -49,7 +90,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-20T17:36:07.645Z",
+      "updatedAt": "2026-10-20T17:39:00.001Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

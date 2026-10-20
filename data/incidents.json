@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-20T21:58:46.987Z",
+      "updatedAt": "2026-10-20T22:05:07.718Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -79,7 +79,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-20T02:46:42.034Z",
+      "updatedAt": "2026-10-20T22:05:07.718Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -338,6 +338,18 @@
             "status": "unknown",
             "reasonCode": "verification_unavailable",
             "observedAt": "2026-10-20T02:40:10.000Z"
+          }
+        },
+        {
+          "id": "scraper-pesmaster-1791401507529-monitor-2026-10-20T22:05:07.718Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-20T22:05:07.718Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-20T22:00:06.000Z"
           }
         }
       ],

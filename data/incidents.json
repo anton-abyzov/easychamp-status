@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "cluster-resources-1792603906081",
+      "componentId": "cluster-resources",
+      "title": "Kubernetes resources: degraded service",
+      "status": "degraded",
+      "reasonCode": "resource_pressure",
+      "openedAt": "2026-10-21T17:31:46.081Z",
+      "updatedAt": "2026-10-21T17:31:46.081Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "cluster-resources-1792603906081-monitor-2026-10-21T17:31:46.081Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-21T17:31:46.081Z",
+          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-21T17:30:09.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 49,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/49"
+      }
+    },
+    {
       "id": "soccer-nationals-1792602641778",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
@@ -78,7 +107,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-21T17:30:10.609Z",
+      "updatedAt": "2026-10-21T17:31:46.081Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

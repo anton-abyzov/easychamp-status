@@ -2,54 +2,13 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "soccer-nationals-1792573005612",
-      "componentId": "soccer-nationals",
-      "title": "Soccer Nationals league site: degraded performance",
-      "status": "degraded",
-      "reasonCode": "rendering_slow",
-      "openedAt": "2026-10-21T08:56:45.612Z",
-      "updatedAt": "2026-10-21T09:13:18.827Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "soccer-nationals-1792573005612-monitor-2026-10-21T08:56:45.612Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-21T08:56:45.612Z",
-          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "rendering_slow",
-            "observedAt": "2026-10-21T08:56:06.683Z"
-          }
-        },
-        {
-          "id": "soccer-nationals-1792573005612-monitor-2026-10-21T09:13:18.827Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-21T09:13:18.827Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-21T09:12:47.291Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 44,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/44"
-      }
-    },
-    {
       "id": "assistant-1792480163237",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-21T09:12:05.646Z",
+      "updatedAt": "2026-10-21T09:18:56.035Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -409,6 +368,64 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "soccer-nationals-1792573005612",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-10-21T08:56:45.612Z",
+      "updatedAt": "2026-10-21T09:18:56.035Z",
+      "resolvedAt": "2026-10-21T09:18:56.035Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "soccer-nationals-1792573005612-monitor-2026-10-21T08:56:45.612Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-21T08:56:45.612Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-10-21T08:56:06.683Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1792573005612-monitor-2026-10-21T09:13:18.827Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-21T09:13:18.827Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-21T09:12:47.291Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1792573005612-monitor-2026-10-21T09:18:56.035Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-21T09:18:56.035Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-21T09:18:26.700Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Soccer Nationals league site: degraded performance. First confirmed issue: 2026-10-21T08:56:45.612Z. Recovery confirmed by two fresh successful observations: 2026-10-21T09:18:56.035Z. Confirmed incident duration: 22 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-21T09:18:56.035Z"
+      },
+      "issue": {
+        "number": 44,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/44"
       }
     },
     {

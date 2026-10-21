@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "soccer-nationals-1792616532585",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-21T21:02:12.585Z",
+      "updatedAt": "2026-10-21T21:02:12.585Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1792616532585-monitor-2026-10-21T21:02:12.585Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-21T21:02:12.585Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-21T21:01:28.635Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 52,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/52"
+      }
+    },
+    {
       "id": "feed-external-sync-1792614015471",
       "componentId": "feed-external-sync",
       "title": "External league sync: degraded service",
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-21T20:20:15.471Z",
-      "updatedAt": "2026-10-21T20:51:39.758Z",
+      "updatedAt": "2026-10-21T21:02:12.585Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-21T20:00:00.000Z",
       "stage": "investigating",
@@ -23,6 +52,18 @@
             "status": "degraded",
             "reasonCode": "run_failed",
             "observedAt": "2026-10-21T20:20:08.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792614015471-monitor-2026-10-21T21:02:12.585Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-21T21:02:12.585Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-21T21:00:09.000Z"
           }
         }
       ],
@@ -79,7 +120,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-21T20:55:47.484Z",
+      "updatedAt": "2026-10-21T21:02:12.585Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

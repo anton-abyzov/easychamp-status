@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-21T21:02:12.585Z",
-      "updatedAt": "2026-10-21T21:02:12.585Z",
+      "updatedAt": "2026-10-21T21:10:13.275Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "soccer-nationals-1792616532585-monitor-2026-10-21T21:02:12.585Z-investigating",
@@ -22,6 +22,18 @@
             "status": "degraded",
             "reasonCode": "slow",
             "observedAt": "2026-10-21T21:01:28.635Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1792616532585-monitor-2026-10-21T21:10:13.275Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-21T21:10:13.275Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-21T21:09:40.358Z"
           }
         }
       ],
@@ -37,10 +49,10 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-21T20:20:15.471Z",
-      "updatedAt": "2026-10-21T21:02:12.585Z",
+      "updatedAt": "2026-10-21T21:10:13.275Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-21T20:00:00.000Z",
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "feed-external-sync-1792614015471-monitor-2026-10-21T20:20:15.471Z-investigating",
@@ -65,6 +77,18 @@
             "reasonCode": "in_progress",
             "observedAt": "2026-10-21T21:00:09.000Z"
           }
+        },
+        {
+          "id": "feed-external-sync-1792614015471-monitor-2026-10-21T21:10:13.275Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-21T21:10:13.275Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-21T21:10:08.000Z"
+          }
         }
       ],
       "issue": {
@@ -79,7 +103,7 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-21T17:10:41.778Z",
-      "updatedAt": "2026-10-21T19:23:48.538Z",
+      "updatedAt": "2026-10-21T21:10:13.275Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -120,7 +144,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-21T21:07:34.335Z",
+      "updatedAt": "2026-10-21T21:10:13.275Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

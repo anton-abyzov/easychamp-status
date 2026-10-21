@@ -2,71 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "soccer-nationals-1792623004736",
-      "componentId": "soccer-nationals",
-      "title": "Soccer Nationals league site: availability issue",
-      "status": "degraded",
-      "reasonCode": "slow",
-      "openedAt": "2026-10-21T22:50:04.736Z",
-      "updatedAt": "2026-10-21T23:38:01.172Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "soccer-nationals-1792623004736-monitor-2026-10-21T22:50:04.736Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-21T22:50:04.736Z",
-          "message": "Two fresh observations confirmed major outage: Unexpected HTTP response.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "http_error",
-            "observedAt": "2026-10-21T22:49:24.855Z"
-          }
-        },
-        {
-          "id": "soccer-nationals-1792623004736-monitor-2026-10-21T23:09:57.659Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-21T23:09:57.659Z",
-          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "slow",
-            "observedAt": "2026-10-21T23:09:21.720Z"
-          }
-        },
-        {
-          "id": "soccer-nationals-1792623004736-monitor-2026-10-21T23:24:53.200Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-21T23:24:53.200Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-21T23:24:22.454Z"
-          }
-        },
-        {
-          "id": "soccer-nationals-1792623004736-monitor-2026-10-21T23:38:01.172Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-21T23:38:01.172Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-21T23:37:29.995Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 54,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/54"
-      }
-    },
-    {
       "id": "watch-1792602641778",
       "componentId": "watch",
       "title": "Watch entry page: degraded performance",
@@ -114,7 +49,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-21T23:43:19.984Z",
+      "updatedAt": "2026-10-21T23:48:58.534Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -486,6 +421,88 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "soccer-nationals-1792623004736",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: availability issue",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-21T22:50:04.736Z",
+      "updatedAt": "2026-10-21T23:48:58.534Z",
+      "resolvedAt": "2026-10-21T23:48:58.534Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "soccer-nationals-1792623004736-monitor-2026-10-21T22:50:04.736Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-21T22:50:04.736Z",
+          "message": "Two fresh observations confirmed major outage: Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-10-21T22:49:24.855Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1792623004736-monitor-2026-10-21T23:09:57.659Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-21T23:09:57.659Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-21T23:09:21.720Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1792623004736-monitor-2026-10-21T23:24:53.200Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-21T23:24:53.200Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-21T23:24:22.454Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1792623004736-monitor-2026-10-21T23:38:01.172Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-21T23:38:01.172Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-21T23:37:29.995Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1792623004736-monitor-2026-10-21T23:48:58.534Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-21T23:48:58.534Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-21T23:48:25.751Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Soccer Nationals league site: availability issue. First confirmed issue: 2026-10-21T22:50:04.736Z. Recovery confirmed by two fresh successful observations: 2026-10-21T23:48:58.534Z. Confirmed incident duration: 59 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-21T23:48:58.534Z"
+      },
+      "issue": {
+        "number": 54,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/54"
       }
     },
     {

@@ -2,54 +2,13 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "cluster-resources-1792603906081",
-      "componentId": "cluster-resources",
-      "title": "Kubernetes resources: degraded service",
-      "status": "degraded",
-      "reasonCode": "resource_pressure",
-      "openedAt": "2026-10-21T17:31:46.081Z",
-      "updatedAt": "2026-10-21T18:34:18.009Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "cluster-resources-1792603906081-monitor-2026-10-21T17:31:46.081Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-21T17:31:46.081Z",
-          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "resource_pressure",
-            "observedAt": "2026-10-21T17:30:09.000Z"
-          }
-        },
-        {
-          "id": "cluster-resources-1792603906081-monitor-2026-10-21T18:34:18.009Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-21T18:34:18.009Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "verified",
-            "observedAt": "2026-10-21T18:30:08.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 49,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/49"
-      }
-    },
-    {
       "id": "soccer-nationals-1792602641778",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
-      "status": "degraded",
-      "reasonCode": "slow",
+      "status": "major_outage",
+      "reasonCode": "http_error",
       "openedAt": "2026-10-21T17:10:41.778Z",
-      "updatedAt": "2026-10-21T18:34:18.009Z",
+      "updatedAt": "2026-10-21T18:46:13.123Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -88,6 +47,18 @@
             "reasonCode": "slow",
             "observedAt": "2026-10-21T17:38:23.423Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1792602641778-monitor-2026-10-21T18:46:13.123Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-21T18:46:13.123Z",
+          "message": "Fresh observations continue to confirm major outage: Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-10-21T18:45:35.607Z"
+          }
         }
       ],
       "issue": {
@@ -102,7 +73,7 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-21T17:10:41.778Z",
-      "updatedAt": "2026-10-21T17:50:52.196Z",
+      "updatedAt": "2026-10-21T18:46:13.123Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -131,7 +102,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-21T18:39:24.220Z",
+      "updatedAt": "2026-10-21T18:46:13.123Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -491,6 +462,64 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "cluster-resources-1792603906081",
+      "componentId": "cluster-resources",
+      "title": "Kubernetes resources: degraded service",
+      "status": "degraded",
+      "reasonCode": "resource_pressure",
+      "openedAt": "2026-10-21T17:31:46.081Z",
+      "updatedAt": "2026-10-21T18:46:13.123Z",
+      "resolvedAt": "2026-10-21T18:46:13.123Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "cluster-resources-1792603906081-monitor-2026-10-21T17:31:46.081Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-21T17:31:46.081Z",
+          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-21T17:30:09.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792603906081-monitor-2026-10-21T18:34:18.009Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-21T18:34:18.009Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-21T18:30:08.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792603906081-monitor-2026-10-21T18:46:13.123Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-21T18:46:13.123Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-21T18:40:08.000Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Kubernetes resources: degraded service. First confirmed issue: 2026-10-21T17:31:46.081Z. Recovery confirmed by two fresh successful observations: 2026-10-21T18:46:13.123Z. Confirmed incident duration: 74 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-21T18:46:13.123Z"
+      },
+      "issue": {
+        "number": 49,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/49"
       }
     },
     {

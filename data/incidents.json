@@ -34,10 +34,10 @@
       "id": "soccer-nationals-1792602641778",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
-      "status": "major_outage",
-      "reasonCode": "http_error",
+      "status": "degraded",
+      "reasonCode": "slow",
       "openedAt": "2026-10-21T17:10:41.778Z",
-      "updatedAt": "2026-10-21T17:25:04.238Z",
+      "updatedAt": "2026-10-21T17:39:11.941Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -64,6 +64,18 @@
             "reasonCode": "http_error",
             "observedAt": "2026-10-21T17:16:11.611Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1792602641778-monitor-2026-10-21T17:39:11.941Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-21T17:39:11.941Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-21T17:38:23.423Z"
+          }
         }
       ],
       "issue": {
@@ -78,7 +90,7 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-21T17:10:41.778Z",
-      "updatedAt": "2026-10-21T17:25:04.238Z",
+      "updatedAt": "2026-10-21T17:39:11.941Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -107,7 +119,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-20T07:09:23.237Z",
-      "updatedAt": "2026-10-21T17:37:25.665Z",
+      "updatedAt": "2026-10-21T17:39:11.941Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

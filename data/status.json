@@ -1,68 +1,68 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-22T05:33:47.486Z",
+  "generatedAt": "2026-10-22T05:39:13.839Z",
   "probes": {
     "console-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-22T05:33:08.615Z",
-      "responseMs": 671,
+      "observedAt": "2026-10-22T05:39:05.448Z",
+      "responseMs": 668,
       "httpStatus": 200
     },
     "home-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-22T05:33:09.020Z",
-      "responseMs": 1077,
+      "observedAt": "2026-10-22T05:39:05.565Z",
+      "responseMs": 786,
       "httpStatus": 200
     },
     "coach-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-22T05:33:08.390Z",
-      "responseMs": 445,
+      "observedAt": "2026-10-22T05:39:05.416Z",
+      "responseMs": 634,
       "httpStatus": 200
     },
     "club-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-22T05:33:09.325Z",
-      "responseMs": 709,
+      "observedAt": "2026-10-22T05:39:06.040Z",
+      "responseMs": 592,
       "httpStatus": 200
     },
     "sim-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-22T05:33:09.138Z",
-      "responseMs": 748,
+      "observedAt": "2026-10-22T05:39:06.283Z",
+      "responseMs": 876,
       "httpStatus": 200
     },
     "snap-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-22T05:33:09.418Z",
-      "responseMs": 398,
+      "observedAt": "2026-10-22T05:39:06.205Z",
+      "responseMs": 640,
       "httpStatus": 200
     },
     "watch-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-22T05:33:09.536Z",
-      "responseMs": 970,
+      "observedAt": "2026-10-22T05:39:06.110Z",
+      "responseMs": 694,
       "httpStatus": 200
     },
     "predictions-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-22T05:33:09.435Z",
-      "responseMs": 122,
+      "observedAt": "2026-10-22T05:39:06.202Z",
+      "responseMs": 92,
       "httpStatus": 200
     },
     "signin-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-22T05:33:09.313Z",
-      "responseMs": 174,
+      "observedAt": "2026-10-22T05:39:06.395Z",
+      "responseMs": 355,
       "httpStatus": 200
     },
     "home-render": {
@@ -108,10 +108,10 @@
       "lcpMs": 444
     },
     "soccer-nationals-http": {
-      "status": "operational",
-      "reasonCode": "ok",
-      "observedAt": "2026-10-22T05:33:12.556Z",
-      "responseMs": 3231,
+      "status": "degraded",
+      "reasonCode": "slow",
+      "observedAt": "2026-10-22T05:39:13.630Z",
+      "responseMs": 7429,
       "httpStatus": 200
     },
     "soccer-nationals-render": {
@@ -123,8 +123,8 @@
     "assistant-health": {
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
-      "observedAt": "2026-10-22T05:33:08.525Z",
-      "responseMs": 660,
+      "observedAt": "2026-10-22T05:39:05.357Z",
+      "responseMs": 672,
       "httpStatus": 200
     }
   },
@@ -807,12 +807,12 @@
     "signin": {
       "evidence": {
         "signin-http": {
-          "observedAt": "2026-10-22T05:33:09.313Z",
+          "observedAt": "2026-10-22T05:39:06.395Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 128,
+      "good": 129,
       "confirmedStatus": null,
       "failedAttemptAt": null
     },
@@ -857,12 +857,12 @@
     "predictions": {
       "evidence": {
         "predictions-http": {
-          "observedAt": "2026-10-22T05:33:09.435Z",
+          "observedAt": "2026-10-22T05:39:06.202Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 201,
+      "good": 202,
       "confirmedStatus": null,
       "failedAttemptAt": null
     },
@@ -985,11 +985,11 @@
     "assistant": {
       "evidence": {
         "assistant-health": {
-          "observedAt": "2026-10-22T05:33:08.525Z",
+          "observedAt": "2026-10-22T05:39:05.357Z",
           "status": "degraded"
         }
       },
-      "bad": 602,
+      "bad": 603,
       "good": 0,
       "confirmedStatus": "degraded",
       "failedAttemptAt": null

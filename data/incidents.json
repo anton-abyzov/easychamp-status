@@ -2,60 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "feed-external-sync-1792787124011",
-      "componentId": "feed-external-sync",
-      "title": "External league sync: degraded service",
-      "status": "degraded",
-      "reasonCode": "run_failed",
-      "openedAt": "2026-10-23T20:25:24.011Z",
-      "updatedAt": "2026-10-23T21:10:51.686Z",
-      "resolvedAt": null,
-      "deadlineAt": "2026-10-23T20:00:00.000Z",
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "feed-external-sync-1792787124011-monitor-2026-10-23T20:25:24.011Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-23T20:25:24.011Z",
-          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "run_failed",
-            "observedAt": "2026-10-23T20:20:06.000Z"
-          }
-        },
-        {
-          "id": "feed-external-sync-1792787124011-monitor-2026-10-23T21:01:23.269Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-23T21:01:23.269Z",
-          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "in_progress",
-            "observedAt": "2026-10-23T21:00:07.000Z"
-          }
-        },
-        {
-          "id": "feed-external-sync-1792787124011-monitor-2026-10-23T21:10:51.686Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-23T21:10:51.686Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "verified",
-            "observedAt": "2026-10-23T21:10:10.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 60,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/60"
-      }
-    },
-    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
@@ -441,6 +387,77 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "feed-external-sync-1792787124011",
+      "componentId": "feed-external-sync",
+      "title": "External league sync: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-23T20:25:24.011Z",
+      "updatedAt": "2026-10-23T21:22:15.391Z",
+      "resolvedAt": "2026-10-23T21:22:15.391Z",
+      "deadlineAt": "2026-10-23T20:00:00.000Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "feed-external-sync-1792787124011-monitor-2026-10-23T20:25:24.011Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-23T20:25:24.011Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-10-23T20:20:06.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792787124011-monitor-2026-10-23T21:01:23.269Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-23T21:01:23.269Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-23T21:00:07.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792787124011-monitor-2026-10-23T21:10:51.686Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-23T21:10:51.686Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-23T21:10:10.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1792787124011-monitor-2026-10-23T21:22:15.391Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-23T21:22:15.391Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-23T21:20:09.000Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. External league sync: degraded service. First confirmed issue: 2026-10-23T20:25:24.011Z. Recovery confirmed by two fresh successful observations: 2026-10-23T21:22:15.391Z. Confirmed incident duration: 57 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-23T21:22:15.391Z"
+      },
+      "issue": {
+        "number": 60,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/60"
       }
     },
     {

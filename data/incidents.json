@@ -2,88 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "coach-1792775412536",
-      "componentId": "coach",
-      "title": "Coach: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
-      "openedAt": "2026-10-23T17:10:12.536Z",
-      "updatedAt": "2026-10-23T17:25:12.076Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "coach-1792775412536-monitor-2026-10-23T17:10:12.536Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-23T17:10:12.536Z",
-          "message": "Two fresh observations confirmed major outage: Check timed out.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-23T17:09:23.414Z"
-          }
-        },
-        {
-          "id": "coach-1792775412536-monitor-2026-10-23T17:25:12.076Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-23T17:25:12.076Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-23T17:24:41.971Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 58,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/58"
-      }
-    },
-    {
-      "id": "home-1792775412536",
-      "componentId": "home",
-      "title": "EasyChamp home: degraded performance",
-      "status": "degraded",
-      "reasonCode": "slow",
-      "openedAt": "2026-10-23T17:10:12.536Z",
-      "updatedAt": "2026-10-23T17:25:12.076Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "home-1792775412536-monitor-2026-10-23T17:10:12.536Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-23T17:10:12.536Z",
-          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "slow",
-            "observedAt": "2026-10-23T17:09:14.379Z"
-          }
-        },
-        {
-          "id": "home-1792775412536-monitor-2026-10-23T17:25:12.076Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-23T17:25:12.076Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-23T17:24:41.914Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 59,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/59"
-      }
-    },
-    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
@@ -469,6 +387,122 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "coach-1792775412536",
+      "componentId": "coach",
+      "title": "Coach: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-23T17:10:12.536Z",
+      "updatedAt": "2026-10-23T17:38:43.643Z",
+      "resolvedAt": "2026-10-23T17:38:43.643Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "coach-1792775412536-monitor-2026-10-23T17:10:12.536Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-23T17:10:12.536Z",
+          "message": "Two fresh observations confirmed major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-23T17:09:23.414Z"
+          }
+        },
+        {
+          "id": "coach-1792775412536-monitor-2026-10-23T17:25:12.076Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-23T17:25:12.076Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-23T17:24:41.971Z"
+          }
+        },
+        {
+          "id": "coach-1792775412536-monitor-2026-10-23T17:38:43.643Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-23T17:38:43.643Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-23T17:38:12.231Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Coach: availability issue. First confirmed issue: 2026-10-23T17:10:12.536Z. Recovery confirmed by two fresh successful observations: 2026-10-23T17:38:43.643Z. Confirmed incident duration: 29 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-23T17:38:43.643Z"
+      },
+      "issue": {
+        "number": 58,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/58"
+      }
+    },
+    {
+      "id": "home-1792775412536",
+      "componentId": "home",
+      "title": "EasyChamp home: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-23T17:10:12.536Z",
+      "updatedAt": "2026-10-23T17:38:43.643Z",
+      "resolvedAt": "2026-10-23T17:38:43.643Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "home-1792775412536-monitor-2026-10-23T17:10:12.536Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-23T17:10:12.536Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-23T17:09:14.379Z"
+          }
+        },
+        {
+          "id": "home-1792775412536-monitor-2026-10-23T17:25:12.076Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-23T17:25:12.076Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-23T17:24:41.914Z"
+          }
+        },
+        {
+          "id": "home-1792775412536-monitor-2026-10-23T17:38:43.643Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-23T17:38:43.643Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-23T17:38:12.421Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. EasyChamp home: degraded performance. First confirmed issue: 2026-10-23T17:10:12.536Z. Recovery confirmed by two fresh successful observations: 2026-10-23T17:38:43.643Z. Confirmed incident duration: 29 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-23T17:38:43.643Z"
+      },
+      "issue": {
+        "number": 59,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/59"
       }
     },
     {

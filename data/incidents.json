@@ -8,9 +8,9 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-23T17:10:12.536Z",
-      "updatedAt": "2026-10-23T17:10:12.536Z",
+      "updatedAt": "2026-10-23T17:25:12.076Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "coach-1792775412536-monitor-2026-10-23T17:10:12.536Z-investigating",
@@ -22,6 +22,18 @@
             "status": "major_outage",
             "reasonCode": "timeout",
             "observedAt": "2026-10-23T17:09:23.414Z"
+          }
+        },
+        {
+          "id": "coach-1792775412536-monitor-2026-10-23T17:25:12.076Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-23T17:25:12.076Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-23T17:24:41.971Z"
           }
         }
       ],
@@ -37,9 +49,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-23T17:10:12.536Z",
-      "updatedAt": "2026-10-23T17:10:12.536Z",
+      "updatedAt": "2026-10-23T17:25:12.076Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "home-1792775412536-monitor-2026-10-23T17:10:12.536Z-investigating",
@@ -51,6 +63,18 @@
             "status": "degraded",
             "reasonCode": "slow",
             "observedAt": "2026-10-23T17:09:14.379Z"
+          }
+        },
+        {
+          "id": "home-1792775412536-monitor-2026-10-23T17:25:12.076Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-23T17:25:12.076Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-23T17:24:41.914Z"
           }
         }
       ],

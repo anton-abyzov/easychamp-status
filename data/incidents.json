@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "console-1792833401494",
+      "componentId": "console",
+      "title": "Organizer Console: availability issue",
+      "status": "major_outage",
+      "reasonCode": "http_error",
+      "openedAt": "2026-10-24T09:16:41.494Z",
+      "updatedAt": "2026-10-24T09:16:41.494Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "console-1792833401494-monitor-2026-10-24T09:16:41.494Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T09:16:41.494Z",
+          "message": "Two fresh observations confirmed major outage: Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-10-24T09:15:57.358Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 63,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/63"
+      }
+    },
+    {
       "id": "assistant-1792824957322",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-24T09:11:03.492Z",
+      "updatedAt": "2026-10-24T09:16:41.494Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

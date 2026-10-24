@@ -55,7 +55,7 @@ function renderTotals(totals) {
   box.replaceChildren(
     item('Last 24 hours', totals.day, s => `${down(s)}${s.slowSec ? `; ${span(s.slowSec)} slow` : ''}`),
     item('Last 7 days', totals.week, s => `${down(s)}${s.episodes ? ` in ${s.episodes} ${s.episodes === 1 ? 'episode' : 'episodes'}, longest ${span(s.longestDownSec)}` : ''}`),
-    (() => { const wrap = el('div', 'total'), dd = el('dd'), s = totals.week; dd.append(el('span', 'total-value', percent(s.coverage)), el('span', 'total-label', 'checked'), el('span', 'total-detail', s.uncoveredSec + s.u > 0 ? `${span(s.uncoveredSec + s.u)} without a usable check` : 'Every interval had a check'), el('span', 'total-short', s.uncoveredSec + s.u > 0 ? `${span(s.uncoveredSec + s.u)} unchecked` : 'No gaps')); wrap.append(el('dt', '', 'Monitoring, 7 days'), dd); return wrap; })());
+    (() => { const wrap = el('div', 'total'), dd = el('dd'), c = totals.coverage, gap = c.uncheckedSec >= 60; dd.append(el('span', 'total-value', percent(c.coverage)), el('span', 'total-label', 'checked'), el('span', 'total-detail', gap ? `${c.name}: ${span(c.uncheckedSec)} without a usable check` : 'Every service checked throughout'), el('span', 'total-short', gap ? `${span(c.uncheckedSec)} unchecked` : 'No gaps')); wrap.append(el('dt', '', 'Monitoring, 7 days'), dd); return wrap; })());
 }
 const STRIP_DAYS = 7;
 function stripDays(nowSec) {

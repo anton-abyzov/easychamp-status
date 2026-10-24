@@ -112,17 +112,34 @@ test('confirmed intermittent issues count in the heartbeat the owner alert reads
   assert.equal(event.outageComponents, 1);
 });
 
-test('six passes resolve an availability-only incident at once; a consecutive-rule confirmation still holds it', () => {
-  const payload = { schemaVersion: 1, incidents: [] };
-  advanceIncidents(payload, component, observe(confirmed()), '2026-10-23T15:20:00Z');
-  const cleared = { confirmed: null, reasonCode: null, since: null, failed: 0, checked: 4 };
-  advanceIncidents(payload, component, { isNew: false, counter: { bad: 0, good: 1, confirmedStatus: null, availability: cleared }, availability: cleared, availabilityAdvanced: true, availabilityCleared: true }, '2026-10-23T15:50:00Z');
-  assert.equal(payload.incidents[0].resolvedAt, '2026-10-23T15:50:00Z');
-  assert.equal(payload.incidents[0].updates.at(-1).message, 'Six consecutive availability checks passed.');
+test('once six passes clear the rule, an availability-only incident resolves on any later run without a recent failure', () => {
+  const cleared = (failed = 0) => ({ confirmed: null, reasonCode: null, since: null, failed, checked: 4 });
+  const run = (payload, status, counter, failed, at) => advanceIncidents(payload, { ...component, status, reasonCode: status === 'operational' ? 'ok' : status === 'unknown' ? 'browser_unavailable' : 'rendering_slow' }, { isNew: true, counter: { bad: 0, good: 0, confirmedStatus: null, ...counter, availability: cleared(failed) }, availability: cleared(failed), availabilityAdvanced: true }, at);
+  // Reviewer scenario S7: a single slow render on the clearing run, then the render check is blocked.
+  const s7 = { schemaVersion: 1, incidents: [] };
+  advanceIncidents(s7, component, observe(confirmed()), '2026-10-23T15:20:00Z');
+  run(s7, 'degraded', { bad: 1 }, 1, '2026-10-23T15:50:00Z');
+  assert.equal(s7.incidents[0].resolvedAt, null, 'not on a run with a recent failed check');
+  run(s7, 'unknown', {}, 0, '2026-10-23T15:55:00Z');
+  assert.equal(s7.incidents[0].resolvedAt, '2026-10-23T15:55:00Z');
+  assert.equal(s7.incidents[0].updates.at(-1).message, 'Six consecutive availability checks passed.');
+  assert.match(s7.incidents[0].postmortem.summary, /six consecutive passing availability checks/);
+  // Reviewer scenario S9: render alternates slow and ok; it resolves on the first run without a recent failure.
+  const s9 = { schemaVersion: 1, incidents: [] };
+  advanceIncidents(s9, component, observe(confirmed()), '2026-10-23T15:20:00Z');
+  run(s9, 'degraded', { bad: 1 }, 0, '2026-10-23T15:50:00Z');
+  assert.equal(s9.incidents[0].resolvedAt, '2026-10-23T15:50:00Z');
+  // A consecutive-rule confirmation still holds the incident open.
   const held = { schemaVersion: 1, incidents: [] };
   advanceIncidents(held, component, observe(confirmed()), '2026-10-23T15:20:00Z');
-  advanceIncidents(held, component, { isNew: false, counter: { bad: 0, good: 1, confirmedStatus: 'major_outage', availability: cleared }, availability: cleared, availabilityAdvanced: true, availabilityCleared: true }, '2026-10-23T15:50:00Z');
+  run(held, 'major_outage', { bad: 2, confirmedStatus: 'major_outage' }, 0, '2026-10-23T15:50:00Z');
   assert.equal(held.incidents[0].resolvedAt, null, 'the render check still confirms an outage');
+  // Services without the availability rule (data jobs) are untouched by it.
+  const job = { schemaVersion: 1, incidents: [] };
+  advanceIncidents(job, component, { isNew: true, counter: { bad: 2, good: 0, confirmedStatus: 'degraded' } }, '2026-10-23T15:20:00Z');
+  advanceIncidents(job, { ...component, status: 'degraded', reasonCode: 'run_failed' }, { isNew: true, counter: { bad: 2, good: 0, confirmedStatus: 'degraded' } }, '2026-10-23T15:20:00Z');
+  advanceIncidents(job, { ...component, status: 'unknown', reasonCode: 'stale' }, { isNew: true, counter: { bad: 0, good: 0, confirmedStatus: 'degraded' } }, '2026-10-23T15:25:00Z');
+  assert.equal(job.incidents[0]?.resolvedAt ?? null, null);
 });
 
 test('while availability is latched the consecutive rule still escalates and never downgrades the incident', () => {

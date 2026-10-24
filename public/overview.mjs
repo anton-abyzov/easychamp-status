@@ -77,7 +77,7 @@ export function verdict({ rows, collectorStale, apps, generatedAt, incidents, no
   const firsts = rows.map(r => r.stats?.list?.[0]?.start).filter(Number.isFinite);
   const lastText = last.length ? ` Last failed check ${ago(new Date(Math.max(...last) * 1000).toISOString(), nowMs)}.`
     : firsts.length < rows.length ? ' Minute history is not available for every service.'
-    : ` No failed checks recorded since ${new Date(Math.max(Math.min(...firsts) * 1000, nowMs - 8 * DAY * 1000)).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}.`;
+    : ` No failed checks recorded since ${new Date(Math.max(Math.max(...firsts) * 1000, nowMs - 8 * DAY * 1000)).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}.`;
   return { status: 'operational', title: unknown.length ? 'Checked core services are up' : 'All core services are up', description: `${unknown.length ? `${joinNames(unknown)} could not be checked.` : 'The latest checks passed.'}${appIssues.length ? ` ${appIssues.join(', ')}.` : ''}${lastText}` };
 }
 
@@ -85,7 +85,11 @@ export function coreTotals(rows, nowSec) {
   const lists = rows.map(r => r.stats?.list).filter(Boolean);
   if (!lists.length) return null;
   const all = combine(lists);
-  return { day: summarize(all, nowSec - DAY, nowSec), week: summarize(all, nowSec - 7 * DAY, nowSec) };
+  // Coverage is per service: the least-checked core service, so one unchecked service is
+  // never hidden by the others being checked.
+  const coverage = rows.map(r => ({ name: r.name, coverage: r.stats?.week.coverage ?? 0, uncheckedSec: r.stats ? r.stats.week.uncoveredSec + r.stats.week.u : 7 * DAY }))
+    .sort((a, b) => a.coverage - b.coverage)[0];
+  return { day: summarize(all, nowSec - DAY, nowSec), week: summarize(all, nowSec - 7 * DAY, nowSec), coverage };
 }
 
 export function clock(ms) { return new Date(ms).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }); }

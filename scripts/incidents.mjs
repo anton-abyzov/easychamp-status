@@ -20,9 +20,9 @@ export function seedConfirmedIncidents(counters, payload) {
     if (incident.reasonCode === 'run_failed' && counter.confirmedStatus && !Object.hasOwn(counter, 'failedAttemptAt')) counter.failedAttemptAt = incident.openedAt;
   }
 }
-export function postmortemDraft(incident, at = incident.resolvedAt) {
+export function postmortemDraft(incident, at = incident.resolvedAt, recovery = 'two fresh successful observations') {
   const durationMinutes = Math.max(0, Math.round((time(incident.resolvedAt) - time(incident.openedAt)) / 60000));
-  return { state: 'draft', generatedAt: at, summary: `Automated evidence-only draft. ${incident.title}. First confirmed issue: ${incident.openedAt}. Recovery confirmed by two fresh successful observations: ${incident.resolvedAt}. Confirmed incident duration: ${durationMinutes} minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.` };
+  return { state: 'draft', generatedAt: at, summary: `Automated evidence-only draft. ${incident.title}. First confirmed issue: ${incident.openedAt}. Recovery confirmed by ${recovery}: ${incident.resolvedAt}. Confirmed incident duration: ${durationMinutes} minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.` };
 }
 export function appendIncidentUpdate(incident, { stage, at, message, source = 'monitor', author, evidence, id }) {
   const updateId = id || `${incident.id}-${source}-${at}-${stage}`;
@@ -48,14 +48,16 @@ export function advanceIncidents(payload, component, observation, at) {
   const availability = observation.availability;
   const latched = Boolean(availability?.confirmed);
   const openIncident = () => payload.incidents.find(incident => incident.componentId === component.id && !incident.resolvedAt);
-  if (!latched && observation.availabilityCleared) {
-    // Six consecutive passes cleared an issue the consecutive rule never confirmed:
-    // that is the recovery evidence for an availability incident.
+  if (availability && !latched && availability.failed === 0 && !confirmedStatus(observation.counter)) {
+    // The availability rule has cleared (six consecutive passes), no recent check failed and
+    // the consecutive rule confirms nothing: that is recovery evidence on any run, not only
+    // on the run where the latch dropped. A single unconfirmed render failure does not hold
+    // the incident open; if it repeats, the consecutive rule opens a new one.
     const open = openIncident();
-    if (open && !confirmedStatus(observation.counter) && !FAILURE_STATUSES.includes(component.status)) {
+    if (open) {
       open.resolvedAt = at;
       appendIncidentUpdate(open, { stage: 'resolved', at, message: 'Six consecutive availability checks passed.', evidence: { status: component.status, reasonCode: component.reasonCode, observedAt: at } });
-      open.postmortem = postmortemDraft(open, at);
+      open.postmortem = postmortemDraft(open, at, 'six consecutive passing availability checks');
       return;
     }
   }

@@ -1396,3 +1396,4 @@ a.core-row:focus-visible{outline:2px solid var(--color-focus);outline-offset:-2p
 .strip .unknown{background:repeating-linear-gradient(135deg,var(--gray) 0 1.5px,transparent 1.5px 4px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .strip .up{background:color-mix(in srgb,var(--green) 68%,var(--surface))}}
 @media(max-width:600px){.core-range{display:none}}
+@container core (max-width:24rem){.strip-days span{display:none}.strip-days span:nth-child(3n+1){display:inline}}

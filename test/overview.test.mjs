@@ -43,6 +43,8 @@ test('the headline names what is broken first, then what is flaky or slow, and n
   assert.equal(clean.title, 'All core services are up'); assert.match(clean.description, /Minute history is not available for every service\.$/, 'no clean-record claim without minute history');
   const covered = row('Console', 'up'); covered.stats.list = [{ start: NOW / 1000 - 7200, end: NOW / 1000, code: 'o', n: 24 }];
   assert.match(verdict({ rows: [covered], apps: [], generatedAt: at, incidents: [], nowMs: NOW }).description, /No failed checks recorded since October 23\.$/, 'the claim names the start of the recorded history');
+  const older = row('Watch', 'up'); older.stats.list = [{ start: NOW / 1000 - 5 * 86400, end: NOW / 1000, code: 'o', n: 1400 }];
+  assert.match(verdict({ rows: [older, covered], apps: [], generatedAt: at, incidents: [], nowMs: NOW }).description, /since October 23\.$/, 'the claim starts where every service has history');
 });
 
 test('service and core totals come from the HTTP series only and report gaps as unchecked', () => {
@@ -61,5 +63,7 @@ test('service and core totals come from the HTTP series only and report gaps as 
   const b = serviceUptime({ probes: ['b-http'] }, registry, uptime, nowSec);
   const totals = coreTotals([{ stats: a }, { stats: b }, { stats: null }], nowSec);
   assert.equal(totals.day.downSec, 600); assert.equal(totals.week.knownSec, 3600);
+  assert.deepEqual([totals.coverage.coverage, totals.coverage.uncheckedSec], [0, 7 * 86400], 'a core service without minute history is the coverage figure');
+  assert.equal(coreTotals([{ name: 'A', stats: a }, { name: 'B', stats: b }], nowSec).coverage.uncheckedSec, a.week.uncoveredSec);
   assert.equal(coreTotals([{ stats: null }], nowSec), null);
 });

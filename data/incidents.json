@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "cluster-resources-1792863359090",
+      "componentId": "cluster-resources",
+      "title": "Kubernetes resources: degraded service",
+      "status": "degraded",
+      "reasonCode": "resource_pressure",
+      "openedAt": "2026-10-24T17:35:59.090Z",
+      "updatedAt": "2026-10-24T17:35:59.090Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-24T17:35:59.090Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T17:35:59.090Z",
+          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-24T17:30:08.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 67,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/67"
+      }
+    },
+    {
       "id": "watch-1792859528188",
       "componentId": "watch",
       "title": "Watch entry page: degraded performance",
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-24T16:32:08.188Z",
-      "updatedAt": "2026-10-24T17:23:40.773Z",
+      "updatedAt": "2026-10-24T17:35:59.090Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -49,7 +78,7 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-24T17:29:19.219Z",
+      "updatedAt": "2026-10-24T17:35:59.090Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -102,7 +131,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-24T17:29:19.219Z",
+      "updatedAt": "2026-10-24T17:35:59.090Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

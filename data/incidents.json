@@ -5,10 +5,10 @@
       "id": "assistant-1792824957322",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
-      "status": "major_outage",
-      "reasonCode": "timeout",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-24T08:51:50.991Z",
+      "updatedAt": "2026-10-24T08:53:44.048Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -34,6 +34,18 @@
             "status": "major_outage",
             "reasonCode": "timeout",
             "observedAt": "2026-10-24T08:51:47.381Z"
+          }
+        },
+        {
+          "id": "assistant-1792824957322-monitor-2026-10-24T08:53:44.048Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T08:53:44.048Z",
+          "message": "Fresh observations continue to confirm needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-24T08:53:13.438Z"
           }
         }
       ],

@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "resource_pressure",
       "openedAt": "2026-10-24T17:35:59.090Z",
-      "updatedAt": "2026-10-24T21:12:41.198Z",
+      "updatedAt": "2026-10-24T22:10:21.928Z",
       "resolvedAt": null,
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "cluster-resources-1792863359090-monitor-2026-10-24T17:35:59.090Z-investigating",
@@ -34,6 +34,18 @@
             "status": "operational",
             "reasonCode": "verified",
             "observedAt": "2026-10-24T21:10:11.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-24T22:10:21.928Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T22:10:21.928Z",
+          "message": "Fresh observations continue to confirm needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-24T22:10:09.000Z"
           }
         }
       ],
@@ -90,7 +102,7 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-24T21:43:20.809Z",
+      "updatedAt": "2026-10-24T22:10:21.928Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -167,7 +179,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-24T21:43:20.809Z",
+      "updatedAt": "2026-10-24T22:10:21.928Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -262,7 +274,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-24T06:05:39.510Z",
+      "updatedAt": "2026-10-24T22:10:21.928Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -617,6 +629,18 @@
             "status": "unknown",
             "reasonCode": "verification_unavailable",
             "observedAt": "2026-10-24T06:00:09.000Z"
+          }
+        },
+        {
+          "id": "scraper-pesmaster-1791401507529-monitor-2026-10-24T22:10:21.928Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T22:10:21.928Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-24T22:10:09.000Z"
           }
         }
       ],

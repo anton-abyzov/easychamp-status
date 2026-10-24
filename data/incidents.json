@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "watch-1792859528188",
+      "componentId": "watch",
+      "title": "Watch entry page: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-24T16:32:08.188Z",
+      "updatedAt": "2026-10-24T16:32:08.188Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "watch-1792859528188-monitor-2026-10-24T16:32:08.188Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T16:32:08.188Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-24T16:31:28.646Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 66,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/66"
+      }
+    },
+    {
       "id": "soccer-nationals-1792859194983",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-24T16:26:34.983Z",
+      "updatedAt": "2026-10-24T16:32:08.188Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +66,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-24T16:26:34.983Z",
+      "updatedAt": "2026-10-24T16:32:08.188Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

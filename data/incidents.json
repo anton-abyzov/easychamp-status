@@ -2,107 +2,13 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "watch-1792833597235",
-      "componentId": "watch",
-      "title": "Watch entry page: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
-      "openedAt": "2026-10-24T09:19:57.235Z",
-      "updatedAt": "2026-10-24T09:43:58.055Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "watch-1792833597235-monitor-2026-10-24T09:19:57.235Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-24T09:19:57.235Z",
-          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-24T09:19:57.235Z"
-          }
-        },
-        {
-          "id": "watch-1792833597235-monitor-2026-10-24T09:26:05.195Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-24T09:26:05.195Z",
-          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "automation_blocked",
-            "observedAt": "2026-10-24T09:25:34.956Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 64,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/64"
-      }
-    },
-    {
-      "id": "console-1792833401494",
-      "componentId": "console",
-      "title": "Organizer Console: availability issue",
-      "status": "major_outage",
-      "reasonCode": "http_error",
-      "openedAt": "2026-10-24T09:16:41.494Z",
-      "updatedAt": "2026-10-24T09:39:08.019Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "console-1792833401494-monitor-2026-10-24T09:16:41.494Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-24T09:16:41.494Z",
-          "message": "Two fresh observations confirmed major outage: Unexpected HTTP response.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "http_error",
-            "observedAt": "2026-10-24T09:15:57.358Z"
-          }
-        },
-        {
-          "id": "console-1792833401494-monitor-2026-10-24T09:26:05.195Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-24T09:26:05.195Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-24T09:25:34.295Z"
-          }
-        },
-        {
-          "id": "console-1792833401494-monitor-2026-10-24T09:39:08.019Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-24T09:39:08.019Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-24T09:38:38.949Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 63,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/63"
-      }
-    },
-    {
       "id": "assistant-1792824957322",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-24T09:43:58.055Z",
+      "updatedAt": "2026-10-24T09:49:36.990Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -558,6 +464,134 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "watch-1792833597235",
+      "componentId": "watch",
+      "title": "Watch entry page: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-24T09:19:57.235Z",
+      "updatedAt": "2026-10-24T09:49:36.990Z",
+      "resolvedAt": "2026-10-24T09:49:36.990Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "watch-1792833597235-monitor-2026-10-24T09:19:57.235Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T09:19:57.235Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-24T09:19:57.235Z"
+          }
+        },
+        {
+          "id": "watch-1792833597235-monitor-2026-10-24T09:26:05.195Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T09:26:05.195Z",
+          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "automation_blocked",
+            "observedAt": "2026-10-24T09:25:34.956Z"
+          }
+        },
+        {
+          "id": "watch-1792833597235-monitor-2026-10-24T09:49:36.990Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-24T09:49:36.990Z",
+          "message": "Six consecutive availability checks passed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "automation_blocked",
+            "observedAt": "2026-10-24T09:49:36.990Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Watch entry page: availability issue. First confirmed issue: 2026-10-24T09:19:57.235Z. Recovery confirmed by six consecutive passing availability checks: 2026-10-24T09:49:36.990Z. Confirmed incident duration: 30 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-24T09:49:36.990Z"
+      },
+      "issue": {
+        "number": 64,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/64"
+      }
+    },
+    {
+      "id": "console-1792833401494",
+      "componentId": "console",
+      "title": "Organizer Console: availability issue",
+      "status": "major_outage",
+      "reasonCode": "http_error",
+      "openedAt": "2026-10-24T09:16:41.494Z",
+      "updatedAt": "2026-10-24T09:49:36.990Z",
+      "resolvedAt": "2026-10-24T09:49:36.990Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "console-1792833401494-monitor-2026-10-24T09:16:41.494Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T09:16:41.494Z",
+          "message": "Two fresh observations confirmed major outage: Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-10-24T09:15:57.358Z"
+          }
+        },
+        {
+          "id": "console-1792833401494-monitor-2026-10-24T09:26:05.195Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-24T09:26:05.195Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-24T09:25:34.295Z"
+          }
+        },
+        {
+          "id": "console-1792833401494-monitor-2026-10-24T09:39:08.019Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-24T09:39:08.019Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-24T09:38:38.949Z"
+          }
+        },
+        {
+          "id": "console-1792833401494-monitor-2026-10-24T09:49:36.990Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-24T09:49:36.990Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-24T09:49:04.134Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Organizer Console: availability issue. First confirmed issue: 2026-10-24T09:16:41.494Z. Recovery confirmed by two fresh successful observations: 2026-10-24T09:49:36.990Z. Confirmed incident duration: 33 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-24T09:49:36.990Z"
+      },
+      "issue": {
+        "number": 63,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/63"
       }
     },
     {

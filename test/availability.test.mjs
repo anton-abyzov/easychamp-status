@@ -124,11 +124,20 @@ test('once six passes clear the rule, an availability-only incident resolves on 
   assert.equal(s7.incidents[0].resolvedAt, '2026-10-23T15:55:00Z');
   assert.equal(s7.incidents[0].updates.at(-1).message, 'Six consecutive availability checks passed.');
   assert.match(s7.incidents[0].postmortem.summary, /six consecutive passing availability checks/);
-  // Reviewer scenario S9: render alternates slow and ok; it resolves on the first run without a recent failure.
+  // Reviewer scenario S9: render alternates slow and ok; it resolves on the first run that is not failing.
   const s9 = { schemaVersion: 1, incidents: [] };
   advanceIncidents(s9, component, observe(confirmed()), '2026-10-23T15:20:00Z');
   run(s9, 'degraded', { bad: 1 }, 0, '2026-10-23T15:50:00Z');
-  assert.equal(s9.incidents[0].resolvedAt, '2026-10-23T15:50:00Z');
+  assert.equal(s9.incidents[0].resolvedAt, null, 'not while the service shows a failure');
+  run(s9, 'operational', { good: 1 }, 0, '2026-10-23T15:55:00Z');
+  assert.equal(s9.incidents[0].resolvedAt, '2026-10-23T15:55:00Z');
+  // An incident the consecutive rule opened keeps that rule's recovery evidence.
+  const slow = { schemaVersion: 1, incidents: [] };
+  advanceIncidents(slow, { ...component, status: 'degraded', reasonCode: 'rendering_slow' }, { isNew: true, counter: { bad: 2, good: 0, confirmedStatus: 'degraded', availability: cleared(0) }, availability: cleared(0) }, '2026-10-23T15:20:00Z');
+  run(slow, 'operational', { good: 1, confirmedStatus: 'degraded' }, 0, '2026-10-23T15:25:00Z');
+  run(slow, 'operational', { good: 2 }, 0, '2026-10-23T15:30:00Z');
+  assert.equal(slow.incidents[0].resolvedAt, '2026-10-23T15:30:00Z');
+  assert.equal(slow.incidents[0].updates.at(-1).message, 'Two fresh successful observations confirmed recovery.');
   // A consecutive-rule confirmation still holds the incident open.
   const held = { schemaVersion: 1, incidents: [] };
   advanceIncidents(held, component, observe(confirmed()), '2026-10-23T15:20:00Z');

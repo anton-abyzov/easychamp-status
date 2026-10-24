@@ -34,6 +34,7 @@ export function appendIncidentUpdate(incident, { stage, at, message, source = 'm
   return true;
 }
 const SEVERITY = { degraded: 1, partial_outage: 2, major_outage: 3 };
+const AVAILABILITY_UPDATE = /^\d+ of the latest \d+ availability checks failed: /;
 function availabilityMessage(availability) {
   return `${availability.failed} of the latest ${availability.checked} availability checks failed: ${REASONS[availability.reasonCode] || REASONS.invalid_evidence}. Failures are intermittent; the issue stays open until six consecutive checks pass.`;
 }
@@ -48,13 +49,15 @@ export function advanceIncidents(payload, component, observation, at) {
   const availability = observation.availability;
   const latched = Boolean(availability?.confirmed);
   const openIncident = () => payload.incidents.find(incident => incident.componentId === component.id && !incident.resolvedAt);
-  if (availability && !latched && availability.failed === 0 && !confirmedStatus(observation.counter)) {
+  if (availability && !latched && availability.failed === 0 && !confirmedStatus(observation.counter) && !FAILURE_STATUSES.includes(component.status)) {
     // The availability rule has cleared (six consecutive passes), no recent check failed and
     // the consecutive rule confirms nothing: that is recovery evidence on any run, not only
     // on the run where the latch dropped. A single unconfirmed render failure does not hold
     // the incident open; if it repeats, the consecutive rule opens a new one.
     const open = openIncident();
-    if (open) {
+    // Only incidents the availability rule confirmed close this way; the rest keep the
+    // consecutive rule's recovery evidence.
+    if (open?.updates.some(update => update.source === 'monitor' && AVAILABILITY_UPDATE.test(update.message))) {
       open.resolvedAt = at;
       appendIncidentUpdate(open, { stage: 'resolved', at, message: 'Six consecutive availability checks passed.', evidence: { status: component.status, reasonCode: component.reasonCode, observedAt: at } });
       open.postmortem = postmortemDraft(open, at, 'six consecutive passing availability checks');

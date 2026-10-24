@@ -32,7 +32,8 @@ export function serviceUptime(component, registry, uptime, nowSec) {
     day: summarize(list, nowSec - DAY, nowSec),
     week: summarize(list, nowSec - 7 * DAY, nowSec),
     recentFailures: recentChecks(series, 12).filter(c => c.at >= nowSec - 1800 && DOWN.has(c.code)).length,
-    lastFailure: [...list].reverse().find(iv => DOWN.has(iv.code)) || null,
+    // Time of the last failed check itself, not the end of the time it stands for.
+    lastFailedAt: [...series].reverse().find(segment => DOWN.has(segment[2]))?.[1] ?? null,
   };
 }
 
@@ -65,14 +66,18 @@ export function verdict({ rows, collectorStale, apps, generatedAt, incidents, no
   if (down.length) return { status: 'major_outage', title: `${joinNames(down)} ${down.length === 1 ? 'is' : 'are'} down`, description: `The latest checks failed.${flaky.length ? ` ${joinNames(flaky)} also failing on and off.` : ''}${sinceText}` };
   if (flaky.length) {
     const failed = rows.filter(r => r.now.key === 'intermittent').reduce((n, r) => n + (r.stats?.recentFailures || 0), 0);
-    return { status: 'partial_outage', title: `${joinNames(flaky)} ${flaky.length === 1 ? 'is' : 'are'} failing on and off`, description: `${failed ? `${failed} failed ${failed === 1 ? 'check' : 'checks'} in the last 30 minutes; other checks passed.` : 'The latest checks passed. The issue stays open until six checks in a row pass.'}${sinceText}` };
+    return { status: 'partial_outage', title: `${joinNames(flaky)} ${flaky.length === 1 ? 'is' : 'are'} failing on and off`, description: `${failed ? `${failed} failed ${failed === 1 ? 'check' : 'checks'} in the last 30 minutes; other checks passed.` : 'The latest checks passed. The issue closes after six checks in a row pass.'}${sinceText}` };
   }
   if (slow.length) return { status: 'degraded', title: `${joinNames(slow)} ${slow.length === 1 ? 'is' : 'are'} slow`, description: `Pages answer, but slower than their targets.${sinceText}` };
   const unknown = pick('unknown');
   const appIssues = apps.filter(r => r.now.key !== 'up' && r.now.key !== 'unknown').map(r => `${r.name} ${r.now.label.toLowerCase()}`);
   if (unknown.length === rows.length) return { status: 'unknown', title: 'Core service status is unknown', description: 'No current checks are available for the core services.' };
-  const last = rows.map(r => r.stats?.lastFailure?.end).filter(Boolean);
-  const lastText = last.length ? ` Last failed check ${ago(new Date(Math.max(...last) * 1000).toISOString(), nowMs)}.` : ' No failed checks in the last 8 days.';
+  // Only claim a clean record for the time the minute history actually covers.
+  const last = rows.map(r => r.stats?.lastFailedAt).filter(Boolean);
+  const firsts = rows.map(r => r.stats?.list?.[0]?.start).filter(Number.isFinite);
+  const lastText = last.length ? ` Last failed check ${ago(new Date(Math.max(...last) * 1000).toISOString(), nowMs)}.`
+    : firsts.length < rows.length ? ' Minute history is not available for every service.'
+    : ` No failed checks recorded since ${new Date(Math.max(Math.min(...firsts) * 1000, nowMs - 8 * DAY * 1000)).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}.`;
   return { status: 'operational', title: unknown.length ? 'Checked core services are up' : 'All core services are up', description: `${unknown.length ? `${joinNames(unknown)} could not be checked.` : 'The latest checks passed.'}${appIssues.length ? ` ${appIssues.join(', ')}.` : ''}${lastText}` };
 }
 
@@ -83,7 +88,7 @@ export function coreTotals(rows, nowSec) {
   return { day: summarize(all, nowSec - DAY, nowSec), week: summarize(all, nowSec - 7 * DAY, nowSec) };
 }
 
-export function clock(ms) { return new Date(ms).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }); }
+export function clock(ms) { return new Date(ms).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }); }
 export function ago(at, nowMs = Date.now()) {
   const t = time(at); if (t === null) return 'at an unknown time';
   const m = Math.max(0, Math.floor((nowMs - t) / 60000));

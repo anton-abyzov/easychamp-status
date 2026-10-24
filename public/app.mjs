@@ -4,7 +4,7 @@ import { serviceUptime, serviceNow, verdict, coreTotals, minutes, percent, DAY, 
 import { DOWN } from './uptime.mjs';
 
 let registry, state, history, incidents, uptime, currentView, loading = false, failed = false;
-let detailOrigin = null, previousHash = '', renderedRoute = '';
+let detailOrigin = null, detailScope = '', previousHash = '', renderedRoute = '';
 const $ = selector => document.querySelector(selector);
 const el = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; };
 const badge = status => el('span', `badge ${status}`, LABELS[status] || LABELS.unknown);
@@ -48,12 +48,12 @@ function renderTotals(totals) {
   if (!totals) { box.replaceChildren(el('div', 'total', 'Downtime history is not available yet.')); return; }
   const item = (label, s, extra) => {
     const wrap = el('div', 'total'), dd = el('dd');
-    dd.append(el('span', 'total-value', percent(s.uptime)), el('span', 'total-label', 'up'), el('span', 'total-detail', extra(s)), el('span', 'total-short', s.downSec ? `${span(s.downSec)} down` : 'No failed checks'));
+    dd.append(el('span', 'total-value', percent(s.uptime)), ...(s.uptime === null ? [] : [el('span', 'total-label', 'up')]), el('span', 'total-detail', extra(s)), el('span', 'total-short', !s.knownSec ? 'Not checked' : s.downSec ? `${span(s.downSec)} down` : 'No failed checks'));
     wrap.append(el('dt', '', label), dd); return wrap;
   };
-  const down = s => s.downSec ? `${span(s.downSec)} down${s.sustainedDownSec ? `, ${span(s.sustainedDownSec)} sustained` : ''}` : 'No failed checks';
+  const down = s => !s.knownSec ? 'Not checked' : s.downSec ? `${span(s.downSec)} down${s.sustainedDownSec ? `, ${span(s.sustainedDownSec)} sustained` : ''}` : 'No failed checks';
   box.replaceChildren(
-    item('Last 24 hours', totals.day, s => `${down(s)}${s.slowSec ? `. ${span(s.slowSec)} slow` : ''}`),
+    item('Last 24 hours', totals.day, s => `${down(s)}${s.slowSec ? `; ${span(s.slowSec)} slow` : ''}`),
     item('Last 7 days', totals.week, s => `${down(s)}${s.episodes ? ` in ${s.episodes} ${s.episodes === 1 ? 'episode' : 'episodes'}, longest ${span(s.longestDownSec)}` : ''}`),
     (() => { const wrap = el('div', 'total'), dd = el('dd'), s = totals.week; dd.append(el('span', 'total-value', percent(s.coverage)), el('span', 'total-label', 'checked'), el('span', 'total-detail', s.uncoveredSec + s.u > 0 ? `${span(s.uncoveredSec + s.u)} without a usable check` : 'Every interval had a check'), el('span', 'total-short', s.uncoveredSec + s.u > 0 ? `${span(s.uncoveredSec + s.u)} unchecked` : 'No gaps')); wrap.append(el('dt', '', 'Monitoring, 7 days'), dd); return wrap; })());
 }
@@ -86,29 +86,33 @@ function strip(list, nowSec, name) {
 }
 function renderRows(container, rows, nowSec) {
   if (!rows.length) { container.replaceChildren(el('p', 'empty', 'No services configured.')); return; }
+  // Time without a usable check is never shown as zero downtime.
+  const figure = (s, key) => !s ? '—' : !s[key].knownSec ? 'Not checked' : span(s[key].downSec);
+  const said = (s, key, period) => !s[key].knownSec ? `not checked in ${period}` : `down ${span(s[key].downSec)} in ${period}`;
   container.replaceChildren(...rows.map(r => {
-    const a = link('', route('component', r.id), 'core-row'); a.setAttribute('role', 'row');
+    const a = link('', route('component', r.id), 'core-row'), s = r.stats;
     const now = el('span', 'cell-now'); now.append(badge(r.now.status)); now.lastChild.textContent = r.now.label;
-    const cell = (cls, text, title) => { const c = el('span', cls, text); c.setAttribute('role', 'cell'); if (title) c.title = title; return c; };
-    const s = r.stats;
-    const name = cell('cell-name', r.name); name.setAttribute('role', 'rowheader');
-    now.setAttribute('role', 'cell');
-    a.append(name, now,
-      cell('cell-num', s ? span(s.day.downSec) : '—', s ? `${s.day.failedChecks} of ${s.day.knownChecks} checks failed` : 'No minute history'),
-      cell('cell-num', s ? span(s.week.downSec) : '—', s ? `${s.week.failedChecks} of ${s.week.knownChecks} checks failed${s.week.sustainedDownSec ? `; ${minutes(s.week.sustainedDownSec)} sustained` : ''}` : 'No minute history'),
-      cell('cell-num cell-up', s ? percent(s.week.uptime) : '—'),
+    const cell = (cls, text, title) => { const c = el('span', cls, text); if (title) c.title = title; return c; };
+    const partial = s && s.week.knownSec && s.week.coverage !== null && s.week.coverage < 0.5;
+    const up = !s ? '—' : !s.week.knownSec ? 'Not checked' : partial ? 'Partial' : percent(s.week.uptime);
+    a.append(cell('cell-name', r.name), now,
+      cell('cell-num cell-d1', figure(s, 'day'), s ? `${s.day.failedChecks} of ${s.day.knownChecks} checks failed` : 'No minute history'),
+      cell('cell-num cell-d7', figure(s, 'week'), s ? `${s.week.failedChecks} of ${s.week.knownChecks} checks failed${s.week.sustainedDownSec ? `; ${minutes(s.week.sustainedDownSec)} sustained` : ''}` : 'No minute history'),
+      cell('cell-num cell-up', up, s ? `Up ${percent(s.week.uptime)} of checked time; checked ${percent(s.week.coverage)} of the last 7 days` : 'No minute history'),
       (() => { const c = cell('cell-strip'); c.append(strip(s?.list, nowSec, r.name)); return c; })());
+    a.setAttribute('aria-label', `${r.name}: ${r.now.label}. ${s ? `${said(s, 'day', 'the last 24 hours')}, ${said(s, 'week', 'the last 7 days')}; up ${up} over 7 days` : 'No minute history'}. Open details.`);
     return a;
   }));
   const { from, marks } = stripDays(nowSec);
-  const head = $('#strip-days');
-  head.replaceChildren(...marks.map(t => { const m = el('span', '', new Date(t * 1000).toLocaleDateString(undefined, { weekday: 'short' })); m.style.left = `${(t - from) / (nowSec - from) * 100}%`; return m; }));
+  for (const head of document.querySelectorAll('.strip-days')) head.replaceChildren(...marks.map(t => { const m = el('span', '', new Date(t * 1000).toLocaleDateString(undefined, { weekday: 'short' })); m.style.left = `${(t - from) / (nowSec - from) * 100}%`; return m; }));
   $('#core-range').textContent = `Minute history since ${new Date(from * 1000).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}`;
 }
 function render() {
   if (!registry) return;
   const activeElement = document.activeElement;
   const focusedMeasurement = activeElement?.classList.contains('measurement-card') ? activeElement.getAttribute('href') : null;
+  // Rows and job links are rebuilt on every repaint; keyboard focus must stay on the same link.
+  const rowScope = activeElement?.closest('#core-rows,#more-rows,#jobs-list')?.id, rowHref = rowScope ? activeElement.getAttribute('href') : null;
   currentView = viewState(registry, state);
   const nowMs = Date.now(), nowSec = Math.floor(nowMs / 1000);
   const allIncidents = normalizeIncidents(incidents);
@@ -133,10 +137,13 @@ function render() {
   const edges = [...new Set(core.flatMap(r => (r.component.samples || []).map(s => s.edge)).filter(Boolean))].sort();
   $('#vantage').textContent = `Checked about every 5 minutes from GitHub-hosted servers${edges.length ? `, reaching Cloudflare at ${edges.join(', ')}` : ''}. Failures limited to other regions can be missed.`;
   const jobs = currentView.components.filter(c => ['results', 'player-data', 'platform'].includes(c.group));
-  const jobIssues = jobs.filter(c => ['degraded', 'partial_outage', 'major_outage'].includes(c.status)), jobUnknown = jobs.filter(c => c.status === 'unknown').length;
-  $('#jobs-summary').replaceChildren(badge(jobIssues.length ? rollup(jobIssues) : jobUnknown ? 'unknown' : 'operational'), el('span', '', `${jobs.length - jobIssues.length - jobUnknown} verified, ${jobIssues.length} with issues, ${jobUnknown} not verifiable`));
+  // A job with an open incident has an issue even while its latest evidence is unknown.
+  const failing = c => ['degraded', 'partial_outage', 'major_outage'].includes(c.status);
+  const jobIssues = jobs.filter(c => failing(c) || openFor(c.id)), jobUnknown = jobs.filter(c => !jobIssues.includes(c) && c.status === 'unknown').length;
+  $('#jobs-summary').replaceChildren(badge(jobIssues.length ? rollup(jobIssues.map(c => ({ status: failing(c) ? c.status : openFor(c.id).status }))) : jobUnknown ? 'unknown' : 'operational'), el('span', '', `${jobs.length - jobIssues.length - jobUnknown} verified, ${jobIssues.length} with issues, ${jobUnknown} not verifiable`));
   $('#jobs-list').replaceChildren(...[...jobIssues, ...jobs.filter(c => !jobIssues.includes(c))].map(c => { const a = link('', route('component', c.id), 'component-link'); const status = el('span', 'component-status'); status.append(badge(c.status), el('span', 'row-arrow', '›')); a.append(el('span', 'component-name', c.name), status); return a; }));
-  $('#service-count').textContent = currentView.components.length;
+  if (rowScope && rowHref) [...$(`#${rowScope}`).querySelectorAll('a')].find(a => a.getAttribute('href') === rowHref)?.focus({ preventScroll: true });
+  $('#service-summary').textContent = `${currentView.components.length} services`;
   const measurements = currentView.measurements || [];
   $('#measurement-summary').hidden = !measurements.length;
   $('#measurement-grid').replaceChildren(...measurements.map(m => { const card = link('', route('measurement', m.id), 'measurement-card'); card.append(el('h3', '', m.label), badge(m.status)); if (Number.isFinite(m.passing) && Number.isFinite(m.total)) card.append(el('p', '', `${m.passing}/${m.total} passing${m.unknown ? ` · ${m.unknown} unknown` : ''}`)); return card; }));
@@ -268,7 +275,7 @@ function measurementDetail(m) {
 function showRoute() {
   if (!currentView) return;
   const match = location.hash.match(/^#(component|group|incident|measurement)\/([^/]+)(?:\/(\d{4}-\d{2}-\d{2}))?$/), dialog = $('#detail-dialog');
-  if (!match) { if (dialog.open) { dialog.close(); const origin = detailOrigin?.isConnected ? detailOrigin : [...document.querySelectorAll('a[href]')].find(a => a.getAttribute('href') === detailOrigin?.getAttribute('href')); (origin || $('#services-title')).focus({ preventScroll: true }); } renderedRoute = ''; return; }
+  if (!match) { if (dialog.open) { dialog.close(); const origin = detailOrigin?.isConnected ? detailOrigin : [...(document.getElementById(detailScope) || document).querySelectorAll('a[href]')].find(a => a.getAttribute('href') === detailOrigin?.getAttribute('href')); (origin || $('#core-title')).focus({ preventScroll: true }); } renderedRoute = ''; return; }
   if (renderedRoute === location.hash && dialog.open) return;
   let id; try { id = decodeURIComponent(match[2]); } catch { id = ''; }
   const [, kind, , day] = match; let body;
@@ -277,7 +284,7 @@ function showRoute() {
   else { body = el('div'); const title = el('h2', 'detail-title', 'Details unavailable'); title.id = 'detail-title'; body.append(title, el('p', '', 'This service or incident is not present in the current monitoring data.')); }
   $('#detail-kind').textContent = kind === 'measurement' ? 'SIGNAL DETAILS' : kind === 'incident' ? 'INCIDENT DETAILS' : kind === 'group' ? 'GROUP HISTORY' : 'SERVICE DETAILS';
   $('#detail-content').replaceChildren(body); renderedRoute = location.hash;
-  if (!dialog.open) { detailOrigin = document.activeElement; dialog.showModal(); $('#close-detail').focus(); }
+  if (!dialog.open) { detailOrigin = document.activeElement; detailScope = detailOrigin?.parentElement?.closest('[id]')?.id || ''; dialog.showModal(); $('#close-detail').focus(); }
   dialog.scrollTop = 0;
 }
 function closeDetail() {

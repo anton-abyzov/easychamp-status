@@ -111,3 +111,30 @@ test('confirmed intermittent issues count in the heartbeat the owner alert reads
   assert.equal(event.confirmedOutageComponents, 1, 'only the confirmed intermittent issue, not the single failed check');
   assert.equal(event.outageComponents, 1);
 });
+
+test('six passes resolve an availability-only incident at once; a consecutive-rule confirmation still holds it', () => {
+  const payload = { schemaVersion: 1, incidents: [] };
+  advanceIncidents(payload, component, observe(confirmed()), '2026-10-23T15:20:00Z');
+  const cleared = { confirmed: null, reasonCode: null, since: null, failed: 0, checked: 4 };
+  advanceIncidents(payload, component, { isNew: false, counter: { bad: 0, good: 1, confirmedStatus: null, availability: cleared }, availability: cleared, availabilityAdvanced: true, availabilityCleared: true }, '2026-10-23T15:50:00Z');
+  assert.equal(payload.incidents[0].resolvedAt, '2026-10-23T15:50:00Z');
+  assert.equal(payload.incidents[0].updates.at(-1).message, 'Six consecutive availability checks passed.');
+  const held = { schemaVersion: 1, incidents: [] };
+  advanceIncidents(held, component, observe(confirmed()), '2026-10-23T15:20:00Z');
+  advanceIncidents(held, component, { isNew: false, counter: { bad: 0, good: 1, confirmedStatus: 'major_outage', availability: cleared }, availability: cleared, availabilityAdvanced: true, availabilityCleared: true }, '2026-10-23T15:50:00Z');
+  assert.equal(held.incidents[0].resolvedAt, null, 'the render check still confirms an outage');
+});
+
+test('while availability is latched the consecutive rule still escalates and never downgrades the incident', () => {
+  const payload = { schemaVersion: 1, incidents: [] };
+  advanceIncidents(payload, component, observe(confirmed('partial_outage')), '2026-10-23T15:20:00Z');
+  const major = { ...component, status: 'major_outage', reasonCode: 'http_error' };
+  advanceIncidents(payload, major, { ...observe(confirmed('partial_outage')), counter: { bad: 2, good: 0, confirmedStatus: 'major_outage' } }, '2026-10-23T15:25:00Z');
+  assert.equal(payload.incidents[0].status, 'major_outage', 'escalated by the render check');
+  const slow = { ...component, status: 'degraded', reasonCode: 'rendering_slow' };
+  advanceIncidents(payload, slow, { ...observe(confirmed('partial_outage')), counter: { bad: 3, good: 0, confirmedStatus: 'major_outage' } }, '2026-10-23T15:30:00Z');
+  assert.equal(payload.incidents[0].status, 'major_outage', 'not downgraded to degraded');
+  const updates = payload.incidents[0].updates.length;
+  advanceIncidents(payload, slow, { ...observe(confirmed('partial_outage')), counter: { bad: 4, good: 0, confirmedStatus: 'major_outage' } }, '2026-10-23T15:35:00Z');
+  assert.equal(payload.incidents[0].updates.length, updates, 'no update churn between the two rules');
+});

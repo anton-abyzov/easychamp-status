@@ -24,7 +24,7 @@ test('availability comes from the HTTP check; rendering can only add slowness or
 });
 
 const NOW = Date.parse('2026-10-23T16:00:00Z'), nowSec = NOW / 1000;
-const row = (name, key, extra = {}) => ({ id: name.toLowerCase(), name, now: { key, label: key }, stats: { recentFailures: key === 'intermittent' ? 2 : 0, lastFailure: null }, ...extra });
+const row = (name, key, extra = {}) => ({ id: name.toLowerCase(), name, now: { key, label: key }, stats: { recentFailures: key === 'intermittent' ? 2 : 0, lastFailedAt: null }, ...extra });
 
 test('the headline names what is broken first, then what is flaky or slow, and never guesses', () => {
   const at = new Date(NOW - 60000).toISOString();
@@ -34,12 +34,15 @@ test('the headline names what is broken first, then what is flaky or slow, and n
   const flaky = verdict({ rows: [row('Console', 'intermittent'), row('Watch', 'intermittent'), row('Home', 'up')], apps: [], generatedAt: at, incidents: [{ componentId: 'console', openedAt: new Date(NOW - 20 * 60000).toISOString(), resolvedAt: null }], nowMs: NOW });
   assert.equal(flaky.title, 'Console and Watch are failing on and off'); assert.match(flaky.description, /^4 failed checks in the last 30 minutes/); assert.match(flaky.description, /20 min ago/);
   const quiet = verdict({ rows: [row('Console', 'intermittent', { stats: { recentFailures: 0 } })], apps: [], generatedAt: at, incidents: [{ componentId: 'console', openedAt: new Date(NOW - 40 * 60000).toISOString(), resolvedAt: null }], nowMs: NOW });
-  assert.equal(quiet.description, `The latest checks passed. The issue stays open until six checks in a row pass. Issue open since ${new Date(NOW - 40 * 60000).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}, 40 min ago.`, 'never reports 0 failed checks as a failure count');
+  assert.equal(quiet.description, `The latest checks passed. The issue closes after six checks in a row pass. Issue open since ${new Date(NOW - 40 * 60000).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' })}, 40 min ago.`, 'never reports 0 failed checks as a failure count');
   assert.equal(verdict({ rows: [row('Console', 'slow'), row('Home', 'up')], apps: [], generatedAt: at, incidents: [], nowMs: NOW }).title, 'Console is slow');
   assert.equal(verdict({ rows: [row('Console', 'unknown')], apps: [], generatedAt: at, incidents: [], nowMs: NOW }).status, 'unknown');
   const partial = verdict({ rows: [row('Console', 'up'), row('Watch', 'unknown')], apps: [row('Coach', 'slow', { now: { key: 'slow', label: 'Slow' } })], generatedAt: at, incidents: [], nowMs: NOW });
   assert.equal(partial.title, 'Checked core services are up'); assert.match(partial.description, /Watch could not be checked\. Coach slow\./);
-  assert.equal(verdict({ rows: [row('Console', 'up')], apps: [], generatedAt: at, incidents: [], nowMs: NOW }).title, 'All core services are up');
+  const clean = verdict({ rows: [row('Console', 'up')], apps: [], generatedAt: at, incidents: [], nowMs: NOW });
+  assert.equal(clean.title, 'All core services are up'); assert.match(clean.description, /Minute history is not available for every service\.$/, 'no clean-record claim without minute history');
+  const covered = row('Console', 'up'); covered.stats.list = [{ start: NOW / 1000 - 7200, end: NOW / 1000, code: 'o', n: 24 }];
+  assert.match(verdict({ rows: [covered], apps: [], generatedAt: at, incidents: [], nowMs: NOW }).description, /No failed checks recorded since October 23\.$/, 'the claim names the start of the recorded history');
 });
 
 test('service and core totals come from the HTTP series only and report gaps as unchecked', () => {
@@ -52,7 +55,7 @@ test('service and core totals come from the HTTP series only and report gaps as 
   const a = serviceUptime({ probes: ['a-render', 'a-http'] }, registry, uptime, nowSec);
   assert.equal(a.probe, 'a-http');
   assert.equal(a.day.downSec, 600); assert.equal(a.day.sustainedDownSec, 600); assert.equal(a.day.failedChecks, 2);
-  assert.equal(a.recentFailures, 2); assert.equal(a.lastFailure.end, nowSec - 300);
+  assert.equal(a.recentFailures, 2); assert.equal(a.lastFailedAt, nowSec - 600, 'the failed check time, not the end of its coverage');
   assert.equal(a.day.uncoveredSec, 86400 - 3600, 'time before the first check is unchecked, not up');
   assert.equal(serviceUptime({ probes: ['missing'] }, registry, uptime, nowSec), null);
   const b = serviceUptime({ probes: ['b-http'] }, registry, uptime, nowSec);

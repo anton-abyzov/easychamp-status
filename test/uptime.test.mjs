@@ -57,6 +57,14 @@ test('combined core totals take the worst service at each moment and leave uncov
   assert.equal(s.downSec, 300); assert.equal(s.slowSec, 300); assert.equal(s.uncoveredSec, 1100);
 });
 
+test('an unknown service never hides the known status of the others in combined totals', () => {
+  const unknown = [{ start: 0, end: 86400, code: 'u', n: 288 }];
+  const flaky = [{ start: 0, end: 82800, code: 'o', n: 276 }, { start: 82800, end: 86400, code: 'p', n: 12, sustained: true }];
+  const s = summarize(combine([unknown, flaky]), 0, 86400);
+  assert.equal(s.downSec, 3600); assert.equal(s.u, 0); assert.equal(s.uptime, 82800 / 86400);
+  assert.equal(summarize(combine([unknown]), 0, 86400).u, 86400, 'unknown only when no service is known');
+});
+
 test('recent checks expand segments with their recorded first and last times', () => {
   const s = series([[0, 'o'], [300, 'o'], [600, 'o'], [900, 'p', 'timeout']]);
   assert.deepEqual(recentChecks(s, 24), [{ at: 0, code: 'o', reason: undefined }, { at: 300, code: 'o', reason: undefined }, { at: 600, code: 'o', reason: undefined }, { at: 900, code: 'p', reason: 'timeout' }]);

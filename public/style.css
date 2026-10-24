@@ -1325,14 +1325,25 @@ a.core-row:focus-visible{outline:2px solid var(--color-focus);outline-offset:-2p
    narrow screens and enlarged text both get the stacked rows instead of clipped strips. */
 .core-table{container:core/inline-size}
 @container core (max-width:52rem){
-  /* Name and status share a line when they fit; the strip and the three figures follow. */
-  .core-row{display:flex;flex-wrap:wrap;align-items:baseline;padding:.6rem 1rem;gap:.35rem .9rem}
+  /* Two lines per service: name and status, then the 7-day strip with its downtime minutes. */
+  .core-row{grid-template-columns:minmax(0,1fr) 4.75rem 4.75rem;grid-template-areas:"name now now" "strip d1 d7";padding:.5rem 1rem;gap:.3rem .75rem;min-height:0}
+  .core-columns{grid-template-areas:"days h1 h7";padding-top:.3rem;padding-bottom:.3rem}
+  .core-columns>span{white-space:nowrap}
+  .strip-days span:nth-child(even){display:none}
+  .core-columns>span:nth-child(1),.core-columns>span:nth-child(2),.core-columns>span:nth-child(5),.cell-up{display:none}
+  .core-columns>span:nth-child(3){grid-area:h1}.core-columns>span:nth-child(4){grid-area:h7}.core-columns>.strip-days{grid-area:days;align-self:end}
+  .cell-name{grid-area:name;min-width:0;overflow-wrap:anywhere}.cell-now{grid-area:now;justify-self:end;text-align:right;min-width:0}
+  .cell-strip{grid-area:strip;align-self:center}.cell-d1{grid-area:d1}.cell-d7{grid-area:d7}
+  .core-row .cell-num{font-size:var(--text-caption)}
+}
+@container core (max-width:17rem){
+  /* Very narrow or enlarged text: stack everything and label each figure. */
+  .core-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:.3rem .9rem}
   .core-columns{display:none}
-  .cell-name{flex:1 1 6rem;min-width:0;overflow-wrap:anywhere}
-  .cell-now{flex:0 1 auto;min-width:0;margin-left:auto;text-align:right}
-  .cell-strip{flex:1 0 100%;order:1}
-  .core-row .cell-num{order:2;flex:0 0 auto;white-space:nowrap;text-align:left;font-size:var(--text-caption);color:var(--muted)}
-  .core-row>:nth-child(3):before{content:"24 h: "}.core-row>:nth-child(4):before{content:"7 days: "}.core-row>:nth-child(5):before{content:"Up "}
+  .cell-name{flex:1 1 6rem}.cell-now{flex:0 1 auto;margin-left:auto}
+  .cell-strip{flex:1 0 100%}
+  .core-row .cell-num{text-align:left;color:var(--muted)}
+  .cell-d1:before{content:"Down 24 h "}.cell-d7:before{content:"7 days "}
 }
 @media(max-width:860px){
   .totals{grid-template-columns:1fr}
@@ -1380,3 +1391,8 @@ a.core-row:focus-visible{outline:2px solid var(--color-focus);outline-offset:-2p
 .now{container:now/inline-size}
 @container now (max-width:20rem){.now-head{grid-template-columns:minmax(0,1fr)}.now-head .status-symbol{display:none}}
 .now-copy h1,.now-copy p{overflow-wrap:break-word}
+/* Strip contrast: unchecked time is hatched, never a flat tint that reads as up. */
+.strip .up{background:color-mix(in srgb,var(--green) 48%,var(--surface))}
+.strip .unknown{background:repeating-linear-gradient(135deg,var(--gray) 0 1.5px,transparent 1.5px 4px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .strip .up{background:color-mix(in srgb,var(--green) 68%,var(--surface))}}
+@media(max-width:600px){.core-range{display:none}}

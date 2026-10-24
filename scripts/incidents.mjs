@@ -1,6 +1,6 @@
 import { time, LABELS, REASONS } from '../public/model.mjs';
 import { normalizeIncidents, safeText, safePublicUrl } from '../public/incident-model.mjs';
-import { FAILURE_STATUSES } from './observations.mjs';
+import { FAILURE_STATUSES, confirmedStatus } from './observations.mjs';
 
 export function incidentDocument(payload) {
   if (payload?.schemaVersion !== 1 || !Array.isArray(payload.incidents)) throw new Error('invalid_incident_document');
@@ -37,26 +37,46 @@ const SEVERITY = { degraded: 1, partial_outage: 2, major_outage: 3 };
 function availabilityMessage(availability) {
   return `${availability.failed} of the latest ${availability.checked} availability checks failed: ${REASONS[availability.reasonCode] || REASONS.invalid_evidence}. Failures are intermittent; the issue stays open until six consecutive checks pass.`;
 }
+// Two rules confirm incidents. The consecutive-observation rule needs every probe of a
+// service to fail twice in a row; the availability rule confirms intermittent HTTP
+// failures (see availabilityState). The consecutive rule runs first and keeps opening,
+// escalating and describing incidents; the availability rule then opens or escalates on
+// top of it. While availability failures stay confirmed, nothing resolves the incident.
 export function advanceIncidents(payload, component, observation, at) {
   payload.schemaVersion = 1;
   payload.incidents = incidentDocument(payload).incidents;
-  const open = payload.incidents.find(incident => incident.componentId === component.id && !incident.resolvedAt);
   const availability = observation.availability;
-  if (availability?.confirmed && observation.availabilityAdvanced) {
-    const evidence = { status: availability.confirmed, reasonCode: availability.reasonCode, observedAt: at };
-    if (!open) {
-      const incident = { id: `${component.id}-${time(at)}`, componentId: component.id, title: `${component.name}: availability issue`, status: availability.confirmed, reasonCode: availability.reasonCode, openedAt: at, updatedAt: at, resolvedAt: null, stage: 'investigating', updates: [] };
-      appendIncidentUpdate(incident, { stage: 'investigating', at, message: availabilityMessage(availability), evidence });
-      payload.incidents.unshift(incident);
-    } else if ((SEVERITY[availability.confirmed] || 0) > (SEVERITY[open.status] || 0)) {
-      open.status = availability.confirmed; open.reasonCode = availability.reasonCode;
-      appendIncidentUpdate(open, { stage: open.stage === 'monitoring' ? 'investigating' : open.stage, at, message: availabilityMessage(availability), evidence });
-    } else open.updatedAt = at;
-    return;
+  const latched = Boolean(availability?.confirmed);
+  const openIncident = () => payload.incidents.find(incident => incident.componentId === component.id && !incident.resolvedAt);
+  if (!latched && observation.availabilityCleared) {
+    // Six consecutive passes cleared an issue the consecutive rule never confirmed:
+    // that is the recovery evidence for an availability incident.
+    const open = openIncident();
+    if (open && !confirmedStatus(observation.counter) && !FAILURE_STATUSES.includes(component.status)) {
+      open.resolvedAt = at;
+      appendIncidentUpdate(open, { stage: 'resolved', at, message: 'Six consecutive availability checks passed.', evidence: { status: component.status, reasonCode: component.reasonCode, observedAt: at } });
+      open.postmortem = postmortemDraft(open, at);
+      return;
+    }
   }
-  // While intermittent failures stay confirmed, a passing observation cannot resolve the incident.
-  if (availability?.confirmed) return;
-  if (!observation.isNew) return;
+  if (observation.isNew) advanceConsecutive(payload, component, observation, at, latched);
+  if (!latched) return;
+  const open = openIncident();
+  const evidence = { status: availability.confirmed, reasonCode: availability.reasonCode, observedAt: at };
+  if (!open) {
+    if (!observation.availabilityAdvanced) return;
+    const incident = { id: `${component.id}-${time(at)}`, componentId: component.id, title: `${component.name}: availability issue`, status: availability.confirmed, reasonCode: availability.reasonCode, openedAt: at, updatedAt: at, resolvedAt: null, stage: 'investigating', updates: [] };
+    appendIncidentUpdate(incident, { stage: 'investigating', at, message: availabilityMessage(availability), evidence });
+    payload.incidents.unshift(incident);
+  } else if ((SEVERITY[availability.confirmed] || 0) > (SEVERITY[open.status] || 0)) {
+    // Never shown as less severe than the confirmed availability failures.
+    open.status = availability.confirmed; open.reasonCode = availability.reasonCode;
+    if (open.title.endsWith(': degraded performance') || open.title.endsWith(': degraded service')) open.title = `${component.name}: availability issue`;
+    appendIncidentUpdate(open, { stage: open.stage === 'monitoring' ? 'investigating' : open.stage, at, message: availabilityMessage(availability), evidence });
+  } else if (observation.availabilityAdvanced && time(open.updatedAt) < time(at)) open.updatedAt = at;
+}
+function advanceConsecutive(payload, component, observation, at, latched) {
+  const open = payload.incidents.find(incident => incident.componentId === component.id && !incident.resolvedAt);
   const evidence = { status: component.status, reasonCode: component.reasonCode, observedAt: component.observedAt };
   if (FAILURE_STATUSES.includes(component.status) && observation.counter.bad >= 2) {
     if (!open) {
@@ -67,13 +87,17 @@ export function advanceIncidents(payload, component, observation, at) {
       appendIncidentUpdate(incident, { stage: 'investigating', at, message: `Two fresh observations confirmed ${LABELS[component.status].toLowerCase()}: ${REASONS[component.reasonCode] || REASONS.invalid_evidence}.`, evidence });
       payload.incidents.unshift(incident);
     } else {
-      const changed = open.status !== component.status || open.reasonCode !== component.reasonCode;
-      open.status = component.status;
-      open.reasonCode = component.reasonCode;
+      // A lesser failure does not downgrade an incident whose availability failures stay confirmed.
+      const keep = latched && (SEVERITY[open.status] || 0) > (SEVERITY[component.status] || 0);
+      const status = keep ? open.status : component.status, reasonCode = keep ? open.reasonCode : component.reasonCode;
+      const changed = open.status !== status || open.reasonCode !== reasonCode;
+      open.status = status;
+      open.reasonCode = reasonCode;
       if (changed || open.stage === 'monitoring') appendIncidentUpdate(open, { stage: open.stage === 'monitoring' ? 'investigating' : open.stage, at, message: `Fresh observations continue to confirm ${LABELS[component.status].toLowerCase()}: ${REASONS[component.reasonCode] || REASONS.invalid_evidence}.`, evidence });
       else open.updatedAt = at;
     }
-  } else if (open && component.status === 'operational') {
+  } else if (open && component.status === 'operational' && !latched) {
+    // A passing observation cannot resolve the incident while availability failures stay confirmed.
     if (observation.counter.good >= 2) {
       open.resolvedAt = at;
       appendIncidentUpdate(open, { stage: 'resolved', at, message: 'Two fresh successful observations confirmed recovery.', evidence });

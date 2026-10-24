@@ -101,6 +101,7 @@ for (const component of view.components) {
   if (http.length) {
     observation.availabilityAdvanced = http.some(id => advanced.includes(id));
     observation.availability = availabilityState(http.flatMap(id => recentChecks(timeline.series[id] || [], 24)), before.availability, time(state.generatedAt));
+    observation.availabilityCleared = Boolean(before.availability?.confirmed) && !observation.availability.confirmed;
     observation.counter = { ...observation.counter, availability: observation.availability };
   }
   state.counters[component.id] = observation.counter;

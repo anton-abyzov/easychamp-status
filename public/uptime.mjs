@@ -83,7 +83,8 @@ export function summarize(list, from, to) {
 }
 
 // Worst status across several services at each moment. A moment where no series has
-// coverage stays uncovered; partially covered moments use the services that were checked.
+// coverage stays uncovered; partially covered moments use the services that were checked,
+// and an unknown service never hides the known status of the others.
 export function combine(lists) {
   const points = [...new Set(lists.flatMap(list => list.flatMap(iv => [iv.start, iv.end])))].sort((a, b) => a - b);
   const out = [];
@@ -97,7 +98,8 @@ export function combine(lists) {
       if (iv && iv.start <= a && iv.end >= b) { codes.push(iv.code); if (iv.sustained) sustained.push(iv.code); }
     });
     if (!codes.length) continue;
-    const code = worst(codes);
+    const known = codes.filter(c => c === 'o' || c === 'd' || DOWN.has(c));
+    const code = worst(known.length ? known : codes);
     const last = out.at(-1);
     const isSustained = DOWN.has(code) && sustained.some(c => DOWN.has(c));
     if (last && last.end === a && last.code === code && last.sustained === isSustained) last.end = b;

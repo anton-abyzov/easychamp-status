@@ -3,7 +3,9 @@ import { viewState, time, REASONS, STATUSES } from '../public/model.mjs';
 import { monitorHeaders } from './auth.mjs';
 import { boundedBody, httpProbe } from './http-probe.mjs';
 import { publishHeartbeat } from './heartbeat.mjs';
-import { recordObservation, evidenceIdentity } from './observations.mjs';
+import { recordObservation, evidenceIdentity, availabilityState } from './observations.mjs';
+import { recordTimeline, serializeTimeline } from './timeline.mjs';
+import { recentChecks } from '../public/uptime.mjs';
 import { sanitizeFreshness } from './freshness-contract.mjs';
 import { advanceIncidents, seedConfirmedIncidents, incidentDocument } from './incidents.mjs';
 import { blockedRequestEvidence, initialRenderBlocked, blockedRequestCounts } from './render-coverage.mjs';
@@ -89,10 +91,18 @@ const incidents = incidentDocument(incidentPayload);
 seedConfirmedIncidents(state.counters, incidents);
 const day = state.generatedAt.slice(0, 10);
 history.days[day] ||= {};
+const { timeline, advanced } = recordTimeline(await load('data/timeline.json', null), registry, state, view, time(state.generatedAt));
+const httpProbes = new Set(registry.probes.filter(p => p.type === 'http').map(p => p.id));
 for (const component of view.components) {
   const before = state.counters[component.id] || { bad: 0, good: 0 };
   if (!before.evidence && previous.generatedAt) before.evidence = evidenceIdentity(oldView.components.find(c => c.id === component.id));
   const observation = recordObservation(component, before);
+  const http = (registry.components.find(c => c.id === component.id)?.probes || []).filter(id => httpProbes.has(id));
+  if (http.length) {
+    observation.availabilityAdvanced = http.some(id => advanced.includes(id));
+    observation.availability = availabilityState(http.flatMap(id => recentChecks(timeline.series[id] || [], 24)), before.availability, time(state.generatedAt));
+    observation.counter = { ...observation.counter, availability: observation.availability };
+  }
   state.counters[component.id] = observation.counter;
   advanceIncidents(incidents, component, observation, state.generatedAt);
   if (!observation.isNew) continue;
@@ -105,6 +115,7 @@ for (const date of Object.keys(history.days)) if (Date.parse(`${date}T00:00:00Z`
 incidents.incidents = [...incidents.incidents.filter(i => !i.resolvedAt), ...incidents.incidents.filter(i => i.resolvedAt).slice(0, 300)];
 await mkdir('data', { recursive: true });
 for (const [name, payload] of [['status', state], ['history', history], ['incidents', incidents]]) await writeFile(`data/${name}.json`, JSON.stringify(payload, null, 2) + '\n');
+await writeFile('data/timeline.json', serializeTimeline(timeline));
 if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `observed_at=${state.generatedAt}\n`);
 console.log(JSON.stringify({ at: state.generatedAt, components: view.components.length, known: view.components.filter(c => c.status !== 'unknown').length, browserRun }));
 console.log(JSON.stringify({ heartbeat: await publishHeartbeat({ ...view, counters: state.counters }, state.generatedAt) }));

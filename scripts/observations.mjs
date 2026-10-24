@@ -32,6 +32,34 @@ function supersededBySuccess(component, failedAt) {
     return [completed, attempt].some(t => t !== null && t > failedAt && t <= ceiling);
   });
 }
+// Intermittent availability. The consecutive-observation rule above needs every probe of a
+// component, including the 15-minute render check, to fail twice in a row; alternating
+// timeouts never satisfy it. This rule reads only distinct, deduplicated HTTP checks:
+// FAILURES failed checks among the latest WINDOW checks within SPAN seconds confirm an
+// issue. It stays confirmed until CLEAR consecutive known checks pass after the last
+// failure; unknown checks neither confirm nor clear it.
+export const AVAILABILITY = Object.freeze({ window: 4, failures: 2, span: 1800, clear: 6 });
+const SEVERITY = { partial_outage: 1, major_outage: 2 };
+export function availabilityState(checks, previous = null, now = Date.now(), rule = AVAILABILITY) {
+  const nowSec = Math.floor(now / 1000);
+  const sorted = [...checks].filter(c => Number.isInteger(c.at) && c.at <= nowSec + 60).sort((a, b) => a.at - b.at);
+  const recent = sorted.filter(c => c.at >= nowSec - rule.span).slice(-rule.window);
+  const failing = recent.filter(c => c.code === 'p' || c.code === 'm');
+  const lastFailure = sorted.findLastIndex(c => c.code === 'p' || c.code === 'm');
+  const passedSince = sorted.slice(lastFailure + 1).filter(c => c.code === 'o' || c.code === 'd').length;
+  if (failing.length >= rule.failures) {
+    const status = failing.some(c => c.code === 'm') ? 'major_outage' : 'partial_outage';
+    const keep = previous?.confirmed && SEVERITY[previous.confirmed] > SEVERITY[status] ? previous.confirmed : status;
+    return { confirmed: keep, reasonCode: failing.at(-1).reason || 'http_error', since: previous?.confirmed ? previous.since : new Date(failing[0].at * 1000).toISOString(), failed: failing.length, checked: recent.length };
+  }
+  if (previous?.confirmed && passedSince < rule.clear) return { ...previous, failed: failing.length, checked: recent.length };
+  return { confirmed: null, reasonCode: null, since: null, failed: failing.length, checked: recent.length };
+}
+// Highest confirmed severity from either rule; this is what owner alerts count.
+export function confirmedSeverity(counter = {}) {
+  const statuses = [confirmedStatus(counter), counter.availability?.confirmed].filter(s => FAILURE_STATUSES.includes(s));
+  return statuses.length ? rollup(statuses.map(status => ({ status }))) : null;
+}
 export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   const evidence = evidenceIdentity(component);
   const old = previous.evidence || {};

@@ -62,13 +62,17 @@ export function assistantHealthEvidence(data, now = Date.now()) {
 }
 
 export async function httpProbe(probe, { fetcher = safeFetch, now = Date.now, token = process.env.STATUS_MONITOR_TOKEN } = {}) {
-  const evidence = (status, reasonCode, extra = {}) => ({ status, reasonCode, observedAt: new Date(now()).toISOString(), ...extra });
+  const extraEdge = {};
+  const evidence = (status, reasonCode, extra = {}) => ({ status, reasonCode, observedAt: new Date(now()).toISOString(), ...extraEdge, ...extra });
   const start = performance.now();
   try {
     const response = await fetcher(probe.url, {
       signal: AbortSignal.timeout(18_000),
       headers: { 'User-Agent': 'EasyChamp-Status-Monitor/1.0 (+https://status.easychamp.com)', Accept: probe.jsonFields || probe.semanticHealth ? 'application/json' : 'text/html' },
     }, probe.monitorAuth ? token : null);
+    // The Cloudflare location that answered (public airport code), so coverage is explicit.
+    const edge = /^[0-9a-f]{16}-([A-Z]{3})$/.exec(response.headers?.get?.('cf-ray') || '')?.[1];
+    if (edge) Object.assign(extraEdge, { edge });
     if (response.status === 429 && (response.headers.get('x-ec-shed') === 'headless'
         || (probe.monitorAuth && token && response.headers.get('x-ec-shed') === 'ratelimit'))) {
       await response.body?.cancel();

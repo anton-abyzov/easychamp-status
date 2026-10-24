@@ -1254,3 +1254,129 @@ dialog::backdrop {
   .measurement-card p { flex-basis:100%; }
 }
 .dialog-toolbar .eyebrow { min-width:0; overflow-wrap:anywhere; flex:1; }
+
+/* Compact overview: current verdict, downtime totals and core services fit one screen. */
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.masthead{min-height:4.25rem}
+.now{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-card);padding:1.25rem 1.5rem 0;margin-bottom:1.25rem}
+.now-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.25rem 1rem;align-items:start}
+.now-head .status-symbol{width:2.5rem;height:2.5rem;border-radius:var(--radius-scorebug,.5rem);margin-top:.1rem}
+.now-copy h1{font-size:clamp(1.5rem,1.2rem + 1vw,2rem);letter-spacing:var(--tracking-heading);text-wrap:balance}
+.now-copy p{margin-top:.3rem;max-width:44rem;font-size:var(--text-base)}
+.now-meta{display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;font-size:var(--text-caption);color:var(--muted);white-space:nowrap}
+.now-meta #collector-age{font-variant-numeric:tabular-nums}
+#refresh{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius-control);padding:.3rem .7rem;font-size:var(--text-caption);min-height:2rem}
+#refresh:disabled{opacity:.6}
+.now-incidents{margin:1rem 0 0}
+.incident-list.compact{border:0;background:none}
+.incident-list.compact .incident-card{padding:.55rem 0;border:0;border-top:1px solid var(--color-line);border-radius:0;box-shadow:none;display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
+.incident-list.compact .incident-card+.incident-card{border-top:1px solid var(--color-line)}
+.incident-list.compact .incident-title-row h3{font-size:var(--text-base);font-family:var(--font-body);font-weight:500}
+.incident-list.compact .incident-title-row .row-arrow{display:none}
+.incident-list.compact .incident-meta{margin:0;white-space:nowrap}
+.totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:1rem -1.5rem 0;border-top:1px solid var(--color-line)}
+.total{padding:.8rem 1.5rem .9rem;min-width:0}
+.total+.total{border-left:1px solid var(--color-line)}
+.total dt{font-size:var(--text-caption);color:var(--muted)}
+.total dd{margin:.15rem 0 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .35rem}
+.total-value{font-family:var(--font-display);font-weight:var(--weight-semibold);font-size:1.5rem;font-variant-numeric:tabular-nums;color:var(--ink)}
+.total-label{font-size:var(--text-caption);color:var(--muted)}
+.total-detail{flex-basis:100%;font-size:var(--text-caption);color:var(--muted);font-variant-numeric:tabular-nums}
+.core{margin-bottom:.75rem}
+.core-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:.4rem}
+.core-head h2{font-size:var(--text-md)}
+.core-range{font-size:var(--text-caption);color:var(--muted)}
+.core-table{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-card);overflow:hidden}
+.core-row{display:grid;grid-template-columns:minmax(9rem,1.25fr) minmax(8rem,1fr) 5rem 5.5rem 4.5rem minmax(12rem,2.6fr);gap:.75rem;align-items:center;padding:0 1rem;min-height:2.6rem;font-size:var(--text-cell,.875rem);color:inherit}
+a.core-row:hover{text-decoration:none;background:var(--soft)}
+a.core-row:focus-visible{outline:2px solid var(--color-focus);outline-offset:-2px}
+.core-row+.core-row,#core-rows>.core-row:first-child,#more-rows>.core-row:first-child{border-top:1px solid var(--color-line)}
+#more-rows>.core-row:first-child{border-top:0}
+.core-columns{min-height:2rem;font-size:var(--text-caption);color:var(--muted);background:var(--soft)}
+.core-columns>span:nth-child(n+3):nth-child(-n+5),.cell-num{text-align:right;font-variant-numeric:tabular-nums}
+.cell-name{font-weight:500;color:var(--ink)}
+.cell-now .badge{font-size:var(--text-cell,.875rem)}
+.cell-up{color:var(--muted)}
+.strip-days{position:relative;height:1rem}
+.strip-days span{position:absolute;top:0;transform:translateX(.2rem);white-space:nowrap}
+.strip{position:relative;height:.875rem;border-radius:2px;overflow:hidden;background:repeating-linear-gradient(135deg,var(--color-line) 0 2px,transparent 2px 5px)}
+.strip .seg{position:absolute;top:0;bottom:0}
+.strip .up{background:color-mix(in srgb,var(--green) 38%,var(--surface))}
+.strip .slow{background:var(--yellow);top:25%;bottom:25%}
+.strip .unknown{background:color-mix(in srgb,var(--gray) 22%,var(--surface))}
+.strip .maint{background:color-mix(in srgb,var(--blue) 40%,var(--surface))}
+.strip .down{background:var(--red);min-width:2px;z-index:1}
+.strip .day-mark{position:absolute;top:0;bottom:0;width:1px;background:var(--surface);z-index:2}
+.vantage{margin:.45rem .25rem 0;font-size:var(--text-caption)}
+.fold{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-card);margin-top:.6rem}
+.fold>summary{display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;list-style:none;min-height:2.75rem}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary:before{content:"";width:.45rem;height:.45rem;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(-45deg);transition:transform var(--duration-micro,120ms) var(--ease-standard,ease);flex-shrink:0}
+.fold[open]>summary:before{transform:rotate(45deg)}
+.fold-title{font-weight:600;font-family:var(--font-display)}
+.fold-summary{margin-left:auto;display:flex;align-items:center;gap:.6rem;font-size:var(--text-caption);color:var(--muted);text-align:right;min-width:0}
+.fold-body{padding:0 1rem 1rem}
+.fold .core-table{border:0;border-top:1px solid var(--color-line);border-radius:0 0 var(--radius-card) var(--radius-card)}
+.fold #incident-history{padding:0 1rem 1rem}
+.fold .services-section .section-heading{margin-top:.5rem}
+.fold.method .method-content{padding:0 1rem 1rem}
+#jobs-list{display:grid}
+/* The service table stacks when its own width, in text units, cannot hold every column:
+   narrow screens and enlarged text both get the stacked rows instead of clipped strips. */
+.core-table{container:core/inline-size}
+@container core (max-width:52rem){
+  /* Name and status share a line when they fit; the strip and the three figures follow. */
+  .core-row{display:flex;flex-wrap:wrap;align-items:baseline;padding:.6rem 1rem;gap:.35rem .9rem}
+  .core-columns{display:none}
+  .cell-name{flex:1 1 6rem;min-width:0;overflow-wrap:anywhere}
+  .cell-now{flex:0 1 auto;min-width:0;margin-left:auto;text-align:right}
+  .cell-strip{flex:1 0 100%;order:1}
+  .core-row .cell-num{order:2;flex:0 0 auto;white-space:nowrap;text-align:left;font-size:var(--text-caption);color:var(--muted)}
+  .core-row>:nth-child(3):before{content:"24 h: "}.core-row>:nth-child(4):before{content:"7 days: "}.core-row>:nth-child(5):before{content:"Up "}
+}
+@media(max-width:860px){
+  .totals{grid-template-columns:1fr}
+  .total+.total{border-left:0;border-top:1px solid var(--color-line)}
+  .now-head{grid-template-columns:auto minmax(0,1fr)}
+  .now-meta{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:flex-start;flex-wrap:wrap;white-space:normal}
+  .fold>summary{flex-wrap:wrap}
+  .fold-summary{margin-left:1.45rem;text-align:left;flex-basis:100%}
+}
+@media(max-width:860px) and (min-width:600px){.totals{grid-template-columns:repeat(3,minmax(0,1fr))}.total+.total{border-left:1px solid var(--color-line);border-top:0}}
+#active-incidents.now-incidents{margin-bottom:0}
+#active-incidents.now-incidents .incident-list{border:0;border-radius:0;overflow:visible}
+.incident-list.compact .incident-card:hover{background:none}
+.incident-list.compact .incident-card:hover h3{text-decoration:underline;text-underline-offset:.2em}
+.total-short{display:none}
+.jobs-line{color:var(--muted)}
+.jobs-line .incident-meta{overflow:hidden;text-overflow:ellipsis;max-width:55%}
+#jobs-incidents{margin-bottom:.5rem}
+@media(max-width:600px){
+  .totals{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .total{padding:.65rem .75rem .75rem}
+  .total:first-child{padding-left:1.5rem}
+  .total+.total{border-left:1px solid var(--color-line);border-top:0}
+  .total-value{font-size:1.15rem}
+  .total-label,.total-detail{display:none}
+  .total-short{display:block;flex-basis:100%;font-size:var(--text-caption);color:var(--muted)}
+  .now{padding:1rem 1rem 0}
+  .totals{margin:1rem -1rem 0}
+  .now-copy h1{font-size:1.35rem}
+  .jobs-line{flex-direction:column}
+  .jobs-line .incident-meta{max-width:100%;white-space:normal}
+}
+/* Large text and narrow screens: totals reflow by text size, long summaries and dates wrap. */
+.totals{grid-template-columns:repeat(auto-fit,minmax(min(100%,6.25rem),1fr));overflow:hidden}
+.total,.total+.total{border:0;box-shadow:-1px 0 0 var(--color-line),0 -1px 0 var(--color-line);overflow-wrap:anywhere}
+.fold-summary{flex-wrap:wrap}
+.fold-summary>span:not(.badge){min-width:0;overflow-wrap:anywhere}
+.incident-list.compact .incident-card{flex-wrap:wrap;gap:.15rem 1rem}
+.incident-list.compact .incident-title-row{min-width:0}
+.incident-list.compact .incident-meta{white-space:normal}
+@media(min-width:861px){.totals{grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr))}}
+.core-head{flex-wrap:wrap}
+.core-head h2{white-space:nowrap}
+/* A narrow headline card drops the decorative symbol; the badge still states the status. */
+.now{container:now/inline-size}
+@container now (max-width:20rem){.now-head{grid-template-columns:minmax(0,1fr)}.now-head .status-symbol{display:none}}
+.now-copy h1,.now-copy p{overflow-wrap:break-word}

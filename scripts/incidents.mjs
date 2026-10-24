@@ -33,11 +33,30 @@ export function appendIncidentUpdate(incident, { stage, at, message, source = 'm
   incident.updatedAt = at;
   return true;
 }
+const SEVERITY = { degraded: 1, partial_outage: 2, major_outage: 3 };
+function availabilityMessage(availability) {
+  return `${availability.failed} of the latest ${availability.checked} availability checks failed: ${REASONS[availability.reasonCode] || REASONS.invalid_evidence}. Failures are intermittent; the issue stays open until six consecutive checks pass.`;
+}
 export function advanceIncidents(payload, component, observation, at) {
   payload.schemaVersion = 1;
   payload.incidents = incidentDocument(payload).incidents;
-  if (!observation.isNew) return;
   const open = payload.incidents.find(incident => incident.componentId === component.id && !incident.resolvedAt);
+  const availability = observation.availability;
+  if (availability?.confirmed && observation.availabilityAdvanced) {
+    const evidence = { status: availability.confirmed, reasonCode: availability.reasonCode, observedAt: at };
+    if (!open) {
+      const incident = { id: `${component.id}-${time(at)}`, componentId: component.id, title: `${component.name}: availability issue`, status: availability.confirmed, reasonCode: availability.reasonCode, openedAt: at, updatedAt: at, resolvedAt: null, stage: 'investigating', updates: [] };
+      appendIncidentUpdate(incident, { stage: 'investigating', at, message: availabilityMessage(availability), evidence });
+      payload.incidents.unshift(incident);
+    } else if ((SEVERITY[availability.confirmed] || 0) > (SEVERITY[open.status] || 0)) {
+      open.status = availability.confirmed; open.reasonCode = availability.reasonCode;
+      appendIncidentUpdate(open, { stage: open.stage === 'monitoring' ? 'investigating' : open.stage, at, message: availabilityMessage(availability), evidence });
+    } else open.updatedAt = at;
+    return;
+  }
+  // While intermittent failures stay confirmed, a passing observation cannot resolve the incident.
+  if (availability?.confirmed) return;
+  if (!observation.isNew) return;
   const evidence = { status: component.status, reasonCode: component.reasonCode, observedAt: component.observedAt };
   if (FAILURE_STATUSES.includes(component.status) && observation.counter.bad >= 2) {
     if (!open) {

@@ -1,10 +1,10 @@
-import { confirmedStatus, FAILURE_STATUSES } from './observations.mjs';
+import { confirmedSeverity, FAILURE_STATUSES } from './observations.mjs';
 export async function publishHeartbeat(view, observedAt, env = process.env, send = fetch, published = false) {
   if (!env.NEW_RELIC_STATUS_LICENSE_KEY || !/^\d+$/.test(env.NEW_RELIC_STATUS_ACCOUNT_ID || '')) return { status: 'not_configured' };
   const counts = Object.fromEntries(['operational', 'degraded', 'partial_outage', 'major_outage', 'maintenance', 'unknown'].map(status => [status, view.components.filter(c => c.status === status).length]));
   const confirmed = statuses => view.components.filter(component => {
     const counter = view.counters?.[component.id] || {};
-    const persisted = confirmedStatus(counter);
+    const persisted = confirmedSeverity(counter);
     const legacy = !Object.hasOwn(counter, 'confirmedStatus') && counter.bad >= 2 && FAILURE_STATUSES.includes(component.status) ? component.status : null;
     return statuses.includes(persisted || legacy);
   }).length;

@@ -1,7 +1,9 @@
 import { viewState, LABELS, REASONS, rollup, time } from './model.mjs';
 import { normalizeIncidents, STAGE_LABELS, safePublicUrl, displayIncidentTitle } from './incident-model.mjs';
+import { serviceUptime, serviceNow, verdict, coreTotals, minutes, percent, DAY, clock } from './overview.mjs';
+import { DOWN } from './uptime.mjs';
 
-let registry, state, history, incidents, currentView, loading = false, failed = false;
+let registry, state, history, incidents, uptime, currentView, loading = false, failed = false;
 let detailOrigin = null, previousHash = '', renderedRoute = '';
 const $ = selector => document.querySelector(selector);
 const el = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; };
@@ -11,7 +13,7 @@ const route = (kind, id, day) => `#${kind}/${encodeURIComponent(id)}${day ? `/${
 const complete = c => c.samples.every(s => s.status !== 'unknown');
 const dateAt = offset => new Date(Date.now() - offset * 86400000).toISOString().slice(0, 10);
 const days = () => Array.from({ length: 90 }, (_, i) => dateAt(89 - i));
-function age(at) { if (!time(at)) return 'unavailable'; const m = Math.max(0, Math.floor((Date.now() - time(at)) / 60000)); return m < 1 ? 'just now' : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.floor(m / 60)} hr ago` : `${Math.floor(m / 1440)} days ago`; }
+function age(at) { if (!time(at)) return 'unavailable'; const m = Math.max(0, Math.floor((Date.now() - time(at)) / 60000)); return m < 1 ? 'just now' : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.floor(m / 60)} h ago` : `${Math.floor(m / 1440)} days ago`; }
 function stamp(at) { return time(at) ? new Date(at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : 'Time unavailable'; }
 function dateLabel(date) { return new Date(`${date}T12:00:00Z`).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }); }
 function external(text, url, className = 'detail-link') { const safe = safePublicUrl(url); return safe ? link(`${text} ↗`, safe, className) : null; }
@@ -39,22 +41,101 @@ function incidentCard(i) {
   if (i.postmortem?.state === 'published') meta.append(el('span', '', 'Postmortem published'));
   card.append(top, meta); return card;
 }
+
+function span(seconds) { return seconds > 0 && seconds < 60 ? '<1 min' : minutes(seconds); }
+function renderTotals(totals) {
+  const box = $('#totals');
+  if (!totals) { box.replaceChildren(el('div', 'total', 'Downtime history is not available yet.')); return; }
+  const item = (label, s, extra) => {
+    const wrap = el('div', 'total'), dd = el('dd');
+    dd.append(el('span', 'total-value', percent(s.uptime)), el('span', 'total-label', 'up'), el('span', 'total-detail', extra(s)), el('span', 'total-short', s.downSec ? `${span(s.downSec)} down` : 'No failed checks'));
+    wrap.append(el('dt', '', label), dd); return wrap;
+  };
+  const down = s => s.downSec ? `${span(s.downSec)} down${s.sustainedDownSec ? `, ${span(s.sustainedDownSec)} sustained` : ''}` : 'No failed checks';
+  box.replaceChildren(
+    item('Last 24 hours', totals.day, s => `${down(s)}${s.slowSec ? `. ${span(s.slowSec)} slow` : ''}`),
+    item('Last 7 days', totals.week, s => `${down(s)}${s.episodes ? ` in ${s.episodes} ${s.episodes === 1 ? 'episode' : 'episodes'}, longest ${span(s.longestDownSec)}` : ''}`),
+    (() => { const wrap = el('div', 'total'), dd = el('dd'), s = totals.week; dd.append(el('span', 'total-value', percent(s.coverage)), el('span', 'total-label', 'checked'), el('span', 'total-detail', s.uncoveredSec + s.u > 0 ? `${span(s.uncoveredSec + s.u)} without a usable check` : 'Every interval had a check'), el('span', 'total-short', s.uncoveredSec + s.u > 0 ? `${span(s.uncoveredSec + s.u)} unchecked` : 'No gaps')); wrap.append(el('dt', '', 'Monitoring, 7 days'), dd); return wrap; })());
+}
+const STRIP_DAYS = 7;
+function stripDays(nowSec) {
+  const from = nowSec - STRIP_DAYS * DAY, marks = [];
+  const d = new Date(from * 1000); d.setHours(24, 0, 0, 0);
+  for (let t = d.getTime() / 1000; t < nowSec; ) { marks.push(t); const n = new Date(t * 1000); n.setDate(n.getDate() + 1); t = n.getTime() / 1000; }
+  return { from, marks };
+}
+function strip(list, nowSec, name) {
+  const { from, marks } = stripDays(nowSec), width = nowSec - from;
+  const box = el('div', 'strip'); box.setAttribute('role', 'img');
+  const pos = t => `${Math.max(0, Math.min(100, (t - from) / width * 100))}%`;
+  let down = 0, slow = 0;
+  for (const iv of list || []) {
+    if (iv.end <= from) continue;
+    const start = Math.max(iv.start, from), end = Math.min(iv.end, nowSec);
+    const cls = DOWN.has(iv.code) ? 'down' : iv.code === 'd' ? 'slow' : iv.code === 'o' ? 'up' : iv.code === 'n' ? 'maint' : 'unknown';
+    const part = el('i', `seg ${cls}`); part.style.left = pos(start); part.style.width = `${(end - start) / width * 100}%`;
+    if (cls === 'down' || cls === 'slow') {
+      if (cls === 'down') down += end - start; else slow += end - start;
+      part.title = `${new Date(start * 1000).toLocaleString(undefined, { weekday: 'short', hour: 'numeric', minute: '2-digit' })} to ${clock(end * 1000)}: ${cls === 'down' ? 'failed checks' : 'slow'}${iv.reason ? ` (${REASONS[iv.reason] || iv.reason})` : ''}`;
+    }
+    box.append(part);
+  }
+  for (const t of marks) { const m = el('i', 'day-mark'); m.style.left = pos(t); box.append(m); }
+  box.setAttribute('aria-label', `${name}, last 7 days: ${down ? `${minutes(down)} with failed checks` : 'no failed checks'}${slow ? `, ${minutes(slow)} slow` : ''}`);
+  return box;
+}
+function renderRows(container, rows, nowSec) {
+  if (!rows.length) { container.replaceChildren(el('p', 'empty', 'No services configured.')); return; }
+  container.replaceChildren(...rows.map(r => {
+    const a = link('', route('component', r.id), 'core-row'); a.setAttribute('role', 'row');
+    const now = el('span', 'cell-now'); now.append(badge(r.now.status)); now.lastChild.textContent = r.now.label;
+    const cell = (cls, text, title) => { const c = el('span', cls, text); c.setAttribute('role', 'cell'); if (title) c.title = title; return c; };
+    const s = r.stats;
+    const name = cell('cell-name', r.name); name.setAttribute('role', 'rowheader');
+    now.setAttribute('role', 'cell');
+    a.append(name, now,
+      cell('cell-num', s ? span(s.day.downSec) : '—', s ? `${s.day.failedChecks} of ${s.day.knownChecks} checks failed` : 'No minute history'),
+      cell('cell-num', s ? span(s.week.downSec) : '—', s ? `${s.week.failedChecks} of ${s.week.knownChecks} checks failed${s.week.sustainedDownSec ? `; ${minutes(s.week.sustainedDownSec)} sustained` : ''}` : 'No minute history'),
+      cell('cell-num cell-up', s ? percent(s.week.uptime) : '—'),
+      (() => { const c = cell('cell-strip'); c.append(strip(s?.list, nowSec, r.name)); return c; })());
+    return a;
+  }));
+  const { from, marks } = stripDays(nowSec);
+  const head = $('#strip-days');
+  head.replaceChildren(...marks.map(t => { const m = el('span', '', new Date(t * 1000).toLocaleDateString(undefined, { weekday: 'short' })); m.style.left = `${(t - from) / (nowSec - from) * 100}%`; return m; }));
+  $('#core-range').textContent = `Minute history since ${new Date(from * 1000).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}`;
+}
 function render() {
   if (!registry) return;
   const activeElement = document.activeElement;
   const focusedMeasurement = activeElement?.classList.contains('measurement-card') ? activeElement.getAttribute('href') : null;
   currentView = viewState(registry, state);
-  const overall = currentView.summary?.status || rollup([{ status: currentView.status }, currentView.collector]);
-  const count = currentView.components.filter(complete).length;
-  const titles = { operational: 'Configured checks are passing', degraded: 'Some services are degraded', partial_outage: 'Some services have issues', major_outage: 'Service outage detected', unknown: 'Some service status is unknown', maintenance: 'Maintenance in progress' };
-  $('#overview-title').textContent = currentView.summary?.title || titles[overall];
-  $('#overview-description').textContent = currentView.summary?.description || `${count} of ${currentView.components.length} services have complete current checks${count < currentView.components.length ? ` · ${currentView.components.length - count} with unknown coverage` : ''}.`;
-  const overviewBadge = badge(currentView.summary?.status || overall);
-  if (currentView.summary?.badge) overviewBadge.textContent = currentView.summary.badge;
+  const nowMs = Date.now(), nowSec = Math.floor(nowMs / 1000);
+  const allIncidents = normalizeIncidents(incidents);
+  const openFor = id => allIncidents.find(i => i.componentId === id && !i.resolvedAt);
+  const row = c => { const stats = serviceUptime(c, registry, uptime, nowSec); return { id: c.id, name: c.short || c.name, component: c, stats, now: serviceNow(c, stats, openFor(c.id)) }; };
+  const tier = name => currentView.components.filter(c => c.tier === name).sort((a, b) => (a.order || 99) - (b.order || 99)).map(row);
+  const core = tier('core'), apps = tier('app');
+  const collectorStale = failed || currentView.collector.status === 'unknown';
+  const top = failed ? { status: 'unknown', title: 'Service status unavailable', description: 'Current checks could not be refreshed. Availability is unknown.' } : verdict({ rows: core, apps, collectorStale, generatedAt: state.generatedAt, incidents: allIncidents, nowMs });
+  $('#overview-title').textContent = top.title;
+  $('#overview-description').textContent = top.description;
+  const overviewBadge = badge(top.status);
   $('#overall-badge').replaceWith(Object.assign(overviewBadge, { id: 'overall-badge' }));
-  $('#overall-icon').className = `status-symbol ${overall}`;
-  $('#overall-icon').textContent = overall === 'operational' ? '✓' : overall === 'unknown' ? '?' : '!';
-  $('#collector-age').textContent = failed ? 'Refresh failed · current evidence unavailable' : `Updated ${age(state.generatedAt)}${currentView.collector.status === 'unknown' ? ' · collection stale' : ''}`;
+  $('#overall-icon').className = `status-symbol ${top.status}`;
+  $('#overall-icon').textContent = top.status === 'operational' ? '✓' : top.status === 'unknown' ? '?' : '!';
+  $('#collector-age').textContent = failed ? 'Refresh failed · current evidence unavailable' : `Checked ${age(state.generatedAt)}`;
+  renderTotals(coreTotals(core, nowSec));
+  renderRows($('#core-rows'), core, nowSec);
+  renderRows($('#more-rows'), apps, nowSec);
+  const appIssues = apps.filter(r => !['up', 'unknown'].includes(r.now.key));
+  $('#more-apps-summary').replaceChildren(appIssues.length ? badge(rollup(appIssues.map(r => ({ status: r.now.status })))) : badge(apps.every(r => r.now.key === 'up') ? 'operational' : 'unknown'), el('span', '', appIssues.length ? appIssues.map(r => `${r.name}: ${r.now.label.toLowerCase()}`).join(', ') : `${apps.map(r => r.name).join(', ')}`));
+  const edges = [...new Set(core.flatMap(r => (r.component.samples || []).map(s => s.edge)).filter(Boolean))].sort();
+  $('#vantage').textContent = `Checked about every 5 minutes from GitHub-hosted servers${edges.length ? `, reaching Cloudflare at ${edges.join(', ')}` : ''}. Failures limited to other regions can be missed.`;
+  const jobs = currentView.components.filter(c => ['results', 'player-data', 'platform'].includes(c.group));
+  const jobIssues = jobs.filter(c => ['degraded', 'partial_outage', 'major_outage'].includes(c.status)), jobUnknown = jobs.filter(c => c.status === 'unknown').length;
+  $('#jobs-summary').replaceChildren(badge(jobIssues.length ? rollup(jobIssues) : jobUnknown ? 'unknown' : 'operational'), el('span', '', `${jobs.length - jobIssues.length - jobUnknown} verified, ${jobIssues.length} with issues, ${jobUnknown} not verifiable`));
+  $('#jobs-list').replaceChildren(...[...jobIssues, ...jobs.filter(c => !jobIssues.includes(c))].map(c => { const a = link('', route('component', c.id), 'component-link'); const status = el('span', 'component-status'); status.append(badge(c.status), el('span', 'row-arrow', '›')); a.append(el('span', 'component-name', c.name), status); return a; }));
   $('#service-count').textContent = currentView.components.length;
   const measurements = currentView.measurements || [];
   $('#measurement-summary').hidden = !measurements.length;
@@ -87,9 +168,16 @@ function render() {
   } else if (focusedHref && activeElement?.classList.contains('group-history')) [...groups.querySelectorAll('.group-history')].find(n => n.getAttribute('href') === focusedHref)?.focus({ preventScroll: true });
   const all = normalizeIncidents(incidents).sort((a,b) => (time(b.updatedAt || b.openedAt) || 0) - (time(a.updatedAt || a.openedAt) || 0));
   const active = all.filter(i => !i.resolvedAt), past = all.filter(i => i.resolvedAt).slice(0, 30);
+  // Customer-facing incidents lead; background job incidents collapse to one line.
+  const facing = new Set(currentView.components.filter(c => c.tier).map(c => c.id));
+  const activeFacing = active.filter(i => facing.has(i.componentId)), activeJobs = active.filter(i => !facing.has(i.componentId));
   $('#active-incidents').hidden = !active.length; $('#active-count').textContent = active.length === 1 ? '1 ongoing' : `${active.length} ongoing`;
-  $('#active-list').replaceChildren(...active.map(incidentCard));
+  const jobLine = activeJobs.length ? (() => { const a = link('', '#jobs', 'incident-card jobs-line'); a.append(el('span', '', `${activeJobs.length} background data ${activeJobs.length === 1 ? 'job has an open issue' : 'jobs have open issues'}`), el('span', 'incident-meta', activeJobs.map(i => currentView.components.find(c => c.id === i.componentId)?.name || 'Data job').join(', '))); a.addEventListener('click', () => { $('#jobs').open = true; }); return a; })() : null;
+  $('#active-list').replaceChildren(...activeFacing.map(incidentCard), ...(jobLine ? [jobLine] : []));
+  $('#jobs-incidents').replaceChildren(...activeJobs.map(incidentCard)); $('#jobs-incidents').hidden = !activeJobs.length;
   $('#incident-history').replaceChildren(...(past.length ? past.map(incidentCard) : [el('p', 'empty', 'No resolved incidents in the collected history.')]));
+  const month = all.filter(i => i.resolvedAt && Date.now() - time(i.openedAt) < 30 * 86400000).length;
+  $('#history-summary').textContent = `${month} resolved in the last 30 days`;
   if (focusedIncidentHref) [...document.querySelectorAll('.incident-list a')].find(a => a.getAttribute('href') === focusedIncidentHref)?.focus({ preventScroll: true });
   $('#legend').replaceChildren(...Object.keys(LABELS).map(badge));
   // Re-evaluate open details too: a passing check must expire while it is being read.
@@ -198,7 +286,6 @@ function closeDetail() {
   window.history.replaceState(null, '', `${location.pathname}${location.search}${previousHash}`); showRoute();
 }
 document.addEventListener('click', event => { const a = event.target.closest('a[href^="#"]'); if (!a || !/^#(component|group|incident|measurement)\//.test(a.getAttribute('href')) || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); if (!$('#detail-dialog').open) previousHash = location.hash; window.history.pushState(null, '', a.getAttribute('href')); renderedRoute = ''; showRoute(); });
-document.querySelector('a[href="#method"]').addEventListener('click', () => { $('#method').open = true; });
 $('#close-detail').addEventListener('click', closeDetail);
 $('#detail-dialog').addEventListener('cancel', event => { event.preventDefault(); closeDetail(); });
 $('#detail-dialog').addEventListener('click', event => { if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) closeDetail(); } });
@@ -207,11 +294,13 @@ window.addEventListener('popstate', () => { renderedRoute = ''; showRoute(); });
 async function load() {
   if (loading) return; loading = true; $('#refresh').disabled = true;
   try {
-    const values = await Promise.all(['components','status','history','incidents'].map(async name => { const r = await fetch(`./data/${name}.json?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(15000) }); if (!r.ok) throw new Error('unavailable'); return r.json(); }));
+    const fetchJson = async name => { const r = await fetch(`./data/${name}.json?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(15000) }); if (!r.ok) throw new Error('unavailable'); return r.json(); };
+    // Minute history is optional: without it the page still shows current checks.
+    const [values, nextUptime] = await Promise.all([Promise.all(['components','status','history','incidents'].map(fetchJson)), fetchJson('uptime').catch(() => null)]);
     const [nextRegistry, nextState, nextHistory, nextIncidents] = values;
     if (!nextRegistry || !['groups', 'components', 'probes'].every(key => Array.isArray(nextRegistry[key])) || !nextState || typeof nextState !== 'object' || !nextHistory || typeof nextHistory !== 'object' || !nextIncidents || typeof nextIncidents !== 'object') throw new Error('invalid data');
     if (!nextRegistry.components.every(c => c && typeof c.id === 'string' && typeof c.name === 'string' && (!c.probes || Array.isArray(c.probes))) || !nextRegistry.groups.every(g => g && typeof g.id === 'string' && typeof g.name === 'string') || !nextRegistry.probes.every(p => p && typeof p.id === 'string')) throw new Error('invalid registry');
-    [registry, state, history, incidents] = values; failed = false; render();
+    [registry, state, history, incidents] = values; uptime = nextUptime?.schemaVersion === 1 && nextUptime.series && typeof nextUptime.series === 'object' ? nextUptime : { schemaVersion: 1, caps: {}, series: {} }; failed = false; render();
   } catch {
     failed = true;
     if (registry) { state = { ...state, generatedAt: null, probes: {}, freshness: {} }; renderedRoute = ''; render(); }

@@ -216,7 +216,10 @@
         "home-http",
         "home-render"
       ],
-      "coverage": "Public page content and rendering"
+      "coverage": "Public page content and rendering",
+      "tier": "core",
+      "short": "Main site",
+      "order": 3
     },
     {
       "id": "console",
@@ -226,7 +229,10 @@
         "console-http",
         "console-render"
       ],
-      "coverage": "Entry and sign-in page rendering; signed-in workflows not checked"
+      "coverage": "Entry and sign-in page rendering; signed-in workflows not checked",
+      "tier": "core",
+      "short": "Organizer Console",
+      "order": 1
     },
     {
       "id": "watch",
@@ -236,7 +242,10 @@
         "watch-http",
         "watch-render"
       ],
-      "coverage": "Watch public entry page content and rendering; other competition tenants are checked separately"
+      "coverage": "Watch public entry page content and rendering; other competition tenants are checked separately",
+      "tier": "core",
+      "short": "Watch",
+      "order": 2
     },
     {
       "id": "soccer-nationals",
@@ -246,7 +255,10 @@
         "soccer-nationals-http",
         "soccer-nationals-render"
       ],
-      "coverage": "International tenant entry page at soccer-nationals.easychamp.com; other league tenants not checked"
+      "coverage": "International tenant entry page at soccer-nationals.easychamp.com; other league tenants not checked",
+      "tier": "core",
+      "short": "League sites",
+      "order": 6
     },
     {
       "id": "club-sites",
@@ -256,7 +268,10 @@
         "club-http",
         "club-render"
       ],
-      "coverage": "One representative club homepage; other tenants not checked"
+      "coverage": "One representative club homepage; other tenants not checked",
+      "tier": "core",
+      "short": "Club websites",
+      "order": 5
     },
     {
       "id": "snap",
@@ -266,7 +281,10 @@
         "snap-http",
         "snap-render"
       ],
-      "coverage": "Public entry page rendering; uploads not checked"
+      "coverage": "Public entry page rendering; uploads not checked",
+      "tier": "app",
+      "short": "Snap to League",
+      "order": 3
     },
     {
       "id": "signin",
@@ -275,7 +293,10 @@
       "probes": [
         "signin-http"
       ],
-      "coverage": "Sign-in protocol discovery; credential login and token issuance not checked"
+      "coverage": "Sign-in protocol discovery; credential login and token issuance not checked",
+      "tier": "core",
+      "short": "Sign-in",
+      "order": 4
     },
     {
       "id": "organizer-data",
@@ -292,7 +313,10 @@
         "coach-http",
         "coach-render"
       ],
-      "coverage": "Public page content and rendering; gameplay not checked"
+      "coverage": "Public page content and rendering; gameplay not checked",
+      "tier": "app",
+      "short": "Coach",
+      "order": 1
     },
     {
       "id": "sim",
@@ -302,7 +326,10 @@
         "sim-http",
         "sim-render"
       ],
-      "coverage": "Public page content and rendering; simulation execution not checked"
+      "coverage": "Public page content and rendering; simulation execution not checked",
+      "tier": "app",
+      "short": "Match Simulator",
+      "order": 2
     },
     {
       "id": "predictions",
@@ -311,14 +338,22 @@
       "probes": [
         "predictions-http"
       ],
-      "coverage": "Public configuration schema; purchases and prediction submission not checked"
+      "coverage": "Public configuration schema; purchases and prediction submission not checked",
+      "tier": "app",
+      "short": "Predictions",
+      "order": 4
     },
     {
       "id": "assistant",
       "group": "interactive",
       "name": "AI assistant",
-      "probes": ["assistant-health"],
-      "coverage": "Database, core data service and platform-funded provider account readiness; authenticated questions and model generation are not continuously checked. User-to-user messaging is not covered."
+      "probes": [
+        "assistant-health"
+      ],
+      "coverage": "Database, core data service and platform-funded provider account readiness; authenticated questions and model generation are not continuously checked. User-to-user messaging is not covered.",
+      "tier": "app",
+      "short": "AI assistant",
+      "order": 5
     },
     {
       "id": "media-playback",

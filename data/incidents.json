@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "watch-1792833597235",
+      "componentId": "watch",
+      "title": "Watch entry page: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-24T09:19:57.235Z",
+      "updatedAt": "2026-10-24T09:19:57.235Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "watch-1792833597235-monitor-2026-10-24T09:19:57.235Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T09:19:57.235Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-24T09:19:57.235Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 64,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/64"
+      }
+    },
+    {
       "id": "console-1792833401494",
       "componentId": "console",
       "title": "Organizer Console: availability issue",
@@ -37,7 +66,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-24T09:16:41.494Z",
+      "updatedAt": "2026-10-24T09:19:57.235Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

@@ -97,9 +97,9 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T21:39:19.136Z",
+      "updatedAt": "2026-10-25T22:00:39.631Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "assistant-1792824957322-monitor-2026-10-24T06:55:57.322Z-investigating",
@@ -159,6 +159,18 @@
             "status": "degraded",
             "reasonCode": "provider_capacity_low",
             "observedAt": "2026-10-25T15:58:07.747Z"
+          }
+        },
+        {
+          "id": "assistant-1792824957322-monitor-2026-10-25T22:00:39.631Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T22:00:39.631Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-25T22:00:37.006Z"
           }
         }
       ],

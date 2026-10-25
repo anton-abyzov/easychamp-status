@@ -1,77 +1,77 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-25T02:21:01.894Z",
+  "generatedAt": "2026-10-25T02:27:05.575Z",
   "probes": {
     "console-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-25T02:20:54.771Z",
-      "edge": "MSP",
-      "responseMs": 528,
+      "observedAt": "2026-10-25T02:26:58.651Z",
+      "edge": "LAX",
+      "responseMs": 2621,
       "httpStatus": 200
     },
     "home-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-25T02:20:55.120Z",
-      "edge": "MSP",
-      "responseMs": 878,
+      "observedAt": "2026-10-25T02:26:59.914Z",
+      "edge": "LAX",
+      "responseMs": 3884,
       "httpStatus": 200
     },
     "coach-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-25T02:20:54.864Z",
-      "edge": "MSP",
-      "responseMs": 620,
+      "observedAt": "2026-10-25T02:26:56.821Z",
+      "edge": "LAX",
+      "responseMs": 790,
       "httpStatus": 200
     },
     "club-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-25T02:20:55.558Z",
-      "edge": "MSP",
-      "responseMs": 694,
+      "observedAt": "2026-10-25T02:26:59.120Z",
+      "edge": "LAX",
+      "responseMs": 469,
       "httpStatus": 200
     },
     "sim-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-25T02:20:55.616Z",
-      "edge": "MSP",
-      "responseMs": 863,
+      "observedAt": "2026-10-25T02:26:59.471Z",
+      "edge": "LAX",
+      "responseMs": 2893,
       "httpStatus": 200
     },
     "snap-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-25T02:20:55.590Z",
-      "edge": "MSP",
-      "responseMs": 470,
+      "observedAt": "2026-10-25T02:26:59.577Z",
+      "edge": "LAX",
+      "responseMs": 457,
       "httpStatus": 200
     },
     "watch-http": {
       "status": "degraded",
       "reasonCode": "slow",
-      "observedAt": "2026-10-25T02:20:58.809Z",
-      "edge": "MSP",
-      "responseMs": 4038,
+      "observedAt": "2026-10-25T02:27:02.244Z",
+      "edge": "LAX",
+      "responseMs": 5423,
       "httpStatus": 200
     },
     "predictions-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-25T02:20:55.740Z",
-      "edge": "MSP",
-      "responseMs": 150,
+      "observedAt": "2026-10-25T02:26:59.684Z",
+      "edge": "LAX",
+      "responseMs": 107,
       "httpStatus": 200
     },
     "signin-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-10-25T02:20:55.878Z",
-      "edge": "MSP",
-      "responseMs": 320,
+      "observedAt": "2026-10-25T02:27:00.520Z",
+      "edge": "LAX",
+      "responseMs": 1048,
       "httpStatus": 200
     },
     "home-render": {
@@ -116,12 +116,11 @@
       "lcpMs": 1268
     },
     "soccer-nationals-http": {
-      "status": "degraded",
-      "reasonCode": "slow",
-      "observedAt": "2026-10-25T02:21:01.603Z",
-      "edge": "MSP",
-      "responseMs": 5987,
-      "httpStatus": 200
+      "status": "major_outage",
+      "reasonCode": "http_error",
+      "observedAt": "2026-10-25T02:27:05.317Z",
+      "edge": "LAX",
+      "httpStatus": 503
     },
     "soccer-nationals-render": {
       "status": "degraded",
@@ -132,9 +131,9 @@
     "assistant-health": {
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
-      "observedAt": "2026-10-25T02:20:54.711Z",
-      "edge": "MSP",
-      "responseMs": 540,
+      "observedAt": "2026-10-25T02:26:56.518Z",
+      "edge": "LAX",
+      "responseMs": 584,
       "httpStatus": 200
     }
   },
@@ -852,12 +851,12 @@
     "signin": {
       "evidence": {
         "signin-http": {
-          "observedAt": "2026-10-25T02:20:55.878Z",
+          "observedAt": "2026-10-25T02:27:00.520Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 3,
+      "good": 4,
       "confirmedStatus": null,
       "failedAttemptAt": null,
       "availability": {
@@ -923,12 +922,12 @@
     "predictions": {
       "evidence": {
         "predictions-http": {
-          "observedAt": "2026-10-25T02:20:55.740Z",
+          "observedAt": "2026-10-25T02:26:59.684Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 25,
+      "good": 26,
       "confirmedStatus": null,
       "failedAttemptAt": null,
       "availability": {
@@ -1058,18 +1057,18 @@
         "confirmed": null,
         "reasonCode": null,
         "since": null,
-        "failed": 0,
+        "failed": 1,
         "checked": 4
       }
     },
     "assistant": {
       "evidence": {
         "assistant-health": {
-          "observedAt": "2026-10-25T02:20:54.711Z",
+          "observedAt": "2026-10-25T02:26:56.518Z",
           "status": "degraded"
         }
       },
-      "bad": 217,
+      "bad": 218,
       "good": 0,
       "confirmedStatus": "major_outage",
       "failedAttemptAt": null,

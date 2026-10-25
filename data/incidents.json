@@ -2,47 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "cluster-resources-1792902697576",
-      "componentId": "cluster-resources",
-      "title": "Kubernetes resources: degraded service",
-      "status": "degraded",
-      "reasonCode": "resource_pressure",
-      "openedAt": "2026-10-25T04:31:37.576Z",
-      "updatedAt": "2026-10-25T04:49:06.753Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "cluster-resources-1792902697576-monitor-2026-10-25T04:31:37.576Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-25T04:31:37.576Z",
-          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "resource_pressure",
-            "observedAt": "2026-10-25T04:30:12.000Z"
-          }
-        },
-        {
-          "id": "cluster-resources-1792902697576-monitor-2026-10-25T04:49:06.753Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-25T04:49:06.753Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "verified",
-            "observedAt": "2026-10-25T04:40:12.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 72,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/72"
-      }
-    },
-    {
       "id": "soccer-nationals-1792901603605",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
@@ -191,7 +150,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T04:49:06.753Z",
+      "updatedAt": "2026-10-25T04:51:03.264Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -659,6 +618,64 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "cluster-resources-1792902697576",
+      "componentId": "cluster-resources",
+      "title": "Kubernetes resources: degraded service",
+      "status": "degraded",
+      "reasonCode": "resource_pressure",
+      "openedAt": "2026-10-25T04:31:37.576Z",
+      "updatedAt": "2026-10-25T04:51:03.264Z",
+      "resolvedAt": "2026-10-25T04:51:03.264Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "cluster-resources-1792902697576-monitor-2026-10-25T04:31:37.576Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T04:31:37.576Z",
+          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-25T04:30:12.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792902697576-monitor-2026-10-25T04:49:06.753Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T04:49:06.753Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-25T04:40:12.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792902697576-monitor-2026-10-25T04:51:03.264Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-25T04:51:03.264Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-25T04:50:10.000Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Kubernetes resources: degraded service. First confirmed issue: 2026-10-25T04:31:37.576Z. Recovery confirmed by two fresh successful observations: 2026-10-25T04:51:03.264Z. Confirmed incident duration: 19 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-25T04:51:03.264Z"
+      },
+      "issue": {
+        "number": 72,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/72"
       }
     },
     {

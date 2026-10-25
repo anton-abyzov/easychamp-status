@@ -2,59 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "console-1792891150473",
-      "componentId": "console",
-      "title": "Organizer Console: availability issue",
-      "status": "partial_outage",
-      "reasonCode": "content_mismatch",
-      "openedAt": "2026-10-25T01:19:10.473Z",
-      "updatedAt": "2026-10-25T02:58:40.343Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "console-1792891150473-monitor-2026-10-25T01:19:10.473Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-25T01:19:10.473Z",
-          "message": "Two fresh observations confirmed partial outage: Expected content missing.",
-          "source": "monitor",
-          "evidence": {
-            "status": "partial_outage",
-            "reasonCode": "content_mismatch",
-            "observedAt": "2026-10-25T01:18:19.112Z"
-          }
-        },
-        {
-          "id": "console-1792891150473-monitor-2026-10-25T01:34:21.973Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-25T01:34:21.973Z",
-          "message": "Latest evidence is unknown: Evidence could not be verified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "invalid_evidence",
-            "observedAt": "2026-10-25T01:33:21.860Z"
-          }
-        },
-        {
-          "id": "console-1792891150473-monitor-2026-10-25T02:58:40.343Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-25T02:58:40.343Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-25T02:58:01.866Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 68,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/68"
-      }
-    },
-    {
       "id": "watch-1792859528188",
       "componentId": "watch",
       "title": "Watch entry page: degraded performance",
@@ -299,7 +246,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T03:12:09.423Z",
+      "updatedAt": "2026-10-25T03:17:45.653Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -767,6 +714,76 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "console-1792891150473",
+      "componentId": "console",
+      "title": "Organizer Console: availability issue",
+      "status": "partial_outage",
+      "reasonCode": "content_mismatch",
+      "openedAt": "2026-10-25T01:19:10.473Z",
+      "updatedAt": "2026-10-25T03:17:45.653Z",
+      "resolvedAt": "2026-10-25T03:17:45.653Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "console-1792891150473-monitor-2026-10-25T01:19:10.473Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T01:19:10.473Z",
+          "message": "Two fresh observations confirmed partial outage: Expected content missing.",
+          "source": "monitor",
+          "evidence": {
+            "status": "partial_outage",
+            "reasonCode": "content_mismatch",
+            "observedAt": "2026-10-25T01:18:19.112Z"
+          }
+        },
+        {
+          "id": "console-1792891150473-monitor-2026-10-25T01:34:21.973Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T01:34:21.973Z",
+          "message": "Latest evidence is unknown: Evidence could not be verified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "invalid_evidence",
+            "observedAt": "2026-10-25T01:33:21.860Z"
+          }
+        },
+        {
+          "id": "console-1792891150473-monitor-2026-10-25T02:58:40.343Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T02:58:40.343Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-25T02:58:01.866Z"
+          }
+        },
+        {
+          "id": "console-1792891150473-monitor-2026-10-25T03:17:45.653Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-25T03:17:45.653Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-25T03:16:59.712Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Organizer Console: availability issue. First confirmed issue: 2026-10-25T01:19:10.473Z. Recovery confirmed by two fresh successful observations: 2026-10-25T03:17:45.653Z. Confirmed incident duration: 119 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-25T03:17:45.653Z"
+      },
+      "issue": {
+        "number": 68,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/68"
       }
     },
     {

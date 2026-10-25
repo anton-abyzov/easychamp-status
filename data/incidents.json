@@ -91,95 +91,6 @@
       }
     },
     {
-      "id": "assistant-1792824957322",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T22:00:39.631Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "assistant-1792824957322-monitor-2026-10-24T06:55:57.322Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-24T06:55:57.322Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-24T06:55:54.780Z"
-          }
-        },
-        {
-          "id": "assistant-1792824957322-monitor-2026-10-24T08:51:50.991Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-24T08:51:50.991Z",
-          "message": "Fresh observations continue to confirm major outage: Check timed out.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-24T08:51:47.381Z"
-          }
-        },
-        {
-          "id": "assistant-1792824957322-monitor-2026-10-24T08:53:44.048Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-24T08:53:44.048Z",
-          "message": "Fresh observations continue to confirm needs attention: AI provider balance is low.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-24T08:53:13.438Z"
-          }
-        },
-        {
-          "id": "assistant-1792824957322-monitor-2026-10-25T15:56:28.870Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-25T15:56:28.870Z",
-          "message": "Fresh observations continue to confirm major outage: Check timed out.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-25T15:56:06.655Z"
-          }
-        },
-        {
-          "id": "assistant-1792824957322-monitor-2026-10-25T15:58:08.092Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-25T15:58:08.092Z",
-          "message": "Fresh observations continue to confirm needs attention: AI provider balance is low.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-25T15:58:07.747Z"
-          }
-        },
-        {
-          "id": "assistant-1792824957322-monitor-2026-10-25T22:00:39.631Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-25T22:00:39.631Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-25T22:00:37.006Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 62,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/62"
-      }
-    },
-    {
       "id": "feed-results-1791424102502",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
@@ -601,6 +512,112 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "assistant-1792824957322",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-24T06:55:57.322Z",
+      "updatedAt": "2026-10-25T22:04:04.867Z",
+      "resolvedAt": "2026-10-25T22:04:04.867Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "assistant-1792824957322-monitor-2026-10-24T06:55:57.322Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T06:55:57.322Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-24T06:55:54.780Z"
+          }
+        },
+        {
+          "id": "assistant-1792824957322-monitor-2026-10-24T08:51:50.991Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T08:51:50.991Z",
+          "message": "Fresh observations continue to confirm major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-24T08:51:47.381Z"
+          }
+        },
+        {
+          "id": "assistant-1792824957322-monitor-2026-10-24T08:53:44.048Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T08:53:44.048Z",
+          "message": "Fresh observations continue to confirm needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-24T08:53:13.438Z"
+          }
+        },
+        {
+          "id": "assistant-1792824957322-monitor-2026-10-25T15:56:28.870Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T15:56:28.870Z",
+          "message": "Fresh observations continue to confirm major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-25T15:56:06.655Z"
+          }
+        },
+        {
+          "id": "assistant-1792824957322-monitor-2026-10-25T15:58:08.092Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T15:58:08.092Z",
+          "message": "Fresh observations continue to confirm needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-25T15:58:07.747Z"
+          }
+        },
+        {
+          "id": "assistant-1792824957322-monitor-2026-10-25T22:00:39.631Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T22:00:39.631Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-25T22:00:37.006Z"
+          }
+        },
+        {
+          "id": "assistant-1792824957322-monitor-2026-10-25T22:04:04.867Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-25T22:04:04.867Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-25T22:04:03.977Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. AI assistant: degraded service. First confirmed issue: 2026-10-24T06:55:57.322Z. Recovery confirmed by two fresh successful observations: 2026-10-25T22:04:04.867Z. Confirmed incident duration: 2348 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-25T22:04:04.867Z"
+      },
+      "issue": {
+        "number": 62,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/62"
       }
     },
     {

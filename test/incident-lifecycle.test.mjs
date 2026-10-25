@@ -116,12 +116,22 @@ test('an outage that keeps returning between slower checks is confirmed and does
   assert.deepEqual(severities(M, D, M, D, D, D), [null, D, M, M, M, D]);
   assert.deepEqual(severities(M, M), [null, M], 'two consecutive outage observations still confirm it at once');
 });
-test('the public incident carries the confirmed severity, not a single worse check', () => {
-  const run = harness(); run.step('degraded', 0, 'provider_capacity_low'); run.step('degraded', 5, 'provider_capacity_low');
+test('the public incident carries the confirmed severity and its reason, not a single worse check', () => {
+  const run = harness(); run.step('degraded', 0, 'provider_capacity_low'); const updates = run.step('degraded', 5, 'provider_capacity_low').incident.updates.length;
   const spike = run.step('major_outage', 10, 'timeout');
-  assert.equal(spike.incident.status, 'degraded'); assert.match(spike.incident.title, /degraded service$/);
-  assert.equal(spike.incident.updates.at(-1).message, 'Fresh observations continue to confirm needs attention. Latest check: major outage, Check timed out.');
-  assert.equal(spike.incident.updates.at(-1).evidence.status, 'major_outage', 'the evidence is still the latest check');
+  assert.equal(spike.incident.status, 'degraded'); assert.equal(spike.incident.reasonCode, 'provider_capacity_low'); assert.match(spike.incident.title, /degraded service$/);
+  assert.equal(spike.incident.updates.length, updates, 'a single worse check neither changes nor flips the incident');
+  assert.equal(run.step('degraded', 15, 'provider_capacity_low').incident.updates.length, updates);
+  const mixed = harness(); mixed.step('degraded', 0, 'slow'); const slow = mixed.step('major_outage', 5, 'http_error').incident;
+  assert.equal(slow.status, 'degraded'); assert.equal(slow.reasonCode, 'slow'); assert.match(slow.title, /degraded performance$/);
+  assert.equal(slow.updates[0].message, 'Two fresh observations confirmed needs attention: Response slower than target. Latest check: major outage, Unexpected HTTP response.');
+  assert.equal(slow.updates[0].evidence.status, 'major_outage', 'the evidence is still the latest check');
+  const escalated = mixed.step('major_outage', 10, 'http_error').incident;
+  assert.equal(escalated.status, 'major_outage'); assert.equal(escalated.reasonCode, 'http_error'); assert.match(escalated.title, /availability issue$/);
+  assert.equal(escalated.updates.at(-1).message, 'Fresh observations continue to confirm major outage: Unexpected HTTP response.');
+  const unconfirmed = { schemaVersion: 1, incidents: [] }; const observation = recordObservation(component('major_outage', 5, 'timeout'), { bad: 1, good: 0 });
+  advanceIncidents(unconfirmed, component('major_outage', 5, 'timeout'), observation, at(5));
+  assert.equal(observation.counter.bad, 2); assert.equal(confirmedStatus(observation.counter), null); assert.equal(unconfirmed.incidents.length, 0, 'no incident without a confirmed level');
   const opened = harness(); opened.step('major_outage', 0, 'timeout'); const first = opened.step('degraded', 5, 'provider_capacity_low').incident;
   assert.equal(first.status, 'degraded'); assert.equal(first.updates[0].message, 'Two fresh observations confirmed needs attention: AI provider balance is low.');
   const outage = harness(); outage.step('major_outage', 0, 'timeout'); const confirmedOutage = outage.step('major_outage', 5, 'timeout').incident;
@@ -136,7 +146,7 @@ test('a latched counter written before the severity window steps down from its r
   // Production counter on October 25, 2026: degraded evidence, 395 failures, major outage latched.
   const counter = { evidence: { feed: { observedAt: at(0), status: 'degraded' } }, bad: 395, good: 0, confirmedStatus: 'major_outage', failedAttemptAt: null };
   const next = recordObservation(component('degraded', 5, 'provider_capacity_low'), counter);
-  assert.equal(next.counter.confirmedStatus, 'degraded'); assert.deepEqual(next.counter.recent, ['degraded', 'degraded']);
+  assert.equal(next.counter.confirmedStatus, 'degraded'); assert.deepEqual(next.counter.recent, [['degraded', null], ['degraded', 'provider_capacity_low']]);
   const outage = { ...counter, evidence: { feed: { observedAt: at(0), status: 'major_outage' } } };
   assert.equal(recordObservation(component('degraded', 5, 'provider_capacity_low'), outage).counter.confirmedStatus, 'major_outage', 'a recorded outage among the latest checks holds');
   const unknownEvidence = { ...counter, evidence: { feed: { observedAt: at(0), status: 'unknown' } }, bad: 0 };
@@ -145,6 +155,19 @@ test('a latched counter written before the severity window steps down from its r
 // A scheduled job whose destination cannot be verified reports unknown after a successful run,
 // never operational. Its run_failed incident must close when a later run succeeds, or every
 // later failure would be folded into one silent incident.
+test('under an availability latch the incident shows the higher level either rule confirms', () => {
+  const payload = { schemaVersion: 1, incidents: [] }; let counter;
+  const step = (status, minute, reason, availability) => { const current = component(status, minute, reason); const observation = { ...recordObservation(current, counter), availability, availabilityAdvanced: true }; counter = observation.counter; advanceIncidents(payload, current, observation, at(minute)); return payload.incidents[0]; };
+  const partial = { confirmed: 'partial_outage', reasonCode: 'timeout', since: at(0), failed: 2, checked: 4 };
+  step('major_outage', 0, 'timeout', partial); assert.equal(step('major_outage', 5, 'timeout', partial).status, 'major_outage');
+  step('degraded', 10, 'slow', partial); assert.equal(step('degraded', 15, 'slow', partial).status, 'major_outage', 'an outage among the latest three holds');
+  const latched = step('degraded', 20, 'slow', partial);
+  assert.equal(confirmedStatus(counter), 'degraded'); assert.equal(confirmedSeverity({ ...counter, availability: partial }), 'partial_outage', 'what the owner alert counts'); assert.equal(latched.status, 'partial_outage'); assert.equal(latched.reasonCode, 'timeout');
+  assert.equal(latched.updates.at(-1).message, '2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass. Latest check: needs attention, Response slower than target.');
+  const cleared = step('degraded', 25, 'slow', { confirmed: null, reasonCode: null, since: null, failed: 0, checked: 4 });
+  assert.equal(cleared.status, 'degraded'); assert.equal(cleared.reasonCode, 'slow'); assert.equal(cleared.resolvedAt, null);
+  assert.equal(cleared.updates.at(-1).message, 'Fresh observations continue to confirm needs attention: Response slower than target.');
+});
 const jobAt = (minute, status, reasonCode, extra = {}) => ({ id: 'test-feed', name: 'Test feed', status, reasonCode, observedAt: at(minute), samples: [{ sourceId: 'feed', status, reasonCode, observedAt: at(minute), lastAttemptOutcome: 'unknown', lastAttemptAt: null, lastCompletedSuccessAt: null, ...extra }] });
 const jobFailed = (minute, attempt) => jobAt(minute, 'degraded', 'run_failed', { lastAttemptOutcome: 'failed', lastAttemptAt: at(attempt) });
 const jobSucceeded = (minute, success) => jobAt(minute, 'unknown', 'verification_unavailable', { lastCompletedSuccessAt: at(success) });
@@ -165,7 +188,8 @@ test('a run_failed incident closes when a later run succeeds and the next failur
   assert.deepEqual(recovered.incidents[0].updates.at(-1).evidence, { status: 'unknown', reasonCode: 'verification_unavailable', observedAt: at(20) });
   assert.match(recovered.incidents[0].postmortem.summary, /Recovery confirmed by a successful scheduled run after the failure: /); assert.doesNotMatch(recovered.incidents[0].postmortem.summary, /upper bound/);
   assert.equal(run.step(jobSucceeded(25, 15)).incidents.length, 1, 'the same success does nothing more');
-  run.step(jobFailed(30, 28)); const again = run.step(jobFailed(35, 28));
+  const single = run.step(jobFailed(30, 28)); assert.equal(single.incidents.length, 1, 'one failure after a close confirms nothing'); assert.equal(confirmedStatus(single.counter), null);
+  const again = run.step(jobFailed(35, 28));
   assert.equal(again.incidents.length, 2); assert.notEqual(again.incidents[0].id, opened.id); assert.equal(again.incidents[0].resolvedAt, null);
 });
 test('unchecked, older or future successes and other failure kinds keep a job incident open', () => {
@@ -174,7 +198,9 @@ test('unchecked, older or future successes and other failure kinds keep a job in
     ['invalid evidence', jobAt(20, 'unknown', 'invalid_evidence', { lastCompletedSuccessAt: at(15) })],
     ['inactive', jobAt(20, 'unknown', 'inactive', { lastCompletedSuccessAt: at(15) })],
     ['success before the failed run', jobSucceeded(20, -10)],
+    ['success at the failed attempt itself', jobSucceeded(20, -5)],
     ['future-dated success', jobSucceeded(20, 200)],
+    ['latest attempt failed, dated before the success', jobAt(20, 'unknown', 'verification_unavailable', { lastCompletedSuccessAt: at(15), lastAttemptOutcome: 'failed', lastAttemptAt: at(10) })],
   ]) {
     const run = jobHarness(); run.step(jobFailed(0, -5)); run.step(jobFailed(5, -5));
     const after = run.step(evidence);
@@ -235,7 +261,26 @@ test('a missed schedule closes after a run completes past the missed due time, n
   const run = jobHarness(); run.step(missed(0, -10)); run.step(missed(5, -10));
   assert.equal(run.step(jobSucceeded(10, -20)).incidents[0].resolvedAt, null, 'the last success came before the missed due time');
   assert.equal(run.step(jobSucceeded(20, 15)).incidents[0].resolvedAt, at(20));
-  const future = jobHarness(); future.step(missed(0, 30)); assert.equal(future.step(missed(5, 30)).counter.failedAttemptAt, null, 'a due time after the observation is not a dated miss');
+  // A lagging provider snapshot can report a miss whose due time is after its own observation.
+  const future = jobHarness(); future.step(missed(0, 30)); assert.equal(future.step(missed(5, 30)).counter.failedAttemptAt, at(30), 'the miss is dated to its due time');
+  assert.equal(future.step(jobSucceeded(40, 25)).incidents[0].resolvedAt, null, 'a success before the due time');
+  assert.equal(future.step(jobSucceeded(50, 45)).incidents[0].resolvedAt, at(50));
+});
+test('a job failure without its own time is dated by its observation and still closes on a later run', () => {
+  // Review finding on October 25, 2026: a confirmation formed on an undated failure could never be superseded.
+  const missed = (minute, due) => jobAt(minute, 'degraded', 'schedule_missed', { nextDueAt: at(due) });
+  const run = jobHarness(); run.step(jobFailed(0, -5)); run.step(missed(5, 10));
+  assert.equal(run.step(jobFailed(20, 18)).counter.failedAttemptAt, at(18), 'a later dated failure dates the confirmation');
+  run.step(jobFailed(25, 18));
+  assert.equal(run.step(jobSucceeded(40, 35)).incidents[0].resolvedAt, at(40));
+  const undated = minute => jobAt(minute, 'degraded', 'run_failed', { lastAttemptOutcome: 'failed' });
+  const bare = jobHarness(); bare.step(undated(0)); assert.equal(bare.step(undated(5)).counter.failedAttemptAt, at(5));
+  assert.equal(bare.step(jobSucceeded(10, 3)).incidents[0].resolvedAt, null, 'a success before the failure was observed');
+  assert.equal(bare.step(jobSucceeded(20, 8)).incidents[0].resolvedAt, at(20));
+  // A stale destination joining a confirmed run failure needs verified recovery from then on.
+  const stale = jobHarness(); stale.step(jobFailed(0, -5)); stale.step(jobFailed(5, -5));
+  assert.equal(stale.step(jobAt(10, 'degraded', 'destination_stale', { lastCompletedSuccessAt: at(9) })).counter.failedAttemptAt, null);
+  assert.equal(stale.step(jobSucceeded(20, 15)).incidents[0].resolvedAt, null);
 });
 test('cleared or legacy counters never close an incident that needs verified recovery', () => {
   const stale = minute => jobAt(minute, 'degraded', 'destination_stale', { lastCompletedSuccessAt: at(minute - 1) });

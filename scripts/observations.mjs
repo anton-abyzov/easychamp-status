@@ -12,15 +12,14 @@ export function confirmedStatus(counter = {}) {
   return null;
 }
 // Time of the scheduled-run failure behind the current failure, or null when any failing
-// sample is not a dated scheduled-run failure (destination stale, HTTP, etc.). A failed run
-// counts from its attempt, a missed schedule from the due time it missed.
+// sample is not a scheduled-run failure (destination stale, HTTP, etc.). A failed run counts
+// from its attempt and a missed schedule from the due time it missed. Without that time the
+// sample's own observation time stands in: the failure existed by then, so only a later
+// success supersedes it.
+const JOB_FAILURES = ['run_failed', 'schedule_missed'];
 function failedAttemptTime(component) {
   const failing = component.samples.filter(s => FAILURE_STATUSES.includes(s.status));
-  const times = failing.map(s => {
-    if (s.reasonCode === 'run_failed') return time(s.lastAttemptAt);
-    const due = s.reasonCode === 'schedule_missed' ? time(s.nextDueAt) : null;
-    return due !== null && due <= time(s.observedAt) + 60000 ? due : null;
-  });
+  const times = failing.map(s => JOB_FAILURES.includes(s.reasonCode) ? time(s.reasonCode === 'run_failed' ? s.lastAttemptAt : s.nextDueAt) ?? time(s.observedAt) : null);
   if (!failing.length || times.some(t => t === null)) return null;
   return Math.max(...times);
 }
@@ -78,19 +77,27 @@ export function confirmedSeverity(counter = {}) {
 // failed, so one outage among slow or passing checks never confirms an outage. A confirmed
 // level holds while any of the latest three reached it (alternating outage and slow checks
 // do not flap) and otherwise steps down to the highest level among them, so a past outage
-// cannot hold the outage alert open. Unknown and maintenance observations neither confirm
-// nor step down. Recovery still needs two consecutive fresh passing observations.
+// cannot hold the outage alert open. Unknown and maintenance observations are left out of
+// the window, but they break the run of consecutive failures, so failures separated by
+// unknown checks escalate only through the availability rule. Recovery still needs two
+// consecutive fresh passing observations. The window keeps each observation's reason.
 const LEVEL = { operational: 0, degraded: 1, partial_outage: 2, major_outage: 3 };
 const BY_LEVEL = [null, 'degraded', 'partial_outage', 'major_outage'];
 export const SEVERITY_WINDOW = 3;
 function nextSeverity(confirmed, recent, bad) {
-  const levels = recent.map(status => LEVEL[status]);
+  const levels = recent.map(([status]) => LEVEL[status]);
   const reached = level => levels.filter(l => l >= level).length;
   const twice = [3, 2, 1].find(level => reached(level) >= 2) ?? 0;
   const held = LEVEL[confirmed] ?? 0;
   if (bad >= 2 && twice > held) return BY_LEVEL[twice];
   if (!held) return null;
   return reached(held) ? confirmed : BY_LEVEL[Math.max(1, ...levels)];
+}
+// Reason of the latest observation in the window at the confirmed level.
+export function confirmedReason(counter = {}) {
+  const level = LEVEL[confirmedStatus(counter)];
+  const recent = Array.isArray(counter.recent) ? counter.recent.filter(Array.isArray) : [];
+  return (recent.findLast(([status]) => LEVEL[status] === level) || recent.findLast(([status]) => LEVEL[status] >= level))?.[1] || null;
 }
 export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   const evidence = evidenceIdentity(component);
@@ -105,15 +112,18 @@ export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   const good = component.status === 'operational' ? (previous.good || 0) + 1 : 0;
   // Counters written before `recent` existed start from the previous observation's samples.
   const before = rollup(Object.values(previous.evidence || {}));
-  const seed = Array.isArray(previous.recent) ? previous.recent.filter(status => Object.hasOwn(LEVEL, status)) : Object.hasOwn(LEVEL, before) ? [before] : [];
+  const seed = Array.isArray(previous.recent) ? previous.recent.filter(entry => Array.isArray(entry) && Object.hasOwn(LEVEL, entry[0])) : Object.hasOwn(LEVEL, before) ? [[before, null]] : [];
   const known = Object.hasOwn(LEVEL, component.status);
-  const recent = known ? [...seed, component.status].slice(-SEVERITY_WINDOW) : seed.slice(-SEVERITY_WINDOW);
+  const recent = known ? [...seed, [component.status, component.reasonCode || null]].slice(-SEVERITY_WINDOW) : seed.slice(-SEVERITY_WINDOW);
   let nextConfirmed = good >= 2 ? null : known ? nextSeverity(confirmed, recent, bad) : confirmed;
   const prior = time(previous.failedAttemptAt);
   let failedAt = prior;
   if (failing) {
+    // A null time marks a failure that is not a scheduled-run failure. It needs verified
+    // recovery, so once it is part of a confirmation no run success supersedes it.
     const current = failedAttemptTime(component);
-    failedAt = current === null ? null : bad >= 2 && !confirmed ? current : prior === null && confirmed ? null : Math.max(prior ?? current, current);
+    if (!confirmed) failedAt = bad >= 2 ? current : null;
+    else failedAt = prior === null || current === null ? null : Math.max(prior, current);
   }
   // A scheduled job whose destination cannot be verified never reports operational,
   // so a run_failed confirmation would otherwise latch forever after the job recovers.

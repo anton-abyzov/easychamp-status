@@ -1,6 +1,6 @@
 import { time, LABELS, REASONS } from '../public/model.mjs';
 import { normalizeIncidents, safeText, safePublicUrl } from '../public/incident-model.mjs';
-import { FAILURE_STATUSES, confirmedStatus, supersededBySuccess } from './observations.mjs';
+import { FAILURE_STATUSES, confirmedStatus, confirmedReason, supersededBySuccess } from './observations.mjs';
 
 export function incidentDocument(payload) {
   if (payload?.schemaVersion !== 1 || !Array.isArray(payload.incidents)) throw new Error('invalid_incident_document');
@@ -65,7 +65,7 @@ export function advanceIncidents(payload, component, observation, at) {
       return;
     }
   }
-  if (observation.isNew) advanceConsecutive(payload, component, observation, at, latched);
+  if (observation.isNew) advanceConsecutive(payload, component, observation, at, availability);
   if (!latched) return;
   const open = openIncident();
   const evidence = { status: availability.confirmed, reasonCode: availability.reasonCode, observedAt: at };
@@ -81,30 +81,33 @@ export function advanceIncidents(payload, component, observation, at) {
     appendIncidentUpdate(open, { stage: open.stage === 'monitoring' ? 'investigating' : open.stage, at, message: availabilityMessage(availability), evidence });
   } else if (observation.availabilityAdvanced && time(open.updatedAt) < time(at)) open.updatedAt = at;
 }
-function advanceConsecutive(payload, component, observation, at, latched) {
+function advanceConsecutive(payload, component, observation, at, availability) {
+  const latched = Boolean(availability?.confirmed);
   const open = payload.incidents.find(incident => incident.componentId === component.id && !incident.resolvedAt);
   const evidence = { status: component.status, reasonCode: component.reasonCode, observedAt: component.observedAt };
-  if (FAILURE_STATUSES.includes(component.status) && observation.counter.bad >= 2) {
-    // The incident carries the confirmed severity; a single worse check is reported as the
-    // latest check, never as confirmed.
-    const confirmed = confirmedStatus(observation.counter) || component.status;
-    const reason = REASONS[component.reasonCode] || REASONS.invalid_evidence;
-    const latest = confirmed === component.status ? `: ${reason}.` : `. Latest check: ${LABELS[component.status].toLowerCase()}, ${reason}.`;
+  const confirmed = confirmedStatus(observation.counter);
+  if (FAILURE_STATUSES.includes(component.status) && observation.counter.bad >= 2 && confirmed) {
+    // The incident carries the higher confirmed severity of the two rules, with the reason of
+    // the check that confirmed it. A single worse check is reported as the latest check,
+    // never as confirmed.
+    const byAvailability = latched && (SEVERITY[availability.confirmed] || 0) > (SEVERITY[confirmed] || 0);
+    const status = byAvailability ? availability.confirmed : confirmed;
+    const reasonCode = byAvailability ? availability.reasonCode : confirmedReason(observation.counter) || component.reasonCode;
+    const latest = status === component.status && reasonCode === component.reasonCode ? '' : ` Latest check: ${LABELS[component.status].toLowerCase()}, ${REASONS[component.reasonCode] || REASONS.invalid_evidence}.`;
+    const message = lead => byAvailability ? `${availabilityMessage(availability)}${latest}` : `${lead} ${LABELS[status].toLowerCase()}: ${REASONS[reasonCode] || REASONS.invalid_evidence}.${latest}`;
     if (!open) {
-      const latency = ['slow', 'rendering_slow'].includes(component.reasonCode);
-      const incident = { id: `${component.id}-${time(at)}`, componentId: component.id, title: `${component.name}: ${confirmed === 'degraded' ? (latency ? 'degraded performance' : 'degraded service') : 'availability issue'}`, status: confirmed, reasonCode: component.reasonCode, openedAt: at, updatedAt: at, resolvedAt: null, stage: 'investigating', updates: [] };
+      const latency = ['slow', 'rendering_slow'].includes(reasonCode);
+      const incident = { id: `${component.id}-${time(at)}`, componentId: component.id, title: `${component.name}: ${status === 'degraded' ? (latency ? 'degraded performance' : 'degraded service') : 'availability issue'}`, status, reasonCode, openedAt: at, updatedAt: at, resolvedAt: null, stage: 'investigating', updates: [] };
       const deadline = component.samples.find(sample => time(sample.nextDueAt) !== null)?.nextDueAt;
       if (deadline) incident.deadlineAt = new Date(time(deadline)).toISOString();
-      appendIncidentUpdate(incident, { stage: 'investigating', at, message: `Two fresh observations confirmed ${LABELS[confirmed].toLowerCase()}${latest}`, evidence });
+      appendIncidentUpdate(incident, { stage: 'investigating', at, message: message('Two fresh observations confirmed'), evidence });
       payload.incidents.unshift(incident);
     } else {
-      // A lesser failure does not downgrade an incident whose availability failures stay confirmed.
-      const keep = latched && (SEVERITY[open.status] || 0) > (SEVERITY[confirmed] || 0);
-      const status = keep ? open.status : confirmed, reasonCode = keep ? open.reasonCode : component.reasonCode;
       const changed = open.status !== status || open.reasonCode !== reasonCode;
       open.status = status;
       open.reasonCode = reasonCode;
-      if (changed || open.stage === 'monitoring') appendIncidentUpdate(open, { stage: open.stage === 'monitoring' ? 'investigating' : open.stage, at, message: `Fresh observations continue to confirm ${LABELS[status].toLowerCase()}${status === component.status ? `: ${reason}.` : `. Latest check: ${LABELS[component.status].toLowerCase()}, ${reason}.`}`, evidence });
+      if (status !== 'degraded' && (open.title.endsWith(': degraded performance') || open.title.endsWith(': degraded service'))) open.title = `${component.name}: availability issue`;
+      if (changed || open.stage === 'monitoring') appendIncidentUpdate(open, { stage: open.stage === 'monitoring' ? 'investigating' : open.stage, at, message: message('Fresh observations continue to confirm'), evidence });
       else open.updatedAt = at;
     }
   } else if (open && component.status === 'operational' && !latched) {

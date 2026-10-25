@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "snap-1792928112143",
+      "componentId": "snap",
+      "title": "Snap to League: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-10-25T11:35:12.143Z",
+      "updatedAt": "2026-10-25T11:35:12.143Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "snap-1792928112143-monitor-2026-10-25T11:35:12.143Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T11:35:12.143Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-10-25T11:34:37.069Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 73,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/73"
+      }
+    },
+    {
       "id": "watch-1792859528188",
       "componentId": "watch",
       "title": "Watch entry page: degraded performance",
@@ -97,7 +126,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T11:29:48.969Z",
+      "updatedAt": "2026-10-25T11:35:12.143Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -192,7 +221,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-25T11:23:06.460Z",
+      "updatedAt": "2026-10-25T11:35:12.143Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

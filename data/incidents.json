@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "resource_pressure",
       "openedAt": "2026-10-24T17:35:59.090Z",
-      "updatedAt": "2026-10-25T00:52:23.235Z",
+      "updatedAt": "2026-10-25T01:05:24.173Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "cluster-resources-1792863359090-monitor-2026-10-24T17:35:59.090Z-investigating",
@@ -71,6 +71,18 @@
             "reasonCode": "resource_pressure",
             "observedAt": "2026-10-25T00:50:11.000Z"
           }
+        },
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-25T01:05:24.173Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T01:05:24.173Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-25T01:00:10.000Z"
+          }
         }
       ],
       "issue": {
@@ -126,7 +138,7 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-25T00:44:40.965Z",
+      "updatedAt": "2026-10-25T01:05:24.173Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -239,7 +251,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T00:56:23.504Z",
+      "updatedAt": "2026-10-25T01:05:24.173Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

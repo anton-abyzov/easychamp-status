@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-24T16:32:08.188Z",
-      "updatedAt": "2026-10-25T03:20:54.042Z",
+      "updatedAt": "2026-10-25T03:32:07.965Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -71,6 +71,18 @@
             "reasonCode": "slow",
             "observedAt": "2026-10-25T03:20:08.024Z"
           }
+        },
+        {
+          "id": "watch-1792859528188-monitor-2026-10-25T03:32:07.965Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T03:32:07.965Z",
+          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "automation_blocked",
+            "observedAt": "2026-10-25T03:31:35.299Z"
+          }
         }
       ],
       "issue": {
@@ -85,9 +97,9 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-25T03:20:54.042Z",
+      "updatedAt": "2026-10-25T03:32:07.965Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "soccer-nationals-1792859194983-monitor-2026-10-24T16:26:34.983Z-investigating",
@@ -256,6 +268,18 @@
             "reasonCode": "http_error",
             "observedAt": "2026-10-25T03:20:09.048Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1792859194983-monitor-2026-10-25T03:32:07.965Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T03:32:07.965Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-25T03:31:36.523Z"
+          }
         }
       ],
       "issue": {
@@ -270,7 +294,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T03:27:04.841Z",
+      "updatedAt": "2026-10-25T03:32:07.965Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

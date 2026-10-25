@@ -78,9 +78,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-24T16:32:08.188Z",
-      "updatedAt": "2026-10-25T01:48:25.164Z",
+      "updatedAt": "2026-10-25T01:59:53.922Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "watch-1792859528188-monitor-2026-10-24T16:32:08.188Z-investigating",
@@ -105,6 +105,18 @@
             "reasonCode": "automation_blocked",
             "observedAt": "2026-10-24T16:38:43.682Z"
           }
+        },
+        {
+          "id": "watch-1792859528188-monitor-2026-10-25T01:59:53.922Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T01:59:53.922Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-25T01:59:15.339Z"
+          }
         }
       ],
       "issue": {
@@ -119,7 +131,7 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-25T01:57:32.826Z",
+      "updatedAt": "2026-10-25T01:59:53.922Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -268,7 +280,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T01:57:32.826Z",
+      "updatedAt": "2026-10-25T01:59:53.922Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

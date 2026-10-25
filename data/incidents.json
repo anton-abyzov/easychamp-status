@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "cluster-resources-1792902697576",
+      "componentId": "cluster-resources",
+      "title": "Kubernetes resources: degraded service",
+      "status": "degraded",
+      "reasonCode": "resource_pressure",
+      "openedAt": "2026-10-25T04:31:37.576Z",
+      "updatedAt": "2026-10-25T04:31:37.576Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "cluster-resources-1792902697576-monitor-2026-10-25T04:31:37.576Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T04:31:37.576Z",
+          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-25T04:30:12.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 72,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/72"
+      }
+    },
+    {
       "id": "soccer-nationals-1792901603605",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
-      "status": "major_outage",
-      "reasonCode": "http_error",
+      "status": "degraded",
+      "reasonCode": "slow",
       "openedAt": "2026-10-25T04:13:23.605Z",
-      "updatedAt": "2026-10-25T04:19:21.375Z",
+      "updatedAt": "2026-10-25T04:31:37.576Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -35,6 +64,18 @@
             "reasonCode": "http_error",
             "observedAt": "2026-10-25T04:18:43.936Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1792901603605-monitor-2026-10-25T04:31:37.576Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T04:31:37.576Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-25T04:30:56.256Z"
+          }
         }
       ],
       "issue": {
@@ -49,7 +90,7 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-24T16:32:08.188Z",
-      "updatedAt": "2026-10-25T04:19:21.375Z",
+      "updatedAt": "2026-10-25T04:31:37.576Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -138,7 +179,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T04:27:22.151Z",
+      "updatedAt": "2026-10-25T04:31:37.576Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

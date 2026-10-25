@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "soccer-nationals-1792901603605",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-25T04:13:23.605Z",
+      "updatedAt": "2026-10-25T04:13:23.605Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1792901603605-monitor-2026-10-25T04:13:23.605Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T04:13:23.605Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-25T04:12:40.826Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 71,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/71"
+      }
+    },
+    {
       "id": "watch-1792859528188",
       "componentId": "watch",
       "title": "Watch entry page: degraded performance",
@@ -97,7 +126,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T04:09:56.174Z",
+      "updatedAt": "2026-10-25T04:13:23.605Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

@@ -91,48 +91,6 @@
       }
     },
     {
-      "id": "feed-results-1791424102502",
-      "componentId": "feed-results",
-      "title": "Match results & schedules: degraded service",
-      "status": "degraded",
-      "reasonCode": "run_failed",
-      "openedAt": "2026-10-08T01:48:22.502Z",
-      "updatedAt": "2026-10-23T23:56:01.333Z",
-      "resolvedAt": null,
-      "deadlineAt": "2026-10-07T06:00:00.000Z",
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "feed-results-1791424102502-monitor-2026-10-08T01:48:22.502Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-08T01:48:22.502Z",
-          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "run_failed",
-            "observedAt": "2026-10-08T01:40:06.000Z"
-          }
-        },
-        {
-          "id": "feed-results-1791424102502-monitor-2026-10-08T02:10:31.413Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-08T02:10:31.413Z",
-          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "verification_unavailable",
-            "observedAt": "2026-10-08T02:10:06.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 7,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/7"
-      }
-    },
-    {
       "id": "scraper-pesmaster-1791401507529",
       "componentId": "scraper-pesmaster",
       "title": "PES Master player data: degraded performance",
@@ -512,6 +470,65 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "feed-results-1791424102502",
+      "componentId": "feed-results",
+      "title": "Match results & schedules: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-08T01:48:22.502Z",
+      "updatedAt": "2026-10-25T23:52:07.823Z",
+      "resolvedAt": "2026-10-25T23:52:07.823Z",
+      "deadlineAt": "2026-10-07T06:00:00.000Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "feed-results-1791424102502-monitor-2026-10-08T01:48:22.502Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-08T01:48:22.502Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-10-08T01:40:06.000Z"
+          }
+        },
+        {
+          "id": "feed-results-1791424102502-monitor-2026-10-08T02:10:31.413Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-08T02:10:31.413Z",
+          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-08T02:10:06.000Z"
+          }
+        },
+        {
+          "id": "feed-results-1791424102502-monitor-2026-10-25T23:52:07.823Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-25T23:52:07.823Z",
+          "message": "A scheduled run completed successfully after the last recorded failure. Earlier recoveries did not close this incident, so later failures may be folded into it. Destination freshness is still unverified.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-25T23:50:09.000Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Match results & schedules: degraded service. First confirmed issue: 2026-10-08T01:48:22.502Z. Recovery confirmed by a successful scheduled run after the last recorded failure: 2026-10-25T23:52:07.823Z. Confirmed incident duration: 25804 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them. Earlier recoveries were not recorded, so the duration is an upper bound.",
+        "generatedAt": "2026-10-25T23:52:07.823Z"
+      },
+      "issue": {
+        "number": 7,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/7"
       }
     },
     {

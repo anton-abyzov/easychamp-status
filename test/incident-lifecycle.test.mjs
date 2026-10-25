@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { recordObservation, confirmedStatus } from '../scripts/observations.mjs';
+import { recordObservation, confirmedStatus, confirmedSeverity } from '../scripts/observations.mjs';
 import { advanceIncidents, applyOwnerUpdate, incidentDocument, seedConfirmedIncidents } from '../scripts/incidents.mjs';
 import { normalizeIncident, normalizeIncidents, safePublicUrl, safeText } from '../public/incident-model.mjs';
 
@@ -91,13 +91,37 @@ test('public write-up URLs reject credentials, private address forms and credent
   assert.equal(safePublicUrl('https://github.com/org/repo/blob/main/docs/report.md'), 'https://github.com/org/repo/blob/main/docs/report.md');
 });
 
-test('confirmed outage severity stays latched through lesser failures until two fresh passing checks', () => {
+test('a confirmed outage holds through one lesser failure, steps down after two, and clears after two passing checks', () => {
   const run = harness(); run.step('major_outage', 0); run.step('major_outage', 5);
-  assert.equal(run.step('degraded', 10).counter.confirmedStatus, 'major_outage');
-  assert.equal(run.step('partial_outage', 15).counter.confirmedStatus, 'major_outage');
-  assert.equal(run.step('unknown', 20).counter.confirmedStatus, 'major_outage');
-  assert.equal(run.step('operational', 25).counter.confirmedStatus, 'major_outage');
+  assert.equal(run.step('degraded', 10).counter.confirmedStatus, 'major_outage', 'one lesser failure does not step down');
+  assert.equal(run.step('partial_outage', 15).counter.confirmedStatus, 'partial_outage', 'two consecutive lesser failures confirm the higher of the two');
+  assert.equal(run.step('unknown', 20).counter.confirmedStatus, 'partial_outage');
+  assert.equal(run.step('operational', 25).counter.confirmedStatus, 'partial_outage');
   assert.equal(run.step('operational', 30).counter.confirmedStatus, null); assert.ok(run.payload.incidents[0].resolvedAt);
+});
+test('one outage observation among lesser failures never confirms an outage', () => {
+  // October 24, 2026: one assistant timeout among provider-capacity observations was
+  // confirmed as a major outage and held the outage alert open for more than 32 hours.
+  const run = harness(); run.step('degraded', 0); run.step('degraded', 5);
+  const spike = run.step('major_outage', 10);
+  assert.equal(spike.counter.confirmedStatus, 'degraded'); assert.equal(confirmedSeverity(spike.counter), 'degraded');
+  assert.equal(run.step('degraded', 15).counter.confirmedStatus, 'degraded');
+  run.step('major_outage', 20); assert.equal(run.step('major_outage', 25).counter.confirmedStatus, 'major_outage', 'two consecutive outage observations still confirm it');
+  assert.equal(run.step('partial_outage', 30).counter.confirmedStatus, 'major_outage');
+});
+test('a stepped-down outage that returns is confirmed again, so it alerts again', () => {
+  const run = harness(); run.step('major_outage', 0); run.step('major_outage', 5); run.step('degraded', 10);
+  assert.equal(run.step('degraded', 15).counter.confirmedStatus, 'degraded');
+  run.step('partial_outage', 20); assert.equal(run.step('partial_outage', 25).counter.confirmedStatus, 'partial_outage');
+  assert.equal(run.payload.incidents.length, 1, 'the open incident follows the failure; it is not resolved by a lesser failure');
+});
+test('a latched counter written before lastStatus steps down from its recorded evidence', () => {
+  // Production counter on October 25, 2026: degraded evidence, 395 failures, major outage latched.
+  const counter = { evidence: { feed: { observedAt: at(0), status: 'degraded' } }, bad: 395, good: 0, confirmedStatus: 'major_outage', failedAttemptAt: null };
+  const next = recordObservation(component('degraded', 5, 'provider_capacity_low'), counter);
+  assert.equal(next.counter.confirmedStatus, 'degraded'); assert.equal(next.counter.lastStatus, 'degraded');
+  const outage = { ...counter, evidence: { feed: { observedAt: at(0), status: 'major_outage' } } };
+  assert.equal(recordObservation(component('degraded', 5, 'provider_capacity_low'), outage).counter.confirmedStatus, 'major_outage', 'one lesser failure after recorded outage evidence holds');
 });
 
 // A scheduled job whose destination cannot be verified reports unknown after a successful run,

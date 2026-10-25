@@ -60,6 +60,19 @@ export function confirmedSeverity(counter = {}) {
   const statuses = [confirmedStatus(counter), counter.availability?.confirmed].filter(s => FAILURE_STATUSES.includes(s));
   return statuses.length ? rollup(statuses.map(status => ({ status }))) : null;
 }
+// Two consecutive fresh failures confirm a severity only as far as both reached it: one
+// timeout among slow observations confirms slowness, not an outage. A confirmed severity
+// holds through a single lesser failure (no flapping) and steps down only when two
+// consecutive fresh failures are both below it, so one past outage cannot hold the outage
+// alert open while the service keeps reporting a lesser failure. Recovery to operational
+// still needs two fresh passing observations.
+const RANK = ['degraded', 'partial_outage', 'major_outage'];
+function pairedSeverity(confirmed, last, current) {
+  const now = RANK.indexOf(current), before = RANK.includes(last) ? RANK.indexOf(last) : now;
+  const low = Math.min(now, before), high = Math.max(now, before);
+  const held = RANK.includes(confirmed) ? RANK.indexOf(confirmed) : low;
+  return RANK[Math.min(Math.max(held, low), high)];
+}
 export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   const evidence = evidenceIdentity(component);
   const old = previous.evidence || {};
@@ -71,9 +84,9 @@ export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   const failing = FAILURE_STATUSES.includes(component.status);
   const bad = failing ? (previous.bad || 0) + 1 : 0;
   const good = component.status === 'operational' ? (previous.good || 0) + 1 : 0;
-  // Keep the highest confirmed severity until actual recovery. A lesser failure
-  // must not close an outage alert while its incident is still unresolved.
-  let nextConfirmed = bad >= 2 ? rollup([{ status: confirmed || component.status }, { status: component.status }]) : good >= 2 ? null : confirmed;
+  // Counters written before lastStatus existed: the previous observation's samples.
+  const last = previous.lastStatus ?? rollup(Object.values(previous.evidence || {}));
+  let nextConfirmed = bad >= 2 ? pairedSeverity(confirmed, last, component.status) : good >= 2 ? null : confirmed;
   const prior = time(previous.failedAttemptAt);
   let failedAt = prior;
   if (failing) {
@@ -85,5 +98,5 @@ export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   const superseded = Boolean(nextConfirmed && component.status === 'unknown' && supersededBySuccess(component, failedAt));
   if (superseded) nextConfirmed = null;
   if (!nextConfirmed) failedAt = null;
-  return { isNew: true, superseded, counter: { evidence, bad, good, confirmedStatus: nextConfirmed, failedAttemptAt: failedAt === null ? null : new Date(failedAt).toISOString() } };
+  return { isNew: true, superseded, counter: { evidence, bad, good, lastStatus: component.status, confirmedStatus: nextConfirmed, failedAttemptAt: failedAt === null ? null : new Date(failedAt).toISOString() } };
 }

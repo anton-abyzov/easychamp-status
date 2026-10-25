@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "console-1792891150473",
+      "componentId": "console",
+      "title": "Organizer Console: availability issue",
+      "status": "partial_outage",
+      "reasonCode": "content_mismatch",
+      "openedAt": "2026-10-25T01:19:10.473Z",
+      "updatedAt": "2026-10-25T01:19:10.473Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "console-1792891150473-monitor-2026-10-25T01:19:10.473Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T01:19:10.473Z",
+          "message": "Two fresh observations confirmed partial outage: Expected content missing.",
+          "source": "monitor",
+          "evidence": {
+            "status": "partial_outage",
+            "reasonCode": "content_mismatch",
+            "observedAt": "2026-10-25T01:18:19.112Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 68,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/68"
+      }
+    },
+    {
       "id": "watch-1792859528188",
       "componentId": "watch",
       "title": "Watch entry page: degraded performance",
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-24T16:32:08.188Z",
-      "updatedAt": "2026-10-25T01:14:35.022Z",
+      "updatedAt": "2026-10-25T01:19:10.473Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -46,10 +75,10 @@
       "id": "soccer-nationals-1792859194983",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
-      "status": "major_outage",
-      "reasonCode": "http_error",
+      "status": "degraded",
+      "reasonCode": "slow",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-25T01:14:35.022Z",
+      "updatedAt": "2026-10-25T01:19:10.473Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -160,6 +189,18 @@
             "reasonCode": "http_error",
             "observedAt": "2026-10-25T01:13:56.578Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1792859194983-monitor-2026-10-25T01:19:10.473Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T01:19:10.473Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-25T01:18:25.925Z"
+          }
         }
       ],
       "issue": {
@@ -174,7 +215,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T01:14:35.022Z",
+      "updatedAt": "2026-10-25T01:19:10.473Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

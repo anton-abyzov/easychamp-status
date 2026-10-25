@@ -2,95 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "cluster-resources-1792863359090",
-      "componentId": "cluster-resources",
-      "title": "Kubernetes resources: degraded service",
-      "status": "degraded",
-      "reasonCode": "resource_pressure",
-      "openedAt": "2026-10-24T17:35:59.090Z",
-      "updatedAt": "2026-10-25T01:05:24.173Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "cluster-resources-1792863359090-monitor-2026-10-24T17:35:59.090Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-24T17:35:59.090Z",
-          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "resource_pressure",
-            "observedAt": "2026-10-24T17:30:08.000Z"
-          }
-        },
-        {
-          "id": "cluster-resources-1792863359090-monitor-2026-10-24T21:12:41.198Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-24T21:12:41.198Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "verified",
-            "observedAt": "2026-10-24T21:10:11.000Z"
-          }
-        },
-        {
-          "id": "cluster-resources-1792863359090-monitor-2026-10-24T22:10:21.928Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-24T22:10:21.928Z",
-          "message": "Fresh observations continue to confirm needs attention: Node readiness or sustained resource alert needs attention.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "resource_pressure",
-            "observedAt": "2026-10-24T22:10:09.000Z"
-          }
-        },
-        {
-          "id": "cluster-resources-1792863359090-monitor-2026-10-25T00:10:05.086Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-25T00:10:05.086Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "verified",
-            "observedAt": "2026-10-25T00:00:08.000Z"
-          }
-        },
-        {
-          "id": "cluster-resources-1792863359090-monitor-2026-10-25T00:52:23.235Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-25T00:52:23.235Z",
-          "message": "Fresh observations continue to confirm needs attention: Node readiness or sustained resource alert needs attention.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "resource_pressure",
-            "observedAt": "2026-10-25T00:50:11.000Z"
-          }
-        },
-        {
-          "id": "cluster-resources-1792863359090-monitor-2026-10-25T01:05:24.173Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-25T01:05:24.173Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "verified",
-            "observedAt": "2026-10-25T01:00:10.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 67,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/67"
-      }
-    },
-    {
       "id": "watch-1792859528188",
       "componentId": "watch",
       "title": "Watch entry page: degraded performance",
@@ -251,7 +162,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T01:05:24.173Z",
+      "updatedAt": "2026-10-25T01:11:50.147Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -719,6 +630,112 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "cluster-resources-1792863359090",
+      "componentId": "cluster-resources",
+      "title": "Kubernetes resources: degraded service",
+      "status": "degraded",
+      "reasonCode": "resource_pressure",
+      "openedAt": "2026-10-24T17:35:59.090Z",
+      "updatedAt": "2026-10-25T01:11:50.147Z",
+      "resolvedAt": "2026-10-25T01:11:50.147Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-24T17:35:59.090Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T17:35:59.090Z",
+          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-24T17:30:08.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-24T21:12:41.198Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-24T21:12:41.198Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-24T21:10:11.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-24T22:10:21.928Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T22:10:21.928Z",
+          "message": "Fresh observations continue to confirm needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-24T22:10:09.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-25T00:10:05.086Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T00:10:05.086Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-25T00:00:08.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-25T00:52:23.235Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T00:52:23.235Z",
+          "message": "Fresh observations continue to confirm needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-25T00:50:11.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-25T01:05:24.173Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T01:05:24.173Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-25T01:00:10.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-25T01:11:50.147Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-25T01:11:50.147Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-25T01:10:11.000Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Kubernetes resources: degraded service. First confirmed issue: 2026-10-24T17:35:59.090Z. Recovery confirmed by two fresh successful observations: 2026-10-25T01:11:50.147Z. Confirmed incident duration: 456 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-25T01:11:50.147Z"
+      },
+      "issue": {
+        "number": 67,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/67"
       }
     },
     {

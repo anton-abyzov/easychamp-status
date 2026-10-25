@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "resource_pressure",
       "openedAt": "2026-10-24T17:35:59.090Z",
-      "updatedAt": "2026-10-25T00:10:05.086Z",
+      "updatedAt": "2026-10-25T00:52:23.235Z",
       "resolvedAt": null,
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "cluster-resources-1792863359090-monitor-2026-10-24T17:35:59.090Z-investigating",
@@ -58,6 +58,18 @@
             "status": "operational",
             "reasonCode": "verified",
             "observedAt": "2026-10-25T00:00:08.000Z"
+          }
+        },
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-25T00:52:23.235Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T00:52:23.235Z",
+          "message": "Fresh observations continue to confirm needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-25T00:50:11.000Z"
           }
         }
       ],
@@ -227,7 +239,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T00:44:40.965Z",
+      "updatedAt": "2026-10-25T00:52:23.235Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

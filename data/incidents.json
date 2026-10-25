@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "cluster-resources-1792892491711",
+      "componentId": "cluster-resources",
+      "title": "Kubernetes resources: degraded service",
+      "status": "degraded",
+      "reasonCode": "resource_pressure",
+      "openedAt": "2026-10-25T01:41:31.711Z",
+      "updatedAt": "2026-10-25T01:41:31.711Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "cluster-resources-1792892491711-monitor-2026-10-25T01:41:31.711Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T01:41:31.711Z",
+          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-25T01:40:08.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 69,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/69"
+      }
+    },
+    {
       "id": "console-1792891150473",
       "componentId": "console",
       "title": "Organizer Console: availability issue",
@@ -90,7 +119,7 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-25T01:36:39.740Z",
+      "updatedAt": "2026-10-25T01:41:31.711Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -239,7 +268,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T01:36:39.740Z",
+      "updatedAt": "2026-10-25T01:41:31.711Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

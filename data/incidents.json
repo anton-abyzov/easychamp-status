@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-24T16:32:08.188Z",
-      "updatedAt": "2026-10-25T02:58:40.343Z",
+      "updatedAt": "2026-10-25T03:20:54.042Z",
       "resolvedAt": null,
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "watch-1792859528188-monitor-2026-10-24T16:32:08.188Z-investigating",
@@ -59,6 +59,18 @@
             "reasonCode": "automation_blocked",
             "observedAt": "2026-10-25T02:58:03.491Z"
           }
+        },
+        {
+          "id": "watch-1792859528188-monitor-2026-10-25T03:20:54.042Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T03:20:54.042Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-25T03:20:08.024Z"
+          }
         }
       ],
       "issue": {
@@ -70,12 +82,12 @@
       "id": "soccer-nationals-1792859194983",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: availability issue",
-      "status": "degraded",
-      "reasonCode": "slow",
+      "status": "major_outage",
+      "reasonCode": "http_error",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-25T02:58:40.343Z",
+      "updatedAt": "2026-10-25T03:20:54.042Z",
       "resolvedAt": null,
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "soccer-nationals-1792859194983-monitor-2026-10-24T16:26:34.983Z-investigating",
@@ -232,6 +244,18 @@
             "reasonCode": "ok",
             "observedAt": "2026-10-25T02:58:05.478Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1792859194983-monitor-2026-10-25T03:20:54.042Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T03:20:54.042Z",
+          "message": "Fresh observations continue to confirm major outage: Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-10-25T03:20:09.048Z"
+          }
         }
       ],
       "issue": {
@@ -246,7 +270,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T03:17:45.653Z",
+      "updatedAt": "2026-10-25T03:20:54.042Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

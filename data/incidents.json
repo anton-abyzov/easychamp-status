@@ -94,10 +94,10 @@
       "id": "assistant-1792824957322",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
+      "status": "major_outage",
+      "reasonCode": "timeout",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T15:50:06.380Z",
+      "updatedAt": "2026-10-25T15:56:28.870Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -135,6 +135,18 @@
             "status": "degraded",
             "reasonCode": "provider_capacity_low",
             "observedAt": "2026-10-24T08:53:13.438Z"
+          }
+        },
+        {
+          "id": "assistant-1792824957322-monitor-2026-10-25T15:56:28.870Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T15:56:28.870Z",
+          "message": "Fresh observations continue to confirm major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-25T15:56:06.655Z"
           }
         }
       ],
@@ -192,7 +204,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-07T19:31:47.528Z",
-      "updatedAt": "2026-10-25T15:41:08.361Z",
+      "updatedAt": "2026-10-25T15:56:28.870Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

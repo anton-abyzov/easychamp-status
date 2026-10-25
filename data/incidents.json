@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "resource_pressure",
       "openedAt": "2026-10-24T17:35:59.090Z",
-      "updatedAt": "2026-10-24T23:32:02.251Z",
+      "updatedAt": "2026-10-25T00:10:05.086Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "cluster-resources-1792863359090-monitor-2026-10-24T17:35:59.090Z-investigating",
@@ -47,6 +47,18 @@
             "reasonCode": "resource_pressure",
             "observedAt": "2026-10-24T22:10:09.000Z"
           }
+        },
+        {
+          "id": "cluster-resources-1792863359090-monitor-2026-10-25T00:10:05.086Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T00:10:05.086Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-25T00:00:08.000Z"
+          }
         }
       ],
       "issue": {
@@ -61,7 +73,7 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-24T16:32:08.188Z",
-      "updatedAt": "2026-10-24T22:51:19.976Z",
+      "updatedAt": "2026-10-25T00:10:05.086Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -99,10 +111,10 @@
       "id": "soccer-nationals-1792859194983",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
-      "status": "degraded",
-      "reasonCode": "slow",
+      "status": "major_outage",
+      "reasonCode": "http_error",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-24T22:51:19.976Z",
+      "updatedAt": "2026-10-25T00:10:05.086Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -177,6 +189,18 @@
             "reasonCode": "slow",
             "observedAt": "2026-10-24T22:50:01.574Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1792859194983-monitor-2026-10-25T00:10:05.086Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T00:10:05.086Z",
+          "message": "Fresh observations continue to confirm major outage: Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-10-25T00:09:17.744Z"
+          }
         }
       ],
       "issue": {
@@ -191,7 +215,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-24T23:32:02.251Z",
+      "updatedAt": "2026-10-25T00:10:05.086Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

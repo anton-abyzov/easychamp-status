@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "cluster-resources-1792895432995",
+      "componentId": "cluster-resources",
+      "title": "Kubernetes resources: degraded service",
+      "status": "degraded",
+      "reasonCode": "resource_pressure",
+      "openedAt": "2026-10-25T02:30:32.995Z",
+      "updatedAt": "2026-10-25T02:30:32.995Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "cluster-resources-1792895432995-monitor-2026-10-25T02:30:32.995Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T02:30:32.995Z",
+          "message": "Two fresh observations confirmed needs attention: Node readiness or sustained resource alert needs attention.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "resource_pressure",
+            "observedAt": "2026-10-25T02:30:12.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 70,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/70"
+      }
+    },
+    {
       "id": "console-1792891150473",
       "componentId": "console",
       "title": "Organizer Console: availability issue",
@@ -99,10 +128,10 @@
       "id": "soccer-nationals-1792859194983",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: availability issue",
-      "status": "major_outage",
-      "reasonCode": "http_error",
+      "status": "degraded",
+      "reasonCode": "slow",
       "openedAt": "2026-10-24T16:26:34.983Z",
-      "updatedAt": "2026-10-25T02:02:35.008Z",
+      "updatedAt": "2026-10-25T02:30:32.995Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -237,6 +266,18 @@
             "reasonCode": "http_error",
             "observedAt": "2026-10-25T01:25:11.576Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1792859194983-monitor-2026-10-25T02:30:32.995Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T02:30:32.995Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-25T02:29:52.128Z"
+          }
         }
       ],
       "issue": {
@@ -251,7 +292,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-24T06:55:57.322Z",
-      "updatedAt": "2026-10-25T02:27:05.575Z",
+      "updatedAt": "2026-10-25T02:30:32.995Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

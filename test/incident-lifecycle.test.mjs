@@ -99,3 +99,61 @@ test('confirmed outage severity stays latched through lesser failures until two 
   assert.equal(run.step('operational', 25).counter.confirmedStatus, 'major_outage');
   assert.equal(run.step('operational', 30).counter.confirmedStatus, null); assert.ok(run.payload.incidents[0].resolvedAt);
 });
+
+// A scheduled job whose destination cannot be verified reports unknown after a successful run,
+// never operational. Its run_failed incident must close when a later run succeeds, or every
+// later failure would be folded into one silent incident.
+const jobAt = (minute, status, reasonCode, extra = {}) => ({ id: 'test-feed', name: 'Test feed', status, reasonCode, observedAt: at(minute), samples: [{ sourceId: 'feed', status, reasonCode, observedAt: at(minute), lastAttemptOutcome: 'unknown', lastAttemptAt: null, lastCompletedSuccessAt: null, ...extra }] });
+const jobFailed = (minute, attempt) => jobAt(minute, 'degraded', 'run_failed', { lastAttemptOutcome: 'failed', lastAttemptAt: at(attempt) });
+const jobSucceeded = (minute, success) => jobAt(minute, 'unknown', 'verification_unavailable', { lastCompletedSuccessAt: at(success) });
+function jobHarness(payload = { schemaVersion: 1, incidents: [] }, counter) {
+  return { payload, step(current) { const observation = recordObservation(current, counter); counter = observation.counter; advanceIncidents(payload, current, observation, current.observedAt); return { counter, incidents: payload.incidents, observation }; } };
+}
+test('a run_failed incident closes when a later run succeeds and the next failure opens a new one', () => {
+  const run = jobHarness();
+  run.step(jobFailed(0, -5)); const opened = run.step(jobFailed(5, -5)).incidents[0];
+  assert.equal(opened.reasonCode, 'run_failed'); assert.equal(opened.resolvedAt, null);
+  const running = run.step(jobAt(10, 'unknown', 'in_progress', { lastAttemptOutcome: 'running', lastAttemptAt: at(8), lastCompletedSuccessAt: at(9) }));
+  assert.equal(running.incidents[0].resolvedAt, null, 'a run in progress is not a recovery'); assert.equal(confirmedStatus(running.counter), 'degraded');
+  const recovered = run.step(jobSucceeded(20, 15));
+  assert.equal(recovered.observation.superseded, true); assert.equal(confirmedStatus(recovered.counter), null);
+  assert.equal(recovered.incidents[0].id, opened.id); assert.equal(recovered.incidents[0].resolvedAt, at(20)); assert.equal(recovered.incidents[0].stage, 'resolved');
+  assert.match(recovered.incidents[0].updates.at(-1).message, /completed successfully after the failed run\. Destination freshness is still unverified\./);
+  assert.deepEqual(recovered.incidents[0].updates.at(-1).evidence, { status: 'unknown', reasonCode: 'verification_unavailable', observedAt: at(20) });
+  assert.match(recovered.incidents[0].postmortem.summary, /Recovery confirmed by a successful scheduled run after the failed run/);
+  assert.equal(run.step(jobSucceeded(25, 15)).incidents.length, 1, 'the same success does nothing more');
+  run.step(jobFailed(30, 28)); const again = run.step(jobFailed(35, 28));
+  assert.equal(again.incidents.length, 2); assert.notEqual(again.incidents[0].id, opened.id); assert.equal(again.incidents[0].resolvedAt, null);
+});
+test('unchecked, older or future successes and other failure kinds keep a job incident open', () => {
+  for (const [label, evidence] of [
+    ['in progress', jobAt(20, 'unknown', 'in_progress', { lastCompletedSuccessAt: at(15) })],
+    ['invalid evidence', jobAt(20, 'unknown', 'invalid_evidence', { lastCompletedSuccessAt: at(15) })],
+    ['inactive', jobAt(20, 'unknown', 'inactive', { lastCompletedSuccessAt: at(15) })],
+    ['success before the failed run', jobSucceeded(20, -10)],
+    ['future-dated success', jobSucceeded(20, 200)],
+  ]) {
+    const run = jobHarness(); run.step(jobFailed(0, -5)); run.step(jobFailed(5, -5));
+    const after = run.step(evidence);
+    assert.equal(after.incidents[0].resolvedAt, null, label); assert.equal(confirmedStatus(after.counter), 'degraded', label);
+  }
+  const stale = minute => jobAt(minute, 'degraded', 'destination_stale', { lastCompletedSuccessAt: at(minute - 1) });
+  const run = jobHarness(); run.step(stale(0)); run.step(stale(5));
+  assert.equal(run.step(jobSucceeded(20, 15)).incidents[0].resolvedAt, null, 'a stale destination needs verified recovery');
+});
+test('an open run_failed incident left behind by an already-cleared counter closes on the next newer success', () => {
+  // Production state on October 25, 2026: the counter rule cleared the confirmation, but the
+  // incident stayed open and silenced every later failure of the job.
+  const incident = { ...legacy(), updatedAt: at(60), updates: [{ id: 'test-feed-123-open', stage: 'investigating', at: at(0), message: 'Two fresh observations confirmed needs attention: Scheduled import failed.', source: 'monitor', evidence: { status: 'degraded', reasonCode: 'run_failed', observedAt: at(0) } }, { id: 'test-feed-123-unknown', stage: 'investigating', at: at(60), message: 'Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.', source: 'monitor', evidence: { status: 'unknown', reasonCode: 'verification_unavailable', observedAt: at(60) } }] };
+  const counter = { evidence: { feed: { observedAt: at(60), status: 'unknown' } }, bad: 0, good: 0, confirmedStatus: null, failedAttemptAt: null };
+  const run = jobHarness({ schemaVersion: 1, incidents: [incident] }, counter);
+  const older = run.step(jobSucceeded(70, 50));
+  assert.equal(older.observation.superseded, false); assert.equal(older.incidents[0].resolvedAt, null, 'a success older than the last recorded activity proves nothing new');
+  const newer = run.step(jobSucceeded(90, 80));
+  assert.equal(newer.incidents[0].resolvedAt, at(90)); assert.equal(newer.incidents[0].stage, 'resolved');
+});
+test('a confirmed job failure keeps its incident open even with an older success on record', () => {
+  const run = jobHarness(); run.step(jobFailed(0, -5)); run.step(jobFailed(5, -5));
+  const failing = run.step(jobAt(10, 'degraded', 'run_failed', { lastAttemptOutcome: 'failed', lastAttemptAt: at(8), lastCompletedSuccessAt: at(-30) }));
+  assert.equal(failing.incidents[0].resolvedAt, null); assert.equal(failing.incidents.length, 1);
+});

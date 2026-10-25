@@ -1,6 +1,6 @@
 import { time, LABELS, REASONS } from '../public/model.mjs';
 import { normalizeIncidents, safeText, safePublicUrl } from '../public/incident-model.mjs';
-import { FAILURE_STATUSES, confirmedStatus } from './observations.mjs';
+import { FAILURE_STATUSES, confirmedStatus, supersededBySuccess } from './observations.mjs';
 
 export function incidentDocument(payload) {
   if (payload?.schemaVersion !== 1 || !Array.isArray(payload.incidents)) throw new Error('invalid_incident_document');
@@ -108,6 +108,14 @@ function advanceConsecutive(payload, component, observation, at, latched) {
       appendIncidentUpdate(open, { stage: 'resolved', at, message: 'Two fresh successful observations confirmed recovery.', evidence });
       open.postmortem = postmortemDraft(open, at);
     } else appendIncidentUpdate(open, { stage: 'monitoring', at, message: 'One fresh successful observation received. The incident remains open pending a second fresh successful observation.', evidence });
+  } else if (open && open.reasonCode === 'run_failed' && component.status === 'unknown' && (observation.superseded || (!confirmedStatus(observation.counter) && supersededBySuccess(component, time(open.updatedAt))))) {
+    // A scheduled job whose destination cannot be verified never reports operational. A run
+    // completed after the failure clears the confirmation (recordObservation); the incident
+    // closes with it, so the next failure opens and announces a new one. Without a cleared
+    // confirmation on this run, only a success newer than the incident's last activity counts.
+    open.resolvedAt = at;
+    appendIncidentUpdate(open, { stage: 'resolved', at, message: 'A scheduled run completed successfully after the failed run. Destination freshness is still unverified.', evidence });
+    open.postmortem = postmortemDraft(open, at, 'a successful scheduled run after the failed run');
   } else if (open && ['unknown', 'maintenance'].includes(component.status)) {
     const last = open.updates.at(-1);
     if (last?.evidence?.status !== component.status || last?.evidence?.reasonCode !== component.reasonCode) appendIncidentUpdate(open, { stage: open.stage, at, message: `Latest evidence is ${LABELS[component.status].toLowerCase()}: ${REASONS[component.reasonCode] || REASONS.invalid_evidence}. The incident remains open; recovery is unconfirmed.`, evidence });

@@ -20,7 +20,7 @@ function failedAttemptTime(component) {
 }
 // A success completed after the failed attempt supersedes it, even when the
 // destination cannot be verified. Success times later than the sample itself are ignored.
-function supersededBySuccess(component, failedAt) {
+export function supersededBySuccess(component, failedAt) {
   if (failedAt === null) return false;
   // Only a sample whose sole gap is the unverifiable destination may clear it;
   // invalid, inactive or in-progress evidence carries unchecked success times.
@@ -82,7 +82,8 @@ export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   }
   // A scheduled job whose destination cannot be verified never reports operational,
   // so a run_failed confirmation would otherwise latch forever after the job recovers.
-  if (nextConfirmed && component.status === 'unknown' && supersededBySuccess(component, failedAt)) nextConfirmed = null;
+  const superseded = Boolean(nextConfirmed && component.status === 'unknown' && supersededBySuccess(component, failedAt));
+  if (superseded) nextConfirmed = null;
   if (!nextConfirmed) failedAt = null;
-  return { isNew: true, counter: { evidence, bad, good, confirmedStatus: nextConfirmed, failedAttemptAt: failedAt === null ? null : new Date(failedAt).toISOString() } };
+  return { isNew: true, superseded, counter: { evidence, bad, good, confirmedStatus: nextConfirmed, failedAttemptAt: failedAt === null ? null : new Date(failedAt).toISOString() } };
 }

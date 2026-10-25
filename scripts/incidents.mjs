@@ -1,6 +1,6 @@
 import { time, LABELS, REASONS } from '../public/model.mjs';
 import { normalizeIncidents, safeText, safePublicUrl } from '../public/incident-model.mjs';
-import { FAILURE_STATUSES, confirmedStatus } from './observations.mjs';
+import { FAILURE_STATUSES, confirmedStatus, confirmedReason, supersededBySuccess } from './observations.mjs';
 
 export function incidentDocument(payload) {
   if (payload?.schemaVersion !== 1 || !Array.isArray(payload.incidents)) throw new Error('invalid_incident_document');
@@ -34,6 +34,7 @@ export function appendIncidentUpdate(incident, { stage, at, message, source = 'm
   return true;
 }
 const SEVERITY = { degraded: 1, partial_outage: 2, major_outage: 3 };
+const JOB_FAILURES = ['run_failed', 'schedule_missed'];
 const AVAILABILITY_UPDATE = /^\d+ of the latest \d+ availability checks failed: /;
 function availabilityMessage(availability) {
   return `${availability.failed} of the latest ${availability.checked} availability checks failed: ${REASONS[availability.reasonCode] || REASONS.invalid_evidence}. Failures are intermittent; the issue stays open until six consecutive checks pass.`;
@@ -64,7 +65,7 @@ export function advanceIncidents(payload, component, observation, at) {
       return;
     }
   }
-  if (observation.isNew) advanceConsecutive(payload, component, observation, at, latched);
+  if (observation.isNew) advanceConsecutive(payload, component, observation, at, availability);
   if (!latched) return;
   const open = openIncident();
   const evidence = { status: availability.confirmed, reasonCode: availability.reasonCode, observedAt: at };
@@ -80,25 +81,33 @@ export function advanceIncidents(payload, component, observation, at) {
     appendIncidentUpdate(open, { stage: open.stage === 'monitoring' ? 'investigating' : open.stage, at, message: availabilityMessage(availability), evidence });
   } else if (observation.availabilityAdvanced && time(open.updatedAt) < time(at)) open.updatedAt = at;
 }
-function advanceConsecutive(payload, component, observation, at, latched) {
+function advanceConsecutive(payload, component, observation, at, availability) {
+  const latched = Boolean(availability?.confirmed);
   const open = payload.incidents.find(incident => incident.componentId === component.id && !incident.resolvedAt);
   const evidence = { status: component.status, reasonCode: component.reasonCode, observedAt: component.observedAt };
-  if (FAILURE_STATUSES.includes(component.status) && observation.counter.bad >= 2) {
+  const confirmed = confirmedStatus(observation.counter);
+  if (FAILURE_STATUSES.includes(component.status) && observation.counter.bad >= 2 && confirmed) {
+    // The incident carries the higher confirmed severity of the two rules, with the reason of
+    // the check that confirmed it. A single worse check is reported as the latest check,
+    // never as confirmed.
+    const byAvailability = latched && (SEVERITY[availability.confirmed] || 0) > (SEVERITY[confirmed] || 0);
+    const status = byAvailability ? availability.confirmed : confirmed;
+    const reasonCode = byAvailability ? availability.reasonCode : confirmedReason(observation.counter) || component.reasonCode;
+    const latest = status === component.status && reasonCode === component.reasonCode ? '' : ` Latest check: ${LABELS[component.status].toLowerCase()}, ${REASONS[component.reasonCode] || REASONS.invalid_evidence}.`;
+    const message = lead => byAvailability ? `${availabilityMessage(availability)}${latest}` : `${lead} ${LABELS[status].toLowerCase()}: ${REASONS[reasonCode] || REASONS.invalid_evidence}.${latest}`;
     if (!open) {
-      const latency = ['slow', 'rendering_slow'].includes(component.reasonCode);
-      const incident = { id: `${component.id}-${time(at)}`, componentId: component.id, title: `${component.name}: ${component.status === 'degraded' ? (latency ? 'degraded performance' : 'degraded service') : 'availability issue'}`, status: component.status, reasonCode: component.reasonCode, openedAt: at, updatedAt: at, resolvedAt: null, stage: 'investigating', updates: [] };
+      const latency = ['slow', 'rendering_slow'].includes(reasonCode);
+      const incident = { id: `${component.id}-${time(at)}`, componentId: component.id, title: `${component.name}: ${status === 'degraded' ? (latency ? 'degraded performance' : 'degraded service') : 'availability issue'}`, status, reasonCode, openedAt: at, updatedAt: at, resolvedAt: null, stage: 'investigating', updates: [] };
       const deadline = component.samples.find(sample => time(sample.nextDueAt) !== null)?.nextDueAt;
       if (deadline) incident.deadlineAt = new Date(time(deadline)).toISOString();
-      appendIncidentUpdate(incident, { stage: 'investigating', at, message: `Two fresh observations confirmed ${LABELS[component.status].toLowerCase()}: ${REASONS[component.reasonCode] || REASONS.invalid_evidence}.`, evidence });
+      appendIncidentUpdate(incident, { stage: 'investigating', at, message: message('Two fresh observations confirmed'), evidence });
       payload.incidents.unshift(incident);
     } else {
-      // A lesser failure does not downgrade an incident whose availability failures stay confirmed.
-      const keep = latched && (SEVERITY[open.status] || 0) > (SEVERITY[component.status] || 0);
-      const status = keep ? open.status : component.status, reasonCode = keep ? open.reasonCode : component.reasonCode;
       const changed = open.status !== status || open.reasonCode !== reasonCode;
       open.status = status;
       open.reasonCode = reasonCode;
-      if (changed || open.stage === 'monitoring') appendIncidentUpdate(open, { stage: open.stage === 'monitoring' ? 'investigating' : open.stage, at, message: `Fresh observations continue to confirm ${LABELS[component.status].toLowerCase()}: ${REASONS[component.reasonCode] || REASONS.invalid_evidence}.`, evidence });
+      if (status !== 'degraded' && (open.title.endsWith(': degraded performance') || open.title.endsWith(': degraded service'))) open.title = `${component.name}: availability issue`;
+      if (changed || open.stage === 'monitoring') appendIncidentUpdate(open, { stage: open.stage === 'monitoring' ? 'investigating' : open.stage, at, message: message('Fresh observations continue to confirm'), evidence });
       else open.updatedAt = at;
     }
   } else if (open && component.status === 'operational' && !latched) {
@@ -108,6 +117,17 @@ function advanceConsecutive(payload, component, observation, at, latched) {
       appendIncidentUpdate(open, { stage: 'resolved', at, message: 'Two fresh successful observations confirmed recovery.', evidence });
       open.postmortem = postmortemDraft(open, at);
     } else appendIncidentUpdate(open, { stage: 'monitoring', at, message: 'One fresh successful observation received. The incident remains open pending a second fresh successful observation.', evidence });
+  } else if (open && JOB_FAILURES.includes(open.reasonCode) && component.status === 'unknown' && (observation.superseded || (!confirmedStatus(observation.counter) && supersededBySuccess(component, time(open.updatedAt))))) {
+    // A scheduled job whose destination cannot be verified never reports operational. A run
+    // completed after the failure clears the confirmation (recordObservation); the incident
+    // closes with it, so the next failure opens and announces a new one. An incident left
+    // open by a confirmation cleared earlier closes only on a success newer than its last
+    // activity, and says that earlier recoveries may have been folded into it.
+    const fresh = observation.superseded;
+    open.resolvedAt = at;
+    appendIncidentUpdate(open, { stage: 'resolved', at, message: fresh ? 'A scheduled run completed successfully after the failure. Destination freshness is still unverified.' : 'A scheduled run completed successfully after the last recorded failure. Earlier recoveries did not close this incident, so later failures may be folded into it. Destination freshness is still unverified.', evidence });
+    open.postmortem = postmortemDraft(open, at, fresh ? 'a successful scheduled run after the failure' : 'a successful scheduled run after the last recorded failure');
+    if (!fresh) open.postmortem.summary += ' Earlier recoveries were not recorded, so the duration is an upper bound.';
   } else if (open && ['unknown', 'maintenance'].includes(component.status)) {
     const last = open.updates.at(-1);
     if (last?.evidence?.status !== component.status || last?.evidence?.reasonCode !== component.reasonCode) appendIncidentUpdate(open, { stage: open.stage, at, message: `Latest evidence is ${LABELS[component.status].toLowerCase()}: ${REASONS[component.reasonCode] || REASONS.invalid_evidence}. The incident remains open; recovery is unconfirmed.`, evidence });

@@ -11,25 +11,37 @@ export function confirmedStatus(counter = {}) {
   }
   return null;
 }
-// Latest failed attempt behind the current failure, or null when any failing
-// sample is not a dated scheduled-run failure (destination stale, HTTP, etc.).
+// Time of the scheduled-run failure behind the current failure, or null when any failing
+// sample is not a scheduled-run failure (destination stale, HTTP, etc.). A failed run counts
+// from its attempt and a missed schedule from the due time it missed. Without that time the
+// sample's own observation time stands in: the failure existed by then, so only a later
+// success supersedes it.
+const JOB_FAILURES = ['run_failed', 'schedule_missed'];
 function failedAttemptTime(component) {
   const failing = component.samples.filter(s => FAILURE_STATUSES.includes(s.status));
-  if (!failing.length || !failing.every(s => s.reasonCode === 'run_failed' && time(s.lastAttemptAt) !== null)) return null;
-  return Math.max(...failing.map(s => time(s.lastAttemptAt)));
+  const times = failing.map(s => JOB_FAILURES.includes(s.reasonCode) ? time(s.reasonCode === 'run_failed' ? s.lastAttemptAt : s.nextDueAt) ?? time(s.observedAt) : null);
+  if (!failing.length || times.some(t => t === null)) return null;
+  return Math.max(...times);
 }
-// A success completed after the failed attempt supersedes it, even when the
-// destination cannot be verified. Success times later than the sample itself are ignored.
-function supersededBySuccess(component, failedAt) {
+// A success completed after the failure supersedes it, even when the destination cannot be
+// verified. Success times later than the sample itself are ignored. A scheduled-job
+// component has one sample (one job whose runs never overlap), so a success on it is a
+// success of the job that failed.
+export function supersededBySuccess(component, failedAt) {
   if (failedAt === null) return false;
   // Only a sample whose sole gap is the unverifiable destination may clear it;
   // invalid, inactive or in-progress evidence carries unchecked success times.
   return component.samples.some(s => {
     if (s.status !== 'unknown' || s.reasonCode !== 'verification_unavailable') return false;
+    // A later attempt that failed or is still running outranks any earlier success.
+    if (s.lastAttemptOutcome === 'failed' || s.lastAttemptOutcome === 'running') return false;
     const ceiling = time(s.observedAt) + 60000;
     const completed = time(s.lastCompletedSuccessAt);
     const attempt = s.lastAttemptOutcome === 'succeeded' ? time(s.lastAttemptAt) : null;
-    return [completed, attempt].some(t => t !== null && t > failedAt && t <= ceiling);
+    const success = Math.max(-Infinity, ...[completed, attempt].filter(t => t !== null && t <= ceiling));
+    // An attempt of unknown outcome started after the success leaves recovery unproven.
+    if (s.lastAttemptOutcome !== 'succeeded' && time(s.lastAttemptAt) !== null && time(s.lastAttemptAt) > success) return false;
+    return success > failedAt;
   });
 }
 // Intermittent availability. The consecutive-observation rule above needs every probe of a
@@ -60,6 +72,33 @@ export function confirmedSeverity(counter = {}) {
   const statuses = [confirmedStatus(counter), counter.availability?.confirmed].filter(s => FAILURE_STATUSES.includes(s));
   return statuses.length ? rollup(statuses.map(status => ({ status }))) : null;
 }
+// Severity confirmation, in the spirit of the availability rule: a level is confirmed when two
+// of the latest three known fresh observations reached it, and only while the latest two
+// failed, so one outage among slow or passing checks never confirms an outage. A confirmed
+// level holds while any of the latest three reached it (alternating outage and slow checks
+// do not flap) and otherwise steps down to the highest level among them, so a past outage
+// cannot hold the outage alert open. Unknown and maintenance observations are left out of
+// the window, but they break the run of consecutive failures, so failures separated by
+// unknown checks escalate only through the availability rule. Recovery still needs two
+// consecutive fresh passing observations. The window keeps each observation's reason.
+const LEVEL = { operational: 0, degraded: 1, partial_outage: 2, major_outage: 3 };
+const BY_LEVEL = [null, 'degraded', 'partial_outage', 'major_outage'];
+export const SEVERITY_WINDOW = 3;
+function nextSeverity(confirmed, recent, bad) {
+  const levels = recent.map(([status]) => LEVEL[status]);
+  const reached = level => levels.filter(l => l >= level).length;
+  const twice = [3, 2, 1].find(level => reached(level) >= 2) ?? 0;
+  const held = LEVEL[confirmed] ?? 0;
+  if (bad >= 2 && twice > held) return BY_LEVEL[twice];
+  if (!held) return null;
+  return reached(held) ? confirmed : BY_LEVEL[Math.max(1, ...levels)];
+}
+// Reason of the latest observation in the window at the confirmed level.
+export function confirmedReason(counter = {}) {
+  const level = LEVEL[confirmedStatus(counter)];
+  const recent = Array.isArray(counter.recent) ? counter.recent.filter(Array.isArray) : [];
+  return (recent.findLast(([status]) => LEVEL[status] === level) || recent.findLast(([status]) => LEVEL[status] >= level))?.[1] || null;
+}
 export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   const evidence = evidenceIdentity(component);
   const old = previous.evidence || {};
@@ -71,18 +110,25 @@ export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   const failing = FAILURE_STATUSES.includes(component.status);
   const bad = failing ? (previous.bad || 0) + 1 : 0;
   const good = component.status === 'operational' ? (previous.good || 0) + 1 : 0;
-  // Keep the highest confirmed severity until actual recovery. A lesser failure
-  // must not close an outage alert while its incident is still unresolved.
-  let nextConfirmed = bad >= 2 ? rollup([{ status: confirmed || component.status }, { status: component.status }]) : good >= 2 ? null : confirmed;
+  // Counters written before `recent` existed start from the previous observation's samples.
+  const before = rollup(Object.values(previous.evidence || {}));
+  const seed = Array.isArray(previous.recent) ? previous.recent.filter(entry => Array.isArray(entry) && Object.hasOwn(LEVEL, entry[0])) : Object.hasOwn(LEVEL, before) ? [[before, null]] : [];
+  const known = Object.hasOwn(LEVEL, component.status);
+  const recent = known ? [...seed, [component.status, component.reasonCode || null]].slice(-SEVERITY_WINDOW) : seed.slice(-SEVERITY_WINDOW);
+  let nextConfirmed = good >= 2 ? null : known ? nextSeverity(confirmed, recent, bad) : confirmed;
   const prior = time(previous.failedAttemptAt);
   let failedAt = prior;
   if (failing) {
+    // A null time marks a failure that is not a scheduled-run failure. It needs verified
+    // recovery, so once it is part of a confirmation no run success supersedes it.
     const current = failedAttemptTime(component);
-    failedAt = current === null ? null : bad >= 2 && !confirmed ? current : prior === null && confirmed ? null : Math.max(prior ?? current, current);
+    if (!confirmed) failedAt = bad >= 2 ? current : null;
+    else failedAt = prior === null || current === null ? null : Math.max(prior, current);
   }
   // A scheduled job whose destination cannot be verified never reports operational,
   // so a run_failed confirmation would otherwise latch forever after the job recovers.
-  if (nextConfirmed && component.status === 'unknown' && supersededBySuccess(component, failedAt)) nextConfirmed = null;
+  const superseded = Boolean(nextConfirmed && component.status === 'unknown' && supersededBySuccess(component, failedAt));
+  if (superseded) nextConfirmed = null;
   if (!nextConfirmed) failedAt = null;
-  return { isNew: true, counter: { evidence, bad, good, confirmedStatus: nextConfirmed, failedAttemptAt: failedAt === null ? null : new Date(failedAt).toISOString() } };
+  return { isNew: true, superseded, counter: { evidence, bad, good, recent, confirmedStatus: nextConfirmed, failedAttemptAt: failedAt === null ? null : new Date(failedAt).toISOString() } };
 }

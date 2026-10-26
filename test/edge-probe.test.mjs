@@ -41,7 +41,9 @@ test('traffic thresholds: thin traffic keeps collecting, isolated or one-minute 
   const capped = { start: window.end - mia.maxWindowSeconds * 1000, end: window.end };
   assert.equal(classifyEdge(mia, [row('MIA', 200, 5)], capped).measuredUntil, iso(window.end));
   assert.equal(classifyEdge(mia, [...spread('MIA', 200, 400), row('MIA', 522, 2, 0), row('MIA', 522, 1, 1)], window).status, 'operational');
-  assert.equal(classifyEdge(mia, [...spread('MIA', 200, 30), row('MIA', 522, 2, 1)], window).status, 'operational');
+  // Two errors in two minutes is a high share of thin traffic but not enough evidence.
+  assert.equal(classifyEdge(mia, [...spread('MIA', 200, 30), row('MIA', 522, 1, 1), row('MIA', 522, 1, 2)], window).status, 'operational');
+  assert.equal(classifyEdge(mia, [...spread('MIA', 200, 30), row('MIA', 522, 2, 1), row('MIA', 522, 1, 2)], window).status, 'partial_outage');
   // A burst inside one minute is not enough, whatever its share.
   assert.equal(classifyEdge(mia, [...spread('MIA', 200, 50), row('MIA', 522, 50, 4)], window).status, 'operational');
   const partial = classifyEdge(mia, [...spread('MIA', 200, 90), row('MIA', 522, 5, 1), row('MIA', 522, 5, 2), ...spread('MIA', 503, 50)], window);

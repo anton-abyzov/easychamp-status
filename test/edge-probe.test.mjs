@@ -180,17 +180,49 @@ const trickle = statusAt => ({ since, until }) => Array.from({ length: (Date.par
   return { count: Math.floor(at / 60000) % 5 === 4 ? 2 : 1, dimensions: { datetimeMinute: iso(at), coloCode: 'MIA', edgeResponseStatus: status, originResponseStatus: status >= 520 ? 0 : status } };
 });
 
-test('an outage that thins traffic to a trickle is still judged and confirmed', async () => {
-  const thin = classifyEdge(mia, [row('MIA', 522, 3, 0), row('MIA', 522, 3, 1)], window);
-  assert.equal(thin.status, 'major_outage'); assert.equal(thin.requests, 6); assert.equal(thin.measuredUntil, iso(window.end));
-  assert.equal(classifyEdge(mia, [row('MIA', 522, 6, 0)], window).reasonCode, 'low_traffic');
-  // Below the major share, thin traffic keeps collecting.
-  assert.equal(classifyEdge(mia, [row('MIA', 200, 4, 0), row('MIA', 522, 2, 1), row('MIA', 522, 1, 2)], window).reasonCode, 'low_traffic');
-  const { payload, counters } = await replay(Array(4).fill(trickle(() => 522)));
-  assert.equal(confirmedSeverity(counters['access-miami']), 'major_outage'); assert.equal(payload.incidents.length, 1);
-  const now = window.end + 60000;
-  const view = viewState(registry, { generatedAt: iso(now), probes: { 'edge-mia': thin }, freshness: {} }, now);
-  assert.equal(view.components.find(c => c.id === 'access-miami').status, 'major_outage');
+// One request every `n` minutes, its status chosen by its time.
+const every = (n, statusAt) => ({ since, until }) => Array.from({ length: (Date.parse(until) - Date.parse(since)) / 60000 }, (_, i) => Date.parse(since) + i * 60000)
+  .filter(at => Math.floor(at / 60000) % n === 0).map(at => ({ count: 1, dimensions: { datetimeMinute: iso(at), coloCode: 'MIA', edgeResponseStatus: statusAt(at), originResponseStatus: statusAt(at) >= 520 ? 0 : statusAt(at) } }));
+const window30 = { start: window.end - 30 * 60000, end: window.end };
+
+test('thin traffic is never judged down, so one slow client at a quiet location never pages', async () => {
+  assert.equal(classifyEdge(mia, [row('MIA', 522, 3, 0), row('MIA', 522, 3, 1)], window).reasonCode, 'low_traffic');
+  const allFailed = classifyEdge(mia, [row('MIA', 522, 10, -20), row('MIA', 522, 10, -10), row('MIA', 522, 9, 0)], window30);
+  assert.equal(allFailed.status, 'unknown'); assert.equal(allFailed.reasonCode, 'low_traffic'); assert.equal(allFailed.measuredUntil, iso(window30.end));
+  // Every request fails at one every two minutes (15 in 30 minutes): unknown, never an outage.
+  const outage = await replay(Array(24).fill(every(2, () => 522)));
+  assert.equal(confirmedSeverity(outage.counters['access-miami']), null); assert.equal(outage.payload.incidents.length, 0);
+  assert.equal(outage.view.components.find(c => c.id === 'access-miami').status, 'unknown');
+  // A forged thin failure is rejected before it can count.
+  const thin = { status: 'major_outage', reasonCode: 'origin_unreachable', observedAt: iso(window30.end), windowStart: iso(window30.start), windowEnd: iso(window30.end), requests: 20, originErrors: 20, errorMinutes: 20, errorShare: 1, measuredUntil: iso(window30.end) };
+  const now = window30.end + 60000;
+  assert.equal(viewState(registry, { generatedAt: iso(now), probes: { 'edge-mia': thin }, freshness: {} }, now).components.find(c => c.id === 'access-miami').reasonCode, 'invalid_evidence');
+});
+
+test('thirty quiet minutes without a failure count as up, so an outage clears overnight', async () => {
+  const quiet = classifyEdge(mia, [row('MIA', 200, 4, -25), row('MIA', 200, 4, -5)], window30);
+  assert.equal(quiet.status, 'operational'); assert.equal(quiet.requests, 8); assert.equal(quiet.measuredUntil, iso(window30.end));
+  assert.equal(classifyEdge(mia, [row('MIA', 200, 5, -5)], window30).reasonCode, 'low_traffic');
+  assert.equal(classifyEdge(mia, [row('MIA', 200, 7, -25), row('MIA', 522, 1, -5)], window30).reasonCode, 'low_traffic');
+  // A thin pass is accepted only over a full window.
+  const now = window30.end + 60000, probes = sample => ({ generatedAt: iso(now), probes: { 'edge-mia': sample }, freshness: {} });
+  assert.equal(viewState(registry, probes(quiet), now).components.find(c => c.id === 'access-miami').status, 'operational');
+  const short = { ...quiet, windowStart: iso(window30.end - 5 * 60000) };
+  assert.equal(viewState(registry, probes(short), now).components.find(c => c.id === 'access-miami').reasonCode, 'invalid_evidence');
+  // Busy failing windows confirm; from 01:02 traffic is healthy at one request every two minutes.
+  const phase = Date.parse('2026-10-26T01:02:00Z');
+  const night = ({ since, until }) => Date.parse(until) <= phase ? [...spread('MIA', 200, 100), ...spread('MIA', 522, 100)] : every(2, () => 200)({ since, until });
+  const { payload, counters } = await replay(Array(40).fill(night));
+  assert.equal(confirmedSeverity(counters['access-miami']), null);
+  assert.equal(payload.incidents.filter(i => i.componentId === 'access-miami').length, 1);
+  assert.notEqual(payload.incidents.find(i => i.componentId === 'access-miami').resolvedAt, null);
+});
+
+test('silence after an outage keeps it confirmed, since nothing shows it recovered', async () => {
+  const failing = [...spread('MIA', 200, 100), ...spread('MIA', 522, 100)];
+  const { payload, counters } = await replay([failing, failing, ...Array(30).fill([])]);
+  assert.equal(confirmedSeverity(counters['access-miami']), 'major_outage');
+  assert.equal(payload.incidents.find(i => i.componentId === 'access-miami').resolvedAt, null);
 });
 
 test('a confirmed outage clears on a 1.2 requests a minute trickle of healthy traffic', async () => {

@@ -17,7 +17,8 @@ export function currentEvidence(sample, expiresSeconds, now = Date.now()) {
 export function edgeEvidence(probe, sample) {
   if (sample.status === 'unknown') return sample;
   const counts = Number.isInteger(sample.requests) && Number.isInteger(sample.originErrors) && sample.originErrors >= 0 && sample.originErrors <= sample.requests
-    && (sample.requests >= probe.minRequests || sample.status === 'major_outage' && sample.originErrors >= probe.minErrors);
+    && (sample.requests >= probe.minRequests || sample.status === 'operational' && sample.originErrors === 0 && sample.requests >= probe.minThinRequests
+      && time(sample.windowEnd) - time(sample.windowStart) >= probe.maxWindowSeconds * 1000);
   const window = time(sample.windowStart) !== null && time(sample.windowStart) < time(sample.windowEnd) && sample.windowEnd === sample.observedAt;
   return counts && window && ['ok', 'origin_unreachable'].includes(sample.reasonCode) ? sample : unknown('invalid_evidence', sample.observedAt);
 }

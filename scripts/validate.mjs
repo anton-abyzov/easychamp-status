@@ -10,7 +10,8 @@ for (const p of registry.probes) {
   if (p.type === 'edge') {
     assert.match(p.zoneTag, /^[0-9a-f]{32}$/); assert.match(p.colo, /^[A-Z]{3}$/); assert(p.location && !p.url);
     assert(0 < p.degradedShare && p.degradedShare < p.partialShare && p.partialShare < p.majorShare && p.majorShare <= 1);
-    assert(Number.isInteger(p.minErrors) && p.minErrors >= 1 && Number.isInteger(p.minRequests) && p.minRequests >= p.minErrors && Number.isInteger(p.minErrorMinutes) && p.minErrorMinutes >= 2);
+    assert(Number.isInteger(p.minErrors) && p.minErrors >= 1 && Number.isInteger(p.minRequests) && p.minRequests >= p.minErrors && Number.isInteger(p.minErrorMinutes) && p.minErrorMinutes >= 2
+      && Number.isInteger(p.minThinRequests) && p.minThinRequests >= 1 && p.minThinRequests < p.minRequests);
     assert(Array.isArray(p.hosts) && p.hosts.length && p.hosts.every(h => /^[a-z0-9.-]+\.easychamp\.com$|^easychamp\.com$/.test(h)));
     // A verdict must outlive the longest window that can follow it, or quiet locations never chain two.
     assert(p.lagSeconds >= 60 && p.windowSeconds >= 60 && p.maxWindowSeconds >= p.windowSeconds && p.expiresSeconds >= p.maxWindowSeconds + p.lagSeconds + 300);

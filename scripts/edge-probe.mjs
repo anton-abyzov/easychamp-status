@@ -31,7 +31,9 @@ export function classifyEdge(probe, rows, window) {
   const errors = failed.reduce((sum, row) => sum + row.count, 0);
   const errorMinutes = new Set(failed.filter(row => row.count > 0).map(row => row.dimensions.datetimeMinute)).size;
   const evidence = { observedAt: new Date(window.end).toISOString(), windowStart: new Date(window.start).toISOString(), windowEnd: new Date(window.end).toISOString(), requests, originErrors: errors, errorMinutes };
-  if (requests < probe.minRequests) {
+  // An outage drives visitors away, so thin traffic that is almost all failures is still judged.
+  const failingThin = errors >= probe.minErrors && errorMinutes >= probe.minErrorMinutes && errors / Math.max(requests, 1) >= probe.majorShare;
+  if (requests < probe.minRequests && !failingThin) {
     // Keep collecting this stretch until it has enough traffic to judge, or reaches the cap.
     const full = window.end - window.start >= probe.maxWindowSeconds * 1000;
     return { status: 'unknown', reasonCode: 'low_traffic', ...evidence, measuredUntil: new Date(full ? window.end : window.start).toISOString() };

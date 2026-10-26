@@ -9,6 +9,11 @@
       "description": "Public pages and club websites"
     },
     {
+      "id": "regional",
+      "name": "Regional access",
+      "description": "Real visitor traffic by Cloudflare location"
+    },
+    {
       "id": "accounts",
       "name": "Accounts & core data",
       "description": "Sign-in and organizer services"
@@ -220,7 +225,7 @@
       "degradedShare": 0.01,
       "partialShare": 0.05,
       "majorShare": 0.5,
-      "expiresSeconds": 1200,
+      "expiresSeconds": 2400,
       "hosts": [
         "auth.easychamp.com",
         "coach.easychamp.com",
@@ -248,7 +253,7 @@
       "degradedShare": 0.01,
       "partialShare": 0.05,
       "majorShare": 0.5,
-      "expiresSeconds": 1200,
+      "expiresSeconds": 2400,
       "hosts": [
         "auth.easychamp.com",
         "coach.easychamp.com",
@@ -344,7 +349,7 @@
     },
     {
       "id": "access-miami",
-      "group": "websites",
+      "group": "regional",
       "name": "Access from Miami",
       "probes": [
         "edge-mia"
@@ -353,7 +358,7 @@
     },
     {
       "id": "access-atlanta",
-      "group": "websites",
+      "group": "regional",
       "name": "Access from Atlanta",
       "probes": [
         "edge-atl"

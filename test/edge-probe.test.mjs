@@ -106,7 +106,7 @@ test('each location is its own service, validated before it counts, in its own o
   const forged = viewState(registry, { generatedAt: iso(now), probes: { ...probes, 'edge-atl': { status: 'major_outage', reasonCode: 'origin_unreachable', observedAt: iso(window.end) } }, freshness: {} }, now);
   assert.equal(forged.components.find(c => c.id === 'access-atlanta').status, 'unknown');
   assert.equal(forged.components.find(c => c.id === 'access-atlanta').reasonCode, 'invalid_evidence');
-  assert.equal(seriesKinds(registry)['edge-mia'], 'edge'); assert.equal(CAPS.edge, 1200);
+  assert.equal(seriesKinds(registry)['edge-mia'], 'edge'); assert.equal(CAPS.edge, 2400);
 });
 
 test('unknown regional evidence leaves the public endpoint headline alone', () => {
@@ -168,4 +168,41 @@ test('a short burst across a window boundary never confirms an outage', async ()
   const after = [...spread('MIA', 200, 200), row('MIA', 522, 10, 0)];
   const { payload, counters } = await replay([before, after]);
   assert.equal(confirmedSeverity(counters['access-miami']), null); assert.equal(payload.incidents.length, 0);
+});
+
+// 1.2 requests a minute (1, 1, 1, 1, 2), each minute's status chosen by its time.
+const trickle = statusAt => ({ since, until }) => Array.from({ length: (Date.parse(until) - Date.parse(since)) / 60000 }, (_, i) => {
+  const at = Date.parse(since) + i * 60000, status = statusAt(at);
+  return { count: Math.floor(at / 60000) % 5 === 4 ? 2 : 1, dimensions: { datetimeMinute: iso(at), coloCode: 'MIA', edgeResponseStatus: status, originResponseStatus: status >= 520 ? 0 : status } };
+});
+
+test('an outage that thins traffic to a trickle is still judged and confirmed', async () => {
+  const thin = classifyEdge(mia, [row('MIA', 522, 3, 0), row('MIA', 522, 3, 1)], window);
+  assert.equal(thin.status, 'major_outage'); assert.equal(thin.requests, 6); assert.equal(thin.measuredUntil, iso(window.end));
+  assert.equal(classifyEdge(mia, [row('MIA', 522, 6, 0)], window).reasonCode, 'low_traffic');
+  // Below the major share, thin traffic keeps collecting.
+  assert.equal(classifyEdge(mia, [row('MIA', 200, 4, 0), row('MIA', 522, 2, 1), row('MIA', 522, 1, 2)], window).reasonCode, 'low_traffic');
+  const { payload, counters } = await replay(Array(4).fill(trickle(() => 522)));
+  assert.equal(confirmedSeverity(counters['access-miami']), 'major_outage'); assert.equal(payload.incidents.length, 1);
+  const now = window.end + 60000;
+  const view = viewState(registry, { generatedAt: iso(now), probes: { 'edge-mia': thin }, freshness: {} }, now);
+  assert.equal(view.components.find(c => c.id === 'access-miami').status, 'major_outage');
+});
+
+test('a confirmed outage clears on a 1.2 requests a minute trickle of healthy traffic', async () => {
+  // Two busy failing windows confirm; from 01:02 traffic is healthy and thin.
+  const phase = Date.parse('2026-10-26T01:02:00Z');
+  const busy = ({ since, until }) => Date.parse(until) <= phase ? [...spread('MIA', 200, 100), ...spread('MIA', 522, 100)] : trickle(() => 200)({ since, until });
+  const runs = Array(40).fill(busy);
+  const { payload, counters } = await replay(runs);
+  assert.equal(confirmedSeverity(counters['access-miami']), null);
+  assert.equal(payload.incidents.filter(i => i.componentId === 'access-miami').length, 1);
+  assert.notEqual(payload.incidents.find(i => i.componentId === 'access-miami').resolvedAt, null);
+});
+
+test('regional access has its own group, so quiet locations never change the Websites badge', () => {
+  assert.equal(registry.groups.find(g => g.id === 'regional').name, 'Regional access');
+  assert.deepEqual(registry.components.filter(c => c.group === 'regional').map(c => c.id), ['access-miami', 'access-atlanta']);
+  assert(!registry.components.some(c => c.group === 'websites' && c.probes?.some(id => id.startsWith('edge-'))));
+  assert(mia.expiresSeconds >= mia.maxWindowSeconds + mia.lagSeconds + 300); assert.equal(CAPS.edge, mia.expiresSeconds);
 });

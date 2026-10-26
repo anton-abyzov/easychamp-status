@@ -16,7 +16,8 @@ export function currentEvidence(sample, expiresSeconds, now = Date.now()) {
 // Regional traffic evidence counts as up or down only with its measured window and counts.
 export function edgeEvidence(probe, sample) {
   if (sample.status === 'unknown') return sample;
-  const counts = Number.isInteger(sample.requests) && Number.isInteger(sample.originErrors) && sample.originErrors >= 0 && sample.originErrors <= sample.requests && sample.requests >= probe.minRequests;
+  const counts = Number.isInteger(sample.requests) && Number.isInteger(sample.originErrors) && sample.originErrors >= 0 && sample.originErrors <= sample.requests
+    && (sample.requests >= probe.minRequests || sample.status === 'major_outage' && sample.originErrors >= probe.minErrors);
   const window = time(sample.windowStart) !== null && time(sample.windowStart) < time(sample.windowEnd) && sample.windowEnd === sample.observedAt;
   return counts && window && ['ok', 'origin_unreachable'].includes(sample.reasonCode) ? sample : unknown('invalid_evidence', sample.observedAt);
 }

@@ -24,6 +24,9 @@ test('only answers Cloudflare could not get from the origin count as failures', 
   assert(originError(522)); assert(originError(520)); assert(originError(524)); assert(originError(530));
   // Edge-generated 503s (no origin response) hit every location alike, so they are not regional.
   assert(!originError(503)); assert(!originError(504)); assert(!originError(502)); assert(!originError(404)); assert(!originError(200));
+  const window = { start: Date.parse('2026-10-24T12:00:00Z'), end: Date.parse('2026-10-24T12:05:00Z') };
+  const edgeOnly = classifyEdge(mia, [...spread('MIA', 200, 100), row('MIA', 503, 40, 0, 0), row('MIA', 503, 40, 1, 0), row('MIA', 500, 10, 2, 0)], window);
+  assert.equal(edgeOnly.status, 'operational'); assert.equal(edgeOnly.originErrors, 0); assert.equal(edgeOnly.requests, 190);
 });
 
 test('windows chain on measured minutes, wait for a full window and cap long silences', () => {

@@ -9,6 +9,11 @@
       "description": "Public pages and club websites"
     },
     {
+      "id": "regional",
+      "name": "Regional access",
+      "description": "Real visitor traffic by Cloudflare location"
+    },
+    {
       "id": "accounts",
       "name": "Accounts & core data",
       "description": "Sign-in and organizer services"
@@ -205,6 +210,64 @@
       "maxLcpMs": 4000,
       "expiresSeconds": 2100,
       "monitorAuth": true
+    },
+    {
+      "id": "edge-mia",
+      "colo": "MIA",
+      "location": "Miami",
+      "type": "edge",
+      "zoneTag": "e19829aec65c707d1d1653a9e93fe5d0",
+      "windowSeconds": 300,
+      "maxWindowSeconds": 1800,
+      "lagSeconds": 180,
+      "minRequests": 30,
+      "minThinRequests": 6,
+      "minErrors": 3,
+      "degradedShare": 0.01,
+      "partialShare": 0.05,
+      "majorShare": 0.5,
+      "expiresSeconds": 2400,
+      "hosts": [
+        "auth.easychamp.com",
+        "coach.easychamp.com",
+        "console.easychamp.com",
+        "dcfc.at.easychamp.com",
+        "easychamp.com",
+        "sim.easychamp.com",
+        "snap.easychamp.com",
+        "soccer-nationals.easychamp.com",
+        "watch.easychamp.com"
+      ],
+      "minErrorMinutes": 2
+    },
+    {
+      "id": "edge-atl",
+      "colo": "ATL",
+      "location": "Atlanta",
+      "type": "edge",
+      "zoneTag": "e19829aec65c707d1d1653a9e93fe5d0",
+      "windowSeconds": 300,
+      "maxWindowSeconds": 1800,
+      "lagSeconds": 180,
+      "minRequests": 30,
+      "minThinRequests": 6,
+      "minErrors": 3,
+      "degradedShare": 0.01,
+      "partialShare": 0.05,
+      "majorShare": 0.5,
+      "expiresSeconds": 2400,
+      "hosts": [
+        "auth.easychamp.com",
+        "coach.easychamp.com",
+        "console.easychamp.com",
+        "dcfc.at.easychamp.com",
+        "easychamp.com",
+        "sim.easychamp.com",
+        "snap.easychamp.com",
+        "soccer-nationals.easychamp.com",
+        "watch.easychamp.com"
+      ],
+      "minErrorMinutes": 2
     }
   ],
   "components": [
@@ -285,6 +348,24 @@
       "tier": "app",
       "short": "Snap to League",
       "order": 3
+    },
+    {
+      "id": "access-miami",
+      "group": "regional",
+      "name": "Access from Miami",
+      "probes": [
+        "edge-mia"
+      ],
+      "coverage": "Real visitor requests that Cloudflare routed through Miami to the monitored EasyChamp sites, and the share it could not complete because EasyChamp servers did not answer (errors 520-526 and 530). There is an outage only when failures to connect appear on their own; responses that broke or hung (520, 524) alone flag degraded at most. Errors must appear in at least two separate minutes. Fewer than 30 requests are never judged down; 30 minutes with at least 6 requests and no failure count as up."
+    },
+    {
+      "id": "access-atlanta",
+      "group": "regional",
+      "name": "Access from Atlanta",
+      "probes": [
+        "edge-atl"
+      ],
+      "coverage": "Real visitor requests that Cloudflare routed through Atlanta to the monitored EasyChamp sites, and the share it could not complete because EasyChamp servers did not answer (errors 520-526 and 530). There is an outage only when failures to connect appear on their own; responses that broke or hung (520, 524) alone flag degraded at most. Errors must appear in at least two separate minutes. Fewer than 30 requests are never judged down; 30 minutes with at least 6 requests and no failure count as up."
     },
     {
       "id": "signin",

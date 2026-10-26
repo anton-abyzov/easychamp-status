@@ -220,9 +220,9 @@ function componentDetail(c, selectedDay) {
   const body = el('div'); body.append(el('h2', 'detail-title', c.name), badge(c.status)); body.querySelector('h2').id = 'detail-title';
   const scope = section('What is checked'); scope.append(el('p', '', c.checkScope || c.coverage), el('div', 'detail-meta', `Last observation: ${stamp(c.observedAt)} · ${age(c.observedAt)}`)); body.append(scope);
   const checks = section('Current checks'), list = el('ul', 'check-list');
-  c.samples.forEach(sample => { const probe = registry.probes.find(p => p.id === sample.sourceId); const item = el('li'), text = el('div'); const name = c.freshness ? (c.measurements?.[0]?.label || 'Data freshness check') : probe?.type === 'browser' ? 'Page rendering' : probe?.type === 'http' ? 'HTTP content check' : 'Functional monitoring';
+  c.samples.forEach(sample => { const probe = registry.probes.find(p => p.id === sample.sourceId); const item = el('li'), text = el('div'); const name = c.freshness ? (c.measurements?.[0]?.label || 'Data freshness check') : probe?.type === 'browser' ? 'Page rendering' : probe?.type === 'http' ? 'HTTP content check' : probe?.type === 'edge' ? `Visitor traffic via ${probe.location}` : 'Functional monitoring';
     text.append(el('div', 'check-name', name), el('div', 'check-reason', REASONS[sample.reasonCode] || 'Evidence unavailable'));
-    const metrics = [sample.lcpMs ? `LCP ${(sample.lcpMs/1000).toFixed(1)}s` : '', sample.responseMs ? `Response ${(sample.responseMs/1000).toFixed(1)}s` : ''].filter(Boolean);
+    const metrics = [sample.lcpMs ? `LCP ${(sample.lcpMs/1000).toFixed(1)}s` : '', sample.responseMs ? `Response ${(sample.responseMs/1000).toFixed(1)}s` : '', Number.isInteger(sample.requests) && Number.isInteger(sample.originErrors) ? `${sample.originErrors} of ${sample.requests} requests failed` : ''].filter(Boolean);
     if (metrics.length) text.append(el('div', 'check-reason', metrics.join(' · '))); item.append(text, badge(sample.status)); list.append(item);
   }); checks.append(list); body.append(checks);
   if (c.measurements?.length) { const measured = section('Measured signals'), rows = el('ul', 'check-list'); c.measurements.forEach(m => { const row = el('li'), copy = el('div'); copy.append(el('div', 'check-name', m.label), el('div', 'check-reason', m.scope || REASONS[m.reasonCode] || 'No current evidence')); if (m.value !== undefined && m.value !== null) copy.append(el('div', 'metric-value', metric(m.value, m.unit))); if (m.target !== undefined && m.target !== null) copy.append(el('div', 'check-reason', `${m.unit === 'nodes' ? 'Total' : 'Target'}: ${metric(m.target, m.unit)}`)); if (m.summary) copy.append(el('p', 'signal-summary', m.summary)); copy.append(el('div', 'check-reason', `Checked ${stamp(m.observedAt)}`)); row.append(copy, badge(m.status)); rows.append(row); }); measured.append(rows); body.append(measured); }
@@ -258,7 +258,7 @@ function measurementDetail(m) {
     const rows = el('ul', 'check-list');
     for (const r of m.rows) {
       const row = el('li'), copy = el('div'), probe = registry.probes.find(p => p.id === r.id), component = currentView.components.find(c => c.id === r.componentId || c.id === r.id || c.probes?.includes(r.id));
-      const label = probe && component ? `${component.name} · ${probe.type === 'browser' ? 'Page rendering' : 'HTTP check'}` : r.label || component?.name || 'Configured observation';
+      const label = probe && component ? `${component.name} · ${probe.type === 'browser' ? 'Page rendering' : probe.type === 'edge' ? `Visitor traffic via ${probe.location}` : 'HTTP check'}` : r.label || component?.name || 'Configured observation';
       copy.append(el('div', 'check-name', label));
       if (Number.isFinite(r.value)) copy.append(el('div', 'metric-value', metric(r.value, r.unit)));
       if (Number.isFinite(r.target)) copy.append(el('div', 'check-reason', `${r.unit === 'nodes' ? 'Total' : 'Target'}: ${metric(r.target, r.unit)}`));

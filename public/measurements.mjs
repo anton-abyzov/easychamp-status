@@ -1,4 +1,4 @@
-import { currentEvidence, unknown, time, validTime, rollup, REASONS } from './model.mjs';
+import { currentEvidence, edgeEvidence, unknown, time, validTime, rollup, REASONS } from './model.mjs';
 
 const RESOURCE_FIELDS = ['cpuUtilizationPct', 'memoryUtilizationPct', 'diskUtilizationPct'];
 const RESOURCE_COVERAGE = ['node_readiness', 'cpu', 'memory', 'disk'];
@@ -70,6 +70,12 @@ function latency(probe, sample) {
   if (value > target) return { ...sample, status: 'degraded', reasonCode: probe.type === 'browser' ? 'rendering_slow' : 'slow' };
   return sample;
 }
+function edgeRow(id, label, probe, sample, extra = {}) {
+  const counted = Number.isInteger(sample.requests) && Number.isInteger(sample.originErrors);
+  const summary = sample.status !== 'unknown' && counted ? `${sample.originErrors} of ${sample.requests} visitor requests got no usable answer from EasyChamp` : sample.reasonCode === 'low_traffic' && counted ? (sample.measuredUntil !== sample.windowEnd ? `${sample.requests} visitor requests so far; at least ${probe.minRequests} are needed to judge it down` : sample.originErrors > 0 ? `${sample.originErrors} of ${sample.requests} visitor requests failed; too few to judge` : `Only ${sample.requests} visitor requests in 30 minutes, too few to judge`) : REASONS[sample.reasonCode] || 'Evidence unavailable';
+  return row(id, label, sample, `Real visitor requests routed through Cloudflare ${probe.location}. Errors 520-526 and 530 mean Cloudflare got no usable answer from EasyChamp servers; there is an outage only when failures to connect (521-523, 525, 526, 530) appear on their own. Errors must appear in at least ${probe.minErrorMinutes} separate minutes.`,
+    { ...extra, dimension: 'regional', summary, ...(sample.status !== 'unknown' && counted ? { value: 100 * sample.originErrors / sample.requests, unit: '%' } : {}) });
+}
 function destination(component, sample, now) {
   if (sample.status === 'unknown' && ['stale', 'collector_stale', 'invalid_evidence', 'collector_unavailable'].includes(sample.reasonCode)) return sample;
   if (!dated(sample, 'lastDestinationVerifiedAt', now)) return unknown('verification_unavailable', sample.observedAt);
@@ -108,6 +114,7 @@ export function componentMeasurements(component, current, registry, now = Date.n
     for (const sample of current.samples) {
       const probe = registry.probes.find(p => p.id === sample.sourceId);
       if (!probe) { result.push(row('functional', 'Functional coverage', sample, component.coverage)); continue; }
+      if (probe.type === 'edge') { result.push(edgeRow(`${probe.id}-regional`, `Visitor access via ${probe.location}`, probe, sample)); continue; }
       if (probe.type === 'http') result.push(row(`${probe.id}-availability`, 'Endpoint availability', endpoint(probe, sample), 'HTTP 200 and the configured response content/schema. Credential login and other workflows are not inferred.'));
       const timing = latency(probe, sample), value = probe.type === 'browser' ? timing.lcpMs : timing.responseMs;
       result.push(row(`${probe.id}-latency`, probe.type === 'browser' ? 'Page rendering (LCP)' : 'HTTP response time', timing,
@@ -144,11 +151,12 @@ function aggregate(id, label, rows, scope) {
     ...counts, summary: rows.length ? `${counts.passing}/${counts.total} passing${counts.unknown ? `; ${counts.unknown} unavailable or paused` : ''}` : 'No measurements connected', scope, rows };
 }
 export function measurementOverview(registry, state, components, now = Date.now()) {
-  const endpoints = [], timings = [], destinations = [], executions = [], resources = [];
+  const endpoints = [], regional = [], timings = [], destinations = [], executions = [], resources = [];
   for (const probe of registry.probes) {
     const sample = currentEvidence(state.probes?.[probe.id], probe.expiresSeconds, now);
     const component = components.find(c => c.probes?.includes(probe.id));
     const extra = { componentId: component?.id };
+    if (probe.type === 'edge') { regional.push(edgeRow(probe.id, component?.name || probe.id, probe, edgeEvidence(probe, sample), extra)); continue; }
     if (probe.type === 'http') endpoints.push(row(probe.id, component?.name || probe.id, endpoint(probe, sample), 'HTTP status and expected content/schema.', extra));
     const timing = latency(probe, sample);
     const value = probe.type === 'browser' ? timing.lcpMs : timing.responseMs;
@@ -162,6 +170,7 @@ export function measurementOverview(registry, state, components, now = Date.now(
   }
   return [
     aggregate('availability', 'Public endpoints', endpoints, 'Configured HTTP endpoints must return HTTP 200 and expected content/schema. This does not prove credential login, playback, purchases or other authenticated workflows.'),
+    aggregate('regional', 'Regional access', regional, 'Real visitor requests through Cloudflare Miami and Atlanta. A location with fewer than 30 requests is never counted as down; 30 minutes with at least 6 requests and no failure count as up.'),
     aggregate('latency', 'Page performance', timings, 'External whole-response timing and synthetic cold-desktop rendering/LCP. Each service lists its targets and timestamps. These are samples, not real-user percentiles or an uptime SLA.'),
     aggregate('freshness', 'Data destinations', destinations, 'Independent import completion and authoritative destination verification. Job execution and response speed cannot replace persisted-data evidence.'),
     aggregate('scheduled-runs', 'Scheduled jobs', executions, 'Latest owned job attempts, completions, next due and grace. Running, paused and unobserved jobs remain explicit. Green job execution does not prove destination freshness.'),
@@ -172,9 +181,9 @@ export function overviewSummary(view) {
   if (view.collector.status === 'unknown') return { status: 'unknown', title: 'Monitoring updates are unavailable', badge: 'Unknown', description: 'Current publication could not be verified. Open each measurement for its timestamp and scope.' };
   const failed = view.measurements.filter(m => ['major_outage', 'partial_outage', 'degraded'].includes(m.status));
   if (failed.length) {
-    const priority = ['availability', 'latency', 'resources', 'scheduled-runs', 'freshness'];
+    const priority = ['availability', 'regional', 'latency', 'resources', 'scheduled-runs', 'freshness'];
     const lead = failed.sort((a, b) => priority.indexOf(a.id) - priority.indexOf(b.id))[0];
-    const titles = { availability: 'Some endpoint checks are failing', latency: 'Some page checks need attention', resources: 'Cluster monitoring reports an issue', 'scheduled-runs': 'Some scheduled jobs need attention', freshness: 'Some destination updates are overdue' };
+    const titles = { availability: 'Some endpoint checks are failing', regional: 'Some visitors cannot reach EasyChamp', latency: 'Some page checks need attention', resources: 'Cluster monitoring reports an issue', 'scheduled-runs': 'Some scheduled jobs need attention', freshness: 'Some destination updates are overdue' };
     return { status: view.status, title: titles[lead.id], badge: lead.id === 'scheduled-runs' ? 'Scheduled job issue' : lead.id === 'freshness' ? 'Data freshness issue' : 'Needs attention', description: failed.map(m => `${m.label}: ${m.summary}`).join(' · ') };
   }
   const endpoints = view.measurements.find(m => m.id === 'availability');

@@ -180,6 +180,19 @@ test('after an availability latch clears, the incident steps down to what the co
   const updates = stepped.updates.length;
   assert.equal(step('degraded', 15, 'slow', clear).updates.length, updates, 'nothing more to reconcile');
 });
+test('an availability escalation during monitoring retitles the incident and leaves monitoring', () => {
+  // Review finding on October 25, 2026: the step-down path intercepted this escalation.
+  const payload = { schemaVersion: 1, incidents: [] }; let counter;
+  const step = (status, minute, reason, availability) => { const current = component(status, minute, reason); const observation = { ...recordObservation(current, counter), availability, availabilityAdvanced: true }; counter = observation.counter; advanceIncidents(payload, current, observation, at(minute)); return payload.incidents[0]; };
+  const quiet = failed => ({ confirmed: null, reasonCode: null, since: null, failed, checked: 4 });
+  step('degraded', 0, 'slow', quiet(0)); assert.match(step('degraded', 5, 'slow', quiet(0)).title, /degraded performance$/);
+  assert.equal(step('operational', 10, undefined, quiet(0)).stage, 'monitoring');
+  step('partial_outage', 15, 'timeout', quiet(1)); step('operational', 20, undefined, quiet(1));
+  const escalated = step('major_outage', 25, 'http_error', { confirmed: 'major_outage', reasonCode: 'http_error', since: at(15), failed: 2, checked: 4 });
+  assert.equal(confirmedStatus(counter), 'degraded');
+  assert.equal(escalated.status, 'major_outage'); assert.equal(escalated.stage, 'investigating'); assert.match(escalated.title, /availability issue$/);
+  assert.equal(escalated.updates.filter(update => update.at === at(25)).length, 1, 'one escalation update');
+});
 test('the open incident steps down with the confirmed level without two failures in a row', () => {
   const run = harness(); run.step('major_outage', 0, 'timeout'); run.step('major_outage', 5, 'timeout');
   run.step('degraded', 10, 'slow'); assert.equal(run.step('operational', 15).incident.status, 'major_outage', 'an outage among the latest three holds');

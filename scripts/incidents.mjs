@@ -135,8 +135,10 @@ function advanceConsecutive(payload, component, observation, at, availability) {
   }
   // A confirmed level can step down without two consecutive failures (a lesser failure or a
   // pass displacing the last worse check). The open incident follows it, so the public
-  // severity never stays above what either rule still confirms.
-  if (!streak && open && !open.resolvedAt && status && open.status !== status) {
+  // severity never stays above what either rule still confirms. Escalations are left to the
+  // streak above and the availability rule, which also retitle the incident and move it out
+  // of monitoring.
+  if (!streak && open && !open.resolvedAt && status && (SEVERITY[status] || 0) < (SEVERITY[open.status] || 0)) {
     open.status = status;
     open.reasonCode = reasonCode;
     // Its own id: a monitoring update from the same observation must not swallow it.

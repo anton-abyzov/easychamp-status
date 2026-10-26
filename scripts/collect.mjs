@@ -6,6 +6,7 @@ import { publishHeartbeat } from './heartbeat.mjs';
 import { recordObservation, evidenceIdentity } from './observations.mjs';
 import { sanitizeFreshness } from './freshness-contract.mjs';
 import { advanceIncidents, seedConfirmedIncidents, incidentDocument } from './incidents.mjs';
+import { runFromProbes, advanceRuns, windowEvidence } from '../public/availability.mjs';
 import { blockedRequestEvidence, initialRenderBlocked, blockedRequestCounts } from './render-coverage.mjs';
 
 const registry = JSON.parse(await readFile('config/components.json', 'utf8'));
@@ -19,7 +20,13 @@ async function batch(items, action, concurrency = 4) {
   let next = 0;
   await Promise.all(Array.from({ length: Math.min(items.length, concurrency) }, async () => { while (next < items.length) { const item = items[next++]; state.probes[item.id] = await action(item); } }));
 }
+const httpStartedAt = Date.now();
 await batch(registry.probes.filter(p => p.type === 'http'), httpProbe);
+// Rolling request evidence from this pass only; isolated failures alternate with passes.
+const runLog = await load('data/runs.json', { schemaVersion: 1, runs: [] });
+const windowProbe = registry.probes.find(p => p.type === 'window');
+runLog.runs = advanceRuns(runLog.runs, runFromProbes(state.probes, windowProbe?.sources || [], httpStartedAt));
+if (windowProbe) state.probes[windowProbe.id] = windowEvidence(runLog.runs);
 
 if (browserRun) {
   const { chromium } = await import('playwright');
@@ -104,7 +111,7 @@ for (const date of Object.keys(history.days)) if (Date.parse(`${date}T00:00:00Z`
 // Never evict an unresolved incident because newer incidents consumed a cap.
 incidents.incidents = [...incidents.incidents.filter(i => !i.resolvedAt), ...incidents.incidents.filter(i => i.resolvedAt).slice(0, 300)];
 await mkdir('data', { recursive: true });
-for (const [name, payload] of [['status', state], ['history', history], ['incidents', incidents]]) await writeFile(`data/${name}.json`, JSON.stringify(payload, null, 2) + '\n');
+for (const [name, payload] of [['status', state], ['history', history], ['incidents', incidents], ['runs', { schemaVersion: 1, runs: runLog.runs }]]) await writeFile(`data/${name}.json`, JSON.stringify(payload, null, 2) + '\n');
 if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `observed_at=${state.generatedAt}\n`);
 console.log(JSON.stringify({ at: state.generatedAt, components: view.components.length, known: view.components.filter(c => c.status !== 'unknown').length, browserRun }));
 console.log(JSON.stringify({ heartbeat: await publishHeartbeat({ ...view, counters: state.counters }, state.generatedAt) }));

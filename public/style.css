@@ -1254,3 +1254,68 @@ dialog::backdrop {
   .measurement-card p { flex-basis:100%; }
 }
 .dialog-toolbar .eyebrow { min-width:0; overflow-wrap:anywhere; flex:1; }
+
+/* Compact summary: current state, affected services and measured downtime above the fold. */
+.visually-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+.overview { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:1.25rem 2rem; align-items:start; padding:1.25rem 1.5rem; margin-bottom:1.25rem; }
+.overview-top { margin-bottom:.25rem; gap:1rem; }
+.overview-heading { min-width:0; }
+.overview-heading h1 { overflow-wrap:anywhere; }
+.overview-copy>p { margin:.5rem 0 .75rem; }
+.pulse-incident { font-size:var(--text-caption); font-weight:600; color:var(--red); }
+.pulse-affected { list-style:none; margin:.85rem 0 0; padding:0; display:flex; flex-wrap:wrap; gap:.5rem; }
+.pulse-chip { display:inline-flex; flex-direction:column; gap:.1rem; padding:.45rem .7rem; border-radius:var(--radius-control); background:var(--status-bg); border:1px solid color-mix(in srgb,currentColor 25%,transparent); min-height:2.75rem; justify-content:center; }
+.pulse-chip .chip-name { color:var(--ink); font-weight:600; font-size:var(--text-caption); }
+.pulse-chip .chip-reason { font-size:var(--text-caption); }
+.pulse-stats { min-width:0; border-left:1px solid var(--line); padding-left:2rem; }
+.stats-heading { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:.25rem 1rem; margin-bottom:.5rem; }
+.stats-heading h2 { margin:0; font-size:var(--text-caption); font-weight:600; letter-spacing:var(--tracking-kicker); text-transform:uppercase; color:var(--muted); }
+.stats-heading a { font-size:var(--text-caption); color:var(--muted); text-decoration:underline; text-underline-offset:.2em; }
+.stats-table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+.stats-table th, .stats-table td { text-align:left; padding:.5rem .6rem .5rem 0; border-top:1px solid var(--line); vertical-align:top; font-size:var(--text-caption); }
+.stats-table thead th { border-top:0; color:var(--muted); font-weight:500; padding-top:0; }
+.stats-table tbody th { font-weight:600; white-space:nowrap; }
+.stats-table td strong { display:block; font-family:var(--font-display); font-size:1.05rem; font-weight:600; line-height:1.25; }
+.stats-table td small { display:block; color:var(--muted); }
+details.secondary { border:1px solid var(--line); border-radius:var(--radius-card); background:var(--surface); margin:1.25rem 0; padding:0 1rem; }
+details.secondary>summary { display:flex; justify-content:space-between; align-items:center; gap:1rem; min-height:3rem; cursor:pointer; list-style:none; }
+details.secondary>summary::-webkit-details-marker { display:none; }
+details.secondary>summary h2 { margin:0; font-size:var(--text-base); }
+details.secondary>summary>span { font-size:var(--text-caption); color:var(--muted); }
+details.secondary>summary h2:before { content:"›"; display:inline-block; margin-right:.5rem; transition:transform .15s; color:var(--muted); }
+details.secondary[open]>summary h2:before { transform:rotate(90deg); }
+details.secondary[open] { padding-bottom:1rem; }
+@media(max-width:800px) {
+  .overview { grid-template-columns:minmax(0,1fr); }
+  .pulse-stats { border-left:0; padding-left:0; border-top:1px solid var(--line); padding-top:1rem; }
+}
+@media(max-width:600px) {
+  .overview { padding:1rem; }
+}
+@media(prefers-reduced-motion:reduce) { details.secondary>summary h2:before { transition:none; } }
+.overview-heading h1 { font-size:clamp(1.5rem,1.2rem + 1vw,2rem); line-height:1.15; }
+.overview-extras { color:var(--muted); }
+.pulse-incident.job { color:var(--yellow); }
+#active-list .incident-card { padding-block:.7rem; }
+#active-list .incident-card h3 { font-size:var(--text-base); }
+#active-list .incident-card { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.25rem 1rem; }
+#active-list .incident-title-row { flex:1 1 16rem; }
+.stats-table { table-layout:fixed; }
+.stats-table tbody th, .stats-table thead th:first-child { width:6.5rem; white-space:normal; }
+.stats-table td strong { overflow-wrap:anywhere; }
+
+.pulse-stats { container-type:inline-size; }
+.stats-table th, .stats-table td { overflow-wrap:anywhere; }
+@container (max-width: 34rem) {
+  .stats-table thead { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+  .stats-table, .stats-table tbody, .stats-table tr { display:block; }
+  .stats-table tr { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.25rem .75rem; padding:.6rem 0; border-top:1px solid var(--line); }
+  .stats-table tbody th { grid-column:1/-1; border:0; padding:0; }
+  .stats-table td { border:0; padding:0; }
+  .stats-table td:before { display:block; color:var(--muted); font-size:var(--text-caption); }
+  .stats-table td:nth-of-type(1):before { content:"Failed checks"; }
+  .stats-table td:nth-of-type(2):before { content:"Minutes failing"; }
+  .stats-table td:nth-of-type(3):before { content:"Not monitored"; }
+  .stats-table td:nth-of-type(4):before { content:"Incidents"; }
+  .stats-table tbody th { width:auto; }
+}

@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const registry = JSON.parse(await readFile('config/components.json', 'utf8'));
 assert.deepEqual(registry.groups.map(g => g.id), ['websites', 'accounts', 'interactive', 'media', 'results', 'player-data', 'platform']);
-assert.equal(registry.components.length, 43);
+assert.equal(registry.components.length, 44);
+for (const p of registry.probes.filter(p => p.type === 'window')) assert(Array.isArray(p.sources) && p.sources.length && p.sources.every(id => registry.probes.some(q => q.id === id && q.type === 'http' && !q.semanticHealth)));
 const ids = registry.components.map(c => c.id);
 assert.equal(new Set(ids).size, ids.length);
 for (const c of registry.components) { if (c.freshness) assert(['destination_validation','scheduled_run','cluster_resources'].includes(c.measurementKind)); assert(registry.groups.some(g => g.id === c.group)); for (const id of c.probes || []) assert(registry.probes.some(p => p.id === id)); }

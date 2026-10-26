@@ -205,9 +205,36 @@
       "maxLcpMs": 4000,
       "expiresSeconds": 2100,
       "monitorAuth": true
+    },
+    {
+      "id": "request-window",
+      "type": "window",
+      "url": "https://easychamp.com/",
+      "sources": [
+        "home-http",
+        "console-http",
+        "coach-http",
+        "sim-http",
+        "watch-http",
+        "club-http",
+        "snap-http",
+        "signin-http",
+        "predictions-http",
+        "soccer-nationals-http"
+      ],
+      "expiresSeconds": 900
     }
   ],
   "components": [
+    {
+      "id": "request-reliability",
+      "group": "websites",
+      "name": "Request reliability (all sites)",
+      "probes": [
+        "request-window"
+      ],
+      "coverage": "Rolling 45-minute window of the public HTTP checks. Repeated timeouts, connection failures or HTTP errors across runs count even when each site passes on its next check. One isolated failed request does not open an incident."
+    },
     {
       "id": "home",
       "group": "websites",
@@ -317,7 +344,9 @@
       "id": "assistant",
       "group": "interactive",
       "name": "AI assistant",
-      "probes": ["assistant-health"],
+      "probes": [
+        "assistant-health"
+      ],
       "coverage": "Database, core data service and platform-funded provider account readiness; authenticated questions and model generation are not continuously checked. User-to-user messaging is not covered."
     },
     {

@@ -205,6 +205,38 @@
       "maxLcpMs": 4000,
       "expiresSeconds": 2100,
       "monitorAuth": true
+    },
+    {
+      "id": "edge-mia",
+      "colo": "MIA",
+      "location": "Miami",
+      "type": "edge",
+      "zoneTag": "e19829aec65c707d1d1653a9e93fe5d0",
+      "windowSeconds": 300,
+      "maxWindowSeconds": 1800,
+      "lagSeconds": 180,
+      "minRequests": 30,
+      "minErrors": 3,
+      "degradedShare": 0.01,
+      "partialShare": 0.05,
+      "majorShare": 0.5,
+      "expiresSeconds": 900
+    },
+    {
+      "id": "edge-atl",
+      "colo": "ATL",
+      "location": "Atlanta",
+      "type": "edge",
+      "zoneTag": "e19829aec65c707d1d1653a9e93fe5d0",
+      "windowSeconds": 300,
+      "maxWindowSeconds": 1800,
+      "lagSeconds": 180,
+      "minRequests": 30,
+      "minErrors": 3,
+      "degradedShare": 0.01,
+      "partialShare": 0.05,
+      "majorShare": 0.5,
+      "expiresSeconds": 900
     }
   ],
   "components": [
@@ -285,6 +317,16 @@
       "tier": "app",
       "short": "Snap to League",
       "order": 3
+    },
+    {
+      "id": "regional-access",
+      "group": "websites",
+      "name": "Access from Miami and Atlanta",
+      "probes": [
+        "edge-mia",
+        "edge-atl"
+      ],
+      "coverage": "Real visitor requests that Cloudflare routed through Miami and Atlanta, and the share it could not complete because EasyChamp servers did not answer (errors 520-526). Too little traffic is shown as unknown, never as up or down."
     },
     {
       "id": "signin",

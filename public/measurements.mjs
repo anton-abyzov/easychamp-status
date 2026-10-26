@@ -70,6 +70,21 @@ function latency(probe, sample) {
   if (value > target) return { ...sample, status: 'degraded', reasonCode: probe.type === 'browser' ? 'rendering_slow' : 'slow' };
   return sample;
 }
+// Regional traffic evidence must carry its measured window and counts to count as up or down.
+function edgeAccess(probe, sample) {
+  if (sample.status === 'unknown') return sample;
+  const counts = Number.isInteger(sample.requests) && Number.isInteger(sample.originErrors) && sample.originErrors >= 0 && sample.originErrors <= sample.requests && sample.requests >= probe.minRequests;
+  const window = time(sample.windowStart) !== null && time(sample.windowStart) < time(sample.windowEnd) && sample.windowEnd === sample.observedAt;
+  if (!counts || !window || !['ok', 'origin_unreachable'].includes(sample.reasonCode)) return unknown('invalid_evidence', sample.observedAt);
+  return sample;
+}
+function edgeRow(id, label, probe, sample, extra = {}) {
+  const access = edgeAccess(probe, sample);
+  const counted = access.status !== 'unknown' || access.reasonCode === 'low_traffic' && Number.isInteger(sample.requests);
+  const summary = access.status !== 'unknown' ? `${sample.originErrors} of ${sample.requests} visitor requests failed to reach EasyChamp` : counted ? `${sample.requests} visitor requests; at least ${probe.minRequests} are needed to judge` : REASONS[access.reasonCode] || 'Evidence unavailable';
+  return row(id, label, access, `Real visitor requests routed through Cloudflare ${probe.location}. Errors 520-526 mean Cloudflare got no answer from EasyChamp servers.`,
+    { ...extra, summary, ...(access.status !== 'unknown' ? { value: 100 * sample.originErrors / sample.requests, unit: '%' } : {}) });
+}
 function destination(component, sample, now) {
   if (sample.status === 'unknown' && ['stale', 'collector_stale', 'invalid_evidence', 'collector_unavailable'].includes(sample.reasonCode)) return sample;
   if (!dated(sample, 'lastDestinationVerifiedAt', now)) return unknown('verification_unavailable', sample.observedAt);
@@ -108,6 +123,7 @@ export function componentMeasurements(component, current, registry, now = Date.n
     for (const sample of current.samples) {
       const probe = registry.probes.find(p => p.id === sample.sourceId);
       if (!probe) { result.push(row('functional', 'Functional coverage', sample, component.coverage)); continue; }
+      if (probe.type === 'edge') { result.push(edgeRow(`${probe.id}-availability`, `Visitor access via ${probe.location}`, probe, sample)); continue; }
       if (probe.type === 'http') result.push(row(`${probe.id}-availability`, 'Endpoint availability', endpoint(probe, sample), 'HTTP 200 and the configured response content/schema. Credential login and other workflows are not inferred.'));
       const timing = latency(probe, sample), value = probe.type === 'browser' ? timing.lcpMs : timing.responseMs;
       result.push(row(`${probe.id}-latency`, probe.type === 'browser' ? 'Page rendering (LCP)' : 'HTTP response time', timing,
@@ -149,6 +165,7 @@ export function measurementOverview(registry, state, components, now = Date.now(
     const sample = currentEvidence(state.probes?.[probe.id], probe.expiresSeconds, now);
     const component = components.find(c => c.probes?.includes(probe.id));
     const extra = { componentId: component?.id };
+    if (probe.type === 'edge') { endpoints.push(edgeRow(probe.id, `${component?.name || probe.id} · ${probe.location}`, probe, sample, extra)); continue; }
     if (probe.type === 'http') endpoints.push(row(probe.id, component?.name || probe.id, endpoint(probe, sample), 'HTTP status and expected content/schema.', extra));
     const timing = latency(probe, sample);
     const value = probe.type === 'browser' ? timing.lcpMs : timing.responseMs;

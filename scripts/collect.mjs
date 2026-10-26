@@ -2,6 +2,7 @@ import { readFile, writeFile, appendFile, mkdir } from 'node:fs/promises';
 import { viewState, time, REASONS, STATUSES } from '../public/model.mjs';
 import { monitorHeaders } from './auth.mjs';
 import { boundedBody, httpProbe } from './http-probe.mjs';
+import { edgeProbes } from './edge-probe.mjs';
 import { publishHeartbeat } from './heartbeat.mjs';
 import { recordObservation, evidenceIdentity, availabilityState } from './observations.mjs';
 import { recordTimeline, serializeTimeline } from './timeline.mjs';
@@ -22,6 +23,7 @@ async function batch(items, action, concurrency = 4) {
   await Promise.all(Array.from({ length: Math.min(items.length, concurrency) }, async () => { while (next < items.length) { const item = items[next++]; state.probes[item.id] = await action(item); } }));
 }
 await batch(registry.probes.filter(p => p.type === 'http'), httpProbe);
+Object.assign(state.probes, await edgeProbes(registry.probes.filter(p => p.type === 'edge'), previous.probes));
 
 if (browserRun) {
   const { chromium } = await import('playwright');

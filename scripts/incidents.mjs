@@ -86,15 +86,16 @@ function advanceConsecutive(payload, component, observation, at, availability) {
   const open = payload.incidents.find(incident => incident.componentId === component.id && !incident.resolvedAt);
   const evidence = { status: component.status, reasonCode: component.reasonCode, observedAt: component.observedAt };
   const confirmed = confirmedStatus(observation.counter);
-  if (FAILURE_STATUSES.includes(component.status) && observation.counter.bad >= 2 && confirmed) {
-    // The incident carries the higher confirmed severity of the two rules, with the reason of
-    // the check that confirmed it. A single worse check is reported as the latest check,
-    // never as confirmed.
-    const byAvailability = latched && (SEVERITY[availability.confirmed] || 0) > (SEVERITY[confirmed] || 0);
-    const status = byAvailability ? availability.confirmed : confirmed;
-    const reasonCode = byAvailability ? availability.reasonCode : confirmedReason(observation.counter) || component.reasonCode;
-    const latest = status === component.status && reasonCode === component.reasonCode ? '' : ` Latest check: ${LABELS[component.status].toLowerCase()}, ${REASONS[component.reasonCode] || REASONS.invalid_evidence}.`;
-    const message = lead => byAvailability ? `${availabilityMessage(availability)}${latest}` : `${lead} ${LABELS[status].toLowerCase()}: ${REASONS[reasonCode] || REASONS.invalid_evidence}.${latest}`;
+  // The incident carries the higher confirmed severity of the two rules, with the reason of
+  // the check that confirmed it. A single worse check is reported as the latest check, never
+  // as confirmed.
+  const byAvailability = latched && (SEVERITY[availability.confirmed] || 0) > (SEVERITY[confirmed] || 0);
+  const status = byAvailability ? availability.confirmed : confirmed;
+  const reasonCode = byAvailability ? availability.reasonCode : confirmedReason(observation.counter) || component.reasonCode;
+  const latest = status === component.status && reasonCode === component.reasonCode ? '' : ` Latest check: ${LABELS[component.status].toLowerCase()}, ${REASONS[component.reasonCode] || REASONS.invalid_evidence}.`;
+  const message = lead => byAvailability ? `${availabilityMessage(availability)}${latest}` : `${lead} ${LABELS[status].toLowerCase()}: ${REASONS[reasonCode] || REASONS.invalid_evidence}.${latest}`;
+  const streak = FAILURE_STATUSES.includes(component.status) && observation.counter.bad >= 2 && confirmed;
+  if (streak) {
     if (!open) {
       const latency = ['slow', 'rendering_slow'].includes(reasonCode);
       const incident = { id: `${component.id}-${time(at)}`, componentId: component.id, title: `${component.name}: ${status === 'degraded' ? (latency ? 'degraded performance' : 'degraded service') : 'availability issue'}`, status, reasonCode, openedAt: at, updatedAt: at, resolvedAt: null, stage: 'investigating', updates: [] };
@@ -131,6 +132,17 @@ function advanceConsecutive(payload, component, observation, at, availability) {
   } else if (open && ['unknown', 'maintenance'].includes(component.status)) {
     const last = open.updates.at(-1);
     if (last?.evidence?.status !== component.status || last?.evidence?.reasonCode !== component.reasonCode) appendIncidentUpdate(open, { stage: open.stage, at, message: `Latest evidence is ${LABELS[component.status].toLowerCase()}: ${REASONS[component.reasonCode] || REASONS.invalid_evidence}. The incident remains open; recovery is unconfirmed.`, evidence });
+  }
+  // A confirmed level can step down without two consecutive failures (a lesser failure or a
+  // pass displacing the last worse check). The open incident follows it, so the public
+  // severity never stays above what either rule still confirms. Escalations are left to the
+  // streak above and the availability rule, which also retitle the incident and move it out
+  // of monitoring.
+  if (!streak && open && !open.resolvedAt && status && (SEVERITY[status] || 0) < (SEVERITY[open.status] || 0)) {
+    open.status = status;
+    open.reasonCode = reasonCode;
+    // Its own id: a monitoring update from the same observation must not swallow it.
+    appendIncidentUpdate(open, { stage: open.stage, at, message: message('Fresh observations now confirm'), evidence, id: `${open.id}-monitor-${at}-severity` });
   }
 }
 export function applyOwnerUpdate(payload, input, context) {

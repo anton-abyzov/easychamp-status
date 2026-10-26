@@ -112,23 +112,30 @@ export function recordObservation(component, previous = { bad: 0, good: 0 }) {
   const good = component.status === 'operational' ? (previous.good || 0) + 1 : 0;
   // Counters written before `recent` existed start from the previous observation's samples.
   const before = rollup(Object.values(previous.evidence || {}));
-  const seed = Array.isArray(previous.recent) ? previous.recent.filter(entry => Array.isArray(entry) && Object.hasOwn(LEVEL, entry[0])) : Object.hasOwn(LEVEL, before) ? [[before, null]] : [];
+  const kept = Array.isArray(previous.recent) ? previous.recent.map(entry => typeof entry === 'string' ? [entry, null] : entry).filter(entry => Array.isArray(entry) && Object.hasOwn(LEVEL, entry[0])) : [];
+  const seed = kept.length ? kept : Object.hasOwn(LEVEL, before) ? [[before, null]] : [];
   const known = Object.hasOwn(LEVEL, component.status);
   const recent = known ? [...seed, [component.status, component.reasonCode || null]].slice(-SEVERITY_WINDOW) : seed.slice(-SEVERITY_WINDOW);
   let nextConfirmed = good >= 2 ? null : known ? nextSeverity(confirmed, recent, bad) : confirmed;
+  // Failure provenance covers every failure of the streak that forms a confirmation and every
+  // failure while it holds: the latest scheduled-run failure time, or `undated` once any of
+  // them is not a scheduled-run failure. An undated failure needs verified recovery, so no run
+  // success supersedes it. A streak that ends before it confirms is forgotten. Counters
+  // written before `failureUndated` existed stored a held undated confirmation as a null time.
   const prior = time(previous.failedAttemptAt);
-  let failedAt = prior;
+  const carry = Boolean(confirmed) || (previous.bad || 0) > 0;
+  let undated = carry && (Object.hasOwn(previous, 'failureUndated') ? previous.failureUndated === true : Boolean(confirmed) && prior === null);
+  let failedAt = carry && !undated ? prior : null;
   if (failing) {
-    // A null time marks a failure that is not a scheduled-run failure. It needs verified
-    // recovery, so once it is part of a confirmation no run success supersedes it.
     const current = failedAttemptTime(component);
-    if (!confirmed) failedAt = bad >= 2 ? current : null;
-    else failedAt = prior === null || current === null ? null : Math.max(prior, current);
+    if (current === null) undated = true;
+    else failedAt = Math.max(failedAt ?? current, current);
   }
+  if (undated) failedAt = null;
   // A scheduled job whose destination cannot be verified never reports operational,
   // so a run_failed confirmation would otherwise latch forever after the job recovers.
   const superseded = Boolean(nextConfirmed && component.status === 'unknown' && supersededBySuccess(component, failedAt));
   if (superseded) nextConfirmed = null;
-  if (!nextConfirmed) failedAt = null;
-  return { isNew: true, superseded, counter: { evidence, bad, good, recent, confirmedStatus: nextConfirmed, failedAttemptAt: failedAt === null ? null : new Date(failedAt).toISOString() } };
+  if (!nextConfirmed && !failing) { failedAt = null; undated = false; }
+  return { isNew: true, superseded, counter: { evidence, bad, good, recent, confirmedStatus: nextConfirmed, failedAttemptAt: failedAt === null ? null : new Date(failedAt).toISOString(), failureUndated: undated } };
 }

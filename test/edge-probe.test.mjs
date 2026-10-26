@@ -35,6 +35,10 @@ test('traffic thresholds: too few requests is unknown, isolated errors pass, sus
   assert.equal(at.status, 'unknown'); assert.equal(at.reasonCode, 'low_traffic'); assert.equal(at.requests, 29); assert.equal(at.observedAt, at.windowEnd);
   assert.equal(classifyEdge(mia, [row('MIA', 200, 400), row('MIA', 522, 2)], window).status, 'operational');
   assert.equal(classifyEdge(mia, [row('MIA', 200, 400), row('MIA', 522, 3), row('ATL', 522, 400)], window).status, 'operational');
+  // Two errors among few requests is a high share but not enough evidence.
+  assert.equal(classifyEdge(mia, [row('MIA', 200, 30), row('MIA', 522, 2)], window).status, 'operational');
+  assert.equal(classifyEdge(mia, [row('MIA', 200, 30), row('MIA', 522, 3)], window).status, 'partial_outage');
+  assert.equal(classifyEdge(mia, [row('MIA', 200, 30)], window).reasonCode, 'ok');
   assert.equal(classifyEdge(mia, [row('MIA', 200, 290), row('MIA', 522, 10)], window).status, 'degraded');
   const partial = classifyEdge(mia, [row('MIA', 200, 90), row('MIA', 522, 10), row('MIA', 503, 50)], window);
   assert.equal(partial.status, 'partial_outage'); assert.equal(partial.reasonCode, 'origin_unreachable'); assert.equal(partial.requests, 150); assert.equal(partial.originErrors, 10);
@@ -49,7 +53,8 @@ test('missing token, API errors and network failures are unknown and send no cre
   assert.equal(calls, 0); assert.equal(none['edge-mia'].status, 'unknown'); assert.equal(none['edge-mia'].reasonCode, 'edge_not_configured'); assert.equal(none['edge-mia'].observedAt, iso(window.end));
   const env = { CLOUDFLARE_ANALYTICS_TOKEN: 'test-token' };
   for (const send of [async () => new Response('{}', { status: 500 }), async () => { throw new Error('offline'); },
-    async () => new Response(JSON.stringify({ data: null, errors: [{ message: 'authz' }] }), { status: 200 })]) {
+    async () => new Response(JSON.stringify({ data: null, errors: [{ message: 'authz' }] }), { status: 200 }),
+    async () => new Response(JSON.stringify({ data: { viewer: { zones: [{ httpRequestsAdaptiveGroups: [row('MIA', 200, 400)] }] } }, errors: [{ message: 'partial' }] }), { status: 200 })]) {
     const result = await edgeProbes([mia], {}, env, T, send);
     assert.equal(result['edge-mia'].status, 'unknown'); assert.equal(result['edge-mia'].reasonCode, 'analytics_unavailable');
   }

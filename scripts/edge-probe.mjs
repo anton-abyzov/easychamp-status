@@ -51,8 +51,9 @@ export function classifyEdge(probe, rows, window) {
   const result = { ...evidence, errorShare: Math.round(share * 10000) / 10000, measuredUntil: evidence.windowEnd };
   // A short burst inside one minute is not enough evidence, whatever its share.
   if (errors < probe.minErrors || errorMinutes < probe.minErrorMinutes) return { status: 'operational', reasonCode: 'ok', ...result };
-  // Only failures to connect can make an outage; broken or hung responses flag degraded at most.
-  const outage = connectionErrors >= probe.minErrors && connectionMinutes >= probe.minErrorMinutes ? connectionErrors / requests : 0;
+  // Failures to connect must show on their own before there is an outage; once they do, broken or
+  // hung responses count toward it too. Without them, origin errors flag degraded at most.
+  const outage = connectionErrors >= probe.minErrors && connectionMinutes >= probe.minErrorMinutes ? share : 0;
   if (outage >= probe.majorShare) return { status: 'major_outage', reasonCode: 'origin_unreachable', ...result };
   if (outage >= probe.partialShare) return { status: 'partial_outage', reasonCode: 'origin_unreachable', ...result };
   if (share >= probe.degradedShare) return { status: 'degraded', reasonCode: 'origin_unreachable', ...result };

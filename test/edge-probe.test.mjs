@@ -101,7 +101,7 @@ test('each location is its own service, validated before it counts, in its own o
   const miami = view.components.find(c => c.id === 'access-miami'), atlanta = view.components.find(c => c.id === 'access-atlanta');
   assert.equal(miami.status, 'partial_outage'); assert.equal(miami.reasonCode, 'origin_unreachable'); assert.equal(atlanta.status, 'unknown');
   assert.equal(miami.measurements[0].label, 'Visitor access via Miami'); assert.equal(miami.measurements[0].dimension, 'regional'); assert.equal(miami.measurements[0].value, 10); assert.match(miami.measurements[0].summary, /10 of 100 visitor requests/);
-  assert.match(atlanta.measurements[0].summary, /5 visitor requests so far; at least 30/);
+  assert.match(atlanta.measurements[0].summary, /5 visitor requests so far; at least 30 are needed to judge it down/);
   const regional = view.measurements.find(m => m.id === 'regional');
   assert.equal(regional.status, 'partial_outage'); assert.equal(regional.rows.length, 2);
   assert(!view.measurements.find(m => m.id === 'availability').rows.some(r => r.id.startsWith('edge-')));
@@ -204,8 +204,14 @@ test('one client whose requests hang or break flags degraded at most, at any tra
   const hung = classifyEdge(mia, [...spread('MIA', 200, 50), ...spread('MIA', 524, 50)], window);
   assert.equal(hung.status, 'degraded'); assert.equal(hung.originErrors, 50);
   assert.equal(classifyEdge(mia, [...spread('MIA', 200, 50), ...spread('MIA', 520, 50)], window).status, 'degraded');
-  // Failures to connect still make an outage when mixed with them.
-  assert.equal(classifyEdge(mia, [...spread('MIA', 200, 50), ...spread('MIA', 522, 30), ...spread('MIA', 524, 20)], window).status, 'partial_outage');
+  // Once failures to connect show on their own, broken and hung responses count toward the outage.
+  assert.equal(classifyEdge(mia, [...spread('MIA', 200, 50), ...spread('MIA', 522, 30), ...spread('MIA', 524, 20)], window).status, 'major_outage');
+  assert.equal(classifyEdge(mia, [...spread('MIA', 200, 94), ...spread('MIA', 522, 3), ...spread('MIA', 520, 3)], window).status, 'partial_outage');
+  // Every failure to connect makes an outage on its own.
+  for (const status of [521, 522, 523, 525, 526, 530]) assert.equal(classifyEdge(mia, [...spread('MIA', 200, 90), ...spread('MIA', status, 10)], window).status, 'partial_outage', String(status));
+  // Too few failures to connect, or all in one minute: degraded, however many other errors.
+  assert.equal(classifyEdge(mia, [...spread('MIA', 200, 27), row('MIA', 522, 1, 0), row('MIA', 522, 1, 1), row('MIA', 520, 1, 2)], window).status, 'degraded');
+  assert.equal(classifyEdge(mia, [...spread('MIA', 200, 45), row('MIA', 522, 3, 0), row('MIA', 520, 2, 1)], window).status, 'degraded');
   // Two requests a minute of normal traffic plus one client that gets three errors every five minutes.
   const client = status => ({ since, until }) => Array.from({ length: (Date.parse(until) - Date.parse(since)) / 60000 }, (_, i) => Date.parse(since) + i * 60000).flatMap(at => [
     { count: 2, dimensions: { datetimeMinute: iso(at), coloCode: 'MIA', edgeResponseStatus: 200, originResponseStatus: 200 } },
@@ -233,6 +239,9 @@ test('thirty quiet minutes without a failure count as up, so an outage clears ov
   const prior = { ...quiet, observedAt: iso(window30.start), windowStart: iso(window30.start - 30 * 60000), windowEnd: iso(window30.start), measuredUntil: iso(window30.start) };
   const closed = await edgeProbes([mia], { 'edge-mia': prior }, env, window30.end + mia.lagSeconds * 1000, answer([row('MIA', 200, 7, -25), row('MIA', 522, 1, -5)]));
   assert.equal(closed['edge-mia'].reasonCode, 'low_traffic'); assert.equal(closed['edge-mia'].measuredUntil, iso(window30.end));
+  const summary = sample => viewState(registry, probes(sample), now).components.find(c => c.id === 'access-miami').measurements[0].summary;
+  assert.equal(summary(closed['edge-mia']), '1 of 8 visitor requests failed; too few to judge');
+  assert.equal(summary(classifyEdge(mia, [row('MIA', 200, 5, -5)], window30)), 'Only 5 visitor requests in 30 minutes, too few to judge');
   // Busy failing windows confirm; from 01:02 traffic is healthy at one request every two minutes.
   const phase = Date.parse('2026-10-26T01:02:00Z');
   const night = ({ since, until }) => Date.parse(until) <= phase ? [...spread('MIA', 200, 100), ...spread('MIA', 522, 100)] : every(2, () => 200)({ since, until });

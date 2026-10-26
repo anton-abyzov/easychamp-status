@@ -72,8 +72,8 @@ function latency(probe, sample) {
 }
 function edgeRow(id, label, probe, sample, extra = {}) {
   const counted = Number.isInteger(sample.requests) && Number.isInteger(sample.originErrors);
-  const summary = sample.status !== 'unknown' && counted ? `${sample.originErrors} of ${sample.requests} visitor requests failed to reach EasyChamp` : sample.reasonCode === 'low_traffic' && counted ? (sample.measuredUntil === sample.windowEnd ? `Only ${sample.requests} visitor requests in 30 minutes, too few to judge` : `${sample.requests} visitor requests so far; at least ${probe.minRequests} are needed to judge`) : REASONS[sample.reasonCode] || 'Evidence unavailable';
-  return row(id, label, sample, `Real visitor requests routed through Cloudflare ${probe.location}. Errors 520-526 and 530 mean Cloudflare got no answer from EasyChamp servers; only failures to connect (521-523, 525, 526, 530) count as an outage. Errors must appear in at least ${probe.minErrorMinutes} separate minutes.`,
+  const summary = sample.status !== 'unknown' && counted ? `${sample.originErrors} of ${sample.requests} visitor requests got no usable answer from EasyChamp` : sample.reasonCode === 'low_traffic' && counted ? (sample.measuredUntil !== sample.windowEnd ? `${sample.requests} visitor requests so far; at least ${probe.minRequests} are needed to judge it down` : sample.originErrors > 0 ? `${sample.originErrors} of ${sample.requests} visitor requests failed; too few to judge` : `Only ${sample.requests} visitor requests in 30 minutes, too few to judge`) : REASONS[sample.reasonCode] || 'Evidence unavailable';
+  return row(id, label, sample, `Real visitor requests routed through Cloudflare ${probe.location}. Errors 520-526 and 530 mean Cloudflare got no usable answer from EasyChamp servers; there is an outage only when failures to connect (521-523, 525, 526, 530) appear on their own. Errors must appear in at least ${probe.minErrorMinutes} separate minutes.`,
     { ...extra, dimension: 'regional', summary, ...(sample.status !== 'unknown' && counted ? { value: 100 * sample.originErrors / sample.requests, unit: '%' } : {}) });
 }
 function destination(component, sample, now) {

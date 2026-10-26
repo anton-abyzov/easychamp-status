@@ -2,107 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "watch-1792859528188",
-      "componentId": "watch",
-      "title": "Watch entry page: degraded performance",
-      "status": "degraded",
-      "reasonCode": "slow",
-      "openedAt": "2026-10-24T16:32:08.188Z",
-      "updatedAt": "2026-10-26T00:20:21.177Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "watch-1792859528188-monitor-2026-10-24T16:32:08.188Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-24T16:32:08.188Z",
-          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "slow",
-            "observedAt": "2026-10-24T16:31:28.646Z"
-          }
-        },
-        {
-          "id": "watch-1792859528188-monitor-2026-10-24T16:39:17.107Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-24T16:39:17.107Z",
-          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "automation_blocked",
-            "observedAt": "2026-10-24T16:38:43.682Z"
-          }
-        },
-        {
-          "id": "watch-1792859528188-monitor-2026-10-25T01:59:53.922Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-25T01:59:53.922Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-25T01:59:15.339Z"
-          }
-        },
-        {
-          "id": "watch-1792859528188-monitor-2026-10-25T02:58:40.343Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-25T02:58:40.343Z",
-          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "automation_blocked",
-            "observedAt": "2026-10-25T02:58:03.491Z"
-          }
-        },
-        {
-          "id": "watch-1792859528188-monitor-2026-10-25T03:20:54.042Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-25T03:20:54.042Z",
-          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "slow",
-            "observedAt": "2026-10-25T03:20:08.024Z"
-          }
-        },
-        {
-          "id": "watch-1792859528188-monitor-2026-10-25T03:32:07.965Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-25T03:32:07.965Z",
-          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "automation_blocked",
-            "observedAt": "2026-10-25T03:31:35.299Z"
-          }
-        },
-        {
-          "id": "watch-1792859528188-monitor-2026-10-26T00:20:21.177Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-26T00:20:21.177Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-26T00:19:51.275Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 66,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/66"
-      }
-    },
-    {
       "id": "scraper-pesmaster-1791401507529",
       "componentId": "scraper-pesmaster",
       "title": "PES Master player data: degraded performance",
@@ -482,6 +381,124 @@
       "issue": {
         "number": 4,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/4"
+      }
+    },
+    {
+      "id": "watch-1792859528188",
+      "componentId": "watch",
+      "title": "Watch entry page: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-24T16:32:08.188Z",
+      "updatedAt": "2026-10-26T00:35:48.262Z",
+      "resolvedAt": "2026-10-26T00:35:48.262Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "watch-1792859528188-monitor-2026-10-24T16:32:08.188Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T16:32:08.188Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-24T16:31:28.646Z"
+          }
+        },
+        {
+          "id": "watch-1792859528188-monitor-2026-10-24T16:39:17.107Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-24T16:39:17.107Z",
+          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "automation_blocked",
+            "observedAt": "2026-10-24T16:38:43.682Z"
+          }
+        },
+        {
+          "id": "watch-1792859528188-monitor-2026-10-25T01:59:53.922Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T01:59:53.922Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-25T01:59:15.339Z"
+          }
+        },
+        {
+          "id": "watch-1792859528188-monitor-2026-10-25T02:58:40.343Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-25T02:58:40.343Z",
+          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "automation_blocked",
+            "observedAt": "2026-10-25T02:58:03.491Z"
+          }
+        },
+        {
+          "id": "watch-1792859528188-monitor-2026-10-25T03:20:54.042Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T03:20:54.042Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-25T03:20:08.024Z"
+          }
+        },
+        {
+          "id": "watch-1792859528188-monitor-2026-10-25T03:32:07.965Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-25T03:32:07.965Z",
+          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "automation_blocked",
+            "observedAt": "2026-10-25T03:31:35.299Z"
+          }
+        },
+        {
+          "id": "watch-1792859528188-monitor-2026-10-26T00:20:21.177Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-26T00:20:21.177Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-26T00:19:51.275Z"
+          }
+        },
+        {
+          "id": "watch-1792859528188-monitor-2026-10-26T00:35:48.262Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-26T00:35:48.262Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-26T00:35:19.220Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Watch entry page: degraded performance. First confirmed issue: 2026-10-24T16:32:08.188Z. Recovery confirmed by two fresh successful observations: 2026-10-26T00:35:48.262Z. Confirmed incident duration: 1924 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-26T00:35:48.262Z"
+      },
+      "issue": {
+        "number": 66,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/66"
       }
     },
     {

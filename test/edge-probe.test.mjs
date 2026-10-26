@@ -21,8 +21,9 @@ const answer = data => async () => new Response(JSON.stringify({ data: { viewer:
 const env = { CLOUDFLARE_ANALYTICS_TOKEN: 'test-token' };
 
 test('only answers Cloudflare could not get from the origin count as failures', () => {
-  assert(originError(522, 0)); assert(originError(520, 0)); assert(originError(524, 0)); assert(originError(504, 0));
-  assert(!originError(502, 502)); assert(!originError(503, 503)); assert(!originError(404, 404)); assert(!originError(200, 200));
+  assert(originError(522)); assert(originError(520)); assert(originError(524)); assert(originError(530));
+  // Edge-generated 503s (no origin response) hit every location alike, so they are not regional.
+  assert(!originError(503)); assert(!originError(504)); assert(!originError(502)); assert(!originError(404)); assert(!originError(200));
 });
 
 test('windows chain on measured minutes, wait for a full window and cap long silences', () => {

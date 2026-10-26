@@ -9,8 +9,10 @@ export const ROW_LIMIT = 5000;
 export const ORIGIN_ERRORS = new Set([520, 521, 522, 523, 524, 525, 526, 530]);
 const QUERY = `query($zone:String!,$since:Time!,$until:Time!,$colos:[String!],$hosts:[String!]){viewer{zones(filter:{zoneTag:$zone}){httpRequestsAdaptiveGroups(limit:${ROW_LIMIT},filter:{datetime_geq:$since,datetime_lt:$until,coloCode_in:$colos,clientRequestHTTPHost_in:$hosts,requestSource:"eyeball"}){count dimensions{datetimeMinute coloCode edgeResponseStatus originResponseStatus}}}}}`;
 
-export function originError(edgeStatus, originStatus) {
-  return ORIGIN_ERRORS.has(edgeStatus) || edgeStatus >= 500 && originStatus === 0;
+// Other 5xx without an origin response (rate limits, Workers, maintenance pages) show at every
+// location alike, so the checks from Los Angeles already see them; they are not counted here.
+export function originError(edgeStatus) {
+  return ORIGIN_ERRORS.has(edgeStatus);
 }
 
 // Windows chain on `measuredUntil`, so no minute is judged twice. A window is at least
@@ -26,7 +28,7 @@ export function edgeWindow(probe, previous, now) {
 
 export function classifyEdge(probe, rows, window) {
   const mine = rows.filter(row => row?.dimensions?.coloCode === probe.colo && Number.isFinite(row.count) && row.count >= 0);
-  const failed = mine.filter(row => originError(row.dimensions.edgeResponseStatus, row.dimensions.originResponseStatus));
+  const failed = mine.filter(row => originError(row.dimensions.edgeResponseStatus));
   const requests = mine.reduce((sum, row) => sum + row.count, 0);
   const errors = failed.reduce((sum, row) => sum + row.count, 0);
   const errorMinutes = new Set(failed.filter(row => row.count > 0).map(row => row.dimensions.datetimeMinute)).size;

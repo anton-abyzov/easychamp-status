@@ -13,6 +13,14 @@ export function currentEvidence(sample, expiresSeconds, now = Date.now()) {
   return sample;
 }
 
+// Regional traffic evidence counts as up or down only with its measured window and counts.
+export function edgeEvidence(probe, sample) {
+  if (sample.status === 'unknown') return sample;
+  const counts = Number.isInteger(sample.requests) && Number.isInteger(sample.originErrors) && sample.originErrors >= 0 && sample.originErrors <= sample.requests && sample.requests >= probe.minRequests;
+  const window = time(sample.windowStart) !== null && time(sample.windowStart) < time(sample.windowEnd) && sample.windowEnd === sample.observedAt;
+  return counts && window && ['ok', 'origin_unreachable'].includes(sample.reasonCode) ? sample : unknown('invalid_evidence', sample.observedAt);
+}
+
 export function rollup(samples) {
   if (!samples.length) return 'unknown';
   for (const status of ['major_outage', 'partial_outage', 'degraded', 'unknown', 'maintenance']) if (samples.some(s => s.status === status)) return status;
@@ -49,7 +57,10 @@ export function componentState(component, state, registry, now = Date.now()) {
     const verify = component.measurementKind === 'scheduled_run' ? verifyScheduledRun : component.measurementKind === 'cluster_resources' ? verifyResources : verifyFreshness;
     samples = [{ ...verify(sample, now, component), sourceId: component.id }];
   }
-  else samples = (component.probes || []).map(id => ({ ...currentEvidence(state.probes?.[id], registry.probes.find(p => p.id === id)?.expiresSeconds || 0, now), sourceId: id }));
+  else samples = (component.probes || []).map(id => {
+    const probe = registry.probes.find(p => p.id === id), evidence = currentEvidence(state.probes?.[id], probe?.expiresSeconds || 0, now);
+    return { ...(probe?.type === 'edge' ? edgeEvidence(probe, evidence) : evidence), sourceId: id };
+  });
   if (!samples.length) samples = [unknown('not_monitored')];
   const status = rollup(samples);
   const dominant = samples.find(s => s.status === status) || samples[0];

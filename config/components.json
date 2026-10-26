@@ -220,7 +220,19 @@
       "degradedShare": 0.01,
       "partialShare": 0.05,
       "majorShare": 0.5,
-      "expiresSeconds": 900
+      "expiresSeconds": 1200,
+      "hosts": [
+        "auth.easychamp.com",
+        "coach.easychamp.com",
+        "console.easychamp.com",
+        "dcfc.at.easychamp.com",
+        "easychamp.com",
+        "sim.easychamp.com",
+        "snap.easychamp.com",
+        "soccer-nationals.easychamp.com",
+        "watch.easychamp.com"
+      ],
+      "minErrorMinutes": 2
     },
     {
       "id": "edge-atl",
@@ -236,7 +248,19 @@
       "degradedShare": 0.01,
       "partialShare": 0.05,
       "majorShare": 0.5,
-      "expiresSeconds": 900
+      "expiresSeconds": 1200,
+      "hosts": [
+        "auth.easychamp.com",
+        "coach.easychamp.com",
+        "console.easychamp.com",
+        "dcfc.at.easychamp.com",
+        "easychamp.com",
+        "sim.easychamp.com",
+        "snap.easychamp.com",
+        "soccer-nationals.easychamp.com",
+        "watch.easychamp.com"
+      ],
+      "minErrorMinutes": 2
     }
   ],
   "components": [
@@ -319,14 +343,22 @@
       "order": 3
     },
     {
-      "id": "regional-access",
+      "id": "access-miami",
       "group": "websites",
-      "name": "Access from Miami and Atlanta",
+      "name": "Access from Miami",
       "probes": [
-        "edge-mia",
+        "edge-mia"
+      ],
+      "coverage": "Real visitor requests that Cloudflare routed through Miami to the monitored EasyChamp sites, and the share it could not complete because EasyChamp servers did not answer (errors 520-526). Errors must appear in at least two separate minutes. Too little traffic is shown as unknown, never as up or down."
+    },
+    {
+      "id": "access-atlanta",
+      "group": "websites",
+      "name": "Access from Atlanta",
+      "probes": [
         "edge-atl"
       ],
-      "coverage": "Real visitor requests that Cloudflare routed through Miami and Atlanta, and the share it could not complete because EasyChamp servers did not answer (errors 520-526). Too little traffic is shown as unknown, never as up or down."
+      "coverage": "Real visitor requests that Cloudflare routed through Atlanta to the monitored EasyChamp sites, and the share it could not complete because EasyChamp servers did not answer (errors 520-526). Errors must appear in at least two separate minutes. Too little traffic is shown as unknown, never as up or down."
     },
     {
       "id": "signin",

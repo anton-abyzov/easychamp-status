@@ -2,8 +2,8 @@ import { time } from '../public/model.mjs';
 import { CODE, appendSample, prune } from '../public/uptime.mjs';
 
 // Seconds a single check may stand for. These equal the evidence expiry the page already
-// uses (HTTP and regional traffic 15 min, rendering 35 min, collector 20 min); longer silences are gaps.
-export const CAPS = { http: 900, browser: 2100, freshness: 1200, edge: 900 };
+// uses (HTTP 15 min, rendering 35 min, collector and regional traffic 20 min); longer silences are gaps.
+export const CAPS = { http: 900, browser: 2100, freshness: 1200, edge: 1200 };
 export const RETENTION_DAYS = 35;
 
 export function emptyTimeline() { return { schemaVersion: 1, caps: CAPS, retentionDays: RETENTION_DAYS, series: {} }; }

@@ -356,7 +356,7 @@
       "probes": [
         "edge-mia"
       ],
-      "coverage": "Real visitor requests that Cloudflare routed through Miami to the monitored EasyChamp sites, and the share it could not complete because EasyChamp servers did not answer (errors 520-526 and 530). Errors must appear in at least two separate minutes. Fewer than 30 requests are never judged down; 30 quiet minutes without a single failure count as up."
+      "coverage": "Real visitor requests that Cloudflare routed through Miami to the monitored EasyChamp sites, and the share it could not complete because EasyChamp servers did not answer (errors 520-526 and 530). Only failures to connect count as an outage; a response that broke or hung flags degraded at most. Errors must appear in at least two separate minutes. Fewer than 30 requests are never judged down; 30 minutes with at least 6 requests and no failure count as up."
     },
     {
       "id": "access-atlanta",
@@ -365,7 +365,7 @@
       "probes": [
         "edge-atl"
       ],
-      "coverage": "Real visitor requests that Cloudflare routed through Atlanta to the monitored EasyChamp sites, and the share it could not complete because EasyChamp servers did not answer (errors 520-526 and 530). Errors must appear in at least two separate minutes. Fewer than 30 requests are never judged down; 30 quiet minutes without a single failure count as up."
+      "coverage": "Real visitor requests that Cloudflare routed through Atlanta to the monitored EasyChamp sites, and the share it could not complete because EasyChamp servers did not answer (errors 520-526 and 530). Only failures to connect count as an outage; a response that broke or hung flags degraded at most. Errors must appear in at least two separate minutes. Fewer than 30 requests are never judged down; 30 minutes with at least 6 requests and no failure count as up."
     },
     {
       "id": "signin",

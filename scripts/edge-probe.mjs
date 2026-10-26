@@ -7,6 +7,9 @@ const ENDPOINT = 'https://api.cloudflare.com/client/v4/graphql';
 export const ROW_LIMIT = 5000;
 // Errors Cloudflare generates when it gets no usable answer from the origin.
 export const ORIGIN_ERRORS = new Set([520, 521, 522, 523, 524, 525, 526, 530]);
+// Of those, the ones where Cloudflare could not connect at all. With 520 and 524 the origin was
+// reached and one response broke or hung, which a single client can cause on its own.
+export const CONNECTION_ERRORS = new Set([521, 522, 523, 525, 526, 530]);
 const QUERY = `query($zone:String!,$since:Time!,$until:Time!,$colos:[String!],$hosts:[String!]){viewer{zones(filter:{zoneTag:$zone}){httpRequestsAdaptiveGroups(limit:${ROW_LIMIT},filter:{datetime_geq:$since,datetime_lt:$until,coloCode_in:$colos,clientRequestHTTPHost_in:$hosts,requestSource:"eyeball"}){count dimensions{datetimeMinute coloCode edgeResponseStatus originResponseStatus}}}}}`;
 
 // Other 5xx without an origin response (rate limits, Workers, maintenance pages) show at every
@@ -32,6 +35,9 @@ export function classifyEdge(probe, rows, window) {
   const requests = mine.reduce((sum, row) => sum + row.count, 0);
   const errors = failed.reduce((sum, row) => sum + row.count, 0);
   const errorMinutes = new Set(failed.filter(row => row.count > 0).map(row => row.dimensions.datetimeMinute)).size;
+  const unreachable = failed.filter(row => CONNECTION_ERRORS.has(row.dimensions.edgeResponseStatus));
+  const connectionErrors = unreachable.reduce((sum, row) => sum + row.count, 0);
+  const connectionMinutes = new Set(unreachable.filter(row => row.count > 0).map(row => row.dimensions.datetimeMinute)).size;
   const evidence = { observedAt: new Date(window.end).toISOString(), windowStart: new Date(window.start).toISOString(), windowEnd: new Date(window.end).toISOString(), requests, originErrors: errors, errorMinutes };
   if (requests < probe.minRequests) {
     // Thin traffic is never judged down. A full window of thin traffic without a single failure
@@ -45,8 +51,10 @@ export function classifyEdge(probe, rows, window) {
   const result = { ...evidence, errorShare: Math.round(share * 10000) / 10000, measuredUntil: evidence.windowEnd };
   // A short burst inside one minute is not enough evidence, whatever its share.
   if (errors < probe.minErrors || errorMinutes < probe.minErrorMinutes) return { status: 'operational', reasonCode: 'ok', ...result };
-  if (share >= probe.majorShare) return { status: 'major_outage', reasonCode: 'origin_unreachable', ...result };
-  if (share >= probe.partialShare) return { status: 'partial_outage', reasonCode: 'origin_unreachable', ...result };
+  // Only failures to connect can make an outage; broken or hung responses flag degraded at most.
+  const outage = connectionErrors >= probe.minErrors && connectionMinutes >= probe.minErrorMinutes ? connectionErrors / requests : 0;
+  if (outage >= probe.majorShare) return { status: 'major_outage', reasonCode: 'origin_unreachable', ...result };
+  if (outage >= probe.partialShare) return { status: 'partial_outage', reasonCode: 'origin_unreachable', ...result };
   if (share >= probe.degradedShare) return { status: 'degraded', reasonCode: 'origin_unreachable', ...result };
   return { status: 'operational', reasonCode: 'ok', ...result };
 }

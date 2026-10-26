@@ -72,8 +72,8 @@ function latency(probe, sample) {
 }
 function edgeRow(id, label, probe, sample, extra = {}) {
   const counted = Number.isInteger(sample.requests) && Number.isInteger(sample.originErrors);
-  const summary = sample.status !== 'unknown' && counted ? `${sample.originErrors} of ${sample.requests} visitor requests failed to reach EasyChamp` : sample.reasonCode === 'low_traffic' && counted ? `${sample.requests} visitor requests so far; at least ${probe.minRequests} are needed to judge` : REASONS[sample.reasonCode] || 'Evidence unavailable';
-  return row(id, label, sample, `Real visitor requests routed through Cloudflare ${probe.location}. Errors 520-526 and 530 mean Cloudflare got no answer from EasyChamp servers. Errors must appear in at least ${probe.minErrorMinutes} separate minutes.`,
+  const summary = sample.status !== 'unknown' && counted ? `${sample.originErrors} of ${sample.requests} visitor requests failed to reach EasyChamp` : sample.reasonCode === 'low_traffic' && counted ? (sample.measuredUntil === sample.windowEnd ? `Only ${sample.requests} visitor requests in 30 minutes, too few to judge` : `${sample.requests} visitor requests so far; at least ${probe.minRequests} are needed to judge`) : REASONS[sample.reasonCode] || 'Evidence unavailable';
+  return row(id, label, sample, `Real visitor requests routed through Cloudflare ${probe.location}. Errors 520-526 and 530 mean Cloudflare got no answer from EasyChamp servers; only failures to connect (521-523, 525, 526, 530) count as an outage. Errors must appear in at least ${probe.minErrorMinutes} separate minutes.`,
     { ...extra, dimension: 'regional', summary, ...(sample.status !== 'unknown' && counted ? { value: 100 * sample.originErrors / sample.requests, unit: '%' } : {}) });
 }
 function destination(component, sample, now) {
@@ -170,7 +170,7 @@ export function measurementOverview(registry, state, components, now = Date.now(
   }
   return [
     aggregate('availability', 'Public endpoints', endpoints, 'Configured HTTP endpoints must return HTTP 200 and expected content/schema. This does not prove credential login, playback, purchases or other authenticated workflows.'),
-    aggregate('regional', 'Regional access', regional, 'Real visitor requests through Cloudflare Miami and Atlanta. A location with too little traffic is never counted as down; 30 quiet minutes without a single failure count as up.'),
+    aggregate('regional', 'Regional access', regional, 'Real visitor requests through Cloudflare Miami and Atlanta. A location with fewer than 30 requests is never counted as down; 30 minutes with at least 6 requests and no failure count as up.'),
     aggregate('latency', 'Page performance', timings, 'External whole-response timing and synthetic cold-desktop rendering/LCP. Each service lists its targets and timestamps. These are samples, not real-user percentiles or an uptime SLA.'),
     aggregate('freshness', 'Data destinations', destinations, 'Independent import completion and authoritative destination verification. Job execution and response speed cannot replace persisted-data evidence.'),
     aggregate('scheduled-runs', 'Scheduled jobs', executions, 'Latest owned job attempts, completions, next due and grace. Running, paused and unobserved jobs remain explicit. Green job execution does not prove destination freshness.'),

@@ -92,8 +92,9 @@ test('an intermittent issue opens one incident, escalates and is never resolved 
   assert.equal(payload.incidents.length, 1); assert.equal(incident().updates.length, 1); assert.equal(incident().updatedAt, '2026-10-23T15:25:00Z');
   advanceIncidents(payload, component, observe(confirmed('major_outage', 3)), '2026-10-23T15:30:00Z');
   assert.equal(incident().status, 'major_outage'); assert.equal(incident().updates.length, 2);
-  // Passing checks while the rule is latched: still open, no monitoring or recovery update.
-  advanceIncidents(payload, component, observe(confirmed(), { availabilityAdvanced: false }), '2026-10-23T15:35:00Z');
+  // Passing checks while the rule is latched (availabilityState holds the highest level):
+  // still open, no monitoring or recovery update.
+  advanceIncidents(payload, component, observe(confirmed('major_outage', 3), { availabilityAdvanced: false }), '2026-10-23T15:35:00Z');
   assert.equal(incident().resolvedAt, null); assert.equal(incident().updates.length, 2);
   // Six passes cleared the rule; the existing recovery path resolves it.
   advanceIncidents(payload, component, observe({ confirmed: null, reasonCode: null, since: null, failed: 0, checked: 4 }), '2026-10-23T16:05:00Z');

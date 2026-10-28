@@ -2,15 +2,44 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "assistant-1793003233036",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-26T08:27:13.036Z",
+      "updatedAt": "2026-10-28T05:35:26.804Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1793003233036-monitor-2026-10-26T08:27:13.036Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-26T08:27:13.036Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-26T08:27:10.860Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 77,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/77"
+      }
+    },
+    {
       "id": "sim-1793164720200",
       "componentId": "sim",
       "title": "Match Simulator: degraded performance",
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-28T05:18:40.200Z",
-      "updatedAt": "2026-10-28T05:21:24.141Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-10-28T05:35:26.804Z",
+      "resolvedAt": "2026-10-28T05:35:26.804Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "sim-1793164720200-monitor-2026-10-28T05:18:40.200Z-investigating",
@@ -35,40 +64,28 @@
             "reasonCode": "ok",
             "observedAt": "2026-10-28T05:20:53.101Z"
           }
-        }
-      ],
-      "issue": {
-        "number": 81,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/81"
-      }
-    },
-    {
-      "id": "assistant-1793003233036",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-26T08:27:13.036Z",
-      "updatedAt": "2026-10-28T05:31:05.215Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
+        },
         {
-          "id": "assistant-1793003233036-monitor-2026-10-26T08:27:13.036Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-26T08:27:13.036Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "id": "sim-1793164720200-monitor-2026-10-28T05:35:26.804Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-28T05:35:26.804Z",
+          "message": "Two fresh successful observations confirmed recovery.",
           "source": "monitor",
           "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-26T08:27:10.860Z"
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-28T05:34:54.679Z"
           }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Match Simulator: degraded performance. First confirmed issue: 2026-10-28T05:18:40.200Z. Recovery confirmed by two fresh successful observations: 2026-10-28T05:35:26.804Z. Confirmed incident duration: 17 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-28T05:35:26.804Z"
+      },
       "issue": {
-        "number": 77,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/77"
+        "number": 81,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/81"
       }
     },
     {

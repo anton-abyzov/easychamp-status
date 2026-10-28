@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "watch-1793183332881",
+      "componentId": "watch",
+      "title": "Watch entry page: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-28T10:28:52.881Z",
+      "updatedAt": "2026-10-28T10:28:52.881Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "watch-1793183332881-monitor-2026-10-28T10:28:52.881Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-28T10:28:52.881Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-28T10:28:52.881Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 83,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/83"
+      }
+    },
+    {
       "id": "assistant-1793003233036",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-26T08:27:13.036Z",
-      "updatedAt": "2026-10-28T10:27:02.088Z",
+      "updatedAt": "2026-10-28T10:28:52.881Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

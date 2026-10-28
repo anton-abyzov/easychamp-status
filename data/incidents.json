@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "soccer-nationals-1793166413976",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-28T05:46:53.976Z",
+      "updatedAt": "2026-10-28T05:46:53.976Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1793166413976-monitor-2026-10-28T05:46:53.976Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-28T05:46:53.976Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-28T05:46:53.976Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 82,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/82"
+      }
+    },
+    {
       "id": "assistant-1793003233036",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-26T08:27:13.036Z",
-      "updatedAt": "2026-10-28T05:40:05.086Z",
+      "updatedAt": "2026-10-28T05:46:53.976Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

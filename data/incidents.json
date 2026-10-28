@@ -8,7 +8,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-28T10:28:52.881Z",
-      "updatedAt": "2026-10-28T10:28:52.881Z",
+      "updatedAt": "2026-10-28T10:35:39.732Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -22,6 +22,18 @@
             "status": "major_outage",
             "reasonCode": "timeout",
             "observedAt": "2026-10-28T10:28:52.881Z"
+          }
+        },
+        {
+          "id": "watch-1793183332881-monitor-2026-10-28T10:35:39.732Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-28T10:35:39.732Z",
+          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "automation_blocked",
+            "observedAt": "2026-10-28T10:35:07.372Z"
           }
         }
       ],
@@ -37,7 +49,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-26T08:27:13.036Z",
-      "updatedAt": "2026-10-28T10:28:52.881Z",
+      "updatedAt": "2026-10-28T10:35:39.732Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

@@ -2,15 +2,44 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "assistant-1793003233036",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-26T08:27:13.036Z",
+      "updatedAt": "2026-10-28T10:49:04.433Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1793003233036-monitor-2026-10-26T08:27:13.036Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-26T08:27:13.036Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-26T08:27:10.860Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 77,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/77"
+      }
+    },
+    {
       "id": "watch-1793183332881",
       "componentId": "watch",
       "title": "Watch entry page: availability issue",
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-28T10:28:52.881Z",
-      "updatedAt": "2026-10-28T10:47:14.101Z",
-      "resolvedAt": null,
-      "stage": "investigating",
+      "updatedAt": "2026-10-28T10:49:04.433Z",
+      "resolvedAt": "2026-10-28T10:49:04.433Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "watch-1793183332881-monitor-2026-10-28T10:28:52.881Z-investigating",
@@ -35,40 +64,28 @@
             "reasonCode": "automation_blocked",
             "observedAt": "2026-10-28T10:35:07.372Z"
           }
-        }
-      ],
-      "issue": {
-        "number": 83,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/83"
-      }
-    },
-    {
-      "id": "assistant-1793003233036",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-26T08:27:13.036Z",
-      "updatedAt": "2026-10-28T10:47:14.101Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
+        },
         {
-          "id": "assistant-1793003233036-monitor-2026-10-26T08:27:13.036Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-26T08:27:13.036Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "id": "watch-1793183332881-monitor-2026-10-28T10:49:04.433Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-28T10:49:04.433Z",
+          "message": "Six consecutive availability checks passed.",
           "source": "monitor",
           "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-26T08:27:10.860Z"
+            "status": "unknown",
+            "reasonCode": "automation_blocked",
+            "observedAt": "2026-10-28T10:49:04.433Z"
           }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Watch entry page: availability issue. First confirmed issue: 2026-10-28T10:28:52.881Z. Recovery confirmed by six consecutive passing availability checks: 2026-10-28T10:49:04.433Z. Confirmed incident duration: 20 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-28T10:49:04.433Z"
+      },
       "issue": {
-        "number": 77,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/77"
+        "number": 83,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/83"
       }
     },
     {

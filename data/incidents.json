@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-26T08:27:13.036Z",
-      "updatedAt": "2026-10-28T13:09:49.047Z",
+      "updatedAt": "2026-10-28T13:15:58.210Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -22,6 +22,18 @@
             "status": "degraded",
             "reasonCode": "provider_capacity_low",
             "observedAt": "2026-10-26T08:27:10.860Z"
+          }
+        },
+        {
+          "id": "assistant-1793003233036-monitor-2026-10-28T13:15:58.210Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-28T13:15:58.210Z",
+          "message": "Latest evidence is unknown: AI provider account health unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "provider_health_unverified",
+            "observedAt": "2026-10-28T13:15:22.394Z"
           }
         }
       ],

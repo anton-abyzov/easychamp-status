@@ -2,15 +2,44 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "sim-1793164720200",
+      "componentId": "sim",
+      "title": "Match Simulator: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-28T05:18:40.200Z",
+      "updatedAt": "2026-10-28T05:18:40.200Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "sim-1793164720200-monitor-2026-10-28T05:18:40.200Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-28T05:18:40.200Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-28T05:17:36.022Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 81,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/81"
+      }
+    },
+    {
       "id": "snap-1793164168399",
       "componentId": "snap",
       "title": "Snap to League: degraded performance",
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-28T05:09:28.399Z",
-      "updatedAt": "2026-10-28T05:09:28.399Z",
+      "updatedAt": "2026-10-28T05:18:40.200Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "snap-1793164168399-monitor-2026-10-28T05:09:28.399Z-investigating",
@@ -22,6 +51,18 @@
             "status": "degraded",
             "reasonCode": "slow",
             "observedAt": "2026-10-28T05:08:42.192Z"
+          }
+        },
+        {
+          "id": "snap-1793164168399-monitor-2026-10-28T05:18:40.200Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-28T05:18:40.200Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-28T05:17:30.634Z"
           }
         }
       ],
@@ -37,7 +78,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-28T05:02:36.540Z",
-      "updatedAt": "2026-10-28T05:11:46.672Z",
+      "updatedAt": "2026-10-28T05:18:40.200Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -66,7 +107,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-26T08:27:13.036Z",
-      "updatedAt": "2026-10-28T05:11:46.672Z",
+      "updatedAt": "2026-10-28T05:18:40.200Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

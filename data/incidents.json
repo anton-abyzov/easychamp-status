@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-28T19:21:22.069Z",
-      "updatedAt": "2026-10-28T19:54:37.159Z",
+      "updatedAt": "2026-10-28T20:03:32.641Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-28T19:00:00.000Z",
       "stage": "investigating",
@@ -24,6 +24,18 @@
             "reasonCode": "run_failed",
             "observedAt": "2026-10-28T19:20:08.000Z"
           }
+        },
+        {
+          "id": "feed-external-sync-1793215282069-monitor-2026-10-28T20:03:32.641Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-28T20:03:32.641Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-28T20:00:08.000Z"
+          }
         }
       ],
       "issue": {
@@ -38,7 +50,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-28T19:21:22.069Z",
-      "updatedAt": "2026-10-28T19:54:37.159Z",
+      "updatedAt": "2026-10-28T20:03:32.641Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-28T19:00:00.000Z",
       "stage": "investigating",
@@ -53,6 +65,18 @@
             "status": "degraded",
             "reasonCode": "run_failed",
             "observedAt": "2026-10-28T19:20:08.000Z"
+          }
+        },
+        {
+          "id": "feed-results-1793215282069-monitor-2026-10-28T20:03:32.641Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-28T20:03:32.641Z",
+          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-28T20:00:08.000Z"
           }
         }
       ],

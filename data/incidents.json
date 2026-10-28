@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "home-1793160728001",
+      "componentId": "home",
+      "title": "EasyChamp home: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-10-28T04:12:08.001Z",
+      "updatedAt": "2026-10-28T04:12:08.001Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "home-1793160728001-monitor-2026-10-28T04:12:08.001Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-28T04:12:08.001Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-10-28T04:10:42.907Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 78,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/78"
+      }
+    },
+    {
       "id": "assistant-1793003233036",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-26T08:27:13.036Z",
-      "updatedAt": "2026-10-28T04:09:41.702Z",
+      "updatedAt": "2026-10-28T04:12:08.001Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

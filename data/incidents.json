@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "snap-1793164168399",
+      "componentId": "snap",
+      "title": "Snap to League: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-28T05:09:28.399Z",
+      "updatedAt": "2026-10-28T05:09:28.399Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "snap-1793164168399-monitor-2026-10-28T05:09:28.399Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-28T05:09:28.399Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-10-28T05:08:42.192Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 80,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/80"
+      }
+    },
+    {
       "id": "coach-1793163756540",
       "componentId": "coach",
       "title": "Coach: availability issue",
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-28T05:02:36.540Z",
-      "updatedAt": "2026-10-28T05:07:30.066Z",
+      "updatedAt": "2026-10-28T05:09:28.399Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +66,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-26T08:27:13.036Z",
-      "updatedAt": "2026-10-28T05:07:30.066Z",
+      "updatedAt": "2026-10-28T05:09:28.399Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

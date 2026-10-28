@@ -43,42 +43,13 @@
       }
     },
     {
-      "id": "coach-1793163756540",
-      "componentId": "coach",
-      "title": "Coach: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
-      "openedAt": "2026-10-28T05:02:36.540Z",
-      "updatedAt": "2026-10-28T05:21:24.141Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "coach-1793163756540-monitor-2026-10-28T05:02:36.540Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-28T05:02:36.540Z",
-          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-28T05:02:36.540Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 79,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/79"
-      }
-    },
-    {
       "id": "assistant-1793003233036",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-26T08:27:13.036Z",
-      "updatedAt": "2026-10-28T05:21:24.141Z",
+      "updatedAt": "2026-10-28T05:22:32.934Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -98,6 +69,52 @@
       "issue": {
         "number": 77,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/77"
+      }
+    },
+    {
+      "id": "coach-1793163756540",
+      "componentId": "coach",
+      "title": "Coach: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-28T05:02:36.540Z",
+      "updatedAt": "2026-10-28T05:22:32.934Z",
+      "resolvedAt": "2026-10-28T05:22:32.934Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "coach-1793163756540-monitor-2026-10-28T05:02:36.540Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-28T05:02:36.540Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-28T05:02:36.540Z"
+          }
+        },
+        {
+          "id": "coach-1793163756540-monitor-2026-10-28T05:22:32.934Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-28T05:22:32.934Z",
+          "message": "Six consecutive availability checks passed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-28T05:22:32.934Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Coach: availability issue. First confirmed issue: 2026-10-28T05:02:36.540Z. Recovery confirmed by six consecutive passing availability checks: 2026-10-28T05:22:32.934Z. Confirmed incident duration: 20 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-28T05:22:32.934Z"
+      },
+      "issue": {
+        "number": 79,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/79"
       }
     },
     {

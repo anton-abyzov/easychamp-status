@@ -2,42 +2,13 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "sim-1793291168364",
-      "componentId": "sim",
-      "title": "Match Simulator: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
-      "openedAt": "2026-10-29T16:26:08.364Z",
-      "updatedAt": "2026-10-29T16:45:16.344Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "sim-1793291168364-monitor-2026-10-29T16:26:08.364Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T16:26:08.364Z",
-          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-29T16:26:08.364Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 99,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/99"
-      }
-    },
-    {
       "id": "assistant-1793258191088",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T16:47:40.128Z",
+      "updatedAt": "2026-10-29T16:49:25.277Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -57,6 +28,52 @@
       "issue": {
         "number": 86,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+      }
+    },
+    {
+      "id": "sim-1793291168364",
+      "componentId": "sim",
+      "title": "Match Simulator: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T16:26:08.364Z",
+      "updatedAt": "2026-10-29T16:49:25.277Z",
+      "resolvedAt": "2026-10-29T16:49:25.277Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "sim-1793291168364-monitor-2026-10-29T16:26:08.364Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T16:26:08.364Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T16:26:08.364Z"
+          }
+        },
+        {
+          "id": "sim-1793291168364-monitor-2026-10-29T16:49:25.277Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-29T16:49:25.277Z",
+          "message": "Six consecutive availability checks passed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T16:49:25.277Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Match Simulator: availability issue. First confirmed issue: 2026-10-29T16:26:08.364Z. Recovery confirmed by six consecutive passing availability checks: 2026-10-29T16:49:25.277Z. Confirmed incident duration: 23 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-29T16:49:25.277Z"
+      },
+      "issue": {
+        "number": 99,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/99"
       }
     },
     {

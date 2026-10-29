@@ -8,7 +8,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:48:25.686Z",
-      "updatedAt": "2026-10-29T15:54:36.921Z",
+      "updatedAt": "2026-10-29T15:56:50.625Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +37,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:46:26.022Z",
-      "updatedAt": "2026-10-29T15:54:36.921Z",
+      "updatedAt": "2026-10-29T15:56:50.625Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -66,7 +66,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:22:19.702Z",
-      "updatedAt": "2026-10-29T15:54:36.921Z",
+      "updatedAt": "2026-10-29T15:56:50.625Z",
       "resolvedAt": null,
       "stage": "monitoring",
       "updates": [
@@ -131,7 +131,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:01:57.935Z",
-      "updatedAt": "2026-10-29T15:54:36.921Z",
+      "updatedAt": "2026-10-29T15:56:50.625Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -187,59 +187,6 @@
       "issue": {
         "number": 95,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/95"
-      }
-    },
-    {
-      "id": "access-atlanta-1793285677022",
-      "componentId": "access-atlanta",
-      "title": "Access from Atlanta: degraded service",
-      "status": "degraded",
-      "reasonCode": "origin_unreachable",
-      "openedAt": "2026-10-29T14:54:37.022Z",
-      "updatedAt": "2026-10-29T15:51:14.647Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "access-atlanta-1793285677022-monitor-2026-10-29T14:54:37.022Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T14:54:37.022Z",
-          "message": "Two fresh observations confirmed needs attention: Cloudflare got no usable answer from EasyChamp for some visitors.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "origin_unreachable",
-            "observedAt": "2026-10-29T14:51:00.000Z"
-          }
-        },
-        {
-          "id": "access-atlanta-1793285677022-monitor-2026-10-29T15:35:56.912Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-29T15:35:56.912Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-29T15:32:00.000Z"
-          }
-        },
-        {
-          "id": "access-atlanta-1793285677022-monitor-2026-10-29T15:51:14.647Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-29T15:51:14.647Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-29T15:47:00.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 92,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/92"
       }
     },
     {
@@ -350,7 +297,7 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T15:54:36.921Z",
+      "updatedAt": "2026-10-29T15:56:50.625Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -403,7 +350,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T15:54:36.921Z",
+      "updatedAt": "2026-10-29T15:56:50.625Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -423,6 +370,76 @@
       "issue": {
         "number": 86,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+      }
+    },
+    {
+      "id": "access-atlanta-1793285677022",
+      "componentId": "access-atlanta",
+      "title": "Access from Atlanta: degraded service",
+      "status": "degraded",
+      "reasonCode": "origin_unreachable",
+      "openedAt": "2026-10-29T14:54:37.022Z",
+      "updatedAt": "2026-10-29T15:56:50.625Z",
+      "resolvedAt": "2026-10-29T15:56:50.625Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "access-atlanta-1793285677022-monitor-2026-10-29T14:54:37.022Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T14:54:37.022Z",
+          "message": "Two fresh observations confirmed needs attention: Cloudflare got no usable answer from EasyChamp for some visitors.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "origin_unreachable",
+            "observedAt": "2026-10-29T14:51:00.000Z"
+          }
+        },
+        {
+          "id": "access-atlanta-1793285677022-monitor-2026-10-29T15:35:56.912Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-29T15:35:56.912Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T15:32:00.000Z"
+          }
+        },
+        {
+          "id": "access-atlanta-1793285677022-monitor-2026-10-29T15:51:14.647Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-29T15:51:14.647Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T15:47:00.000Z"
+          }
+        },
+        {
+          "id": "access-atlanta-1793285677022-monitor-2026-10-29T15:56:50.625Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-29T15:56:50.625Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T15:53:00.000Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Access from Atlanta: degraded service. First confirmed issue: 2026-10-29T14:54:37.022Z. Recovery confirmed by two fresh successful observations: 2026-10-29T15:56:50.625Z. Confirmed incident duration: 62 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-29T15:56:50.625Z"
+      },
+      "issue": {
+        "number": 92,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/92"
       }
     },
     {

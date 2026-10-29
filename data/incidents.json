@@ -8,7 +8,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:48:25.686Z",
-      "updatedAt": "2026-10-29T16:08:42.467Z",
+      "updatedAt": "2026-10-29T16:10:23.766Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -49,7 +49,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:46:26.022Z",
-      "updatedAt": "2026-10-29T16:08:42.467Z",
+      "updatedAt": "2026-10-29T16:10:23.766Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -72,80 +72,15 @@
       }
     },
     {
-      "id": "sim-1793287339702",
-      "componentId": "sim",
-      "title": "Match Simulator: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
-      "openedAt": "2026-10-29T15:22:19.702Z",
-      "updatedAt": "2026-10-29T16:08:42.467Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "sim-1793287339702-monitor-2026-10-29T15:22:19.702Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T15:22:19.702Z",
-          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "rendering_slow",
-            "observedAt": "2026-10-29T15:21:09.997Z"
-          }
-        },
-        {
-          "id": "sim-1793287339702-monitor-2026-10-29T15:35:56.912Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T15:35:56.912Z",
-          "message": "Fresh observations continue to confirm major outage: Check timed out.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-29T15:35:07.727Z"
-          }
-        },
-        {
-          "id": "sim-1793287339702-monitor-2026-10-29T15:46:26.022Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-29T15:46:26.022Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-10-29T15:45:21.879Z"
-          }
-        },
-        {
-          "id": "sim-1793287339702-monitor-2026-10-29T15:51:14.647Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-10-29T15:51:14.647Z",
-          "message": "Latest evidence is unknown: Check timed out. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-29T15:49:48.349Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 96,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/96"
-      }
-    },
-    {
       "id": "home-1793286117935",
       "componentId": "home",
       "title": "EasyChamp home: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
       "openedAt": "2026-10-29T15:01:57.935Z",
-      "updatedAt": "2026-10-29T16:08:42.467Z",
+      "updatedAt": "2026-10-29T16:10:23.766Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "home-1793286117935-monitor-2026-10-29T15:01:57.935Z-investigating",
@@ -194,6 +129,30 @@
             "reasonCode": "timeout",
             "observedAt": "2026-10-29T15:49:47.059Z"
           }
+        },
+        {
+          "id": "home-1793286117935-monitor-2026-10-29T16:10:23.766Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-29T16:10:23.766Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T16:09:47.679Z"
+          }
+        },
+        {
+          "id": "home-1793286117935-monitor-2026-10-29T16:10:23.766Z-severity",
+          "stage": "monitoring",
+          "at": "2026-10-29T16:10:23.766Z",
+          "message": "Fresh observations now confirm needs attention: Page rendering slower than target. Latest check: operational, Checks passed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T16:09:47.679Z"
+          }
         }
       ],
       "issue": {
@@ -208,7 +167,7 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T16:08:42.467Z",
+      "updatedAt": "2026-10-29T16:10:23.766Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -261,7 +220,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T16:08:42.467Z",
+      "updatedAt": "2026-10-29T16:10:23.766Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -281,6 +240,88 @@
       "issue": {
         "number": 86,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+      }
+    },
+    {
+      "id": "sim-1793287339702",
+      "componentId": "sim",
+      "title": "Match Simulator: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T15:22:19.702Z",
+      "updatedAt": "2026-10-29T16:10:23.766Z",
+      "resolvedAt": "2026-10-29T16:10:23.766Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "sim-1793287339702-monitor-2026-10-29T15:22:19.702Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:22:19.702Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-10-29T15:21:09.997Z"
+          }
+        },
+        {
+          "id": "sim-1793287339702-monitor-2026-10-29T15:35:56.912Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:35:56.912Z",
+          "message": "Fresh observations continue to confirm major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T15:35:07.727Z"
+          }
+        },
+        {
+          "id": "sim-1793287339702-monitor-2026-10-29T15:46:26.022Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-29T15:46:26.022Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T15:45:21.879Z"
+          }
+        },
+        {
+          "id": "sim-1793287339702-monitor-2026-10-29T15:51:14.647Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-29T15:51:14.647Z",
+          "message": "Latest evidence is unknown: Check timed out. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T15:49:48.349Z"
+          }
+        },
+        {
+          "id": "sim-1793287339702-monitor-2026-10-29T16:10:23.766Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-29T16:10:23.766Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T16:09:48.692Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Match Simulator: availability issue. First confirmed issue: 2026-10-29T15:22:19.702Z. Recovery confirmed by two fresh successful observations: 2026-10-29T16:10:23.766Z. Confirmed incident duration: 48 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-29T16:10:23.766Z"
+      },
+      "issue": {
+        "number": 96,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/96"
       }
     },
     {

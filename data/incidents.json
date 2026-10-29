@@ -8,7 +8,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:48:25.686Z",
-      "updatedAt": "2026-10-29T16:10:23.766Z",
+      "updatedAt": "2026-10-29T16:16:13.984Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -49,7 +49,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:46:26.022Z",
-      "updatedAt": "2026-10-29T16:10:23.766Z",
+      "updatedAt": "2026-10-29T16:16:13.984Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -72,15 +72,97 @@
       }
     },
     {
+      "id": "snap-1793285396314",
+      "componentId": "snap",
+      "title": "Snap to League: availability issue",
+      "status": "major_outage",
+      "reasonCode": "http_error",
+      "openedAt": "2026-10-29T14:49:56.314Z",
+      "updatedAt": "2026-10-29T16:16:13.984Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "snap-1793285396314-monitor-2026-10-29T14:49:56.314Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T14:49:56.314Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T14:49:56.314Z"
+          }
+        },
+        {
+          "id": "snap-1793285396314-monitor-2026-10-29T15:35:56.912Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:35:56.912Z",
+          "message": "Fresh observations continue to confirm major outage: Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-10-29T15:34:55.039Z"
+          }
+        },
+        {
+          "id": "snap-1793285396314-monitor-2026-10-29T15:46:26.022Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:46:26.022Z",
+          "message": "Latest evidence is unknown: Check timed out. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T15:45:22.845Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 91,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/91"
+      }
+    },
+    {
+      "id": "assistant-1793258191088",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-29T07:16:31.088Z",
+      "updatedAt": "2026-10-29T16:16:13.984Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T07:16:31.088Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-29T07:15:59.972Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 86,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+      }
+    },
+    {
       "id": "home-1793286117935",
       "componentId": "home",
       "title": "EasyChamp home: availability issue",
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-10-29T15:01:57.935Z",
-      "updatedAt": "2026-10-29T16:10:23.766Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-10-29T16:16:13.984Z",
+      "resolvedAt": "2026-10-29T16:16:13.984Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "home-1793286117935-monitor-2026-10-29T15:01:57.935Z-investigating",
@@ -153,93 +235,28 @@
             "reasonCode": "ok",
             "observedAt": "2026-10-29T16:09:47.679Z"
           }
+        },
+        {
+          "id": "home-1793286117935-monitor-2026-10-29T16:16:13.984Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-29T16:16:13.984Z",
+          "message": "Six consecutive availability checks passed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T16:16:13.984Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. EasyChamp home: availability issue. First confirmed issue: 2026-10-29T15:01:57.935Z. Recovery confirmed by six consecutive passing availability checks: 2026-10-29T16:16:13.984Z. Confirmed incident duration: 74 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-29T16:16:13.984Z"
+      },
       "issue": {
         "number": 95,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/95"
-      }
-    },
-    {
-      "id": "snap-1793285396314",
-      "componentId": "snap",
-      "title": "Snap to League: availability issue",
-      "status": "major_outage",
-      "reasonCode": "http_error",
-      "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T16:10:23.766Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "snap-1793285396314-monitor-2026-10-29T14:49:56.314Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T14:49:56.314Z",
-          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-29T14:49:56.314Z"
-          }
-        },
-        {
-          "id": "snap-1793285396314-monitor-2026-10-29T15:35:56.912Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T15:35:56.912Z",
-          "message": "Fresh observations continue to confirm major outage: Unexpected HTTP response.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "http_error",
-            "observedAt": "2026-10-29T15:34:55.039Z"
-          }
-        },
-        {
-          "id": "snap-1793285396314-monitor-2026-10-29T15:46:26.022Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T15:46:26.022Z",
-          "message": "Latest evidence is unknown: Check timed out. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-29T15:45:22.845Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 91,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/91"
-      }
-    },
-    {
-      "id": "assistant-1793258191088",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T16:10:23.766Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T07:16:31.088Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-29T07:15:59.972Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 86,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
       }
     },
     {

@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "console-1793288905686",
+      "componentId": "console",
+      "title": "Organizer Console: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T15:48:25.686Z",
+      "updatedAt": "2026-10-29T15:48:25.686Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "console-1793288905686-monitor-2026-10-29T15:48:25.686Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:48:25.686Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T15:48:25.686Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 98,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/98"
+      }
+    },
+    {
       "id": "coach-1793288786022",
       "componentId": "coach",
       "title": "Coach: availability issue",
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:46:26.022Z",
-      "updatedAt": "2026-10-29T15:46:26.022Z",
+      "updatedAt": "2026-10-29T15:48:25.686Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +66,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:22:19.702Z",
-      "updatedAt": "2026-10-29T15:46:26.022Z",
+      "updatedAt": "2026-10-29T15:48:25.686Z",
       "resolvedAt": null,
       "stage": "monitoring",
       "updates": [
@@ -90,7 +119,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:01:57.935Z",
-      "updatedAt": "2026-10-29T15:46:26.022Z",
+      "updatedAt": "2026-10-29T15:48:25.686Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -273,7 +302,7 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T15:46:26.022Z",
+      "updatedAt": "2026-10-29T15:48:25.686Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -326,7 +355,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T15:46:26.022Z",
+      "updatedAt": "2026-10-29T15:48:25.686Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

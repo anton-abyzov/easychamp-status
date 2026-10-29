@@ -8,7 +8,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T16:26:08.364Z",
-      "updatedAt": "2026-10-29T16:38:57.653Z",
+      "updatedAt": "2026-10-29T16:45:16.344Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -31,15 +31,44 @@
       }
     },
     {
+      "id": "assistant-1793258191088",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-29T07:16:31.088Z",
+      "updatedAt": "2026-10-29T16:45:16.344Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T07:16:31.088Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-29T07:15:59.972Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 86,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+      }
+    },
+    {
       "id": "snap-1793285396314",
       "componentId": "snap",
       "title": "Snap to League: availability issue",
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T16:38:57.653Z",
-      "resolvedAt": null,
-      "stage": "investigating",
+      "updatedAt": "2026-10-29T16:45:16.344Z",
+      "resolvedAt": "2026-10-29T16:45:16.344Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "snap-1793285396314-monitor-2026-10-29T14:49:56.314Z-investigating",
@@ -76,40 +105,28 @@
             "reasonCode": "timeout",
             "observedAt": "2026-10-29T15:45:22.845Z"
           }
-        }
-      ],
-      "issue": {
-        "number": 91,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/91"
-      }
-    },
-    {
-      "id": "assistant-1793258191088",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T16:38:57.653Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
+        },
         {
-          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T07:16:31.088Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "id": "snap-1793285396314-monitor-2026-10-29T16:45:16.344Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-29T16:45:16.344Z",
+          "message": "Six consecutive availability checks passed.",
           "source": "monitor",
           "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-29T07:15:59.972Z"
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T16:45:16.344Z"
           }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Snap to League: availability issue. First confirmed issue: 2026-10-29T14:49:56.314Z. Recovery confirmed by six consecutive passing availability checks: 2026-10-29T16:45:16.344Z. Confirmed incident duration: 115 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-29T16:45:16.344Z"
+      },
       "issue": {
-        "number": 86,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+        "number": 91,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/91"
       }
     },
     {

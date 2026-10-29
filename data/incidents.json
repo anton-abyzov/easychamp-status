@@ -8,7 +8,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:01:57.935Z",
-      "updatedAt": "2026-10-29T15:06:52.981Z",
+      "updatedAt": "2026-10-29T15:07:42.373Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +37,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:01:57.935Z",
-      "updatedAt": "2026-10-29T15:06:52.981Z",
+      "updatedAt": "2026-10-29T15:07:42.373Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -136,7 +136,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T15:06:52.981Z",
+      "updatedAt": "2026-10-29T15:07:42.373Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -165,7 +165,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T15:06:52.981Z",
+      "updatedAt": "2026-10-29T15:07:42.373Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -188,15 +188,73 @@
       }
     },
     {
+      "id": "club-sites-1793285204461",
+      "componentId": "club-sites",
+      "title": "Club websites: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T14:46:44.461Z",
+      "updatedAt": "2026-10-29T15:07:42.373Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "club-sites-1793285204461-monitor-2026-10-29T14:46:44.461Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T14:46:44.461Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T14:46:44.461Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 88,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/88"
+      }
+    },
+    {
+      "id": "assistant-1793258191088",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-29T07:16:31.088Z",
+      "updatedAt": "2026-10-29T15:07:42.373Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T07:16:31.088Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-29T07:15:59.972Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 86,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+      }
+    },
+    {
       "id": "signin-1793285204461",
       "componentId": "signin",
       "title": "Sign-in discovery: degraded performance",
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-29T14:46:44.461Z",
-      "updatedAt": "2026-10-29T15:06:52.981Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-10-29T15:07:42.373Z",
+      "resolvedAt": "2026-10-29T15:07:42.373Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "signin-1793285204461-monitor-2026-10-29T14:46:44.461Z-investigating",
@@ -245,40 +303,28 @@
             "reasonCode": "ok",
             "observedAt": "2026-10-29T15:06:46.016Z"
           }
-        }
-      ],
-      "issue": {
-        "number": 87,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/87"
-      }
-    },
-    {
-      "id": "club-sites-1793285204461",
-      "componentId": "club-sites",
-      "title": "Club websites: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
-      "openedAt": "2026-10-29T14:46:44.461Z",
-      "updatedAt": "2026-10-29T15:06:52.981Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
+        },
         {
-          "id": "club-sites-1793285204461-monitor-2026-10-29T14:46:44.461Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T14:46:44.461Z",
-          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "id": "signin-1793285204461-monitor-2026-10-29T15:07:42.373Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-29T15:07:42.373Z",
+          "message": "Two fresh successful observations confirmed recovery.",
           "source": "monitor",
           "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-29T14:46:44.461Z"
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T15:07:41.486Z"
           }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Sign-in discovery: degraded performance. First confirmed issue: 2026-10-29T14:46:44.461Z. Recovery confirmed by two fresh successful observations: 2026-10-29T15:07:42.373Z. Confirmed incident duration: 21 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-29T15:07:42.373Z"
+      },
       "issue": {
-        "number": 88,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/88"
+        "number": 87,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/87"
       }
     },
     {
@@ -288,9 +334,9 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T14:46:44.461Z",
-      "updatedAt": "2026-10-29T15:06:52.981Z",
-      "resolvedAt": null,
-      "stage": "investigating",
+      "updatedAt": "2026-10-29T15:07:42.373Z",
+      "resolvedAt": "2026-10-29T15:07:42.373Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "console-1793285204461-monitor-2026-10-29T14:46:44.461Z-investigating",
@@ -303,40 +349,28 @@
             "reasonCode": "timeout",
             "observedAt": "2026-10-29T14:46:44.461Z"
           }
-        }
-      ],
-      "issue": {
-        "number": 89,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/89"
-      }
-    },
-    {
-      "id": "assistant-1793258191088",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T15:06:52.981Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
+        },
         {
-          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T07:16:31.088Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "id": "console-1793285204461-monitor-2026-10-29T15:07:42.373Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-29T15:07:42.373Z",
+          "message": "Six consecutive availability checks passed.",
           "source": "monitor",
           "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-29T07:15:59.972Z"
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T15:07:42.373Z"
           }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Organizer Console: availability issue. First confirmed issue: 2026-10-29T14:46:44.461Z. Recovery confirmed by six consecutive passing availability checks: 2026-10-29T15:07:42.373Z. Confirmed incident duration: 21 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-29T15:07:42.373Z"
+      },
       "issue": {
-        "number": 86,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+        "number": 89,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/89"
       }
     },
     {

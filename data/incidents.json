@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "snap-1793297002184",
+      "componentId": "snap",
+      "title": "Snap to League: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-10-29T18:03:22.184Z",
+      "updatedAt": "2026-10-29T18:03:22.184Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "snap-1793297002184-monitor-2026-10-29T18:03:22.184Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T18:03:22.184Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target. Latest check: major outage, Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T18:02:35.010Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 101,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/101"
+      }
+    },
+    {
       "id": "assistant-1793258191088",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T17:56:00.762Z",
+      "updatedAt": "2026-10-29T18:03:22.184Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

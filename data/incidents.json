@@ -8,7 +8,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T18:08:35.224Z",
-      "updatedAt": "2026-10-29T18:21:21.109Z",
+      "updatedAt": "2026-10-29T18:25:17.140Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +37,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T18:08:35.224Z",
-      "updatedAt": "2026-10-29T18:21:21.109Z",
+      "updatedAt": "2026-10-29T18:25:17.140Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -60,15 +60,44 @@
       }
     },
     {
+      "id": "assistant-1793258191088",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-29T07:16:31.088Z",
+      "updatedAt": "2026-10-29T18:25:17.140Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T07:16:31.088Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-29T07:15:59.972Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 86,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+      }
+    },
+    {
       "id": "snap-1793297002184",
       "componentId": "snap",
       "title": "Snap to League: degraded performance",
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-10-29T18:03:22.184Z",
-      "updatedAt": "2026-10-29T18:11:22.063Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-10-29T18:25:17.140Z",
+      "resolvedAt": "2026-10-29T18:25:17.140Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "snap-1793297002184-monitor-2026-10-29T18:03:22.184Z-investigating",
@@ -93,40 +122,28 @@
             "reasonCode": "ok",
             "observedAt": "2026-10-29T18:10:51.793Z"
           }
-        }
-      ],
-      "issue": {
-        "number": 101,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/101"
-      }
-    },
-    {
-      "id": "assistant-1793258191088",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T18:21:21.109Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
+        },
         {
-          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T07:16:31.088Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "id": "snap-1793297002184-monitor-2026-10-29T18:25:17.140Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-29T18:25:17.140Z",
+          "message": "Two fresh successful observations confirmed recovery.",
           "source": "monitor",
           "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-29T07:15:59.972Z"
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T18:24:44.203Z"
           }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Snap to League: degraded performance. First confirmed issue: 2026-10-29T18:03:22.184Z. Recovery confirmed by two fresh successful observations: 2026-10-29T18:25:17.140Z. Confirmed incident duration: 22 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-29T18:25:17.140Z"
+      },
       "issue": {
-        "number": 86,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+        "number": 101,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/101"
       }
     },
     {

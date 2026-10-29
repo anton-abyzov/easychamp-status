@@ -2,15 +2,44 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "coach-1793288786022",
+      "componentId": "coach",
+      "title": "Coach: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T15:46:26.022Z",
+      "updatedAt": "2026-10-29T15:46:26.022Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "coach-1793288786022-monitor-2026-10-29T15:46:26.022Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:46:26.022Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T15:46:26.022Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 97,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/97"
+      }
+    },
+    {
       "id": "sim-1793287339702",
       "componentId": "sim",
       "title": "Match Simulator: availability issue",
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:22:19.702Z",
-      "updatedAt": "2026-10-29T15:35:56.912Z",
+      "updatedAt": "2026-10-29T15:46:26.022Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "sim-1793287339702-monitor-2026-10-29T15:22:19.702Z-investigating",
@@ -35,6 +64,18 @@
             "reasonCode": "timeout",
             "observedAt": "2026-10-29T15:35:07.727Z"
           }
+        },
+        {
+          "id": "sim-1793287339702-monitor-2026-10-29T15:46:26.022Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-29T15:46:26.022Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T15:45:21.879Z"
+          }
         }
       ],
       "issue": {
@@ -47,9 +88,9 @@
       "componentId": "home",
       "title": "EasyChamp home: availability issue",
       "status": "major_outage",
-      "reasonCode": "network_error",
+      "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:01:57.935Z",
-      "updatedAt": "2026-10-29T15:39:08.243Z",
+      "updatedAt": "2026-10-29T15:46:26.022Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -75,6 +116,18 @@
             "status": "major_outage",
             "reasonCode": "network_error",
             "observedAt": "2026-10-29T15:08:56.862Z"
+          }
+        },
+        {
+          "id": "home-1793286117935-monitor-2026-10-29T15:46:26.022Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:46:26.022Z",
+          "message": "Fresh observations continue to confirm major outage: Check timed out. Latest check: needs attention, Visible images did not finish loading.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_incomplete",
+            "observedAt": "2026-10-29T15:45:21.335Z"
           }
         }
       ],
@@ -127,11 +180,11 @@
     {
       "id": "access-miami-1793285677022",
       "componentId": "access-miami",
-      "title": "Access from Miami: degraded service",
-      "status": "degraded",
+      "title": "Access from Miami: availability issue",
+      "status": "partial_outage",
       "reasonCode": "origin_unreachable",
       "openedAt": "2026-10-29T14:54:37.022Z",
-      "updatedAt": "2026-10-29T15:35:56.912Z",
+      "updatedAt": "2026-10-29T15:46:26.022Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -194,6 +247,18 @@
             "reasonCode": "origin_unreachable",
             "observedAt": "2026-10-29T15:32:00.000Z"
           }
+        },
+        {
+          "id": "access-miami-1793285677022-monitor-2026-10-29T15:46:26.022Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:46:26.022Z",
+          "message": "Fresh observations continue to confirm partial outage: Cloudflare got no usable answer from EasyChamp for some visitors.",
+          "source": "monitor",
+          "evidence": {
+            "status": "partial_outage",
+            "reasonCode": "origin_unreachable",
+            "observedAt": "2026-10-29T15:42:00.000Z"
+          }
         }
       ],
       "issue": {
@@ -208,7 +273,7 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T15:39:08.243Z",
+      "updatedAt": "2026-10-29T15:46:26.022Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -235,6 +300,18 @@
             "reasonCode": "http_error",
             "observedAt": "2026-10-29T15:34:55.039Z"
           }
+        },
+        {
+          "id": "snap-1793285396314-monitor-2026-10-29T15:46:26.022Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:46:26.022Z",
+          "message": "Latest evidence is unknown: Check timed out. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T15:45:22.845Z"
+          }
         }
       ],
       "issue": {
@@ -249,7 +326,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T15:39:08.243Z",
+      "updatedAt": "2026-10-29T15:46:26.022Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

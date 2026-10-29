@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "snap-1793303399519",
+      "componentId": "snap",
+      "title": "Snap to League: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T19:49:59.519Z",
+      "updatedAt": "2026-10-29T19:49:59.519Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "snap-1793303399519-monitor-2026-10-29T19:49:59.519Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T19:49:59.519Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T19:49:59.519Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 104,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/104"
+      }
+    },
+    {
       "id": "assistant-1793258191088",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T19:48:05.389Z",
+      "updatedAt": "2026-10-29T19:49:59.519Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

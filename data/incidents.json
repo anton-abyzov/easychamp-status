@@ -2,15 +2,73 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "coach-1793285396314",
+      "componentId": "coach",
+      "title": "Coach: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T14:49:56.314Z",
+      "updatedAt": "2026-10-29T14:49:56.314Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "coach-1793285396314-monitor-2026-10-29T14:49:56.314Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T14:49:56.314Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T14:49:56.314Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 90,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/90"
+      }
+    },
+    {
+      "id": "snap-1793285396314",
+      "componentId": "snap",
+      "title": "Snap to League: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T14:49:56.314Z",
+      "updatedAt": "2026-10-29T14:49:56.314Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "snap-1793285396314-monitor-2026-10-29T14:49:56.314Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T14:49:56.314Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T14:49:56.314Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 91,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/91"
+      }
+    },
+    {
       "id": "signin-1793285204461",
       "componentId": "signin",
       "title": "Sign-in discovery: degraded performance",
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-10-29T14:46:44.461Z",
-      "updatedAt": "2026-10-29T14:46:44.461Z",
+      "updatedAt": "2026-10-29T14:49:56.314Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "signin-1793285204461-monitor-2026-10-29T14:46:44.461Z-investigating",
@@ -22,6 +80,18 @@
             "status": "major_outage",
             "reasonCode": "timeout",
             "observedAt": "2026-10-29T14:46:44.098Z"
+          }
+        },
+        {
+          "id": "signin-1793285204461-monitor-2026-10-29T14:49:56.314Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-29T14:49:56.314Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T14:48:44.584Z"
           }
         }
       ],
@@ -37,7 +107,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T14:46:44.461Z",
-      "updatedAt": "2026-10-29T14:46:44.461Z",
+      "updatedAt": "2026-10-29T14:49:56.314Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -66,7 +136,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T14:46:44.461Z",
-      "updatedAt": "2026-10-29T14:46:44.461Z",
+      "updatedAt": "2026-10-29T14:49:56.314Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -95,7 +165,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T14:46:44.461Z",
+      "updatedAt": "2026-10-29T14:49:56.314Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

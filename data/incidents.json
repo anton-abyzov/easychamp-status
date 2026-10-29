@@ -2,71 +2,13 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "soccer-nationals-1793297315224",
-      "componentId": "soccer-nationals",
-      "title": "Soccer Nationals league site: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
-      "openedAt": "2026-10-29T18:08:35.224Z",
-      "updatedAt": "2026-10-29T18:29:25.472Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "soccer-nationals-1793297315224-monitor-2026-10-29T18:08:35.224Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T18:08:35.224Z",
-          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-29T18:08:35.224Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 102,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/102"
-      }
-    },
-    {
-      "id": "console-1793297315224",
-      "componentId": "console",
-      "title": "Organizer Console: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
-      "openedAt": "2026-10-29T18:08:35.224Z",
-      "updatedAt": "2026-10-29T18:29:25.472Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "console-1793297315224-monitor-2026-10-29T18:08:35.224Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T18:08:35.224Z",
-          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-10-29T18:08:35.224Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 103,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/103"
-      }
-    },
-    {
       "id": "assistant-1793258191088",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T18:29:25.472Z",
+      "updatedAt": "2026-10-29T18:35:43.316Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -86,6 +28,98 @@
       "issue": {
         "number": 86,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+      }
+    },
+    {
+      "id": "soccer-nationals-1793297315224",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T18:08:35.224Z",
+      "updatedAt": "2026-10-29T18:35:43.316Z",
+      "resolvedAt": "2026-10-29T18:35:43.316Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "soccer-nationals-1793297315224-monitor-2026-10-29T18:08:35.224Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T18:08:35.224Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T18:08:35.224Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1793297315224-monitor-2026-10-29T18:35:43.316Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-29T18:35:43.316Z",
+          "message": "Six consecutive availability checks passed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T18:35:43.316Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Soccer Nationals league site: availability issue. First confirmed issue: 2026-10-29T18:08:35.224Z. Recovery confirmed by six consecutive passing availability checks: 2026-10-29T18:35:43.316Z. Confirmed incident duration: 27 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-29T18:35:43.316Z"
+      },
+      "issue": {
+        "number": 102,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/102"
+      }
+    },
+    {
+      "id": "console-1793297315224",
+      "componentId": "console",
+      "title": "Organizer Console: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T18:08:35.224Z",
+      "updatedAt": "2026-10-29T18:35:43.316Z",
+      "resolvedAt": "2026-10-29T18:35:43.316Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "console-1793297315224-monitor-2026-10-29T18:08:35.224Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T18:08:35.224Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T18:08:35.224Z"
+          }
+        },
+        {
+          "id": "console-1793297315224-monitor-2026-10-29T18:35:43.316Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-29T18:35:43.316Z",
+          "message": "Six consecutive availability checks passed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T18:35:43.316Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Organizer Console: availability issue. First confirmed issue: 2026-10-29T18:08:35.224Z. Recovery confirmed by six consecutive passing availability checks: 2026-10-29T18:35:43.316Z. Confirmed incident duration: 27 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-29T18:35:43.316Z"
+      },
+      "issue": {
+        "number": 103,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/103"
       }
     },
     {

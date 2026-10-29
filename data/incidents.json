@@ -2,13 +2,71 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "access-atlanta-1793285677022",
+      "componentId": "access-atlanta",
+      "title": "Access from Atlanta: degraded service",
+      "status": "degraded",
+      "reasonCode": "origin_unreachable",
+      "openedAt": "2026-10-29T14:54:37.022Z",
+      "updatedAt": "2026-10-29T14:54:37.022Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "access-atlanta-1793285677022-monitor-2026-10-29T14:54:37.022Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T14:54:37.022Z",
+          "message": "Two fresh observations confirmed needs attention: Cloudflare got no usable answer from EasyChamp for some visitors.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "origin_unreachable",
+            "observedAt": "2026-10-29T14:51:00.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 92,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/92"
+      }
+    },
+    {
+      "id": "access-miami-1793285677022",
+      "componentId": "access-miami",
+      "title": "Access from Miami: degraded service",
+      "status": "degraded",
+      "reasonCode": "origin_unreachable",
+      "openedAt": "2026-10-29T14:54:37.022Z",
+      "updatedAt": "2026-10-29T14:54:37.022Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "access-miami-1793285677022-monitor-2026-10-29T14:54:37.022Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T14:54:37.022Z",
+          "message": "Two fresh observations confirmed needs attention: Cloudflare got no usable answer from EasyChamp for some visitors. Latest check: partial outage, Cloudflare got no usable answer from EasyChamp for some visitors.",
+          "source": "monitor",
+          "evidence": {
+            "status": "partial_outage",
+            "reasonCode": "origin_unreachable",
+            "observedAt": "2026-10-29T14:51:00.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 93,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/93"
+      }
+    },
+    {
       "id": "coach-1793285396314",
       "componentId": "coach",
       "title": "Coach: availability issue",
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T14:49:56.314Z",
+      "updatedAt": "2026-10-29T14:54:37.022Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +95,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T14:49:56.314Z",
+      "updatedAt": "2026-10-29T14:54:37.022Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -107,7 +165,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T14:46:44.461Z",
-      "updatedAt": "2026-10-29T14:49:56.314Z",
+      "updatedAt": "2026-10-29T14:54:37.022Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -136,7 +194,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T14:46:44.461Z",
-      "updatedAt": "2026-10-29T14:49:56.314Z",
+      "updatedAt": "2026-10-29T14:54:37.022Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -165,7 +223,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T14:49:56.314Z",
+      "updatedAt": "2026-10-29T14:54:37.022Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

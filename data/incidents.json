@@ -8,7 +8,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T18:08:35.224Z",
-      "updatedAt": "2026-10-29T18:08:35.224Z",
+      "updatedAt": "2026-10-29T18:11:22.063Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +37,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T18:08:35.224Z",
-      "updatedAt": "2026-10-29T18:08:35.224Z",
+      "updatedAt": "2026-10-29T18:11:22.063Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -66,9 +66,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-10-29T18:03:22.184Z",
-      "updatedAt": "2026-10-29T18:03:22.184Z",
+      "updatedAt": "2026-10-29T18:11:22.063Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "snap-1793297002184-monitor-2026-10-29T18:03:22.184Z-investigating",
@@ -80,6 +80,18 @@
             "status": "major_outage",
             "reasonCode": "timeout",
             "observedAt": "2026-10-29T18:02:35.010Z"
+          }
+        },
+        {
+          "id": "snap-1793297002184-monitor-2026-10-29T18:11:22.063Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-29T18:11:22.063Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T18:10:51.793Z"
           }
         }
       ],
@@ -95,7 +107,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T18:08:35.224Z",
+      "updatedAt": "2026-10-29T18:11:22.063Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

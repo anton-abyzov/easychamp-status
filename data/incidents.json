@@ -8,7 +8,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:48:25.686Z",
-      "updatedAt": "2026-10-29T15:56:50.625Z",
+      "updatedAt": "2026-10-29T16:03:12.924Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -22,6 +22,18 @@
             "status": "major_outage",
             "reasonCode": "timeout",
             "observedAt": "2026-10-29T15:48:25.686Z"
+          }
+        },
+        {
+          "id": "console-1793288905686-monitor-2026-10-29T16:03:12.924Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T16:03:12.924Z",
+          "message": "Latest evidence is unknown: Evidence could not be verified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "invalid_evidence",
+            "observedAt": "2026-10-29T16:02:31.562Z"
           }
         }
       ],
@@ -37,7 +49,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:46:26.022Z",
-      "updatedAt": "2026-10-29T15:56:50.625Z",
+      "updatedAt": "2026-10-29T16:03:12.924Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -66,7 +78,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:22:19.702Z",
-      "updatedAt": "2026-10-29T15:56:50.625Z",
+      "updatedAt": "2026-10-29T16:03:12.924Z",
       "resolvedAt": null,
       "stage": "monitoring",
       "updates": [
@@ -131,7 +143,7 @@
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:01:57.935Z",
-      "updatedAt": "2026-10-29T15:56:50.625Z",
+      "updatedAt": "2026-10-29T16:03:12.924Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -193,10 +205,10 @@
       "id": "access-miami-1793285677022",
       "componentId": "access-miami",
       "title": "Access from Miami: availability issue",
-      "status": "partial_outage",
+      "status": "degraded",
       "reasonCode": "origin_unreachable",
       "openedAt": "2026-10-29T14:54:37.022Z",
-      "updatedAt": "2026-10-29T15:51:14.647Z",
+      "updatedAt": "2026-10-29T16:03:12.924Z",
       "resolvedAt": null,
       "stage": "monitoring",
       "updates": [
@@ -283,6 +295,30 @@
             "reasonCode": "ok",
             "observedAt": "2026-10-29T15:47:00.000Z"
           }
+        },
+        {
+          "id": "access-miami-1793285677022-monitor-2026-10-29T16:03:12.924Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-29T16:03:12.924Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T15:59:00.000Z"
+          }
+        },
+        {
+          "id": "access-miami-1793285677022-monitor-2026-10-29T16:03:12.924Z-severity",
+          "stage": "monitoring",
+          "at": "2026-10-29T16:03:12.924Z",
+          "message": "Fresh observations now confirm needs attention: Cloudflare got no usable answer from EasyChamp for some visitors. Latest check: operational, Checks passed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T15:59:00.000Z"
+          }
         }
       ],
       "issue": {
@@ -297,7 +333,7 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T15:56:50.625Z",
+      "updatedAt": "2026-10-29T16:03:12.924Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -350,7 +386,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T15:56:50.625Z",
+      "updatedAt": "2026-10-29T16:03:12.924Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

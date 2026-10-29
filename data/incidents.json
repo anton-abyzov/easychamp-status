@@ -4,11 +4,11 @@
     {
       "id": "sim-1793287339702",
       "componentId": "sim",
-      "title": "Match Simulator: degraded performance",
-      "status": "degraded",
-      "reasonCode": "rendering_slow",
+      "title": "Match Simulator: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
       "openedAt": "2026-10-29T15:22:19.702Z",
-      "updatedAt": "2026-10-29T15:22:19.702Z",
+      "updatedAt": "2026-10-29T15:35:56.912Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -22,6 +22,18 @@
             "status": "degraded",
             "reasonCode": "rendering_slow",
             "observedAt": "2026-10-29T15:21:09.997Z"
+          }
+        },
+        {
+          "id": "sim-1793287339702-monitor-2026-10-29T15:35:56.912Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:35:56.912Z",
+          "message": "Fresh observations continue to confirm major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T15:35:07.727Z"
           }
         }
       ],
@@ -37,7 +49,7 @@
       "status": "major_outage",
       "reasonCode": "network_error",
       "openedAt": "2026-10-29T15:01:57.935Z",
-      "updatedAt": "2026-10-29T15:29:01.143Z",
+      "updatedAt": "2026-10-29T15:35:56.912Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -78,9 +90,9 @@
       "status": "degraded",
       "reasonCode": "origin_unreachable",
       "openedAt": "2026-10-29T14:54:37.022Z",
-      "updatedAt": "2026-10-29T15:27:21.347Z",
+      "updatedAt": "2026-10-29T15:35:56.912Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "access-atlanta-1793285677022-monitor-2026-10-29T14:54:37.022Z-investigating",
@@ -92,6 +104,18 @@
             "status": "degraded",
             "reasonCode": "origin_unreachable",
             "observedAt": "2026-10-29T14:51:00.000Z"
+          }
+        },
+        {
+          "id": "access-atlanta-1793285677022-monitor-2026-10-29T15:35:56.912Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-10-29T15:35:56.912Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-10-29T15:32:00.000Z"
           }
         }
       ],
@@ -107,9 +131,9 @@
       "status": "degraded",
       "reasonCode": "origin_unreachable",
       "openedAt": "2026-10-29T14:54:37.022Z",
-      "updatedAt": "2026-10-29T15:19:41.281Z",
+      "updatedAt": "2026-10-29T15:35:56.912Z",
       "resolvedAt": null,
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "access-miami-1793285677022-monitor-2026-10-29T14:54:37.022Z-investigating",
@@ -158,6 +182,18 @@
             "reasonCode": "ok",
             "observedAt": "2026-10-29T15:16:00.000Z"
           }
+        },
+        {
+          "id": "access-miami-1793285677022-monitor-2026-10-29T15:35:56.912Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:35:56.912Z",
+          "message": "Fresh observations continue to confirm needs attention: Cloudflare got no usable answer from EasyChamp for some visitors.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "origin_unreachable",
+            "observedAt": "2026-10-29T15:32:00.000Z"
+          }
         }
       ],
       "issue": {
@@ -170,9 +206,9 @@
       "componentId": "snap",
       "title": "Snap to League: availability issue",
       "status": "major_outage",
-      "reasonCode": "timeout",
+      "reasonCode": "http_error",
       "openedAt": "2026-10-29T14:49:56.314Z",
-      "updatedAt": "2026-10-29T15:29:01.143Z",
+      "updatedAt": "2026-10-29T15:35:56.912Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -186,6 +222,18 @@
             "status": "major_outage",
             "reasonCode": "timeout",
             "observedAt": "2026-10-29T14:49:56.314Z"
+          }
+        },
+        {
+          "id": "snap-1793285396314-monitor-2026-10-29T15:35:56.912Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T15:35:56.912Z",
+          "message": "Fresh observations continue to confirm major outage: Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-10-29T15:34:55.039Z"
           }
         }
       ],
@@ -201,7 +249,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T15:29:01.143Z",
+      "updatedAt": "2026-10-29T15:35:56.912Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

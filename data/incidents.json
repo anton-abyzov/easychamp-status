@@ -2,13 +2,100 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "signin-1793285204461",
+      "componentId": "signin",
+      "title": "Sign-in discovery: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-10-29T14:46:44.461Z",
+      "updatedAt": "2026-10-29T14:46:44.461Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "signin-1793285204461-monitor-2026-10-29T14:46:44.461Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T14:46:44.461Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target. Latest check: major outage, Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T14:46:44.098Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 87,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/87"
+      }
+    },
+    {
+      "id": "club-sites-1793285204461",
+      "componentId": "club-sites",
+      "title": "Club websites: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T14:46:44.461Z",
+      "updatedAt": "2026-10-29T14:46:44.461Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "club-sites-1793285204461-monitor-2026-10-29T14:46:44.461Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T14:46:44.461Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T14:46:44.461Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 88,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/88"
+      }
+    },
+    {
+      "id": "console-1793285204461",
+      "componentId": "console",
+      "title": "Organizer Console: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-10-29T14:46:44.461Z",
+      "updatedAt": "2026-10-29T14:46:44.461Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "console-1793285204461-monitor-2026-10-29T14:46:44.461Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T14:46:44.461Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-10-29T14:46:44.461Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 89,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/89"
+      }
+    },
+    {
       "id": "assistant-1793258191088",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-29T14:44:05.037Z",
+      "updatedAt": "2026-10-29T14:46:44.461Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

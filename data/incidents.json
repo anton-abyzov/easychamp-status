@@ -2,16 +2,45 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "assistant-1793258191088",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-29T07:16:31.088Z",
+      "updatedAt": "2026-10-30T08:20:54.073Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T07:16:31.088Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-29T07:15:59.972Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 86,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+      }
+    },
+    {
       "id": "feed-external-sync-1793330650477",
       "componentId": "feed-external-sync",
       "title": "External league sync: degraded service",
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-30T03:24:10.477Z",
-      "updatedAt": "2026-10-30T08:11:46.702Z",
-      "resolvedAt": null,
+      "updatedAt": "2026-10-30T08:20:54.073Z",
+      "resolvedAt": "2026-10-30T08:20:54.073Z",
       "deadlineAt": "2026-10-30T03:00:00.000Z",
-      "stage": "monitoring",
+      "stage": "resolved",
       "updates": [
         {
           "id": "feed-external-sync-1793330650477-monitor-2026-10-30T03:24:10.477Z-investigating",
@@ -48,8 +77,25 @@
             "reasonCode": "verified",
             "observedAt": "2026-10-30T08:10:09.000Z"
           }
+        },
+        {
+          "id": "feed-external-sync-1793330650477-monitor-2026-10-30T08:20:54.073Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-30T08:20:54.073Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-10-30T08:20:08.000Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. External league sync: degraded service. First confirmed issue: 2026-10-30T03:24:10.477Z. Recovery confirmed by two fresh successful observations: 2026-10-30T08:20:54.073Z. Confirmed incident duration: 297 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-30T08:20:54.073Z"
+      },
       "issue": {
         "number": 107,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/107"
@@ -62,10 +108,10 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-30T03:24:10.477Z",
-      "updatedAt": "2026-10-30T07:55:28.379Z",
-      "resolvedAt": null,
+      "updatedAt": "2026-10-30T08:20:54.073Z",
+      "resolvedAt": "2026-10-30T08:20:54.073Z",
       "deadlineAt": "2026-10-30T03:00:00.000Z",
-      "stage": "investigating",
+      "stage": "resolved",
       "updates": [
         {
           "id": "feed-results-1793330650477-monitor-2026-10-30T03:24:10.477Z-investigating",
@@ -90,40 +136,28 @@
             "reasonCode": "verification_unavailable",
             "observedAt": "2026-10-30T04:00:08.000Z"
           }
-        }
-      ],
-      "issue": {
-        "number": 108,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/108"
-      }
-    },
-    {
-      "id": "assistant-1793258191088",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-30T08:15:05.481Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
+        },
         {
-          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T07:16:31.088Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "id": "feed-results-1793330650477-monitor-2026-10-30T08:20:54.073Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-30T08:20:54.073Z",
+          "message": "A scheduled run completed successfully after the failure. Destination freshness is still unverified.",
           "source": "monitor",
           "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-29T07:15:59.972Z"
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-30T08:20:08.000Z"
           }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Match results & schedules: degraded service. First confirmed issue: 2026-10-30T03:24:10.477Z. Recovery confirmed by a successful scheduled run after the failure: 2026-10-30T08:20:54.073Z. Confirmed incident duration: 297 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-30T08:20:54.073Z"
+      },
       "issue": {
-        "number": 86,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+        "number": 108,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/108"
       }
     },
     {

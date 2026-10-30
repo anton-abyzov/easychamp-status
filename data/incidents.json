@@ -2,13 +2,73 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "feed-france-1793323372674",
+      "componentId": "feed-france",
+      "title": "France results: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-30T01:22:52.674Z",
+      "updatedAt": "2026-10-30T01:22:52.674Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-10-30T01:08:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "feed-france-1793323372674-monitor-2026-10-30T01:22:52.674Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-30T01:22:52.674Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-10-30T01:20:06.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 105,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/105"
+      }
+    },
+    {
+      "id": "feed-results-1793323372674",
+      "componentId": "feed-results",
+      "title": "Match results & schedules: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-10-30T01:22:52.674Z",
+      "updatedAt": "2026-10-30T01:22:52.674Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-10-30T01:08:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "feed-results-1793323372674-monitor-2026-10-30T01:22:52.674Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-30T01:22:52.674Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-10-30T01:20:06.000Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 106,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/106"
+      }
+    },
+    {
       "id": "assistant-1793258191088",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-30T01:19:14.198Z",
+      "updatedAt": "2026-10-30T01:22:52.674Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

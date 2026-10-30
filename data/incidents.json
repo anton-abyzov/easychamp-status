@@ -2,16 +2,45 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "assistant-1793258191088",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-10-29T07:16:31.088Z",
+      "updatedAt": "2026-10-30T02:24:19.125Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-29T07:16:31.088Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-10-29T07:15:59.972Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 86,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+      }
+    },
+    {
       "id": "feed-results-1793323372674",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-30T01:22:52.674Z",
-      "updatedAt": "2026-10-30T01:31:27.135Z",
-      "resolvedAt": null,
+      "updatedAt": "2026-10-30T02:24:19.125Z",
+      "resolvedAt": "2026-10-30T02:24:19.125Z",
       "deadlineAt": "2026-10-30T01:08:00.000Z",
-      "stage": "investigating",
+      "stage": "resolved",
       "updates": [
         {
           "id": "feed-results-1793323372674-monitor-2026-10-30T01:22:52.674Z-investigating",
@@ -36,40 +65,28 @@
             "reasonCode": "verification_unavailable",
             "observedAt": "2026-10-30T01:30:07.000Z"
           }
-        }
-      ],
-      "issue": {
-        "number": 106,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/106"
-      }
-    },
-    {
-      "id": "assistant-1793258191088",
-      "componentId": "assistant",
-      "title": "AI assistant: degraded service",
-      "status": "degraded",
-      "reasonCode": "provider_capacity_low",
-      "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-30T02:19:00.222Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
+        },
         {
-          "id": "assistant-1793258191088-monitor-2026-10-29T07:16:31.088Z-investigating",
-          "stage": "investigating",
-          "at": "2026-10-29T07:16:31.088Z",
-          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "id": "feed-results-1793323372674-monitor-2026-10-30T02:24:19.125Z-resolved",
+          "stage": "resolved",
+          "at": "2026-10-30T02:24:19.125Z",
+          "message": "A scheduled run completed successfully after the failure. Destination freshness is still unverified.",
           "source": "monitor",
           "evidence": {
-            "status": "degraded",
-            "reasonCode": "provider_capacity_low",
-            "observedAt": "2026-10-29T07:15:59.972Z"
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-30T02:20:06.000Z"
           }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Match results & schedules: degraded service. First confirmed issue: 2026-10-30T01:22:52.674Z. Recovery confirmed by a successful scheduled run after the failure: 2026-10-30T02:24:19.125Z. Confirmed incident duration: 61 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-10-30T02:24:19.125Z"
+      },
       "issue": {
-        "number": 86,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/86"
+        "number": 106,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/106"
       }
     },
     {

@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-30T03:24:10.477Z",
-      "updatedAt": "2026-10-30T03:55:24.657Z",
+      "updatedAt": "2026-10-30T04:05:05.217Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-30T03:00:00.000Z",
       "stage": "investigating",
@@ -24,6 +24,18 @@
             "reasonCode": "run_failed",
             "observedAt": "2026-10-30T03:20:07.000Z"
           }
+        },
+        {
+          "id": "feed-external-sync-1793330650477-monitor-2026-10-30T04:05:05.217Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-30T04:05:05.217Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-10-30T04:00:08.000Z"
+          }
         }
       ],
       "issue": {
@@ -38,7 +50,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-10-30T03:24:10.477Z",
-      "updatedAt": "2026-10-30T03:55:24.657Z",
+      "updatedAt": "2026-10-30T04:05:05.217Z",
       "resolvedAt": null,
       "deadlineAt": "2026-10-30T03:00:00.000Z",
       "stage": "investigating",
@@ -54,6 +66,18 @@
             "reasonCode": "run_failed",
             "observedAt": "2026-10-30T03:20:07.000Z"
           }
+        },
+        {
+          "id": "feed-results-1793330650477-monitor-2026-10-30T04:05:05.217Z-investigating",
+          "stage": "investigating",
+          "at": "2026-10-30T04:05:05.217Z",
+          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-10-30T04:00:08.000Z"
+          }
         }
       ],
       "issue": {
@@ -68,7 +92,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-10-29T07:16:31.088Z",
-      "updatedAt": "2026-10-30T03:58:08.200Z",
+      "updatedAt": "2026-10-30T04:05:05.217Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

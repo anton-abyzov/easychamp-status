@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { currentEvidence, verifyFreshness, componentState, viewState, rollup } from '../public/model.mjs';
+import { normalizeIncident, outageSpans, spanTouchesDay } from '../public/incident-model.mjs';
+import { currentEvidence, verifyFreshness, componentState, viewState, rollup, dayStatus } from '../public/model.mjs';
 const now = Date.parse('2026-10-07T18:00:00Z');
 const stamp = minutes => new Date(now + minutes * 60000).toISOString();
 const good = { status: 'operational', reasonCode: 'verified', observedAt: stamp(-1), lastCompletedSuccessAt: stamp(-30), lastDestinationVerifiedAt: stamp(-5), nextDueAt: stamp(30), graceSeconds: 300 };
@@ -41,4 +42,28 @@ test('unconnected functional services and expired collection stay unknown', () =
   const registry = { groups: [{ id: 'core' }], probes: [], components: [{ id: 'chat', group: 'core', probes: [] }] };
   const view = viewState(registry, { generatedAt: stamp(-16) }, now);
   assert.equal(view.status, 'unknown'); assert.equal(view.collector.status, 'unknown');
+});
+test('one isolated failed sample is not an outage day, a confirmed incident or repeat is', () => {
+  assert.equal(dayStatus({ operational: 144, major_outage: 1 }), 'degraded');
+  assert.equal(dayStatus({ operational: 133, degraded: 1, partial_outage: 1 }), 'degraded');
+  assert.equal(dayStatus({ operational: 144, major_outage: 1 }, true), 'major_outage');
+  assert.equal(dayStatus({ operational: 144, partial_outage: 2 }), 'partial_outage');
+  assert.equal(dayStatus({ partial_outage: 1, major_outage: 1 }), 'major_outage');
+  assert.equal(dayStatus({ operational: 144, degraded: 3 }, true), 'degraded');
+  assert.equal(dayStatus({ operational: 144 }), 'operational');
+  assert.equal(dayStatus({ unknown: 2, major_outage: 1 }), 'degraded');
+  assert.equal(dayStatus({}), 'unknown');
+});
+test('outage spans cover every UTC day an outage incident touched, including stepped-down ones', () => {
+  const incident = (id, status, openedAt, resolvedAt, evidence) => normalizeIncident({ id, componentId: 'club-sites', title: 'Club websites: issue', status, reasonCode: 'timeout', openedAt, resolvedAt, stage: resolvedAt ? 'resolved' : 'investigating', updates: [{ id: `${id}-open`, stage: 'investigating', at: openedAt, message: 'Confirmed.', source: 'monitor', evidence: { status: evidence, reasonCode: 'timeout', observedAt: openedAt } }] });
+  const spans = outageSpans([
+    incident('over-midnight', 'major_outage', '2026-10-29T23:50:00.000Z', '2026-10-30T00:20:00.000Z', 'major_outage'),
+    incident('stepped-down', 'degraded', '2026-10-25T10:00:00.000Z', '2026-10-25T11:00:00.000Z', 'partial_outage'),
+    incident('only-slow', 'degraded', '2026-10-20T10:00:00.000Z', '2026-10-20T11:00:00.000Z', 'degraded'),
+    incident('still-open', 'major_outage', '2026-11-01T10:00:00.000Z', null, 'major_outage'),
+  ], Date.parse('2026-11-02T01:00:00Z'))['club-sites'];
+  assert.equal(spans.length, 3);
+  for (const date of ['2026-10-29', '2026-10-30', '2026-10-25', '2026-11-01', '2026-11-02']) assert.equal(spanTouchesDay(spans, date), true, date);
+  for (const date of ['2026-10-28', '2026-10-31', '2026-10-20', '2026-11-03']) assert.equal(spanTouchesDay(spans, date), false, date);
+  assert.equal(spanTouchesDay(undefined, '2026-10-29'), false);
 });

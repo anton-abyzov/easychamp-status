@@ -49,3 +49,18 @@ export function displayIncidentTitle(incident, component) {
   }
   return incident.title;
 }
+
+// Time spans of incidents that confirmed an outage at any point, by component. Severity can
+// step down later, so the recorded evidence counts as well as the current status.
+export function outageSpans(list, now = Date.now()) {
+  const spans = {}, outage = status => ['major_outage', 'partial_outage'].includes(status);
+  for (const i of list) {
+    if (!outage(i.status) && !i.updates.some(u => outage(u.evidence?.status))) continue;
+    (spans[i.componentId] ||= []).push([time(i.openedAt), time(i.resolvedAt) ?? now]);
+  }
+  return spans;
+}
+export function spanTouchesDay(spans, date) {
+  const start = Date.parse(`${date}T00:00:00Z`), end = start + 86400000;
+  return (spans || []).some(([from, to]) => from < end && to >= start);
+}

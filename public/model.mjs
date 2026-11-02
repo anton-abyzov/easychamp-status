@@ -28,10 +28,11 @@ export function rollup(samples) {
   for (const status of ['major_outage', 'partial_outage', 'degraded', 'unknown', 'maintenance']) if (samples.some(s => s.status === status)) return status;
   return 'operational';
 }
-// One failed sample in a day is an issue, not an outage; an outage needs the two observations that confirm one.
-export function dayStatus(daily) {
-  const status = rollup(Object.entries(daily).map(([status]) => ({ status })));
-  return ['major_outage', 'partial_outage'].includes(status) && (daily.major_outage || 0) + (daily.partial_outage || 0) < 2 ? 'degraded' : status;
+// One isolated failed sample is an issue, not an outage. Daily counts skip runs where a service's
+// checks did not all advance, so the caller also passes what incidents and raw checks confirm.
+export function dayStatus(daily, confirmedOutage = false) {
+  const status = rollup(Object.keys(daily).map(status => ({ status })));
+  return ['major_outage', 'partial_outage'].includes(status) && !confirmedOutage && (daily.major_outage || 0) + (daily.partial_outage || 0) < 2 ? 'degraded' : status;
 }
 
 export function verifyFreshness(sample, now = Date.now(), limits = {}) {

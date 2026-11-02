@@ -121,3 +121,9 @@ export function recentChecks(series, limit) {
   }
   return out.reverse();
 }
+
+// Failed checks recorded on one UTC day; a run of failures across midnight counts on both days.
+export function failedChecksOn(series, date) {
+  const start = Date.parse(`${date}T00:00:00Z`) / 1000, end = start + 86400;
+  return (series || []).reduce((total, [from, last, code, samples]) => total + (DOWN.has(code) && from < end && last >= start ? samples : 0), 0);
+}

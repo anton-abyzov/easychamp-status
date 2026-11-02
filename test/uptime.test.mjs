@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { appendSample, prune, intervals, summarize, combine, recentChecks } from '../public/uptime.mjs';
+import { failedChecksOn, appendSample, prune, intervals, summarize, combine, recentChecks } from '../public/uptime.mjs';
 import { CAPS, RETENTION_DAYS, recordTimeline, serializeTimeline, emptyTimeline } from '../scripts/timeline.mjs';
 import { httpProbe } from '../scripts/http-probe.mjs';
 
@@ -121,4 +121,19 @@ test('HTTP evidence names the Cloudflare location that answered', async () => {
   assert.equal((await httpProbe(probe, answer(null))).edge, undefined);
   const failed = await httpProbe(probe, { now: () => NOW, fetcher: async () => new Response('bad gateway', { status: 522, headers: { 'cf-ray': '8d2f1a3b4c5d6e7f-ATL' } }) });
   assert.equal(failed.status === 'operational', false); assert.equal(failed.edge, 'ATL', 'failures keep the location too');
+});
+test('failed checks are counted per UTC day and a run across midnight counts on both days', () => {
+  const at = iso => Date.parse(iso) / 1000;
+  const series = [
+    [at('2026-10-28T04:54:00Z'), at('2026-10-28T04:54:00Z'), 'p', 1, 'timeout'],
+    [at('2026-10-28T05:00:00Z'), at('2026-10-28T06:00:00Z'), 'o', 12],
+    [at('2026-10-28T06:22:00Z'), at('2026-10-28T06:22:00Z'), 'm', 1, 'timeout'],
+    [at('2026-10-29T10:00:00Z'), at('2026-10-29T10:00:00Z'), 'd', 1, 'slow'],
+    [at('2026-10-30T23:58:00Z'), at('2026-10-31T00:03:00Z'), 'p', 2, 'timeout'],
+  ];
+  assert.equal(failedChecksOn(series, '2026-10-28'), 2);
+  assert.equal(failedChecksOn(series, '2026-10-29'), 0);
+  assert.equal(failedChecksOn(series, '2026-10-30'), 2);
+  assert.equal(failedChecksOn(series, '2026-10-31'), 2);
+  assert.equal(failedChecksOn(undefined, '2026-10-28'), 0);
 });

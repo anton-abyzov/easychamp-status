@@ -2,48 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "feed-england-1793604747453",
-      "componentId": "feed-england",
-      "title": "England results: degraded service",
-      "status": "degraded",
-      "reasonCode": "run_failed",
-      "openedAt": "2026-11-02T07:32:27.453Z",
-      "updatedAt": "2026-11-02T07:41:44.351Z",
-      "resolvedAt": null,
-      "deadlineAt": "2026-11-02T07:17:00.000Z",
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "feed-england-1793604747453-monitor-2026-11-02T07:32:27.453Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-02T07:32:27.453Z",
-          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "run_failed",
-            "observedAt": "2026-11-02T07:30:07.000Z"
-          }
-        },
-        {
-          "id": "feed-england-1793604747453-monitor-2026-11-02T07:41:44.351Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-11-02T07:41:44.351Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "verified",
-            "observedAt": "2026-11-02T07:40:06.000Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 110,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/110"
-      }
-    },
-    {
       "id": "feed-results-1793604747453",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",
@@ -92,7 +50,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-02T07:49:08.795Z",
+      "updatedAt": "2026-11-02T07:51:45.040Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -112,6 +70,65 @@
       "issue": {
         "number": 109,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/109"
+      }
+    },
+    {
+      "id": "feed-england-1793604747453",
+      "componentId": "feed-england",
+      "title": "England results: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-11-02T07:32:27.453Z",
+      "updatedAt": "2026-11-02T07:51:45.040Z",
+      "resolvedAt": "2026-11-02T07:51:45.040Z",
+      "deadlineAt": "2026-11-02T07:17:00.000Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "feed-england-1793604747453-monitor-2026-11-02T07:32:27.453Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-02T07:32:27.453Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-11-02T07:30:07.000Z"
+          }
+        },
+        {
+          "id": "feed-england-1793604747453-monitor-2026-11-02T07:41:44.351Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-02T07:41:44.351Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-11-02T07:40:06.000Z"
+          }
+        },
+        {
+          "id": "feed-england-1793604747453-monitor-2026-11-02T07:51:45.040Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-02T07:51:45.040Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-11-02T07:50:07.000Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. England results: degraded service. First confirmed issue: 2026-11-02T07:32:27.453Z. Recovery confirmed by two fresh successful observations: 2026-11-02T07:51:45.040Z. Confirmed incident duration: 19 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-02T07:51:45.040Z"
+      },
+      "issue": {
+        "number": 110,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/110"
       }
     },
     {

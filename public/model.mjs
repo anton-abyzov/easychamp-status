@@ -28,6 +28,11 @@ export function rollup(samples) {
   for (const status of ['major_outage', 'partial_outage', 'degraded', 'unknown', 'maintenance']) if (samples.some(s => s.status === status)) return status;
   return 'operational';
 }
+// One failed sample in a day is an issue, not an outage; an outage needs the two observations that confirm one.
+export function dayStatus(daily) {
+  const status = rollup(Object.entries(daily).map(([status]) => ({ status })));
+  return ['major_outage', 'partial_outage'].includes(status) && (daily.major_outage || 0) + (daily.partial_outage || 0) < 2 ? 'degraded' : status;
+}
 
 export function verifyFreshness(sample, now = Date.now(), limits = {}) {
   const base = currentEvidence(sample, 1200, now);

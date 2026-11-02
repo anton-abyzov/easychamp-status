@@ -1,4 +1,4 @@
-import { viewState, LABELS, REASONS, rollup, time } from './model.mjs';
+import { viewState, LABELS, REASONS, rollup, dayStatus, time } from './model.mjs';
 import { normalizeIncidents, STAGE_LABELS, safePublicUrl, displayIncidentTitle } from './incident-model.mjs';
 import { serviceUptime, serviceNow, verdict, coreTotals, minutes, percent, DAY, clock } from './overview.mjs';
 import { DOWN } from './uptime.mjs';
@@ -23,7 +23,7 @@ function observation(ids, date) {
     const daily = history.days?.[date]?.[id] || {};
     const samples = Object.entries(daily).filter(([s, n]) => Object.hasOwn(LABELS, s) && Number.isFinite(n) && n > 0);
     if (!samples.length) missing++;
-    statuses.push({ status: rollup(samples.map(([status]) => ({ status }))) });
+    statuses.push({ status: dayStatus(Object.fromEntries(samples)) });
     for (const [status, n] of samples) counts[status] = (counts[status] || 0) + n;
   }
   return { status: rollup(statuses), counts, missing, total: Object.values(counts).reduce((a, b) => a + b, 0) };

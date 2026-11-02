@@ -1,7 +1,7 @@
 import { viewState, LABELS, REASONS, rollup, dayStatus, time } from './model.mjs';
 import { normalizeIncidents, STAGE_LABELS, safePublicUrl, displayIncidentTitle, outageSpans, spanTouchesDay } from './incident-model.mjs';
-import { serviceUptime, serviceNow, verdict, coreTotals, minutes, percent, DAY, clock, httpProbeOf } from './overview.mjs';
-import { DOWN, failedChecksOn } from './uptime.mjs';
+import { serviceUptime, serviceNow, verdict, coreTotals, minutes, percent, DAY, clock } from './overview.mjs';
+import { DOWN } from './uptime.mjs';
 
 let registry, state, history, incidents, uptime, currentView, loading = false, failed = false;
 let detailOrigin = null, detailScope = '', previousHash = '', renderedRoute = '';
@@ -19,17 +19,13 @@ function dateLabel(date) { return new Date(`${date}T12:00:00Z`).toLocaleDateStri
 function external(text, url, className = 'detail-link') { const safe = safePublicUrl(url); return safe ? link(`${text} ↗`, safe, className) : null; }
 let spansSource, spansCache;
 function incidentOutages() { if (spansSource !== incidents) { spansSource = incidents; spansCache = outageSpans(normalizeIncidents(incidents)); } return spansCache; }
-function confirmedOutageDay(id, date) {
-  const component = registry.components.find(c => c.id === id);
-  return spanTouchesDay(incidentOutages()[id], date) || (component && failedChecksOn(uptime.series?.[httpProbeOf(component, registry)], date) >= 2);
-}
 function observation(ids, date) {
   const counts = {}, statuses = []; let missing = 0;
   for (const id of ids) {
     const daily = history.days?.[date]?.[id] || {};
     const samples = Object.entries(daily).filter(([s, n]) => Object.hasOwn(LABELS, s) && Number.isFinite(n) && n > 0);
     if (!samples.length) missing++;
-    statuses.push({ status: dayStatus(Object.fromEntries(samples), confirmedOutageDay(id, date)) });
+    statuses.push({ status: dayStatus(Object.fromEntries(samples), spanTouchesDay(incidentOutages()[id], date)) });
     for (const [status, n] of samples) counts[status] = (counts[status] || 0) + n;
   }
   return { status: rollup(statuses), counts, missing, total: Object.values(counts).reduce((a, b) => a + b, 0) };

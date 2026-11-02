@@ -28,8 +28,8 @@ export function rollup(samples) {
   for (const status of ['major_outage', 'partial_outage', 'degraded', 'unknown', 'maintenance']) if (samples.some(s => s.status === status)) return status;
   return 'operational';
 }
-// One isolated failed sample is an issue, not an outage. Daily counts skip runs where a service's
-// checks did not all advance, so the caller also passes what incidents and raw checks confirm.
+// One lone failed sample is an issue, not an outage. Daily counts skip runs where a service's checks
+// did not all advance, so an incident that confirmed an outage that day keeps it one whatever the count.
 export function dayStatus(daily, confirmedOutage = false) {
   const status = rollup(Object.keys(daily).map(status => ({ status })));
   return ['major_outage', 'partial_outage'].includes(status) && !confirmedOutage && (daily.major_outage || 0) + (daily.partial_outage || 0) < 2 ? 'degraded' : status;

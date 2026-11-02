@@ -56,7 +56,7 @@ export function outageSpans(list, now = Date.now()) {
   const spans = {}, outage = status => ['major_outage', 'partial_outage'].includes(status);
   for (const i of list) {
     if (!outage(i.status) && !i.updates.some(u => outage(u.evidence?.status))) continue;
-    for (const id of new Set([i.componentId, ...(i.componentIds || [])])) (spans[id] ||= []).push([time(i.openedAt), time(i.resolvedAt) ?? now]);
+    (spans[i.componentId] ||= []).push([time(i.openedAt), time(i.resolvedAt) ?? now]);
   }
   return spans;
 }

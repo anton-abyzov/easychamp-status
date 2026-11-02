@@ -8,10 +8,10 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-02T07:32:27.453Z",
-      "updatedAt": "2026-11-02T07:32:27.453Z",
+      "updatedAt": "2026-11-02T07:41:44.351Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-02T07:17:00.000Z",
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "feed-england-1793604747453-monitor-2026-11-02T07:32:27.453Z-investigating",
@@ -23,6 +23,18 @@
             "status": "degraded",
             "reasonCode": "run_failed",
             "observedAt": "2026-11-02T07:30:07.000Z"
+          }
+        },
+        {
+          "id": "feed-england-1793604747453-monitor-2026-11-02T07:41:44.351Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-02T07:41:44.351Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-11-02T07:40:06.000Z"
           }
         }
       ],
@@ -38,7 +50,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-02T07:32:27.453Z",
-      "updatedAt": "2026-11-02T07:32:27.453Z",
+      "updatedAt": "2026-11-02T07:41:44.351Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-02T07:17:00.000Z",
       "stage": "investigating",
@@ -54,6 +66,18 @@
             "reasonCode": "run_failed",
             "observedAt": "2026-11-02T07:30:07.000Z"
           }
+        },
+        {
+          "id": "feed-results-1793604747453-monitor-2026-11-02T07:41:44.351Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-02T07:41:44.351Z",
+          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-11-02T07:40:06.000Z"
+          }
         }
       ],
       "issue": {
@@ -68,7 +92,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-02T07:35:24.112Z",
+      "updatedAt": "2026-11-02T07:41:44.351Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

@@ -108,6 +108,7 @@ export function componentMeasurements(component, current, registry, now = Date.n
     for (const sample of current.samples) {
       const probe = registry.probes.find(p => p.id === sample.sourceId);
       if (!probe) { result.push(row('functional', 'Functional coverage', sample, component.coverage)); continue; }
+      if (probe.type === 'window') { result.push(row('request-window', 'Failed requests, last 45 minutes', sample, component.coverage, Number.isFinite(sample.totalChecks) ? { summary: `${sample.failedChecks} of ${sample.totalChecks} checks failed in ${sample.failedRuns} of ${sample.windowRuns} runs` } : {})); continue; }
       if (probe.type === 'http') result.push(row(`${probe.id}-availability`, 'Endpoint availability', endpoint(probe, sample), 'HTTP 200 and the configured response content/schema. Credential login and other workflows are not inferred.'));
       const timing = latency(probe, sample), value = probe.type === 'browser' ? timing.lcpMs : timing.responseMs;
       result.push(row(`${probe.id}-latency`, probe.type === 'browser' ? 'Page rendering (LCP)' : 'HTTP response time', timing,
@@ -149,6 +150,7 @@ export function measurementOverview(registry, state, components, now = Date.now(
     const sample = currentEvidence(state.probes?.[probe.id], probe.expiresSeconds, now);
     const component = components.find(c => c.probes?.includes(probe.id));
     const extra = { componentId: component?.id };
+    if (probe.type === 'window') { endpoints.push(row(probe.id, component?.name || probe.id, sample, 'Rolling failures across all public HTTP checks.', extra)); continue; }
     if (probe.type === 'http') endpoints.push(row(probe.id, component?.name || probe.id, endpoint(probe, sample), 'HTTP status and expected content/schema.', extra));
     const timing = latency(probe, sample);
     const value = probe.type === 'browser' ? timing.lcpMs : timing.responseMs;

@@ -1,7 +1,8 @@
 import { viewState, LABELS, REASONS, rollup, time } from './model.mjs';
 import { normalizeIncidents, STAGE_LABELS, safePublicUrl, displayIncidentTitle } from './incident-model.mjs';
+import { availabilityStats } from './availability.mjs';
 
-let registry, state, history, incidents, currentView, loading = false, failed = false;
+let registry, state, history, incidents, runs = [], currentView, loading = false, failed = false;
 let detailOrigin = null, previousHash = '', renderedRoute = '';
 const $ = selector => document.querySelector(selector);
 const el = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; };
@@ -21,7 +22,10 @@ function observation(ids, date) {
     const daily = history.days?.[date]?.[id] || {};
     const samples = Object.entries(daily).filter(([s, n]) => Object.hasOwn(LABELS, s) && Number.isFinite(n) && n > 0);
     if (!samples.length) missing++;
-    statuses.push({ status: rollup(samples.map(([status]) => ({ status }))) });
+    // One failed sample in a day is an issue, not an outage; an outage needs the two observations that confirm one.
+    const outageSamples = (daily.major_outage || 0) + (daily.partial_outage || 0);
+    const dayStatus = rollup(samples.map(([status]) => ({ status })));
+    statuses.push({ status: ['major_outage', 'partial_outage'].includes(dayStatus) && outageSamples < 2 ? 'degraded' : dayStatus });
     for (const [status, n] of samples) counts[status] = (counts[status] || 0) + n;
   }
   return { status: rollup(statuses), counts, missing, total: Object.values(counts).reduce((a, b) => a + b, 0) };
@@ -39,21 +43,61 @@ function incidentCard(i) {
   if (i.postmortem?.state === 'published') meta.append(el('span', '', 'Postmortem published'));
   card.append(top, meta); return card;
 }
+const SEVERITY = ['major_outage', 'partial_outage', 'degraded', 'unknown', 'maintenance', 'operational'];
+const OUTAGES = ['major_outage', 'partial_outage'];
+const number = n => n.toLocaleString(undefined);
+function names(ids) { return ids.map(id => currentView.components.find(c => c.probes?.includes(id))?.name || id); }
+function outageMinutes(list, from, to) {
+  const spans = list.filter(i => OUTAGES.includes(i.status)).map(i => [Math.max(from, time(i.openedAt) || to), Math.min(to, time(i.resolvedAt) || to)]).filter(([a, b]) => b > a).sort((a, b) => a[0] - b[0]);
+  let total = 0, end = -Infinity; for (const [a, b] of spans) { total += Math.max(0, b - Math.max(a, end)); end = Math.max(end, b); } return Math.round(total / 60000);
+}
+function renderPulse(all) {
+  const critical = currentView.components.filter(c => !c.freshness && c.probes?.length);
+  const reliability = critical.find(c => c.id === 'request-reliability');
+  const sites = critical.filter(c => c !== reliability);
+  const http = c => c.samples.find(x => registry.probes.find(p => p.id === x.sourceId)?.type === 'http') || c.samples[0] || { status: 'unknown' };
+  const down = sites.filter(c => OUTAGES.includes(http(c).status)), slow = sites.filter(c => http(c).status === 'degraded' || (c.status === 'degraded' && !OUTAGES.includes(http(c).status)));
+  const blind = sites.filter(c => http(c).status === 'unknown');
+  const unknownChecks = currentView.components.filter(c => c.status === 'unknown' && !sites.includes(c)).length;
+  const jobs = currentView.components.filter(c => c.freshness && ['degraded', 'partial_outage', 'major_outage'].includes(c.status)).length;
+  const sample = reliability?.samples?.[0] || {};
+  const intermittent = OUTAGES.includes(reliability?.status);
+  let title, lead, status;
+  if (currentView.collector.status === 'unknown') { status = 'unknown'; title = 'Monitoring updates are unavailable'; lead = 'The latest checks are older than 15 minutes, so current availability is unknown.'; }
+  else if (down.length) { status = rollup(down.map(http)); title = `Outage: ${down.map(c => c.name).join(', ')}`; lead = down.map(c => `${c.name}: ${REASONS[http(c).reasonCode] || 'check failed'}`).join(' · ') + '.'; }
+  else if (intermittent) { status = 'partial_outage'; title = 'Intermittent failures'; lead = `${sample.failedChecks} of ${sample.totalChecks} site checks failed in the last 45 minutes: ${names(sample.affected || []).join(', ')}. Sites pass between failures.`; }
+  else if (blind.length) { status = 'unknown'; title = 'Some sites are not being checked'; lead = `No current check for ${blind.map(c => c.name).join(', ')}.`; }
+  else if (slow.length) { status = 'degraded'; title = 'All sites up · some slow'; lead = `Slower than target: ${slow.map(c => c.name).join(', ')}.`; }
+  else { status = 'operational'; title = 'All sites are up'; lead = `${sites.length} sites and apps passed their latest checks.`; }
+  const extras = [jobs ? `${jobs} data job${jobs === 1 ? '' : 's'} need attention` : '', unknownChecks ? `${unknownChecks} data and job checks unverified` : ''].filter(Boolean);
+  $('#overview-title').textContent = title;
+  $('#overview-description').replaceChildren(document.createTextNode(lead), ...(extras.length ? [el('span', 'overview-extras', ` ${extras.join(' · ')}.`)] : []));
+  const overviewBadge = badge(status); overviewBadge.id = 'overall-badge'; $('#overall-badge').replaceWith(overviewBadge);
+  $('#overall-icon').className = `status-symbol ${status}`; $('#overall-icon').textContent = status === 'operational' ? '✓' : status === 'unknown' ? '?' : '!';
+  const affected = [...sites.filter(c => ['major_outage', 'partial_outage', 'degraded'].includes(c.status) || OUTAGES.includes(http(c).status))].sort((a, b) => SEVERITY.indexOf(a.status) - SEVERITY.indexOf(b.status));
+  const chips = affected.map(c => { const li = el('li'), a = link('', route('component', c.id), `pulse-chip ${c.status}`); a.append(el('span', 'chip-name', c.name), el('span', 'chip-reason', REASONS[c.reasonCode] || LABELS[c.status])); li.append(a); return li; });
+  $('#pulse-affected').replaceChildren(...chips); $('#pulse-affected').hidden = !chips.length;
+  const open = all.filter(i => !i.resolvedAt), active = open.filter(i => critical.some(c => c.id === i.componentId)), pin = $('#pulse-incident');
+  pin.hidden = !open.length; pin.className = `pulse-incident ${active.length ? 'site' : 'job'}`;
+  if (open.length) { const i = active[0] || open[0], more = open.length - 1; pin.href = route('incident', i.id); pin.textContent = `${active.length ? 'Active incident' : 'Data job incident'}: ${displayIncidentTitle(i, currentView.components.find(c => c.id === i.componentId))} · ${age(i.openedAt)}${more ? ` · +${more} more` : ''} →`; }
+  const now = Date.now(), siteIncidents = all.filter(i => critical.some(c => c.id === i.componentId));
+  const rowsOut = [['Last 24 hours', 86400000], ['Last 7 days', 7 * 86400000]].map(([label, span]) => {
+    const st = availabilityStats(runs, now - span, now), tr = el('tr');
+    const inRange = siteIncidents.filter(i => OUTAGES.includes(i.status) && (time(i.resolvedAt) || now) >= now - span);
+    const minutes = st.failingMinutesUpper === 0 ? '0 min' : `${st.failingMinutesLower}–${number(st.failingMinutesUpper)} min`;
+    const cells = [st.checks ? `${st.failureRatePct}%` : 'No data', st.checks ? minutes : '—', st.runs ? `${number(st.unmonitoredMinutes)} min` : '—', inRange.length ? `${inRange.length} outage${inRange.length === 1 ? '' : 's'}` : 'None'];
+    const sub = [st.checks ? `${number(st.failedChecks)} of ${number(st.checks)}` : '', st.checks ? 'proven – possible' : '', st.runs ? `${st.monitoredPct}% checked` : '', inRange.length ? `${number(outageMinutes(inRange, now - span, now))} min confirmed` : 'confirmed'];
+    const th = el('th', '', label); th.scope = 'row'; tr.append(th);
+    cells.forEach((text, k) => { const td = el('td'); td.append(el('strong', '', text)); if (sub[k]) td.append(el('small', '', sub[k])); tr.append(td); });
+    return tr;
+  });
+  $('#stats-table tbody').replaceChildren(...rowsOut);
+}
 function render() {
   if (!registry) return;
   const activeElement = document.activeElement;
   const focusedMeasurement = activeElement?.classList.contains('measurement-card') ? activeElement.getAttribute('href') : null;
   currentView = viewState(registry, state);
-  const overall = currentView.summary?.status || rollup([{ status: currentView.status }, currentView.collector]);
-  const count = currentView.components.filter(complete).length;
-  const titles = { operational: 'Configured checks are passing', degraded: 'Some services are degraded', partial_outage: 'Some services have issues', major_outage: 'Service outage detected', unknown: 'Some service status is unknown', maintenance: 'Maintenance in progress' };
-  $('#overview-title').textContent = currentView.summary?.title || titles[overall];
-  $('#overview-description').textContent = currentView.summary?.description || `${count} of ${currentView.components.length} services have complete current checks${count < currentView.components.length ? ` · ${currentView.components.length - count} with unknown coverage` : ''}.`;
-  const overviewBadge = badge(currentView.summary?.status || overall);
-  if (currentView.summary?.badge) overviewBadge.textContent = currentView.summary.badge;
-  $('#overall-badge').replaceWith(Object.assign(overviewBadge, { id: 'overall-badge' }));
-  $('#overall-icon').className = `status-symbol ${overall}`;
-  $('#overall-icon').textContent = overall === 'operational' ? '✓' : overall === 'unknown' ? '?' : '!';
   $('#collector-age').textContent = failed ? 'Refresh failed · current evidence unavailable' : `Updated ${age(state.generatedAt)}${currentView.collector.status === 'unknown' ? ' · collection stale' : ''}`;
   $('#service-count').textContent = currentView.components.length;
   const measurements = currentView.measurements || [];
@@ -90,6 +134,8 @@ function render() {
   $('#active-incidents').hidden = !active.length; $('#active-count').textContent = active.length === 1 ? '1 ongoing' : `${active.length} ongoing`;
   $('#active-list').replaceChildren(...active.map(incidentCard));
   $('#incident-history').replaceChildren(...(past.length ? past.map(incidentCard) : [el('p', 'empty', 'No resolved incidents in the collected history.')]));
+  $('#history-count').textContent = `${past.length} most recent resolved`;
+  renderPulse(all);
   if (focusedIncidentHref) [...document.querySelectorAll('.incident-list a')].find(a => a.getAttribute('href') === focusedIncidentHref)?.focus({ preventScroll: true });
   $('#legend').replaceChildren(...Object.keys(LABELS).map(badge));
   // Re-evaluate open details too: a passing check must expire while it is being read.
@@ -198,7 +244,7 @@ function closeDetail() {
   window.history.replaceState(null, '', `${location.pathname}${location.search}${previousHash}`); showRoute();
 }
 document.addEventListener('click', event => { const a = event.target.closest('a[href^="#"]'); if (!a || !/^#(component|group|incident|measurement)\//.test(a.getAttribute('href')) || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); if (!$('#detail-dialog').open) previousHash = location.hash; window.history.pushState(null, '', a.getAttribute('href')); renderedRoute = ''; showRoute(); });
-document.querySelector('a[href="#method"]').addEventListener('click', () => { $('#method').open = true; });
+for (const a of document.querySelectorAll('a[href="#method"], a[href="#stats-method"]')) a.addEventListener('click', () => { $('#method').open = true; });
 $('#close-detail').addEventListener('click', closeDetail);
 $('#detail-dialog').addEventListener('cancel', event => { event.preventDefault(); closeDetail(); });
 $('#detail-dialog').addEventListener('click', event => { if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) closeDetail(); } });
@@ -211,6 +257,7 @@ async function load() {
     const [nextRegistry, nextState, nextHistory, nextIncidents] = values;
     if (!nextRegistry || !['groups', 'components', 'probes'].every(key => Array.isArray(nextRegistry[key])) || !nextState || typeof nextState !== 'object' || !nextHistory || typeof nextHistory !== 'object' || !nextIncidents || typeof nextIncidents !== 'object') throw new Error('invalid data');
     if (!nextRegistry.components.every(c => c && typeof c.id === 'string' && typeof c.name === 'string' && (!c.probes || Array.isArray(c.probes))) || !nextRegistry.groups.every(g => g && typeof g.id === 'string' && typeof g.name === 'string') || !nextRegistry.probes.every(p => p && typeof p.id === 'string')) throw new Error('invalid registry');
+    runs = await fetch(`./data/runs.json?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(15000) }).then(r => r.ok ? r.json() : null).then(d => Array.isArray(d?.runs) ? d.runs : []).catch(() => []);
     [registry, state, history, incidents] = values; failed = false; render();
   } catch {
     failed = true;

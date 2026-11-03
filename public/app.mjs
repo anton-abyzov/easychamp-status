@@ -1,5 +1,5 @@
 import { viewState, LABELS, REASONS, rollup, dayStatus, time } from './model.mjs';
-import { normalizeIncidents, STAGE_LABELS, safePublicUrl, displayIncidentTitle, outageSpans, spanTouchesDay } from './incident-model.mjs';
+import { normalizeIncidents, STAGE_LABELS, safePublicUrl, displayIncidentTitle, outageSpans, incidentOutageOnDay } from './incident-model.mjs';
 import { serviceUptime, serviceNow, verdict, coreTotals, minutes, percent, DAY, clock } from './overview.mjs';
 import { DOWN } from './uptime.mjs';
 
@@ -17,7 +17,7 @@ function age(at) { if (!time(at)) return 'unavailable'; const m = Math.max(0, Ma
 function stamp(at) { return time(at) ? new Date(at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : 'Time unavailable'; }
 function dateLabel(date) { return new Date(`${date}T12:00:00Z`).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }); }
 function external(text, url, className = 'detail-link') { const safe = safePublicUrl(url); return safe ? link(`${text} ↗`, safe, className) : null; }
-let spansSource, spansCache;
+let spansSource, spansCache = {};
 function incidentOutages() { if (spansSource !== incidents) { spansSource = incidents; spansCache = outageSpans(normalizeIncidents(incidents)); } return spansCache; }
 function observation(ids, date) {
   const counts = {}, statuses = []; let missing = 0;
@@ -25,7 +25,7 @@ function observation(ids, date) {
     const daily = history.days?.[date]?.[id] || {};
     const samples = Object.entries(daily).filter(([s, n]) => Object.hasOwn(LABELS, s) && Number.isFinite(n) && n > 0);
     if (!samples.length) missing++;
-    statuses.push({ status: dayStatus(Object.fromEntries(samples), spanTouchesDay(incidentOutages()[id], date)) });
+    statuses.push({ status: dayStatus(Object.fromEntries(samples), incidentOutageOnDay(incidentOutages()[id], date)) });
     for (const [status, n] of samples) counts[status] = (counts[status] || 0) + n;
   }
   return { status: rollup(statuses), counts, missing, total: Object.values(counts).reduce((a, b) => a + b, 0) };

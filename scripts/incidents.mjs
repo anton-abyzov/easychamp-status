@@ -96,6 +96,7 @@ function advanceConsecutive(payload, component, observation, at, availability) {
   const message = lead => byAvailability ? `${availabilityMessage(availability)}${latest}` : `${lead} ${LABELS[status].toLowerCase()}: ${REASONS[reasonCode] || REASONS.invalid_evidence}.${latest}`;
   const streak = FAILURE_STATUSES.includes(component.status) && observation.counter.bad >= 2 && confirmed;
   if (streak) {
+    evidence.confirmedStatus = status;
     if (!open) {
       const latency = ['slow', 'rendering_slow'].includes(reasonCode);
       const incident = { id: `${component.id}-${time(at)}`, componentId: component.id, title: `${component.name}: ${status === 'degraded' ? (latency ? 'degraded performance' : 'degraded service') : 'availability issue'}`, status, reasonCode, openedAt: at, updatedAt: at, resolvedAt: null, stage: 'investigating', updates: [] };
@@ -142,7 +143,7 @@ function advanceConsecutive(payload, component, observation, at, availability) {
     open.status = status;
     open.reasonCode = reasonCode;
     // Its own id: a monitoring update from the same observation must not swallow it.
-    appendIncidentUpdate(open, { stage: open.stage, at, message: message('Fresh observations now confirm'), evidence, id: `${open.id}-monitor-${at}-severity` });
+    appendIncidentUpdate(open, { stage: open.stage, at, message: message('Fresh observations now confirm'), evidence: { ...evidence, confirmedStatus: status }, id: `${open.id}-monitor-${at}-severity` });
   }
 }
 export function applyOwnerUpdate(payload, input, context) {

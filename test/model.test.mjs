@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeIncident, outageSpans, spanTouchesDay } from '../public/incident-model.mjs';
+import { normalizeIncident, outageSpans, incidentOutageOnDay } from '../public/incident-model.mjs';
 import { currentEvidence, verifyFreshness, componentState, viewState, rollup, dayStatus } from '../public/model.mjs';
 const now = Date.parse('2026-10-07T18:00:00Z');
 const stamp = minutes => new Date(now + minutes * 60000).toISOString();
@@ -46,13 +46,16 @@ test('unconnected functional services and expired collection stay unknown', () =
 test('one isolated failed sample is not an outage day, a confirmed incident or repeat is', () => {
   assert.equal(dayStatus({ operational: 144, major_outage: 1 }), 'degraded');
   assert.equal(dayStatus({ operational: 133, degraded: 1, partial_outage: 1 }), 'degraded');
-  assert.equal(dayStatus({ operational: 144, major_outage: 1 }, true), 'major_outage');
+  assert.equal(dayStatus({ operational: 144, major_outage: 1 }, 'major_outage'), 'major_outage');
   assert.equal(dayStatus({ operational: 144, partial_outage: 2 }), 'partial_outage');
   assert.equal(dayStatus({ partial_outage: 1, major_outage: 1 }), 'major_outage');
-  assert.equal(dayStatus({ operational: 144, degraded: 3 }, true), 'degraded');
+  assert.equal(dayStatus({ operational: 144, degraded: 3 }, 'major_outage'), 'major_outage');
   assert.equal(dayStatus({ operational: 144 }), 'operational');
   assert.equal(dayStatus({ unknown: 2, major_outage: 1 }), 'degraded');
   assert.equal(dayStatus({}), 'unknown');
+  assert.equal(dayStatus({}, 'partial_outage'), 'partial_outage');
+  assert.equal(dayStatus({ operational: 4 }, 'major_outage'), 'major_outage');
+  assert.equal(dayStatus({ major_outage: 1 }, 'partial_outage'), 'partial_outage');
 });
 test('outage spans cover every UTC day an outage incident touched, including stepped-down ones', () => {
   const incident = (id, status, openedAt, resolvedAt, evidence) => normalizeIncident({ id, componentId: 'club-sites', title: 'Club websites: issue', status, reasonCode: 'timeout', openedAt, resolvedAt, stage: resolvedAt ? 'resolved' : 'investigating', updates: [{ id: `${id}-open`, stage: 'investigating', at: openedAt, message: 'Confirmed.', source: 'monitor', evidence: { status: evidence, reasonCode: 'timeout', observedAt: openedAt } }] });
@@ -63,7 +66,85 @@ test('outage spans cover every UTC day an outage incident touched, including ste
     incident('still-open', 'major_outage', '2026-11-01T10:00:00.000Z', null, 'major_outage'),
   ], Date.parse('2026-11-02T01:00:00Z'))['club-sites'];
   assert.equal(spans.length, 3);
-  for (const date of ['2026-10-29', '2026-10-30', '2026-10-25', '2026-11-01', '2026-11-02']) assert.equal(spanTouchesDay(spans, date), true, date);
-  for (const date of ['2026-10-28', '2026-10-31', '2026-10-20', '2026-11-03']) assert.equal(spanTouchesDay(spans, date), false, date);
-  assert.equal(spanTouchesDay(undefined, '2026-10-29'), false);
+  for (const date of ['2026-10-29', '2026-10-30', '2026-11-01', '2026-11-02']) {
+    assert.equal(incidentOutageOnDay(spans, date), 'major_outage', date);
+  }
+  assert.equal(incidentOutageOnDay(spans, '2026-10-25'), 'partial_outage');
+  for (const date of ['2026-10-28', '2026-10-31', '2026-10-20', '2026-11-03']) {
+    assert.equal(incidentOutageOnDay(spans, date), undefined, date);
+  }
+  assert.equal(incidentOutageOnDay(undefined, '2026-10-29'), undefined);
+});
+
+test('outage evidence is limited to the outage interval in a longer degraded incident', () => {
+  const evidence = (status, at) => ({ evidence: { status, observedAt: at } });
+  const incident = {
+    componentId: 'assistant',
+    status: 'degraded',
+    openedAt: '2026-10-09T07:34:00Z',
+    resolvedAt: '2026-10-15T07:16:00Z',
+    updates: [
+      evidence('degraded', '2026-10-09T07:34:00Z'),
+      evidence('major_outage', '2026-10-13T10:20:00Z'),
+      evidence('unknown', '2026-10-13T10:35:00Z'),
+      evidence('degraded', '2026-10-14T00:00:00Z'),
+    ],
+  };
+  const spans = outageSpans([incident], Date.parse('2026-10-16T00:00:00Z')).assistant;
+  assert.equal(incidentOutageOnDay(spans, '2026-10-12'), undefined);
+  assert.equal(incidentOutageOnDay(spans, '2026-10-13'), 'major_outage');
+  assert.equal(incidentOutageOnDay(spans, '2026-10-14'), undefined);
+});
+
+test('a monitor update can carry a failed latest check without confirming an outage', () => {
+  const openedAt = '2026-11-01T10:00:00Z';
+  const update = {
+    id: 'open', stage: 'investigating', source: 'monitor', at: openedAt,
+    message: 'Two fresh observations confirmed needs attention: Response slower than target. Latest check: major outage, Check timed out.',
+    evidence: { status: 'major_outage', reasonCode: 'timeout', observedAt: openedAt },
+  };
+  const incident = normalizeIncident({
+    id: 'assistant-issue', componentId: 'assistant', title: 'Assistant issue',
+    openedAt, status: 'degraded', updates: [update],
+  });
+  const now = Date.parse('2026-11-01T12:00:00Z');
+  assert.equal(outageSpans([incident], now).assistant, undefined);
+  assert.equal(dayStatus({ degraded: 4, major_outage: 1 }), 'degraded');
+  update.evidence.confirmedStatus = 'partial_outage';
+  const withConfirmedLevel = normalizeIncident({ ...incident, updates: [update] });
+  assert.equal(incidentOutageOnDay(outageSpans([withConfirmedLevel], now).assistant, '2026-11-01'), 'partial_outage');
+});
+
+test('legacy step-down before midnight ends the outage despite a worse latest check', () => {
+  const openedAt = '2026-11-01T23:00:00Z';
+  const steppedAt = '2026-11-01T23:55:00Z';
+  const resolvedAt = '2026-11-02T02:00:00Z';
+  const incident = {
+    componentId: 'assistant', status: 'degraded', openedAt, resolvedAt,
+    updates: [
+      { evidence: { status: 'major_outage', observedAt: openedAt } },
+      { message: 'Fresh observations now confirm needs attention: Response slower than target. Latest check: major outage, Check timed out.',
+        evidence: { status: 'major_outage', observedAt: steppedAt } },
+    ],
+  };
+  const spans = outageSpans([incident], Date.parse(resolvedAt)).assistant;
+  assert.equal(incidentOutageOnDay(spans, '2026-11-01'), 'major_outage');
+  assert.equal(incidentOutageOnDay(spans, '2026-11-02'), undefined);
+});
+
+test('an unconfirmed recovery before midnight does not end a confirmed outage', () => {
+  const openedAt = '2026-11-01T23:00:00Z';
+  const firstPass = '2026-11-01T23:55:00Z';
+  const resolvedAt = '2026-11-02T02:00:00Z';
+  const incident = {
+    componentId: 'assistant', status: 'major_outage', openedAt, resolvedAt,
+    updates: [
+      { evidence: { status: 'major_outage', observedAt: openedAt } },
+      { stage: 'monitoring', evidence: { status: 'operational', observedAt: firstPass } },
+      { stage: 'resolved', evidence: { status: 'operational', observedAt: resolvedAt } },
+    ],
+  };
+  const spans = outageSpans([incident], Date.parse(resolvedAt)).assistant;
+  assert.equal(incidentOutageOnDay(spans, '2026-11-02'), 'major_outage');
+  assert.equal(spans[0].until, Date.parse(resolvedAt));
 });

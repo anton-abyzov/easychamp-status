@@ -28,11 +28,16 @@ export function rollup(samples) {
   for (const status of ['major_outage', 'partial_outage', 'degraded', 'unknown', 'maintenance']) if (samples.some(s => s.status === status)) return status;
   return 'operational';
 }
-// One lone failed sample is an issue, not an outage. Daily counts skip runs where a service's checks
-// did not all advance, so an incident that confirmed an outage that day keeps it one whatever the count.
-export function dayStatus(daily, confirmedOutage = false) {
-  const status = rollup(Object.keys(daily).map(status => ({ status })));
-  return ['major_outage', 'partial_outage'].includes(status) && !confirmedOutage && (daily.major_outage || 0) + (daily.partial_outage || 0) < 2 ? 'degraded' : status;
+// Independently confirmed incidents also count when daily samples are incomplete.
+export function dayStatus(daily, incidentStatus) {
+  const samples = Object.keys(daily).map(status => ({ status }));
+  if ((daily.major_outage || 0) + (daily.partial_outage || 0) < 2) {
+    for (const sample of samples) {
+      if (sample.status === 'major_outage' || sample.status === 'partial_outage') sample.status = 'degraded';
+    }
+  }
+  if (incidentStatus) samples.push({ status: incidentStatus });
+  return rollup(samples);
 }
 
 export function verifyFreshness(sample, now = Date.now(), limits = {}) {

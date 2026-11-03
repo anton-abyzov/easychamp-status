@@ -1,4 +1,4 @@
-import { time, STATUSES, REASONS } from './model.mjs';
+import { time, STATUSES, LABELS, REASONS, rollup } from './model.mjs';
 
 export const INCIDENT_STAGES = ['investigating', 'identified', 'monitoring', 'resolved', 'writeup_published'];
 export const STAGE_LABELS = { investigating: 'Investigating', identified: 'Identified', monitoring: 'Monitoring', resolved: 'Resolved', writeup_published: 'Write-up published' };
@@ -23,7 +23,7 @@ export function normalizeIncident(input) {
   const resolvedAt = date(input.resolvedAt);
   if (input.resolvedAt != null && !resolvedAt) return null;
   if (resolvedAt && time(resolvedAt) < time(openedAt)) return null;
-  const updates = (Array.isArray(input.updates) ? input.updates : []).filter(update => update && typeof update.id === 'string' && update.id.length <= 240 && INCIDENT_STAGES.includes(update.stage) && date(update.at) && time(update.at) >= time(openedAt) && safeText(update.message) && ['monitor', 'owner'].includes(update.source)).map(update => ({ id: update.id, stage: update.stage, at: date(update.at), message: update.message, source: update.source, ...(update.source === 'owner' && login(update.author?.login) ? { author: { login: update.author.login } } : {}), ...(STATUSES.includes(update.evidence?.status) && Object.hasOwn(REASONS, update.evidence?.reasonCode) && date(update.evidence?.observedAt) ? { evidence: { status: update.evidence.status, reasonCode: update.evidence.reasonCode, observedAt: date(update.evidence.observedAt) } } : {}) }));
+  const updates = (Array.isArray(input.updates) ? input.updates : []).filter(update => update && typeof update.id === 'string' && update.id.length <= 240 && INCIDENT_STAGES.includes(update.stage) && date(update.at) && time(update.at) >= time(openedAt) && safeText(update.message) && ['monitor', 'owner'].includes(update.source)).map(update => ({ id: update.id, stage: update.stage, at: date(update.at), message: update.message, source: update.source, ...(update.source === 'owner' && login(update.author?.login) ? { author: { login: update.author.login } } : {}), ...(STATUSES.includes(update.evidence?.status) && Object.hasOwn(REASONS, update.evidence?.reasonCode) && date(update.evidence?.observedAt) ? { evidence: { status: update.evidence.status, reasonCode: update.evidence.reasonCode, observedAt: date(update.evidence.observedAt), ...(FAILURE_LEVELS.includes(update.evidence.confirmedStatus) ? { confirmedStatus: update.evidence.confirmedStatus } : {}) } } : {}) }));
   if (!updates.some(update => update.stage === 'investigating')) updates.unshift({ id: `${input.id}-legacy-open`, stage: 'investigating', at: openedAt, message: 'The monitor confirmed a service issue. Earlier detailed observations are unavailable.', source: 'monitor' });
   if (resolvedAt && !updates.some(update => update.stage === 'resolved')) updates.push({ id: `${input.id}-legacy-resolved`, stage: 'resolved', at: resolvedAt, message: 'Recovery was recorded by the monitor. Earlier detailed recovery observations are unavailable.', source: 'monitor' });
   updates.sort((a, b) => time(a.at) - time(b.at));
@@ -50,17 +50,50 @@ export function displayIncidentTitle(incident, component) {
   return incident.title;
 }
 
-// Time spans of incidents that confirmed an outage at any point, by component. Severity can
-// step down later, so the recorded evidence counts as well as the current status.
+const FAILURE_LEVELS = ['degraded', 'partial_outage', 'major_outage'];
+
+function incidentEvidenceStatus({ evidence, message = '' }) {
+  if (evidence.confirmedStatus) return evidence.confirmedStatus;
+  // Legacy monitor rows can record the latest check separately from the confirmed level.
+  if (message.includes(' Latest check:')) {
+    for (const status of FAILURE_LEVELS) {
+      const label = LABELS[status].toLowerCase();
+      if (message.startsWith(`Two fresh observations confirmed ${label}:`)
+          || message.startsWith(`Fresh observations continue to confirm ${label}:`)
+          || message.startsWith(`Fresh observations now confirm ${label}:`)) return status;
+    }
+    if (/^\d+ of the latest \d+ availability checks failed: /.test(message)) return 'partial_outage';
+  }
+  return evidence.status;
+}
+
+const isOutage = status => status === 'major_outage' || status === 'partial_outage';
+
 export function outageSpans(list, now = Date.now()) {
-  const spans = {}, outage = status => ['major_outage', 'partial_outage'].includes(status);
-  for (const i of list) {
-    if (!outage(i.status) && !i.updates.some(u => outage(u.evidence?.status))) continue;
-    (spans[i.componentId] ||= []).push([time(i.openedAt), time(i.resolvedAt) ?? now]);
+  const spans = Object.create(null);
+  for (const incident of list) {
+    const opened = time(incident.openedAt);
+    const closed = Math.min(time(incident.resolvedAt) ?? now, now);
+    const observations = incident.updates
+      .filter(update => update.evidence)
+      .map(update => ({ at: Math.max(opened, time(update.evidence.observedAt)), status: incidentEvidenceStatus(update) }))
+      // A passing observation can precede confirmed recovery. resolvedAt closes the span.
+      .filter(({ at, status }) => at < closed && FAILURE_LEVELS.includes(status))
+      .sort((a, b) => a.at - b.at);
+    if (!observations.some(({ status }) => isOutage(status)) && isOutage(incident.status)) {
+      // Older incidents may only have a severity on the incident record.
+      observations.unshift({ at: opened, status: incident.status });
+    }
+    for (const [index, { at, status }] of observations.entries()) {
+      const until = observations[index + 1]?.at ?? closed;
+      if (isOutage(status) && at < until) (spans[incident.componentId] ||= []).push({ at, until, status });
+    }
   }
   return spans;
 }
-export function spanTouchesDay(spans, date) {
+
+export function incidentOutageOnDay(spans, date) {
   const start = Date.parse(`${date}T00:00:00Z`), end = start + 86400000;
-  return (spans || []).some(([from, to]) => from < end && to >= start);
+  const matches = (spans || []).filter(({ at, until }) => at < end && until > start);
+  return matches.length ? rollup(matches) : undefined;
 }

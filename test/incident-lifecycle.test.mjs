@@ -126,6 +126,7 @@ test('the public incident carries the confirmed severity and its reason, not a s
   assert.equal(slow.status, 'degraded'); assert.equal(slow.reasonCode, 'slow'); assert.match(slow.title, /degraded performance$/);
   assert.equal(slow.updates[0].message, 'Two fresh observations confirmed needs attention: Response slower than target. Latest check: major outage, Unexpected HTTP response.');
   assert.equal(slow.updates[0].evidence.status, 'major_outage', 'the evidence is still the latest check');
+  assert.equal(slow.updates[0].evidence.confirmedStatus, 'degraded');
   const escalated = mixed.step('major_outage', 10, 'http_error').incident;
   assert.equal(escalated.status, 'major_outage'); assert.equal(escalated.reasonCode, 'http_error'); assert.match(escalated.title, /availability issue$/);
   assert.equal(escalated.updates.at(-1).message, 'Fresh observations continue to confirm major outage: Unexpected HTTP response.');
@@ -177,6 +178,8 @@ test('after an availability latch clears, the incident steps down to what the co
   const stepped = step('operational', 10, undefined, clear);
   assert.equal(stepped.resolvedAt, null); assert.equal(stepped.status, 'degraded'); assert.equal(stepped.reasonCode, 'slow');
   assert.equal(stepped.updates.at(-1).message, 'Fresh observations now confirm needs attention: Response slower than target. Latest check: operational, Checks passed.');
+  assert.equal(stepped.updates.at(-1).evidence.confirmedStatus, 'degraded');
+  assert.equal(stepped.updates.at(-2).evidence.confirmedStatus, undefined);
   const updates = stepped.updates.length;
   assert.equal(step('degraded', 15, 'slow', clear).updates.length, updates, 'nothing more to reconcile');
 });

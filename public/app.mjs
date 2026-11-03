@@ -20,15 +20,21 @@ function external(text, url, className = 'detail-link') { const safe = safePubli
 let spansSource, spansCache = {};
 function incidentOutages() { if (spansSource !== incidents) { spansSource = incidents; spansCache = outageSpans(normalizeIncidents(incidents)); } return spansCache; }
 function observation(ids, date) {
-  const counts = {}, statuses = []; let missing = 0;
+  const counts = {}, statuses = [], incidentStatuses = []; let missing = 0;
   for (const id of ids) {
     const daily = history.days?.[date]?.[id] || {};
     const samples = Object.entries(daily).filter(([s, n]) => Object.hasOwn(LABELS, s) && Number.isFinite(n) && n > 0);
     if (!samples.length) missing++;
-    statuses.push({ status: dayStatus(Object.fromEntries(samples), incidentOutageOnDay(incidentOutages()[id], date)) });
+    const incidentStatus = incidentOutageOnDay(incidentOutages()[id], date);
+    if (incidentStatus) incidentStatuses.push({ status: incidentStatus });
+    statuses.push({ status: dayStatus(Object.fromEntries(samples), incidentStatus) });
     for (const [status, n] of samples) counts[status] = (counts[status] || 0) + n;
   }
-  return { status: rollup(statuses), counts, missing, total: Object.values(counts).reduce((a, b) => a + b, 0) };
+  return {
+    status: rollup(statuses), counts, missing,
+    incidentStatus: incidentStatuses.length ? rollup(incidentStatuses) : undefined,
+    total: Object.values(counts).reduce((a, b) => a + b, 0),
+  };
 }
 function historyStrip(ids) {
   const bars = el('div', 'bars'); bars.setAttribute('aria-hidden', 'true');
@@ -215,6 +221,7 @@ function addHistory(parent, ids, kind, id, selectedDay) {
   const labels = el('div', 'bar-labels'); labels.append(el('span', '', dateLabel(dates[0])), el('span', '', 'Today · UTC')); chart.append(bars, labels); sec.append(chart);
   const control = el('div', 'date-control'), label = el('label', '', 'View day'); label.htmlFor = 'history-date'; const input = el('input'); input.type = 'date'; input.id = 'history-date'; input.min = dates[0]; input.max = dates.at(-1); input.value = day; input.addEventListener('change', () => { if (dates.includes(input.value)) goDay(input.value); }); const previous = el('button', 'date-step', '←'), next = el('button', 'date-step', '→'); previous.type = next.type = 'button'; previous.id = 'previous-day'; next.id = 'next-day'; previous.setAttribute('aria-label', 'Previous day'); next.setAttribute('aria-label', 'Next day'); const selectedIndex = dates.indexOf(day); previous.disabled = selectedIndex === 0; next.disabled = selectedIndex === dates.length - 1; previous.addEventListener('click', () => { goDay(dates[selectedIndex - 1]); $('#previous-day')?.focus({ preventScroll: true }); }); next.addEventListener('click', () => { goDay(dates[selectedIndex + 1]); $('#next-day')?.focus({ preventScroll: true }); }); control.append(label, input, previous, next); sec.append(control);
   const data = observation(ids, day), detail = el('div', 'observation-detail'); detail.setAttribute('role', 'status'); detail.append(el('strong', '', `${dateLabel(day)} · UTC`), el('p', '', data.total ? `${data.total} recorded observations${data.missing ? ` · ${data.missing} service${data.missing === 1 ? '' : 's'} without observations` : ''}` : 'No observations recorded for this day.'));
+  if (data.incidentStatus) detail.append(el('p', '', `Confirmed incident: ${LABELS[data.incidentStatus]}.`));
   const counts = el('div', 'observation-counts'); for (const [status, count] of Object.entries(data.counts)) counts.append(el('span', status, `${LABELS[status]}: ${count}`)); detail.append(counts); sec.append(detail); parent.append(sec);
 }
 function metric(value, unit) { if (unit === 'ms') return value >= 1000 ? `${(value / 1000).toFixed(1)} s` : `${Math.round(value)} ms`; if (unit === '%') return `${Number(value.toFixed(1))}%`; return `${value}${unit ? ` ${unit}` : ''}`; }

@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-04T17:55:48.963Z",
-      "updatedAt": "2026-11-04T18:21:04.756Z",
+      "updatedAt": "2026-11-04T18:34:39.110Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-04T17:30:00.000Z",
       "stage": "monitoring",
@@ -48,6 +48,18 @@
             "status": "operational",
             "reasonCode": "verified",
             "observedAt": "2026-11-04T18:20:05.000Z"
+          }
+        },
+        {
+          "id": "feed-spain-1793814948963-monitor-2026-11-04T18:34:39.110Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-04T18:34:39.110Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-11-04T18:30:07.000Z"
           }
         }
       ],
@@ -106,7 +118,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-04T18:27:59.658Z",
+      "updatedAt": "2026-11-04T18:34:39.110Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

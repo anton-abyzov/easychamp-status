@@ -8,10 +8,10 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-04T17:55:48.963Z",
-      "updatedAt": "2026-11-04T19:02:41.558Z",
+      "updatedAt": "2026-11-04T19:24:37.949Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-04T17:30:00.000Z",
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "feed-spain-1793814948963-monitor-2026-11-04T17:55:48.963Z-investigating",
@@ -85,6 +85,19 @@
             "reasonCode": "in_progress",
             "observedAt": "2026-11-04T19:00:09.000Z"
           }
+        },
+        {
+          "id": "feed-spain-1793814948963-monitor-2026-11-04T19:24:37.949Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-04T19:24:37.949Z",
+          "message": "Fresh observations continue to confirm needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-11-04T19:20:08.000Z",
+            "confirmedStatus": "degraded"
+          }
         }
       ],
       "issue": {
@@ -99,7 +112,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-04T17:55:48.963Z",
-      "updatedAt": "2026-11-04T18:01:14.125Z",
+      "updatedAt": "2026-11-04T19:24:37.949Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-04T17:30:00.000Z",
       "stage": "investigating",
@@ -142,7 +155,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-04T19:18:53.965Z",
+      "updatedAt": "2026-11-04T19:24:37.949Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

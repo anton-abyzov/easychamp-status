@@ -8,10 +8,10 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-06T18:22:11.960Z",
-      "updatedAt": "2026-11-06T19:02:56.973Z",
+      "updatedAt": "2026-11-06T19:16:12.647Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-06T18:00:00.000Z",
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "feed-external-sync-1793989331960-monitor-2026-11-06T18:22:11.960Z-investigating",
@@ -36,6 +36,18 @@
             "status": "unknown",
             "reasonCode": "in_progress",
             "observedAt": "2026-11-06T19:00:07.000Z"
+          }
+        },
+        {
+          "id": "feed-external-sync-1793989331960-monitor-2026-11-06T19:16:12.647Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-06T19:16:12.647Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-11-06T19:10:06.000Z"
           }
         }
       ],
@@ -94,7 +106,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-06T19:10:03.566Z",
+      "updatedAt": "2026-11-06T19:16:12.647Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

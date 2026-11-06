@@ -94,7 +94,8 @@ jobs:
     needs: monitor
     runs-on: ubuntu-latest
     # deploy-pages can sit in deployment_queued for minutes behind a previous
-    # deployment; a 3-minute cap cancelled 34 of 367 runs in 24 h.
+    # deployment; a 3-minute cap cancelled 34 of 367 runs in 24 h. The action's
+    # own 10-minute timeout is now explicit and the job cap leaves 2 minutes.
     timeout-minutes: 12
     permissions:
       contents: read
@@ -118,6 +119,8 @@ jobs:
       - uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
         id: deployment
         if: steps.newer.outputs.skip != 'true'
+        with:
+          timeout: 600000
       - name: Verify fresh public state and publish successful-deployment heartbeat
         if: steps.newer.outputs.skip != 'true'
         run: node scripts/publication.mjs --published

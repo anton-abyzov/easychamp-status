@@ -20,3 +20,13 @@ test('published event is separate from collector heartbeat and records generatio
   await publishHeartbeat({ components: [] }, at, { NEW_RELIC_STATUS_LICENSE_KEY: 'test-secret', NEW_RELIC_STATUS_ACCOUNT_ID: '123' }, async (_url, options) => { event = JSON.parse(options.body)[0]; return new Response('', { status: 200 }); }, true);
   assert.equal(event.eventType, 'EasyChampPublicStatusPublishedHeartbeat'); assert.equal(event.publishedOperational, 1); assert.equal(event.stateGeneratedAt, at); assert.equal(event.collectorOperational, undefined);
 });
+
+import { newerDeployed } from '../scripts/publication.mjs';
+test('a newer generation already public skips the deploy; equal, older or invalid does not', () => {
+  const live = at => ({ schemaVersion: 1, generatedAt: at });
+  assert.equal(newerDeployed(live('2026-11-06T17:10:00Z'), '2026-11-06T17:05:00Z'), true);
+  assert.equal(newerDeployed(live('2026-11-06T17:05:00Z'), '2026-11-06T17:05:00Z'), false);
+  assert.equal(newerDeployed(live('2026-11-06T17:00:00Z'), '2026-11-06T17:05:00Z'), false);
+  assert.equal(newerDeployed(null, '2026-11-06T17:05:00Z'), false);
+  assert.equal(newerDeployed({ schemaVersion: 2, generatedAt: '2026-11-06T17:10:00Z' }, '2026-11-06T17:05:00Z'), false);
+});

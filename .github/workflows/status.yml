@@ -7,7 +7,8 @@ on:
         type: boolean
         default: true
   schedule:
-    - cron: '3-58/5 * * * *'
+    # Fallback only: pacer.yml is the sole regular driver. This cron also
+    # carries the quarter-hour browser collection.
     - cron: '2,17,32,47 * * * *'
   push:
     branches: [main]
@@ -92,7 +93,10 @@ jobs:
   publish:
     needs: monitor
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    # deploy-pages can sit in deployment_queued for minutes behind a previous
+    # deployment; a 3-minute cap cancelled 34 of 367 runs in 24 h. The action's
+    # own 10-minute timeout is now explicit and the job cap leaves 2 minutes.
+    timeout-minutes: 12
     permissions:
       contents: read
       pages: write
@@ -107,12 +111,21 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
+      - name: Skip deployment when a newer generation is already public
+        id: newer
+        env:
+          STATUS_GENERATED_AT: ${{ needs.monitor.outputs.observed_at }}
+        run: node scripts/publication.mjs --newer-deployed
       - uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
         id: deployment
+        if: steps.newer.outputs.skip != 'true'
+        with:
+          timeout: 600000
       - name: Verify fresh public state and publish successful-deployment heartbeat
+        if: steps.newer.outputs.skip != 'true'
         run: node scripts/publication.mjs --published
         env:
-          STATUS_PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          STATUS_PAGE_URL: ${{ steps.deployment.outputs.page_url || 'https://status.easychamp.com/' }}
           STATUS_GENERATED_AT: ${{ needs.monitor.outputs.observed_at }}
           NEW_RELIC_STATUS_LICENSE_KEY: ${{ secrets.NEW_RELIC_STATUS_LICENSE_KEY }}
           NEW_RELIC_STATUS_ACCOUNT_ID: ${{ vars.NEW_RELIC_STATUS_ACCOUNT_ID }}

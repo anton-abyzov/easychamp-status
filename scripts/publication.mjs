@@ -1,8 +1,20 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, appendFile } from 'node:fs/promises';
 import { viewState, time } from '../public/model.mjs';
 import { publishHeartbeat } from './heartbeat.mjs';
 export function publicationEvidence(state, expectedAt, now = Date.now()) {
   return state?.schemaVersion === 1 && time(state.generatedAt) !== null && state.generatedAt === expectedAt && time(state.generatedAt) <= now + 60000 && now - time(state.generatedAt) <= 900000;
+}
+export function newerDeployed(state, expectedAt) {
+  const live = time(state?.generatedAt), mine = time(expectedAt);
+  return state?.schemaVersion === 1 && live !== null && mine !== null && live > mine;
+}
+export async function fetchPublicState(pageUrl, get = fetch) {
+  try {
+    const response = await get(new URL(`data/status.json?t=${Date.now()}`, pageUrl).href, { signal: AbortSignal.timeout(12000), cache: 'no-store' });
+    if (!response.ok) { await response.body?.cancel(); return null; }
+    const text = await response.text();
+    return text.length > 1000000 ? null : JSON.parse(text);
+  } catch { return null; }
 }
 export async function verifyPublication(pageUrl, expectedAt, get = fetch) {
   try {
@@ -22,4 +34,9 @@ if (process.argv.includes('--published')) {
     const registry = JSON.parse(await readFile('config/components.json', 'utf8'));
     console.log(JSON.stringify({ publication: 'verified', heartbeat: await publishHeartbeat({ ...viewState(registry, checked.state), counters: checked.state.counters }, checked.state.generatedAt, process.env, fetch, true) }));
   } else { console.log(JSON.stringify({ publication: checked.status, heartbeat: 'not_sent' })); process.exitCode = 1; }
+}
+if (process.argv.includes('--newer-deployed')) {
+  const skip = newerDeployed(await fetchPublicState(process.env.STATUS_PAGE_URL || 'https://status.easychamp.com/'), process.env.STATUS_GENERATED_AT);
+  console.log(JSON.stringify({ skip }));
+  if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `skip=${skip}\n`);
 }

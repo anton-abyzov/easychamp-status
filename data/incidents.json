@@ -2,36 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "soccer-nationals-1794127762519",
-      "componentId": "soccer-nationals",
-      "title": "Soccer Nationals league site: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
-      "openedAt": "2026-11-08T08:49:22.519Z",
-      "updatedAt": "2026-11-08T10:24:18.668Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "soccer-nationals-1794127762519-monitor-2026-11-08T08:49:22.519Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-08T08:49:22.519Z",
-          "message": "Two fresh observations confirmed major outage: Check timed out.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-11-08T08:48:52.033Z",
-            "confirmedStatus": "major_outage"
-          }
-        }
-      ],
-      "issue": {
-        "number": 130,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/130"
-      }
-    },
-    {
       "id": "watch-1794127762519",
       "componentId": "watch",
       "title": "Watch entry page: availability issue",
@@ -80,7 +50,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-08T06:11:45.822Z",
-      "updatedAt": "2026-11-08T10:24:18.668Z",
+      "updatedAt": "2026-11-08T10:31:09.169Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-07T22:00:00.000Z",
       "stage": "investigating",
@@ -111,7 +81,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-08T10:24:18.668Z",
+      "updatedAt": "2026-11-08T10:31:09.169Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -131,6 +101,53 @@
       "issue": {
         "number": 109,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/109"
+      }
+    },
+    {
+      "id": "soccer-nationals-1794127762519",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-11-08T08:49:22.519Z",
+      "updatedAt": "2026-11-08T10:31:09.169Z",
+      "resolvedAt": "2026-11-08T10:31:09.169Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "soccer-nationals-1794127762519-monitor-2026-11-08T08:49:22.519Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-08T08:49:22.519Z",
+          "message": "Two fresh observations confirmed major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-11-08T08:48:52.033Z",
+            "confirmedStatus": "major_outage"
+          }
+        },
+        {
+          "id": "soccer-nationals-1794127762519-monitor-2026-11-08T10:31:09.169Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-08T10:31:09.169Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-08T10:30:36.054Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Soccer Nationals league site: availability issue. First confirmed issue: 2026-11-08T08:49:22.519Z. Recovery confirmed by two fresh successful observations: 2026-11-08T10:31:09.169Z. Confirmed incident duration: 102 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-08T10:31:09.169Z"
+      },
+      "issue": {
+        "number": 130,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/130"
       }
     },
     {

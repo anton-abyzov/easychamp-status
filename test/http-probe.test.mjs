@@ -19,10 +19,10 @@ test('assistant readiness requires semantic values, not HTTP 200 or field types'
   }
 });
 
-test('provider low capacity degrades and exhausted funding reports outage despite HTTP 200', async () => {
+test('provider low capacity is not a degradation and exhausted funding reports outage despite HTTP 200', async () => {
   const degraded = await httpProbe(probe, options({ ...good, status: 'degraded', ready: false, provider: 'degraded', reasonCode: 'provider_capacity_low' }));
-  assert.equal(degraded.status, 'degraded');
-  assert.equal(degraded.reasonCode, 'provider_capacity_low');
+  assert.equal(degraded.status, 'operational');
+  assert.equal(degraded.reasonCode, 'ok');
   const failed = await httpProbe(probe, options({ ...good, status: 'unavailable', ready: false, provider: 'unavailable', reasonCode: 'provider_funding_exhausted' }));
   assert.equal(failed.status, 'major_outage');
   assert.equal(failed.httpStatus, 200);
@@ -75,7 +75,7 @@ test('dependency states exhaustively enforce healthy, degraded, unavailable and 
         const healthy = dependencies.every(value => value === 'operational');
         const degraded = storage === 'operational' && domain === 'operational' && provider === 'degraded';
         assert.equal(assistantHealthEvidence(common, now).status === 'operational', healthy);
-        assert.equal(assistantHealthEvidence({ ...common, status: 'degraded', ready: false, reasonCode: 'provider_capacity_low' }, now).status === 'degraded', degraded);
+        assert.equal(assistantHealthEvidence({ ...common, status: 'degraded', ready: false, reasonCode: 'provider_capacity_low' }, now).status === 'operational', degraded);
         assert.equal(assistantHealthEvidence({ ...common, status: 'unavailable', ready: false, reasonCode: 'provider_unavailable' }, now).status === 'major_outage', unavailable);
         const uncertain = assistantHealthEvidence({ ...common, status: 'unknown', ready: false, reasonCode: 'provider_health_unverified' }, now);
         assert.equal(uncertain.reasonCode === 'provider_health_unverified', unknown && !unavailable);
@@ -115,7 +115,7 @@ test('cached timestamps are preserved and component evidence expires', async () 
   assert.equal(componentState(component, { probes: { [probe.id]: sample } }, registry, now + 901_000).status, 'unknown');
   for (const status of ['degraded', 'unavailable']) {
     const failure = await httpProbe(probe, options({ ...good, status, ready: false, provider: status === 'degraded' ? 'degraded' : 'unavailable', reasonCode: status === 'degraded' ? 'provider_capacity_low' : 'provider_funding_exhausted' }));
-    assert.equal(componentState(component, { probes: { [probe.id]: failure } }, registry, now).status, status === 'degraded' ? 'degraded' : 'major_outage');
+    assert.equal(componentState(component, { probes: { [probe.id]: failure } }, registry, now).status, status === 'degraded' ? 'operational' : 'major_outage');
   }
 });
 

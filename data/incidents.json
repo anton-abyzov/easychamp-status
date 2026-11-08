@@ -2,48 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "soccer-nationals-1794172014711",
-      "componentId": "soccer-nationals",
-      "title": "Soccer Nationals league site: availability issue",
-      "status": "major_outage",
-      "reasonCode": "http_error",
-      "openedAt": "2026-11-08T21:06:54.711Z",
-      "updatedAt": "2026-11-08T21:46:43.355Z",
-      "resolvedAt": null,
-      "stage": "investigating",
-      "updates": [
-        {
-          "id": "soccer-nationals-1794172014711-monitor-2026-11-08T21:06:54.711Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-08T21:06:54.711Z",
-          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-11-08T21:06:54.711Z"
-          }
-        },
-        {
-          "id": "soccer-nationals-1794172014711-monitor-2026-11-08T21:20:16.766Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-08T21:20:16.766Z",
-          "message": "Fresh observations continue to confirm major outage: Unexpected HTTP response.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "http_error",
-            "observedAt": "2026-11-08T21:19:26.576Z",
-            "confirmedStatus": "major_outage"
-          }
-        }
-      ],
-      "issue": {
-        "number": 134,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/134"
-      }
-    },
-    {
       "id": "scraper-pesmaster-1794118305822",
       "componentId": "scraper-pesmaster",
       "title": "PES Master player data: degraded service",
@@ -81,7 +39,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-08T21:46:43.355Z",
+      "updatedAt": "2026-11-08T21:48:51.623Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -101,6 +59,65 @@
       "issue": {
         "number": 109,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/109"
+      }
+    },
+    {
+      "id": "soccer-nationals-1794172014711",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: availability issue",
+      "status": "major_outage",
+      "reasonCode": "http_error",
+      "openedAt": "2026-11-08T21:06:54.711Z",
+      "updatedAt": "2026-11-08T21:48:51.623Z",
+      "resolvedAt": "2026-11-08T21:48:51.623Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "soccer-nationals-1794172014711-monitor-2026-11-08T21:06:54.711Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-08T21:06:54.711Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-11-08T21:06:54.711Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1794172014711-monitor-2026-11-08T21:20:16.766Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-08T21:20:16.766Z",
+          "message": "Fresh observations continue to confirm major outage: Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-11-08T21:19:26.576Z",
+            "confirmedStatus": "major_outage"
+          }
+        },
+        {
+          "id": "soccer-nationals-1794172014711-monitor-2026-11-08T21:48:51.623Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-08T21:48:51.623Z",
+          "message": "Six consecutive availability checks passed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-08T21:48:51.623Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Soccer Nationals league site: availability issue. First confirmed issue: 2026-11-08T21:06:54.711Z. Recovery confirmed by six consecutive passing availability checks: 2026-11-08T21:48:51.623Z. Confirmed incident duration: 42 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-08T21:48:51.623Z"
+      },
+      "issue": {
+        "number": 134,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/134"
       }
     },
     {

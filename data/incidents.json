@@ -2,13 +2,42 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "watch-1794172308579",
+      "componentId": "watch",
+      "title": "Watch entry page: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-11-08T21:11:48.579Z",
+      "updatedAt": "2026-11-08T21:11:48.579Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "watch-1794172308579-monitor-2026-11-08T21:11:48.579Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-08T21:11:48.579Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-11-08T21:11:48.579Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 135,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/135"
+      }
+    },
+    {
       "id": "soccer-nationals-1794172014711",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: availability issue",
       "status": "major_outage",
       "reasonCode": "timeout",
       "openedAt": "2026-11-08T21:06:54.711Z",
-      "updatedAt": "2026-11-08T21:06:54.711Z",
+      "updatedAt": "2026-11-08T21:11:48.579Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -37,7 +66,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-08T06:11:45.822Z",
-      "updatedAt": "2026-11-08T21:01:14.308Z",
+      "updatedAt": "2026-11-08T21:11:48.579Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-07T22:00:00.000Z",
       "stage": "investigating",
@@ -68,7 +97,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-08T21:06:54.711Z",
+      "updatedAt": "2026-11-08T21:11:48.579Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

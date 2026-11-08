@@ -2,13 +2,44 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "scraper-pesmaster-1794118305822",
+      "componentId": "scraper-pesmaster",
+      "title": "PES Master player data: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-11-08T06:11:45.822Z",
+      "updatedAt": "2026-11-08T06:11:45.822Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-11-07T22:00:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "scraper-pesmaster-1794118305822-monitor-2026-11-08T06:11:45.822Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-08T06:11:45.822Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-11-08T06:10:05.000Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 128,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/128"
+      }
+    },
+    {
       "id": "assistant-1793603035585",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-08T06:05:56.553Z",
+      "updatedAt": "2026-11-08T06:11:45.822Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

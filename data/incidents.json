@@ -2,60 +2,6 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "watch-1794127762519",
-      "componentId": "watch",
-      "title": "Watch entry page: availability issue",
-      "status": "major_outage",
-      "reasonCode": "timeout",
-      "openedAt": "2026-11-08T08:49:22.519Z",
-      "updatedAt": "2026-11-08T20:42:34.864Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "watch-1794127762519-monitor-2026-11-08T08:49:22.519Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-08T08:49:22.519Z",
-          "message": "Two fresh observations confirmed major outage: Check timed out.",
-          "source": "monitor",
-          "evidence": {
-            "status": "major_outage",
-            "reasonCode": "timeout",
-            "observedAt": "2026-11-08T08:48:51.522Z",
-            "confirmedStatus": "major_outage"
-          }
-        },
-        {
-          "id": "watch-1794127762519-monitor-2026-11-08T09:08:01.834Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-08T09:08:01.834Z",
-          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
-          "source": "monitor",
-          "evidence": {
-            "status": "unknown",
-            "reasonCode": "automation_blocked",
-            "observedAt": "2026-11-08T09:07:23.530Z"
-          }
-        },
-        {
-          "id": "watch-1794127762519-monitor-2026-11-08T20:42:34.864Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-11-08T20:42:34.864Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-11-08T20:42:05.329Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 131,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/131"
-      }
-    },
-    {
       "id": "scraper-pesmaster-1794118305822",
       "componentId": "scraper-pesmaster",
       "title": "PES Master player data: degraded service",
@@ -93,7 +39,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-08T20:42:34.864Z",
+      "updatedAt": "2026-11-08T20:48:27.459Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -113,6 +59,77 @@
       "issue": {
         "number": 109,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/109"
+      }
+    },
+    {
+      "id": "watch-1794127762519",
+      "componentId": "watch",
+      "title": "Watch entry page: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-11-08T08:49:22.519Z",
+      "updatedAt": "2026-11-08T20:48:27.459Z",
+      "resolvedAt": "2026-11-08T20:48:27.459Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "watch-1794127762519-monitor-2026-11-08T08:49:22.519Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-08T08:49:22.519Z",
+          "message": "Two fresh observations confirmed major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-11-08T08:48:51.522Z",
+            "confirmedStatus": "major_outage"
+          }
+        },
+        {
+          "id": "watch-1794127762519-monitor-2026-11-08T09:08:01.834Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-08T09:08:01.834Z",
+          "message": "Latest evidence is unknown: Automation protected; customer availability unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "automation_blocked",
+            "observedAt": "2026-11-08T09:07:23.530Z"
+          }
+        },
+        {
+          "id": "watch-1794127762519-monitor-2026-11-08T20:42:34.864Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-08T20:42:34.864Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-08T20:42:05.329Z"
+          }
+        },
+        {
+          "id": "watch-1794127762519-monitor-2026-11-08T20:48:27.459Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-08T20:48:27.459Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-08T20:47:57.053Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Watch entry page: availability issue. First confirmed issue: 2026-11-08T08:49:22.519Z. Recovery confirmed by two fresh successful observations: 2026-11-08T20:48:27.459Z. Confirmed incident duration: 719 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-08T20:48:27.459Z"
+      },
+      "issue": {
+        "number": 131,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/131"
       }
     },
     {

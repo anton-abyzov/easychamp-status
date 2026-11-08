@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-08T06:11:45.822Z",
-      "updatedAt": "2026-11-08T21:54:10.575Z",
+      "updatedAt": "2026-11-08T22:00:15.769Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-07T22:00:00.000Z",
       "stage": "investigating",
@@ -25,6 +25,18 @@
             "observedAt": "2026-11-08T06:10:05.000Z",
             "confirmedStatus": "degraded"
           }
+        },
+        {
+          "id": "scraper-pesmaster-1794118305822-monitor-2026-11-08T22:00:15.769Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-08T22:00:15.769Z",
+          "message": "Latest evidence is unknown: Latest scheduled run is in progress. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "in_progress",
+            "observedAt": "2026-11-08T22:00:06.000Z"
+          }
         }
       ],
       "issue": {
@@ -39,9 +51,9 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-08T21:54:10.575Z",
+      "updatedAt": "2026-11-08T22:00:15.769Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "assistant-1793603035585-monitor-2026-11-02T07:03:55.585Z-investigating",
@@ -53,6 +65,18 @@
             "status": "degraded",
             "reasonCode": "provider_capacity_low",
             "observedAt": "2026-11-02T07:03:23.471Z"
+          }
+        },
+        {
+          "id": "assistant-1793603035585-monitor-2026-11-08T22:00:15.769Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-08T22:00:15.769Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-08T22:00:13.077Z"
           }
         }
       ],

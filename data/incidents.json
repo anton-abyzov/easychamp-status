@@ -2,6 +2,66 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "soccer-nationals-1794127762519",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-11-08T08:49:22.519Z",
+      "updatedAt": "2026-11-08T08:49:22.519Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1794127762519-monitor-2026-11-08T08:49:22.519Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-08T08:49:22.519Z",
+          "message": "Two fresh observations confirmed major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-11-08T08:48:52.033Z",
+            "confirmedStatus": "major_outage"
+          }
+        }
+      ],
+      "issue": {
+        "number": 130,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/130"
+      }
+    },
+    {
+      "id": "watch-1794127762519",
+      "componentId": "watch",
+      "title": "Watch entry page: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-11-08T08:49:22.519Z",
+      "updatedAt": "2026-11-08T08:49:22.519Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "watch-1794127762519-monitor-2026-11-08T08:49:22.519Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-08T08:49:22.519Z",
+          "message": "Two fresh observations confirmed major outage: Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-11-08T08:48:51.522Z",
+            "confirmedStatus": "major_outage"
+          }
+        }
+      ],
+      "issue": {
+        "number": 131,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/131"
+      }
+    },
+    {
       "id": "scraper-pesmaster-1794118305822",
       "componentId": "scraper-pesmaster",
       "title": "PES Master player data: degraded service",
@@ -39,7 +99,7 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-02T07:03:55.585Z",
-      "updatedAt": "2026-11-08T08:47:12.013Z",
+      "updatedAt": "2026-11-08T08:49:22.519Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

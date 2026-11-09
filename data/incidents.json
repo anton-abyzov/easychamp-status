@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T22:10:13.219Z",
-      "updatedAt": "2026-11-09T22:10:13.219Z",
+      "updatedAt": "2026-11-09T22:18:51.658Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "snap-1794262213219-monitor-2026-11-09T22:10:13.219Z-investigating",
@@ -23,6 +23,18 @@
             "reasonCode": "rendering_slow",
             "observedAt": "2026-11-09T22:09:24.770Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "snap-1794262213219-monitor-2026-11-09T22:18:51.658Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T22:18:51.658Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T22:18:20.572Z"
           }
         }
       ],

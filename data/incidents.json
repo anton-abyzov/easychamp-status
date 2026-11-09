@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T19:32:09.902Z",
-      "updatedAt": "2026-11-09T19:35:00.728Z",
+      "updatedAt": "2026-11-09T19:47:29.622Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "snap-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
@@ -23,6 +23,18 @@
             "reasonCode": "rendering_slow",
             "observedAt": "2026-11-09T19:30:51.290Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "snap-1794252729902-monitor-2026-11-09T19:47:29.622Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T19:47:29.622Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T19:46:52.925Z"
           }
         }
       ],
@@ -80,9 +92,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T19:32:09.902Z",
-      "updatedAt": "2026-11-09T19:35:00.728Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-11-09T19:47:29.622Z",
+      "resolvedAt": "2026-11-09T19:47:29.622Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "watch-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
@@ -108,8 +120,25 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T19:34:22.412Z"
           }
+        },
+        {
+          "id": "watch-1794252729902-monitor-2026-11-09T19:47:29.622Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T19:47:29.622Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T19:46:50.465Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Watch entry page: degraded performance. First confirmed issue: 2026-11-09T19:32:09.902Z. Recovery confirmed by two fresh successful observations: 2026-11-09T19:47:29.622Z. Confirmed incident duration: 15 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T19:47:29.622Z"
+      },
       "issue": {
         "number": 155,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/155"

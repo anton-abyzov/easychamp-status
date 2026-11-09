@@ -2,16 +2,106 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "snap-1794252729902",
+      "componentId": "snap",
+      "title": "Snap to League: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-11-09T19:32:09.902Z",
+      "updatedAt": "2026-11-09T19:32:09.902Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "snap-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T19:32:09.902Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-09T19:30:51.290Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 153,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/153"
+      }
+    },
+    {
+      "id": "soccer-nationals-1794252729902",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-11-09T19:32:09.902Z",
+      "updatedAt": "2026-11-09T19:32:09.902Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T19:32:09.902Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T19:31:04.237Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 154,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/154"
+      }
+    },
+    {
+      "id": "watch-1794252729902",
+      "componentId": "watch",
+      "title": "Watch entry page: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-11-09T19:32:09.902Z",
+      "updatedAt": "2026-11-09T19:32:09.902Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "watch-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T19:32:09.902Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T19:30:48.949Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 155,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/155"
+      }
+    },
+    {
       "id": "feed-upsl-1794245519859",
       "componentId": "feed-upsl",
       "title": "UPSL results: degraded service",
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T19:20:36.017Z",
-      "resolvedAt": null,
+      "updatedAt": "2026-11-09T19:32:09.902Z",
+      "resolvedAt": "2026-11-09T19:32:09.902Z",
       "deadlineAt": "2026-11-09T17:17:00.000Z",
-      "stage": "monitoring",
+      "stage": "resolved",
       "updates": [
         {
           "id": "feed-upsl-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
@@ -37,8 +127,25 @@
             "reasonCode": "verified",
             "observedAt": "2026-11-09T19:20:06.000Z"
           }
+        },
+        {
+          "id": "feed-upsl-1794245519859-monitor-2026-11-09T19:32:09.902Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T19:32:09.902Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-11-09T19:30:06.000Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. UPSL results: degraded service. First confirmed issue: 2026-11-09T17:31:59.859Z. Recovery confirmed by two fresh successful observations: 2026-11-09T19:32:09.902Z. Confirmed incident duration: 120 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T19:32:09.902Z"
+      },
       "issue": {
         "number": 146,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/146"

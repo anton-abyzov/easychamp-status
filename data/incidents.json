@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T22:10:13.219Z",
-      "updatedAt": "2026-11-09T22:18:51.658Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-11-09T22:20:16.110Z",
+      "resolvedAt": "2026-11-09T22:20:16.110Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "snap-1794262213219-monitor-2026-11-09T22:10:13.219Z-investigating",
@@ -36,8 +36,25 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T22:18:20.572Z"
           }
+        },
+        {
+          "id": "snap-1794262213219-monitor-2026-11-09T22:20:16.110Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T22:20:16.110Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T22:19:43.543Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Snap to League: degraded performance. First confirmed issue: 2026-11-09T22:10:13.219Z. Recovery confirmed by two fresh successful observations: 2026-11-09T22:20:16.110Z. Confirmed incident duration: 10 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T22:20:16.110Z"
+      },
       "issue": {
         "number": 160,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/160"

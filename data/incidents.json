@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T15:31:42.484Z",
-      "updatedAt": "2026-11-09T15:31:42.484Z",
+      "updatedAt": "2026-11-09T15:35:19.762Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "coach-1794238302484-monitor-2026-11-09T15:31:42.484Z-investigating",
@@ -23,6 +23,18 @@
             "reasonCode": "rendering_slow",
             "observedAt": "2026-11-09T15:30:54.684Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "coach-1794238302484-monitor-2026-11-09T15:35:19.762Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T15:35:19.762Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T15:34:46.197Z"
           }
         }
       ],
@@ -38,9 +50,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T15:11:34.039Z",
-      "updatedAt": "2026-11-09T15:31:42.484Z",
+      "updatedAt": "2026-11-09T15:35:19.762Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "soccer-nationals-1794237094039-monitor-2026-11-09T15:11:34.039Z-investigating",
@@ -66,6 +78,18 @@
             "reasonCode": "rendering_slow",
             "observedAt": "2026-11-09T15:31:00.195Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "soccer-nationals-1794237094039-monitor-2026-11-09T15:35:19.762Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T15:35:19.762Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T15:34:48.738Z"
           }
         }
       ],

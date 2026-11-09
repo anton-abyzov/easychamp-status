@@ -70,9 +70,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T19:10:15.821Z",
+      "updatedAt": "2026-11-09T19:19:05.274Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "coach-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
@@ -135,6 +135,18 @@
             "reasonCode": "timeout",
             "observedAt": "2026-11-09T18:49:16.112Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "coach-1794245519859-monitor-2026-11-09T19:19:05.274Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T19:19:05.274Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T19:18:29.891Z"
           }
         }
       ],

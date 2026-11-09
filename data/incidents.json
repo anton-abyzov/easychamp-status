@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T15:31:42.484Z",
-      "updatedAt": "2026-11-09T15:35:19.762Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-11-09T15:47:41.102Z",
+      "resolvedAt": "2026-11-09T15:47:41.102Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "coach-1794238302484-monitor-2026-11-09T15:31:42.484Z-investigating",
@@ -36,8 +36,25 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T15:34:46.197Z"
           }
+        },
+        {
+          "id": "coach-1794238302484-monitor-2026-11-09T15:47:41.102Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T15:47:41.102Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T15:47:08.790Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Coach: degraded performance. First confirmed issue: 2026-11-09T15:31:42.484Z. Recovery confirmed by two fresh successful observations: 2026-11-09T15:47:41.102Z. Confirmed incident duration: 16 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T15:47:41.102Z"
+      },
       "issue": {
         "number": 139,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/139"
@@ -50,9 +67,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T15:11:34.039Z",
-      "updatedAt": "2026-11-09T15:35:19.762Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-11-09T15:47:41.102Z",
+      "resolvedAt": "2026-11-09T15:47:41.102Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "soccer-nationals-1794237094039-monitor-2026-11-09T15:11:34.039Z-investigating",
@@ -91,8 +108,25 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T15:34:48.738Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1794237094039-monitor-2026-11-09T15:47:41.102Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T15:47:41.102Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T15:47:10.395Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Soccer Nationals league site: degraded performance. First confirmed issue: 2026-11-09T15:11:34.039Z. Recovery confirmed by two fresh successful observations: 2026-11-09T15:47:41.102Z. Confirmed incident duration: 36 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T15:47:41.102Z"
+      },
       "issue": {
         "number": 138,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/138"

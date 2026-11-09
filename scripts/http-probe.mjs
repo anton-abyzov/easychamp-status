@@ -49,7 +49,9 @@ export function assistantHealthEvidence(data, now = Date.now()) {
   if (data.status === 'degraded') {
     if (data.storage !== 'operational' || data.domain !== 'operational'
         || data.provider !== 'degraded' || data.reasonCode !== 'provider_capacity_low') return invalid;
-    return { status: 'degraded', reasonCode: data.reasonCode, observedAt };
+    // Low OpenRouter balance is a funding signal that auto top-up handles, not a service failure
+    // (owner decision, November 8, 2026). Storage, domain and provider reachability still alert.
+    return { status: 'operational', reasonCode: 'ok', observedAt };
   }
   const dependencies = [data.storage, data.domain, data.provider];
   if (data.reasonCode === 'ok') return invalid;

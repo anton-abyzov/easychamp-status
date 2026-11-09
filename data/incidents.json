@@ -2,6 +2,36 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "snap-1794241994554",
+      "componentId": "snap",
+      "title": "Snap to League: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-11-09T16:33:14.554Z",
+      "updatedAt": "2026-11-09T16:33:14.554Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "snap-1794241994554-monitor-2026-11-09T16:33:14.554Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T16:33:14.554Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T16:32:01.654Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 141,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/141"
+      }
+    },
+    {
       "id": "console-1794240130237",
       "componentId": "console",
       "title": "Organizer Console: degraded performance",

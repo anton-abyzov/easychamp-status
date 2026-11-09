@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T20:19:13.549Z",
-      "updatedAt": "2026-11-09T20:19:13.549Z",
+      "updatedAt": "2026-11-09T20:31:25.417Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -38,9 +38,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T19:32:09.902Z",
-      "updatedAt": "2026-11-09T20:19:13.549Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-11-09T20:31:25.417Z",
+      "resolvedAt": "2026-11-09T20:31:25.417Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "soccer-nationals-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
@@ -103,8 +103,25 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T20:18:37.393Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1794252729902-monitor-2026-11-09T20:31:25.417Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T20:31:25.417Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T20:30:41.676Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Soccer Nationals league site: degraded performance. First confirmed issue: 2026-11-09T19:32:09.902Z. Recovery confirmed by two fresh successful observations: 2026-11-09T20:31:25.417Z. Confirmed incident duration: 59 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T20:31:25.417Z"
+      },
       "issue": {
         "number": 154,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/154"

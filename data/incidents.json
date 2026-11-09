@@ -2,13 +2,43 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "sim-1794248529392",
+      "componentId": "sim",
+      "title": "Match Simulator: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-11-09T18:22:09.392Z",
+      "updatedAt": "2026-11-09T18:22:09.392Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "sim-1794248529392-monitor-2026-11-09T18:22:09.392Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T18:22:09.392Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T18:21:32.482Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 151,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/151"
+      }
+    },
+    {
       "id": "feed-upsl-1794245519859",
       "componentId": "feed-upsl",
       "title": "UPSL results: degraded service",
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T18:04:04.753Z",
+      "updatedAt": "2026-11-09T18:22:09.392Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-09T17:17:00.000Z",
       "stage": "investigating",
@@ -39,7 +69,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T18:04:04.753Z",
+      "updatedAt": "2026-11-09T18:22:09.392Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-09T17:17:00.000Z",
       "stage": "investigating",
@@ -70,9 +100,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T18:04:04.753Z",
+      "updatedAt": "2026-11-09T18:22:09.392Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "coach-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
@@ -111,6 +141,18 @@
             "observedAt": "2026-11-09T18:03:14.655Z",
             "confirmedStatus": "degraded"
           }
+        },
+        {
+          "id": "coach-1794245519859-monitor-2026-11-09T18:22:09.392Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T18:22:09.392Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T18:21:29.046Z"
+          }
         }
       ],
       "issue": {
@@ -125,7 +167,7 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T18:04:04.753Z",
+      "updatedAt": "2026-11-09T18:22:09.392Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -180,9 +222,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T16:35:06.708Z",
-      "updatedAt": "2026-11-09T18:04:04.753Z",
+      "updatedAt": "2026-11-09T18:22:09.392Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "soccer-nationals-1794242106708-monitor-2026-11-09T16:35:06.708Z-investigating",
@@ -271,6 +313,18 @@
             "reasonCode": "slow",
             "observedAt": "2026-11-09T18:03:25.317Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "soccer-nationals-1794242106708-monitor-2026-11-09T18:22:09.392Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T18:22:09.392Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T18:21:35.348Z"
           }
         }
       ],

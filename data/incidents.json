@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T16:02:10.237Z",
-      "updatedAt": "2026-11-09T16:02:10.237Z",
+      "updatedAt": "2026-11-09T16:11:02.675Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -23,6 +23,18 @@
             "reasonCode": "slow",
             "observedAt": "2026-11-09T16:01:30.007Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "console-1794240130237-monitor-2026-11-09T16:11:02.675Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T16:11:02.675Z",
+          "message": "Latest evidence is unknown: Evidence could not be verified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "invalid_evidence",
+            "observedAt": "2026-11-09T16:10:24.234Z"
           }
         }
       ],

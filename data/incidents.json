@@ -2,6 +2,36 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "assistant-1794208849822",
+      "componentId": "assistant",
+      "title": "AI assistant: degraded service",
+      "status": "degraded",
+      "reasonCode": "provider_capacity_low",
+      "openedAt": "2026-11-09T07:20:49.822Z",
+      "updatedAt": "2026-11-09T07:20:49.822Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "assistant-1794208849822-monitor-2026-11-09T07:20:49.822Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T07:20:49.822Z",
+          "message": "Two fresh observations confirmed needs attention: AI provider balance is low.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "provider_capacity_low",
+            "observedAt": "2026-11-09T07:20:47.888Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 137,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/137"
+      }
+    },
+    {
       "id": "scraper-pesmaster-1794118305822",
       "componentId": "scraper-pesmaster",
       "title": "PES Master player data: degraded service",

@@ -8,10 +8,10 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-08T06:11:45.822Z",
-      "updatedAt": "2026-11-08T22:00:15.769Z",
-      "resolvedAt": null,
+      "updatedAt": "2026-11-09T02:54:06.204Z",
+      "resolvedAt": "2026-11-09T02:54:06.204Z",
       "deadlineAt": "2026-11-07T22:00:00.000Z",
-      "stage": "investigating",
+      "stage": "resolved",
       "updates": [
         {
           "id": "scraper-pesmaster-1794118305822-monitor-2026-11-08T06:11:45.822Z-investigating",
@@ -37,8 +37,25 @@
             "reasonCode": "in_progress",
             "observedAt": "2026-11-08T22:00:06.000Z"
           }
+        },
+        {
+          "id": "scraper-pesmaster-1794118305822-monitor-2026-11-09T02:54:06.204Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T02:54:06.204Z",
+          "message": "A scheduled run completed successfully after the failure. Destination freshness is still unverified.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-11-09T02:50:05.000Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. PES Master player data: degraded service. First confirmed issue: 2026-11-08T06:11:45.822Z. Recovery confirmed by a successful scheduled run after the failure: 2026-11-09T02:54:06.204Z. Confirmed incident duration: 1242 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T02:54:06.204Z"
+      },
       "issue": {
         "number": 128,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/128"

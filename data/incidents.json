@@ -2,55 +2,13 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "signin-1794250193011",
-      "componentId": "signin",
-      "title": "Sign-in discovery: degraded performance",
-      "status": "degraded",
-      "reasonCode": "slow",
-      "openedAt": "2026-11-09T18:49:53.011Z",
-      "updatedAt": "2026-11-09T18:54:56.987Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "signin-1794250193011-monitor-2026-11-09T18:49:53.011Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-09T18:49:53.011Z",
-          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "slow",
-            "observedAt": "2026-11-09T18:49:06.672Z",
-            "confirmedStatus": "degraded"
-          }
-        },
-        {
-          "id": "signin-1794250193011-monitor-2026-11-09T18:54:56.987Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-11-09T18:54:56.987Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-11-09T18:54:53.805Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 152,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/152"
-      }
-    },
-    {
       "id": "feed-upsl-1794245519859",
       "componentId": "feed-upsl",
       "title": "UPSL results: degraded service",
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T18:54:56.987Z",
+      "updatedAt": "2026-11-09T19:10:15.821Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-09T17:17:00.000Z",
       "stage": "investigating",
@@ -81,7 +39,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T18:54:56.987Z",
+      "updatedAt": "2026-11-09T19:10:15.821Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-09T17:17:00.000Z",
       "stage": "investigating",
@@ -112,7 +70,7 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T18:49:53.011Z",
+      "updatedAt": "2026-11-09T19:10:15.821Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -183,6 +141,65 @@
       "issue": {
         "number": 148,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/148"
+      }
+    },
+    {
+      "id": "signin-1794250193011",
+      "componentId": "signin",
+      "title": "Sign-in discovery: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-11-09T18:49:53.011Z",
+      "updatedAt": "2026-11-09T19:10:15.821Z",
+      "resolvedAt": "2026-11-09T19:10:15.821Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "signin-1794250193011-monitor-2026-11-09T18:49:53.011Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T18:49:53.011Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T18:49:06.672Z",
+            "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "signin-1794250193011-monitor-2026-11-09T18:54:56.987Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T18:54:56.987Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T18:54:53.805Z"
+          }
+        },
+        {
+          "id": "signin-1794250193011-monitor-2026-11-09T19:10:15.821Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T19:10:15.821Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T19:09:31.764Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Sign-in discovery: degraded performance. First confirmed issue: 2026-11-09T18:49:53.011Z. Recovery confirmed by two fresh successful observations: 2026-11-09T19:10:15.821Z. Confirmed incident duration: 20 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T19:10:15.821Z"
+      },
+      "issue": {
+        "number": 152,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/152"
       }
     },
     {

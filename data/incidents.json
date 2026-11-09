@@ -8,10 +8,10 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T19:10:15.821Z",
+      "updatedAt": "2026-11-09T19:20:36.017Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-09T17:17:00.000Z",
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "feed-upsl-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
@@ -24,6 +24,18 @@
             "reasonCode": "run_failed",
             "observedAt": "2026-11-09T17:30:06.000Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "feed-upsl-1794245519859-monitor-2026-11-09T19:20:36.017Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T19:20:36.017Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-11-09T19:20:06.000Z"
           }
         }
       ],
@@ -39,10 +51,10 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T19:10:15.821Z",
-      "resolvedAt": null,
+      "updatedAt": "2026-11-09T19:20:36.017Z",
+      "resolvedAt": "2026-11-09T19:20:36.017Z",
       "deadlineAt": "2026-11-09T17:17:00.000Z",
-      "stage": "investigating",
+      "stage": "resolved",
       "updates": [
         {
           "id": "feed-results-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
@@ -56,8 +68,25 @@
             "observedAt": "2026-11-09T17:30:06.000Z",
             "confirmedStatus": "degraded"
           }
+        },
+        {
+          "id": "feed-results-1794245519859-monitor-2026-11-09T19:20:36.017Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T19:20:36.017Z",
+          "message": "A scheduled run completed successfully after the failure. Destination freshness is still unverified.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-11-09T19:20:06.000Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Match results & schedules: degraded service. First confirmed issue: 2026-11-09T17:31:59.859Z. Recovery confirmed by a successful scheduled run after the failure: 2026-11-09T19:20:36.017Z. Confirmed incident duration: 109 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T19:20:36.017Z"
+      },
       "issue": {
         "number": 147,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/147"
@@ -70,9 +99,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T19:19:05.274Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-11-09T19:20:36.017Z",
+      "resolvedAt": "2026-11-09T19:20:36.017Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "coach-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
@@ -148,8 +177,25 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T19:18:29.891Z"
           }
+        },
+        {
+          "id": "coach-1794245519859-monitor-2026-11-09T19:20:36.017Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T19:20:36.017Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T19:19:52.197Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Coach: degraded performance. First confirmed issue: 2026-11-09T17:31:59.859Z. Recovery confirmed by two fresh successful observations: 2026-11-09T19:20:36.017Z. Confirmed incident duration: 109 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T19:20:36.017Z"
+      },
       "issue": {
         "number": 148,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/148"

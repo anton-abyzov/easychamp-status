@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T17:57:07.115Z",
+      "updatedAt": "2026-11-09T18:04:04.753Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-09T17:17:00.000Z",
       "stage": "investigating",
@@ -39,7 +39,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T17:57:07.115Z",
+      "updatedAt": "2026-11-09T18:04:04.753Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-09T17:17:00.000Z",
       "stage": "investigating",
@@ -68,11 +68,11 @@
       "componentId": "coach",
       "title": "Coach: degraded performance",
       "status": "degraded",
-      "reasonCode": "rendering_slow",
+      "reasonCode": "slow",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T17:34:52.423Z",
+      "updatedAt": "2026-11-09T18:04:04.753Z",
       "resolvedAt": null,
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "coach-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
@@ -98,6 +98,19 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T17:34:11.323Z"
           }
+        },
+        {
+          "id": "coach-1794245519859-monitor-2026-11-09T18:04:04.753Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T18:04:04.753Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T18:03:14.655Z",
+            "confirmedStatus": "degraded"
+          }
         }
       ],
       "issue": {
@@ -110,11 +123,11 @@
       "componentId": "home",
       "title": "EasyChamp home: degraded performance",
       "status": "degraded",
-      "reasonCode": "rendering_slow",
+      "reasonCode": "slow",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T17:34:52.423Z",
+      "updatedAt": "2026-11-09T18:04:04.753Z",
       "resolvedAt": null,
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "home-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
@@ -140,6 +153,19 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T17:34:11.471Z"
           }
+        },
+        {
+          "id": "home-1794245519859-monitor-2026-11-09T18:04:04.753Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T18:04:04.753Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T18:03:10.073Z",
+            "confirmedStatus": "degraded"
+          }
         }
       ],
       "issue": {
@@ -154,9 +180,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T16:35:06.708Z",
-      "updatedAt": "2026-11-09T17:34:52.423Z",
+      "updatedAt": "2026-11-09T18:04:04.753Z",
       "resolvedAt": null,
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "soccer-nationals-1794242106708-monitor-2026-11-09T16:35:06.708Z-investigating",
@@ -232,6 +258,19 @@
             "status": "operational",
             "reasonCode": "ok",
             "observedAt": "2026-11-09T17:34:15.825Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1794242106708-monitor-2026-11-09T18:04:04.753Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T18:04:04.753Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T18:03:25.317Z",
+            "confirmedStatus": "degraded"
           }
         }
       ],

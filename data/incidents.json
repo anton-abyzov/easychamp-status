@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "provider_capacity_low",
       "openedAt": "2026-11-09T07:20:49.822Z",
-      "updatedAt": "2026-11-09T07:47:59.035Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-11-09T07:49:21.372Z",
+      "resolvedAt": "2026-11-09T07:49:21.372Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "assistant-1794208849822-monitor-2026-11-09T07:20:49.822Z-investigating",
@@ -36,8 +36,25 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T07:47:26.288Z"
           }
+        },
+        {
+          "id": "assistant-1794208849822-monitor-2026-11-09T07:49:21.372Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T07:49:21.372Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T07:48:49.303Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. AI assistant: degraded service. First confirmed issue: 2026-11-09T07:20:49.822Z. Recovery confirmed by two fresh successful observations: 2026-11-09T07:49:21.372Z. Confirmed incident duration: 29 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T07:49:21.372Z"
+      },
       "issue": {
         "number": 137,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/137"

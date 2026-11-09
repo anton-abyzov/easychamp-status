@@ -2,13 +2,43 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "coach-1794238302484",
+      "componentId": "coach",
+      "title": "Coach: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-11-09T15:31:42.484Z",
+      "updatedAt": "2026-11-09T15:31:42.484Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "coach-1794238302484-monitor-2026-11-09T15:31:42.484Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T15:31:42.484Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-09T15:30:54.684Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 139,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/139"
+      }
+    },
+    {
       "id": "soccer-nationals-1794237094039",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
       "status": "degraded",
-      "reasonCode": "slow",
+      "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T15:11:34.039Z",
-      "updatedAt": "2026-11-09T15:19:58.922Z",
+      "updatedAt": "2026-11-09T15:31:42.484Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -22,6 +52,19 @@
             "status": "degraded",
             "reasonCode": "slow",
             "observedAt": "2026-11-09T15:11:01.669Z",
+            "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "soccer-nationals-1794237094039-monitor-2026-11-09T15:31:42.484Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T15:31:42.484Z",
+          "message": "Fresh observations continue to confirm needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-09T15:31:00.195Z",
             "confirmedStatus": "degraded"
           }
         }

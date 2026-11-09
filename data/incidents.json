@@ -2,6 +2,36 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "snap-1794259251554",
+      "componentId": "snap",
+      "title": "Snap to League: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-11-09T21:20:51.554Z",
+      "updatedAt": "2026-11-09T21:20:51.554Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "snap-1794259251554-monitor-2026-11-09T21:20:51.554Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T21:20:51.554Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-09T21:20:01.676Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 158,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/158"
+      }
+    },
+    {
       "id": "snap-1794255553549",
       "componentId": "snap",
       "title": "Snap to League: degraded performance",

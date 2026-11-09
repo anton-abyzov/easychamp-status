@@ -2,70 +2,15 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "sim-1794242106708",
-      "componentId": "sim",
-      "title": "Match Simulator: degraded performance",
-      "status": "degraded",
-      "reasonCode": "slow",
-      "openedAt": "2026-11-09T16:35:06.708Z",
-      "updatedAt": "2026-11-09T16:48:50.011Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "sim-1794242106708-monitor-2026-11-09T16:35:06.708Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-09T16:35:06.708Z",
-          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "rendering_slow",
-            "observedAt": "2026-11-09T16:34:20.564Z",
-            "confirmedStatus": "degraded"
-          }
-        },
-        {
-          "id": "sim-1794242106708-monitor-2026-11-09T16:46:56.545Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-09T16:46:56.545Z",
-          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "slow",
-            "observedAt": "2026-11-09T16:46:08.717Z",
-            "confirmedStatus": "degraded"
-          }
-        },
-        {
-          "id": "sim-1794242106708-monitor-2026-11-09T16:48:50.011Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-11-09T16:48:50.011Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-11-09T16:48:07.085Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 142,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/142"
-      }
-    },
-    {
       "id": "soccer-nationals-1794242106708",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T16:35:06.708Z",
-      "updatedAt": "2026-11-09T16:48:50.011Z",
+      "updatedAt": "2026-11-09T17:08:31.266Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "soccer-nationals-1794242106708-monitor-2026-11-09T16:35:06.708Z-investigating",
@@ -105,53 +50,23 @@
             "observedAt": "2026-11-09T16:48:16.611Z",
             "confirmedStatus": "degraded"
           }
-        }
-      ],
-      "issue": {
-        "number": 144,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/144"
-      }
-    },
-    {
-      "id": "home-1794242106708",
-      "componentId": "home",
-      "title": "EasyChamp home: degraded performance",
-      "status": "degraded",
-      "reasonCode": "slow",
-      "openedAt": "2026-11-09T16:35:06.708Z",
-      "updatedAt": "2026-11-09T16:48:50.011Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "home-1794242106708-monitor-2026-11-09T16:35:06.708Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-09T16:35:06.708Z",
-          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "slow",
-            "observedAt": "2026-11-09T16:34:21.228Z",
-            "confirmedStatus": "degraded"
-          }
         },
         {
-          "id": "home-1794242106708-monitor-2026-11-09T16:48:50.011Z-monitoring",
+          "id": "soccer-nationals-1794242106708-monitor-2026-11-09T17:08:31.266Z-monitoring",
           "stage": "monitoring",
-          "at": "2026-11-09T16:48:50.011Z",
+          "at": "2026-11-09T17:08:31.266Z",
           "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
           "source": "monitor",
           "evidence": {
             "status": "operational",
             "reasonCode": "ok",
-            "observedAt": "2026-11-09T16:48:07.464Z"
+            "observedAt": "2026-11-09T17:07:52.240Z"
           }
         }
       ],
       "issue": {
-        "number": 145,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/145"
+        "number": 144,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/144"
       }
     },
     {
@@ -161,7 +76,7 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T16:33:14.554Z",
-      "updatedAt": "2026-11-09T16:48:50.011Z",
+      "updatedAt": "2026-11-09T17:08:31.266Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -207,6 +122,137 @@
       "issue": {
         "number": 141,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/141"
+      }
+    },
+    {
+      "id": "sim-1794242106708",
+      "componentId": "sim",
+      "title": "Match Simulator: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-11-09T16:35:06.708Z",
+      "updatedAt": "2026-11-09T17:08:31.266Z",
+      "resolvedAt": "2026-11-09T17:08:31.266Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "sim-1794242106708-monitor-2026-11-09T16:35:06.708Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T16:35:06.708Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-09T16:34:20.564Z",
+            "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "sim-1794242106708-monitor-2026-11-09T16:46:56.545Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T16:46:56.545Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T16:46:08.717Z",
+            "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "sim-1794242106708-monitor-2026-11-09T16:48:50.011Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T16:48:50.011Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T16:48:07.085Z"
+          }
+        },
+        {
+          "id": "sim-1794242106708-monitor-2026-11-09T17:08:31.266Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T17:08:31.266Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T17:07:49.743Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Match Simulator: degraded performance. First confirmed issue: 2026-11-09T16:35:06.708Z. Recovery confirmed by two fresh successful observations: 2026-11-09T17:08:31.266Z. Confirmed incident duration: 33 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T17:08:31.266Z"
+      },
+      "issue": {
+        "number": 142,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/142"
+      }
+    },
+    {
+      "id": "home-1794242106708",
+      "componentId": "home",
+      "title": "EasyChamp home: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-11-09T16:35:06.708Z",
+      "updatedAt": "2026-11-09T17:08:31.266Z",
+      "resolvedAt": "2026-11-09T17:08:31.266Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "home-1794242106708-monitor-2026-11-09T16:35:06.708Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T16:35:06.708Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T16:34:21.228Z",
+            "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "home-1794242106708-monitor-2026-11-09T16:48:50.011Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T16:48:50.011Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T16:48:07.464Z"
+          }
+        },
+        {
+          "id": "home-1794242106708-monitor-2026-11-09T17:08:31.266Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T17:08:31.266Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T17:07:50.371Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. EasyChamp home: degraded performance. First confirmed issue: 2026-11-09T16:35:06.708Z. Recovery confirmed by two fresh successful observations: 2026-11-09T17:08:31.266Z. Confirmed incident duration: 33 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T17:08:31.266Z"
+      },
+      "issue": {
+        "number": 145,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/145"
       }
     },
     {

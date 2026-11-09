@@ -8,7 +8,7 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T19:32:09.902Z",
-      "updatedAt": "2026-11-09T19:32:09.902Z",
+      "updatedAt": "2026-11-09T19:35:00.728Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [
@@ -38,9 +38,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T19:32:09.902Z",
-      "updatedAt": "2026-11-09T19:32:09.902Z",
+      "updatedAt": "2026-11-09T19:35:00.728Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "soccer-nationals-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
@@ -53,6 +53,18 @@
             "reasonCode": "slow",
             "observedAt": "2026-11-09T19:31:04.237Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "soccer-nationals-1794252729902-monitor-2026-11-09T19:35:00.728Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T19:35:00.728Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T19:34:25.071Z"
           }
         }
       ],
@@ -68,9 +80,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T19:32:09.902Z",
-      "updatedAt": "2026-11-09T19:32:09.902Z",
+      "updatedAt": "2026-11-09T19:35:00.728Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "watch-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
@@ -83,6 +95,18 @@
             "reasonCode": "slow",
             "observedAt": "2026-11-09T19:30:48.949Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "watch-1794252729902-monitor-2026-11-09T19:35:00.728Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T19:35:00.728Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T19:34:22.412Z"
           }
         }
       ],

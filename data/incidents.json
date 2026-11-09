@@ -2,55 +2,13 @@
   "schemaVersion": 1,
   "incidents": [
     {
-      "id": "snap-1794252729902",
-      "componentId": "snap",
-      "title": "Snap to League: degraded performance",
-      "status": "degraded",
-      "reasonCode": "rendering_slow",
-      "openedAt": "2026-11-09T19:32:09.902Z",
-      "updatedAt": "2026-11-09T19:47:29.622Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
-      "updates": [
-        {
-          "id": "snap-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
-          "stage": "investigating",
-          "at": "2026-11-09T19:32:09.902Z",
-          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
-          "source": "monitor",
-          "evidence": {
-            "status": "degraded",
-            "reasonCode": "rendering_slow",
-            "observedAt": "2026-11-09T19:30:51.290Z",
-            "confirmedStatus": "degraded"
-          }
-        },
-        {
-          "id": "snap-1794252729902-monitor-2026-11-09T19:47:29.622Z-monitoring",
-          "stage": "monitoring",
-          "at": "2026-11-09T19:47:29.622Z",
-          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
-          "source": "monitor",
-          "evidence": {
-            "status": "operational",
-            "reasonCode": "ok",
-            "observedAt": "2026-11-09T19:46:52.925Z"
-          }
-        }
-      ],
-      "issue": {
-        "number": 153,
-        "url": "https://github.com/anton-abyzov/easychamp-status/issues/153"
-      }
-    },
-    {
       "id": "soccer-nationals-1794252729902",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T19:32:09.902Z",
-      "updatedAt": "2026-11-09T19:35:00.728Z",
+      "updatedAt": "2026-11-09T19:49:05.636Z",
       "resolvedAt": null,
       "stage": "monitoring",
       "updates": [
@@ -78,11 +36,82 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T19:34:25.071Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1794252729902-monitor-2026-11-09T19:49:05.636Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T19:49:05.636Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T19:48:33.296Z"
+          }
         }
       ],
       "issue": {
         "number": 154,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/154"
+      }
+    },
+    {
+      "id": "snap-1794252729902",
+      "componentId": "snap",
+      "title": "Snap to League: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-11-09T19:32:09.902Z",
+      "updatedAt": "2026-11-09T19:49:05.636Z",
+      "resolvedAt": "2026-11-09T19:49:05.636Z",
+      "stage": "resolved",
+      "updates": [
+        {
+          "id": "snap-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T19:32:09.902Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-09T19:30:51.290Z",
+            "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "snap-1794252729902-monitor-2026-11-09T19:47:29.622Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T19:47:29.622Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T19:46:52.925Z"
+          }
+        },
+        {
+          "id": "snap-1794252729902-monitor-2026-11-09T19:49:05.636Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T19:49:05.636Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T19:48:32.373Z"
+          }
+        }
+      ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Snap to League: degraded performance. First confirmed issue: 2026-11-09T19:32:09.902Z. Recovery confirmed by two fresh successful observations: 2026-11-09T19:49:05.636Z. Confirmed incident duration: 17 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T19:49:05.636Z"
+      },
+      "issue": {
+        "number": 153,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/153"
       }
     },
     {

@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T18:22:09.392Z",
-      "updatedAt": "2026-11-09T18:22:09.392Z",
+      "updatedAt": "2026-11-09T18:42:36.792Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "sim-1794248529392-monitor-2026-11-09T18:22:09.392Z-investigating",
@@ -23,6 +23,18 @@
             "reasonCode": "slow",
             "observedAt": "2026-11-09T18:21:32.482Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "sim-1794248529392-monitor-2026-11-09T18:42:36.792Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T18:42:36.792Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T18:41:59.675Z"
           }
         }
       ],
@@ -38,7 +50,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T18:22:09.392Z",
+      "updatedAt": "2026-11-09T18:42:36.792Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-09T17:17:00.000Z",
       "stage": "investigating",
@@ -69,7 +81,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T18:22:09.392Z",
+      "updatedAt": "2026-11-09T18:42:36.792Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-09T17:17:00.000Z",
       "stage": "investigating",
@@ -167,9 +179,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T17:31:59.859Z",
-      "updatedAt": "2026-11-09T18:22:09.392Z",
+      "updatedAt": "2026-11-09T18:42:36.792Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "home-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
@@ -208,6 +220,18 @@
             "observedAt": "2026-11-09T18:03:10.073Z",
             "confirmedStatus": "degraded"
           }
+        },
+        {
+          "id": "home-1794245519859-monitor-2026-11-09T18:42:36.792Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T18:42:36.792Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T18:41:57.024Z"
+          }
         }
       ],
       "issue": {
@@ -222,9 +246,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T16:35:06.708Z",
-      "updatedAt": "2026-11-09T18:22:09.392Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-11-09T18:42:36.792Z",
+      "resolvedAt": "2026-11-09T18:42:36.792Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "soccer-nationals-1794242106708-monitor-2026-11-09T16:35:06.708Z-investigating",
@@ -326,8 +350,25 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T18:21:35.348Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1794242106708-monitor-2026-11-09T18:42:36.792Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-09T18:42:36.792Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T18:42:01.759Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Soccer Nationals league site: degraded performance. First confirmed issue: 2026-11-09T16:35:06.708Z. Recovery confirmed by two fresh successful observations: 2026-11-09T18:42:36.792Z. Confirmed incident duration: 128 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-09T18:42:36.792Z"
+      },
       "issue": {
         "number": 144,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/144"

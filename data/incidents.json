@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T20:02:01.236Z",
-      "updatedAt": "2026-11-09T20:02:01.236Z",
+      "updatedAt": "2026-11-09T20:09:15.803Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "coach-1794254521236-monitor-2026-11-09T20:02:01.236Z-investigating",
@@ -24,6 +24,18 @@
             "observedAt": "2026-11-09T20:01:13.978Z",
             "confirmedStatus": "degraded"
           }
+        },
+        {
+          "id": "coach-1794254521236-monitor-2026-11-09T20:09:15.803Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-09T20:09:15.803Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-09T20:08:34.914Z"
+          }
         }
       ],
       "issue": {
@@ -36,11 +48,11 @@
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
       "status": "degraded",
-      "reasonCode": "slow",
+      "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T19:32:09.902Z",
-      "updatedAt": "2026-11-09T19:49:05.636Z",
+      "updatedAt": "2026-11-09T20:09:15.803Z",
       "resolvedAt": null,
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "soccer-nationals-1794252729902-monitor-2026-11-09T19:32:09.902Z-investigating",
@@ -77,6 +89,19 @@
             "status": "operational",
             "reasonCode": "ok",
             "observedAt": "2026-11-09T19:48:33.296Z"
+          }
+        },
+        {
+          "id": "soccer-nationals-1794252729902-monitor-2026-11-09T20:09:15.803Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T20:09:15.803Z",
+          "message": "Fresh observations continue to confirm needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-09T20:08:40.692Z",
+            "confirmedStatus": "degraded"
           }
         }
       ],

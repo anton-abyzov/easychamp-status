@@ -2,6 +2,36 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "soccer-nationals-1794237094039",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-11-09T15:11:34.039Z",
+      "updatedAt": "2026-11-09T15:11:34.039Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1794237094039-monitor-2026-11-09T15:11:34.039Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T15:11:34.039Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "slow",
+            "observedAt": "2026-11-09T15:11:01.669Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 138,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/138"
+      }
+    },
+    {
       "id": "assistant-1794208849822",
       "componentId": "assistant",
       "title": "AI assistant: degraded service",

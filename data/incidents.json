@@ -2,15 +2,167 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "feed-upsl-1794245519859",
+      "componentId": "feed-upsl",
+      "title": "UPSL results: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-11-09T17:31:59.859Z",
+      "updatedAt": "2026-11-09T17:31:59.859Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-11-09T17:17:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "feed-upsl-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T17:31:59.859Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-11-09T17:30:06.000Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 146,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/146"
+      }
+    },
+    {
+      "id": "feed-results-1794245519859",
+      "componentId": "feed-results",
+      "title": "Match results & schedules: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-11-09T17:31:59.859Z",
+      "updatedAt": "2026-11-09T17:31:59.859Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-11-09T17:17:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "feed-results-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T17:31:59.859Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-11-09T17:30:06.000Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 147,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/147"
+      }
+    },
+    {
+      "id": "coach-1794245519859",
+      "componentId": "coach",
+      "title": "Coach: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-11-09T17:31:59.859Z",
+      "updatedAt": "2026-11-09T17:31:59.859Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "coach-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T17:31:59.859Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-09T17:30:51.683Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 148,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/148"
+      }
+    },
+    {
+      "id": "club-sites-1794245519859",
+      "componentId": "club-sites",
+      "title": "Club websites: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-11-09T17:31:59.859Z",
+      "updatedAt": "2026-11-09T17:31:59.859Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "club-sites-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T17:31:59.859Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-09T17:30:53.278Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 149,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/149"
+      }
+    },
+    {
+      "id": "home-1794245519859",
+      "componentId": "home",
+      "title": "EasyChamp home: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-11-09T17:31:59.859Z",
+      "updatedAt": "2026-11-09T17:31:59.859Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "home-1794245519859-monitor-2026-11-09T17:31:59.859Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T17:31:59.859Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-09T17:30:50.710Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 150,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/150"
+      }
+    },
+    {
       "id": "soccer-nationals-1794242106708",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: degraded performance",
       "status": "degraded",
       "reasonCode": "slow",
       "openedAt": "2026-11-09T16:35:06.708Z",
-      "updatedAt": "2026-11-09T17:08:31.266Z",
+      "updatedAt": "2026-11-09T17:31:59.859Z",
       "resolvedAt": null,
-      "stage": "monitoring",
+      "stage": "investigating",
       "updates": [
         {
           "id": "soccer-nationals-1794242106708-monitor-2026-11-09T16:35:06.708Z-investigating",
@@ -62,6 +214,19 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-09T17:07:52.240Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1794242106708-monitor-2026-11-09T17:31:59.859Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-09T17:31:59.859Z",
+          "message": "Fresh observations continue to confirm needs attention: Response slower than target. Latest check: major outage, Check timed out.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-11-09T17:31:11.280Z",
+            "confirmedStatus": "degraded"
+          }
         }
       ],
       "issue": {
@@ -76,7 +241,7 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-09T16:33:14.554Z",
-      "updatedAt": "2026-11-09T17:20:02.300Z",
+      "updatedAt": "2026-11-09T17:31:59.859Z",
       "resolvedAt": null,
       "stage": "investigating",
       "updates": [

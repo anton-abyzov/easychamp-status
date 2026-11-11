@@ -3,8 +3,9 @@ name: Keep status publication on time
 # 20-minute publication heartbeat alert. This job fills those gaps: it starts
 # status.yml only when no fresh run exists (a run stuck queued or in progress
 # for more than ten minutes no longer counts), then hands over to a fresh copy
-# of itself. The pacer holds its own concurrency group for at most 25 minutes,
-# and a newer pacer cancels a hung one, so a stalled runner cannot silence
+# of itself. The pacer holds its own concurrency group for at most 25 minutes
+# (the 10-minute cron normally supersedes it sooner, and the handover step
+# still runs on cancel), and a newer pacer cancels a hung one, so a stalled runner cannot silence
 # publication. It never shares status.yml's group, so it cannot delay it.
 on:
   workflow_dispatch:
@@ -39,7 +40,11 @@ jobs:
             fi
             created=$(printf '%s' "$latest" | cut -f1)
             state=$(printf '%s' "$latest" | cut -f2)
-            read -r verdict age reason < <(node scripts/pacer-decision.mjs "$created" "$state")
+            if ! decision=$(node scripts/pacer-decision.mjs "$created" "$state") || [ -z "$decision" ]; then
+              echo '::warning::Decision script failed; dispatching.'
+              decision='dispatch unknown script-error'
+            fi
+            read -r verdict age reason <<<"$decision"
             if [ "$verdict" = dispatch ]; then
               browser=false
               if [ $(( 10#$(date -u +%M) % 15 )) -lt 5 ]; then browser=true; fi

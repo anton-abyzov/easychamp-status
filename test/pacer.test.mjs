@@ -42,3 +42,10 @@ test('pacer never shares status.yml concurrency group and cannot hold its own fo
 test('pacer decides through the tested script', () => {
   assert.match(read('pacer.yml'), /node scripts\/pacer-decision\.mjs/);
 });
+
+test('a failing decision script fails open instead of ending the pacer step', () => {
+  const pacer = read('pacer.yml');
+  assert.doesNotMatch(pacer, /<\(node scripts\/pacer-decision/);
+  assert.match(pacer, /if ! decision=\$\(node scripts\/pacer-decision\.mjs/);
+  assert.match(pacer, /decision='dispatch unknown script-error'/);
+});

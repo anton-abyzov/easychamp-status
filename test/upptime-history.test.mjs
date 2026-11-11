@@ -25,14 +25,14 @@ test('pacer fills missed scheduled status runs without new credentials', async (
   const pacer = await readFile(new URL('../.github/workflows/pacer.yml', import.meta.url), 'utf8');
   const monitor = await readFile(new URL('../.github/workflows/status.yml', import.meta.url), 'utf8');
   assert.match(pacer, /group: status-pacer/);
-  assert.match(pacer, /cancel-in-progress: false/);
+  assert.match(pacer, /cancel-in-progress: true/);
   assert.match(pacer, /actions: write/);
   assert.match(pacer, /GH_TOKEN: \$\{\{ github\.token \}\}/);
   assert(!pacer.includes('secrets.'), 'pacer must not use repository secrets');
   assert.match(pacer, /gh workflow run status\.yml --ref main -f browser=/);
   assert.match(pacer, /timeout 30 gh workflow run pacer\.yml --ref main/);
   assert.match(pacer, /for attempt in 1 2 3 4 5/);
-  assert.match(pacer, /-gt 330/);
+  assert.match(pacer, /pacer-decision\.mjs/);
   assert.match(monitor, /browser:\n\s+description:[^\n]*\n\s+type: boolean\n\s+default: true/);
   assert.equal((monitor.match(/github\.event_name == 'workflow_dispatch' && inputs\.browser/g) || []).length, 2);
 });

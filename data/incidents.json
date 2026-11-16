@@ -2,6 +2,36 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "soccer-nationals-1794850326662",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-11-16T17:32:06.662Z",
+      "updatedAt": "2026-11-16T17:32:06.662Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1794850326662-monitor-2026-11-16T17:32:06.662Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-16T17:32:06.662Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target. Latest check: major outage, Connection failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "network_error",
+            "observedAt": "2026-11-16T17:31:11.325Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 164,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/164"
+      }
+    },
+    {
       "id": "feed-external-sync-1794835266229",
       "componentId": "feed-external-sync",
       "title": "External league sync: degraded service",

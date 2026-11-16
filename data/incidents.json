@@ -8,10 +8,10 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-16T13:21:06.229Z",
-      "updatedAt": "2026-11-16T14:12:14.119Z",
-      "resolvedAt": null,
+      "updatedAt": "2026-11-16T14:20:27.507Z",
+      "resolvedAt": "2026-11-16T14:20:27.507Z",
       "deadlineAt": "2026-11-16T13:00:00.000Z",
-      "stage": "monitoring",
+      "stage": "resolved",
       "updates": [
         {
           "id": "feed-external-sync-1794835266229-monitor-2026-11-16T13:21:06.229Z-investigating",
@@ -49,8 +49,25 @@
             "reasonCode": "verified",
             "observedAt": "2026-11-16T14:10:08.000Z"
           }
+        },
+        {
+          "id": "feed-external-sync-1794835266229-monitor-2026-11-16T14:20:27.507Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-16T14:20:27.507Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-11-16T14:20:08.000Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. External league sync: degraded service. First confirmed issue: 2026-11-16T13:21:06.229Z. Recovery confirmed by two fresh successful observations: 2026-11-16T14:20:27.507Z. Confirmed incident duration: 59 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-16T14:20:27.507Z"
+      },
       "issue": {
         "number": 162,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/162"

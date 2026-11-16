@@ -2,6 +2,68 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "feed-external-sync-1794835266229",
+      "componentId": "feed-external-sync",
+      "title": "External league sync: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-11-16T13:21:06.229Z",
+      "updatedAt": "2026-11-16T13:21:06.229Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-11-16T13:00:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "feed-external-sync-1794835266229-monitor-2026-11-16T13:21:06.229Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-16T13:21:06.229Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-11-16T13:20:08.000Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 162,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/162"
+      }
+    },
+    {
+      "id": "feed-results-1794835266229",
+      "componentId": "feed-results",
+      "title": "Match results & schedules: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-11-16T13:21:06.229Z",
+      "updatedAt": "2026-11-16T13:21:06.229Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-11-16T13:00:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "feed-results-1794835266229-monitor-2026-11-16T13:21:06.229Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-16T13:21:06.229Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-11-16T13:20:08.000Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 163,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/163"
+      }
+    },
+    {
       "id": "snap-1794262213219",
       "componentId": "snap",
       "title": "Snap to League: degraded performance",

@@ -60,3 +60,12 @@ test('free tier: cron writes, invocations and subrequests stay inside the limits
   assert.equal(Object.keys(budget).length, probesToRun().length);
   assert.ok(calls <= SUBREQUEST_BUDGET, `${calls} network calls exceed the budget`);
 });
+
+test('scheduled handler publishes a document and rethrows collect errors', async () => {
+  const env = { VANTAGE: kv() };
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => html();
+  try { await worker.scheduled({}, env); } finally { globalThis.fetch = realFetch; }
+  assert.equal(JSON.parse(env.VANTAGE.m.get('latest')).schemaVersion, 1);
+  await assert.rejects(worker.scheduled({}, { VANTAGE: { put: async () => { throw new Error('kv down'); } } }), /kv down/);
+});

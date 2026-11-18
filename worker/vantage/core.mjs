@@ -11,7 +11,6 @@ export const CYCLE_SECONDS = 120;
 // Free tier allows 50 subrequests per invocation; redirects count, so stop well short of it.
 export const SUBREQUEST_BUDGET = 45;
 export const KEY = 'latest';
-const JSON_HEADERS = { 'content-type': 'application/json', 'cache-control': 'no-store', 'access-control-allow-origin': '*' };
 
 export const probesToRun = (reg = registry) => reg.probes.filter(p => p.type === 'http');
 

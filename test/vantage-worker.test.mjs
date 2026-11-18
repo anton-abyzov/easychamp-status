@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import worker, { collect, probeAll, probesToRun, CYCLE_SECONDS, SUBREQUEST_BUDGET } from '../worker/vantage/worker.mjs';
+import worker from '../worker/vantage/worker.mjs';
+import { collect, probeAll, probesToRun, CYCLE_SECONDS, SUBREQUEST_BUDGET } from '../worker/vantage/core.mjs';
 
 const now = Date.parse('2026-11-18T18:00:00Z');
 const kv = () => { const m = new Map(); return { put: async (k, v) => m.set(k, v), get: async k => m.get(k) ?? null, m }; };
@@ -58,4 +59,13 @@ test('free tier: cron writes, invocations and subrequests stay inside the limits
   const budget = await probeAll(probesToRun(), { now: () => now, fetchImpl: async url => { calls++; return new Response('', { status: 302, headers: { location: `${url}x` } }); } });
   assert.equal(Object.keys(budget).length, probesToRun().length);
   assert.ok(calls <= SUBREQUEST_BUDGET, `${calls} network calls exceed the budget`);
+});
+
+test('scheduled handler publishes a document and rethrows collect errors', async () => {
+  const env = { VANTAGE: kv() };
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => html();
+  try { await worker.scheduled({}, env); } finally { globalThis.fetch = realFetch; }
+  assert.equal(JSON.parse(env.VANTAGE.m.get('latest')).schemaVersion, 1);
+  await assert.rejects(worker.scheduled({}, { VANTAGE: { put: async () => { throw new Error('kv down'); } } }), /kv down/);
 });

@@ -1,0 +1,57 @@
+// Second vantage for the status page's HTTP checks: a Cloudflare Worker cron that probes the
+// same URLs as scripts/http-probe.mjs (it reuses that code) from Cloudflare's network instead of
+// a GitHub runner, and publishes the latest result for the collector to read. See
+// ../../scripts/vantage.mjs for how the collector uses it (fail closed: a missing, late or
+// erroring Worker never hides a failure).
+import registry from '../../config/components.json' with { type: 'json' };
+import { safeFetch } from '../../scripts/auth.mjs';
+import { httpProbe } from '../../scripts/http-probe.mjs';
+
+export const CYCLE_SECONDS = 120;
+// Free tier allows 50 subrequests per invocation; redirects count, so stop well short of it.
+export const SUBREQUEST_BUDGET = 45;
+const KEY = 'latest';
+const JSON_HEADERS = { 'content-type': 'application/json', 'cache-control': 'no-store', 'access-control-allow-origin': '*' };
+
+export const probesToRun = (reg = registry) => reg.probes.filter(p => p.type === 'http');
+
+// A guarded host that answers 429 to the tokenless Worker says nothing about availability.
+function publicResult(evidence) {
+  const base = { observedAt: evidence.observedAt };
+  if (evidence.httpStatus === 429) return { status: 'unknown', reasonCode: 'automation_blocked', ...base };
+  return { status: evidence.status, reasonCode: evidence.reasonCode, ...base, ...(evidence.responseMs !== undefined ? { responseMs: evidence.responseMs } : {}), ...(evidence.httpStatus ? { httpStatus: evidence.httpStatus } : {}) };
+}
+
+export async function probeAll(probes = probesToRun(), { fetcher = safeFetch, now = Date.now, concurrency = 4 } = {}) {
+  const results = {};
+  let used = 0;
+  const budgeted = (...args) => { if (++used > SUBREQUEST_BUDGET) throw new Error('subrequest_budget'); return fetcher(...args); };
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(probes.length, concurrency) }, async () => {
+    while (next < probes.length) {
+      const probe = probes[next++];
+      // No monitor token: the Worker has none and never needs one.
+      results[probe.id] = publicResult(await httpProbe(probe, { fetcher: budgeted, now, token: null }));
+    }
+  }));
+  return results;
+}
+
+export async function collect(env, deps = {}) {
+  const now = deps.now || Date.now;
+  const document = { schemaVersion: 1, generatedAt: new Date(now()).toISOString(), cycleSeconds: CYCLE_SECONDS, results: await probeAll(probesToRun(deps.registry), deps) };
+  await env.VANTAGE.put(KEY, JSON.stringify(document));
+  return document;
+}
+
+export default {
+  async scheduled(_event, env, ctx) { ctx.waitUntil(collect(env)); },
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname !== '/v1/latest') return new Response(JSON.stringify({ error: 'not_found' }), { status: 404, headers: JSON_HEADERS });
+    if (request.method !== 'GET') return new Response(JSON.stringify({ error: 'method_not_allowed' }), { status: 405, headers: { ...JSON_HEADERS, allow: 'GET' } });
+    const body = await env.VANTAGE.get(KEY);
+    if (!body) return new Response(JSON.stringify({ error: 'no_result' }), { status: 503, headers: JSON_HEADERS });
+    return new Response(body, { headers: JSON_HEADERS });
+  },
+};

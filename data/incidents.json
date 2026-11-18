@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-18T14:32:22.239Z",
-      "updatedAt": "2026-11-18T14:35:09.511Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-11-18T14:47:02.970Z",
+      "resolvedAt": "2026-11-18T14:47:02.970Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "club-sites-1795012342239-monitor-2026-11-18T14:32:22.239Z-investigating",
@@ -36,8 +36,25 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-18T14:34:38.148Z"
           }
+        },
+        {
+          "id": "club-sites-1795012342239-monitor-2026-11-18T14:47:02.970Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-18T14:47:02.970Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-18T14:46:31.993Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Club websites: degraded performance. First confirmed issue: 2026-11-18T14:32:22.239Z. Recovery confirmed by two fresh successful observations: 2026-11-18T14:47:02.970Z. Confirmed incident duration: 15 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-18T14:47:02.970Z"
+      },
       "issue": {
         "number": 167,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/167"

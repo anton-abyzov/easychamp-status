@@ -1,77 +1,77 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-18T14:01:53.970Z",
+  "generatedAt": "2026-11-18T14:07:27.311Z",
   "probes": {
     "console-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:13.123Z",
-      "edge": "EWR",
-      "responseMs": 180,
+      "observedAt": "2026-11-18T14:07:25.608Z",
+      "edge": "ATL",
+      "responseMs": 272,
       "httpStatus": 200
     },
     "home-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:13.136Z",
-      "edge": "IAD",
-      "responseMs": 194,
+      "observedAt": "2026-11-18T14:07:25.673Z",
+      "edge": "ORD",
+      "responseMs": 338,
       "httpStatus": 200
     },
     "coach-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:13.236Z",
-      "edge": "EWR",
-      "responseMs": 292,
+      "observedAt": "2026-11-18T14:07:25.614Z",
+      "edge": "ORD",
+      "responseMs": 277,
       "httpStatus": 200
     },
     "club-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:13.395Z",
-      "edge": "EWR",
-      "responseMs": 189,
+      "observedAt": "2026-11-18T14:07:26.102Z",
+      "edge": "ORD",
+      "responseMs": 429,
       "httpStatus": 200
     },
     "sim-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:13.521Z",
-      "edge": "EWR",
-      "responseMs": 398,
+      "observedAt": "2026-11-18T14:07:25.992Z",
+      "edge": "ORD",
+      "responseMs": 384,
       "httpStatus": 200
     },
     "snap-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:13.398Z",
-      "edge": "EWR",
-      "responseMs": 162,
+      "observedAt": "2026-11-18T14:07:25.942Z",
+      "edge": "ATL",
+      "responseMs": 241,
       "httpStatus": 200
     },
     "watch-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:13.506Z",
-      "edge": "EWR",
-      "responseMs": 369,
+      "observedAt": "2026-11-18T14:07:26.324Z",
+      "edge": "ATL",
+      "responseMs": 710,
       "httpStatus": 200
     },
     "predictions-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:13.479Z",
-      "edge": "EWR",
-      "responseMs": 81,
+      "observedAt": "2026-11-18T14:07:26.064Z",
+      "edge": "ORD",
+      "responseMs": 72,
       "httpStatus": 200
     },
     "signin-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:13.527Z",
-      "edge": "EWR",
-      "responseMs": 132,
+      "observedAt": "2026-11-18T14:07:26.203Z",
+      "edge": "ATL",
+      "responseMs": 261,
       "httpStatus": 200
     },
     "home-render": {
@@ -119,9 +119,9 @@
     "soccer-nationals-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:14.327Z",
-      "edge": "EWR",
-      "responseMs": 848,
+      "observedAt": "2026-11-18T14:07:26.680Z",
+      "edge": "ATL",
+      "responseMs": 615,
       "httpStatus": 200
     },
     "soccer-nationals-render": {
@@ -133,21 +133,33 @@
     "assistant-health": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-18T14:01:13.192Z",
-      "responseMs": 289,
+      "observedAt": "2026-11-18T14:07:25.670Z",
+      "responseMs": 401,
       "httpStatus": 200
     },
     "edge-mia": {
-      "status": "unknown",
-      "reasonCode": "analytics_unavailable",
-      "observedAt": "2026-11-18T13:58:00.000Z",
-      "measuredUntil": "2026-11-18T13:51:00.000Z"
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-11-18T14:04:00.000Z",
+      "windowStart": "2026-11-18T13:51:00.000Z",
+      "windowEnd": "2026-11-18T14:04:00.000Z",
+      "requests": 833,
+      "originErrors": 0,
+      "errorMinutes": 0,
+      "errorShare": 0,
+      "measuredUntil": "2026-11-18T14:04:00.000Z"
     },
     "edge-atl": {
-      "status": "unknown",
-      "reasonCode": "analytics_unavailable",
-      "observedAt": "2026-11-18T13:58:00.000Z",
-      "measuredUntil": "2026-11-18T13:51:00.000Z"
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-11-18T14:04:00.000Z",
+      "windowStart": "2026-11-18T13:51:00.000Z",
+      "windowEnd": "2026-11-18T14:04:00.000Z",
+      "requests": 1573,
+      "originErrors": 0,
+      "errorMinutes": 0,
+      "errorShare": 0,
+      "measuredUntil": "2026-11-18T14:04:00.000Z"
     }
   },
   "freshness": {
@@ -939,12 +951,12 @@
     "signin": {
       "evidence": {
         "signin-http": {
-          "observedAt": "2026-11-18T14:01:13.527Z",
+          "observedAt": "2026-11-18T14:07:26.203Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 182,
+      "good": 183,
       "recent": [
         [
           "operational",
@@ -1055,12 +1067,12 @@
     "predictions": {
       "evidence": {
         "predictions-http": {
-          "observedAt": "2026-11-18T14:01:13.479Z",
+          "observedAt": "2026-11-18T14:07:26.064Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 182,
+      "good": 183,
       "recent": [
         [
           "operational",
@@ -1267,12 +1279,12 @@
     "assistant": {
       "evidence": {
         "assistant-health": {
-          "observedAt": "2026-11-18T14:01:13.192Z",
+          "observedAt": "2026-11-18T14:07:25.670Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 182,
+      "good": 183,
       "recent": [
         [
           "operational",
@@ -1869,12 +1881,12 @@
     "access-miami": {
       "evidence": {
         "edge-mia": {
-          "observedAt": "2026-11-18T13:58:00.000Z",
-          "status": "unknown"
+          "observedAt": "2026-11-18T14:04:00.000Z",
+          "status": "operational"
         }
       },
       "bad": 0,
-      "good": 0,
+      "good": 1,
       "recent": [
         [
           "operational",
@@ -1896,12 +1908,12 @@
     "access-atlanta": {
       "evidence": {
         "edge-atl": {
-          "observedAt": "2026-11-18T13:58:00.000Z",
-          "status": "unknown"
+          "observedAt": "2026-11-18T14:04:00.000Z",
+          "status": "operational"
         }
       },
       "bad": 0,
-      "good": 0,
+      "good": 1,
       "recent": [
         [
           "operational",

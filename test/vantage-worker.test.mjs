@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import worker, { collect, probeAll, probesToRun, CYCLE_SECONDS, SUBREQUEST_BUDGET } from '../worker/vantage/worker.mjs';
+import worker from '../worker/vantage/worker.mjs';
+import { collect, probeAll, probesToRun, CYCLE_SECONDS, SUBREQUEST_BUDGET } from '../worker/vantage/core.mjs';
 
 const now = Date.parse('2026-11-18T18:00:00Z');
 const kv = () => { const m = new Map(); return { put: async (k, v) => m.set(k, v), get: async k => m.get(k) ?? null, m }; };

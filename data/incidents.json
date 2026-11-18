@@ -8,9 +8,9 @@
       "status": "degraded",
       "reasonCode": "rendering_slow",
       "openedAt": "2026-11-18T14:32:22.239Z",
-      "updatedAt": "2026-11-18T14:32:22.239Z",
+      "updatedAt": "2026-11-18T14:35:09.511Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "club-sites-1795012342239-monitor-2026-11-18T14:32:22.239Z-investigating",
@@ -23,6 +23,18 @@
             "reasonCode": "rendering_slow",
             "observedAt": "2026-11-18T14:31:30.388Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "club-sites-1795012342239-monitor-2026-11-18T14:35:09.511Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-18T14:35:09.511Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-18T14:34:38.148Z"
           }
         }
       ],

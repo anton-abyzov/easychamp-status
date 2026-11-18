@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "snap-1795025693347",
+      "componentId": "snap",
+      "title": "Snap to League: availability issue",
+      "status": "major_outage",
+      "reasonCode": "timeout",
+      "openedAt": "2026-11-18T18:14:53.347Z",
+      "updatedAt": "2026-11-18T18:14:53.347Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "snap-1795025693347-monitor-2026-11-18T18:14:53.347Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-18T18:14:53.347Z",
+          "message": "2 of the latest 4 availability checks failed: Check timed out. Failures are intermittent; the issue stays open until six consecutive checks pass.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "timeout",
+            "observedAt": "2026-11-18T18:14:53.347Z"
+          }
+        }
+      ],
+      "issue": {
+        "number": 168,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/168"
+      }
+    },
+    {
       "id": "club-sites-1795012342239",
       "componentId": "club-sites",
       "title": "Club websites: degraded performance",

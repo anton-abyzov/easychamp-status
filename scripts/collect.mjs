@@ -9,6 +9,7 @@ import { recordTimeline, serializeTimeline } from './timeline.mjs';
 import { recentChecks } from '../public/uptime.mjs';
 import { sanitizeFreshness } from './freshness-contract.mjs';
 import { advanceIncidents, seedConfirmedIncidents, incidentDocument } from './incidents.mjs';
+import { fetchWorkerDocument, reconcileVantages, nextVantageDocument } from './vantage.mjs';
 import { blockedRequestEvidence, initialRenderBlocked, blockedRequestCounts } from './render-coverage.mjs';
 
 const registry = JSON.parse(await readFile('config/components.json', 'utf8'));
@@ -67,6 +68,14 @@ if (browserRun) {
   finally { await browser?.close(); }
 }
 
+// Second vantage (worker/vantage). A failure only the runner saw is held back as probe_path_suspect;
+// with no Worker URL, or a missing, late or erroring Worker, every result stands exactly as measured.
+const previousVantage = await load('data/vantage.json', { schemaVersion: 1, suspects: {}, events: [] });
+const probedIds = new Set([...registry.probes.filter(p => p.type === 'http').map(p => p.id), ...(browserRun ? registry.probes.filter(p => p.type === 'browser').map(p => p.id) : [])]);
+const vantage = reconcileVantages({ registry, probes: state.probes, probedIds, worker: await fetchWorkerDocument(process.env.STATUS_VANTAGE_URL), previous: previousVantage });
+Object.assign(state.probes, vantage.probes);
+console.log(JSON.stringify({ vantage: vantage.summary }));
+
 const allowedFreshness = new Set(registry.components.filter(c => c.freshness).map(c => c.id));
 function validPayloadIdentity(components) { return new Set(components.map(c => c?.id)).size === allowedFreshness.size && components.every(c => c && allowedFreshness.has(c.id)); }
 try {
@@ -116,7 +125,7 @@ for (const date of Object.keys(history.days)) if (Date.parse(`${date}T00:00:00Z`
 // Never evict an unresolved incident because newer incidents consumed a cap.
 incidents.incidents = [...incidents.incidents.filter(i => !i.resolvedAt), ...incidents.incidents.filter(i => i.resolvedAt).slice(0, 300)];
 await mkdir('data', { recursive: true });
-for (const [name, payload] of [['status', state], ['history', history], ['incidents', incidents]]) await writeFile(`data/${name}.json`, JSON.stringify(payload, null, 2) + '\n');
+for (const [name, payload] of [['status', state], ['history', history], ['incidents', incidents], ['vantage', nextVantageDocument(previousVantage, vantage)]]) await writeFile(`data/${name}.json`, JSON.stringify(payload, null, 2) + '\n');
 await writeFile('data/timeline.json', serializeTimeline(timeline));
 if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `observed_at=${state.generatedAt}\n`);
 console.log(JSON.stringify({ at: state.generatedAt, components: view.components.length, known: view.components.filter(c => c.status !== 'unknown').length, browserRun }));

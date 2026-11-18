@@ -42,3 +42,17 @@ Review every message and linked document for public disclosure before dispatchin
 ## Verification and remaining release proof
 
 `npm test` covers two-failure/two-success lifecycle, unknown and maintenance interruptions, cached/replayed evidence, legacy unknown-counter migration, repeated failures, new incidents after recovery, owner authorization, draft/publication separation, URL/credential guards, crash reconciliation, mapping/author mismatch, duplicate markers, API bounds and serialized latest-main checkouts. Run `npm run check` and `git diff --check` as well. Lifecycle tests use local fixtures and mocked GitHub calls; they do not create artificial production incidents or send test notifications. Production release must separately read back the existing real incident, its GitHub mapping, fresh public state and accepted monitoring heartbeats.
+
+## Second vantage (probe-path guard)
+
+The collector runs on one GitHub runner. On November 18, 2026, unrelated services timed out in the same minute while the origin never saw the probe or answered in 0.26 s: the runner's path, not the services. `worker/vantage` is a Cloudflare Worker cron (every 2 minutes) that probes the same HTTP URLs, tokenless, from Cloudflare's network and publishes `/v1/latest`. The collector reads it through the repository variable `STATUS_VANTAGE_URL`.
+
+- A failure counts only when both vantages fail. A failure only the runner saw is stored as `probe_path_suspect`: an `unknown` check, visible in the evidence and timeline, never counted toward 2-of-4.
+- **Fail closed.** If the variable is unset, or the Worker is missing, older than one cycle, erroring, skewed more than 180 s from the runner's check, blocked (HTTP 429) or did not measure that probe, the runner's result counts exactly as before.
+- Four or more unrelated components failing within 2 minutes are suspect only while the Worker passes them. If the Worker also fails them, they count immediately, so a real shared outage still confirms in the same or next cycle.
+- When a cluster forms and the Worker has no fresh result for those probes they count at once (stricter than "suspect until the next result", by design). Render (browser) probes are held back only inside such a cluster, and only when the Worker reached the same URL.
+- Safety valve: a probe held back 3 times within 30 minutes (consecutive or flapping) counts again (`counted_persistent`).
+- Feed and scraper `collector_unavailable` is outside this. The 2-of-4 rule, six-pass clear and all thresholds are unchanged.
+- Events are kept 14 days in `data/vantage.json`. `node scripts/vantage-report.mjs 7` compares suspect events with confirmed incidents.
+- Free tier only: 720 cron runs and 720 KV writes a day (limit 1,000), about 11 subrequests per run, hard-capped at 45 including redirect hops (limit 50). `test/vantage-worker.test.mjs` fails if that grows.
+- Rollback: unset `STATUS_VANTAGE_URL` (runner behaves as before); `cd worker/vantage && npx wrangler rollback`, or `wrangler delete` to remove the Worker.

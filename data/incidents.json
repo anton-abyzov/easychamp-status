@@ -2,6 +2,36 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "club-sites-1795012342239",
+      "componentId": "club-sites",
+      "title": "Club websites: degraded performance",
+      "status": "degraded",
+      "reasonCode": "rendering_slow",
+      "openedAt": "2026-11-18T14:32:22.239Z",
+      "updatedAt": "2026-11-18T14:32:22.239Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "club-sites-1795012342239-monitor-2026-11-18T14:32:22.239Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-18T14:32:22.239Z",
+          "message": "Two fresh observations confirmed needs attention: Page rendering slower than target.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "rendering_slow",
+            "observedAt": "2026-11-18T14:31:30.388Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 167,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/167"
+      }
+    },
+    {
       "id": "feed-external-sync-1794929120875",
       "componentId": "feed-external-sync",
       "title": "External league sync: degraded service",

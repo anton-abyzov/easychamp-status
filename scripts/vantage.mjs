@@ -18,12 +18,18 @@ export const VANTAGE = Object.freeze({
   docMaxAgeSeconds: 330,
   // The Worker cron runs every 2 minutes; a result further from the runner's check than this
   // (cron period plus jitter) is not a contemporaneous second opinion.
+  // A Worker pass may be this much older than the runner's failed check (cron period 120 s plus
+  // jitter) or this much newer (the document is read after the run). Older passes predate the
+  // failure and say nothing about it.
   resultSkewSeconds: 180,
+  resultBeforeSeconds: 90,
   clusterWindowSeconds: 120,
   clusterMinComponents: 4,
-  // Safety valve: a probe the Worker keeps passing while the runner keeps failing it counts again
-  // after this many consecutive runs, so a runner-visible path problem is never hidden for long.
+  // Safety valve: a probe the Worker passes while the runner fails it for this many runs inside
+  // `persistentWindowSeconds` (consecutive or flapping) counts again, so a runner-visible problem
+  // is never hidden for long. The window is the availability rule's span.
   persistentRuns: 3,
+  persistentWindowSeconds: 1800,
   eventRetentionDays: 14,
   maxEvents: 2000,
   fetchTimeoutMs: 8000,
@@ -40,7 +46,7 @@ export function parseWorkerDocument(doc, now = Date.now()) {
     const observed = time(result?.observedAt);
     if (!result || typeof result !== 'object' || !STATUSES.includes(result.status) || typeof result.reasonCode !== 'string'
         || observed === null || observed > now + 60000) continue;
-    results[id] = { status: result.status, reasonCode: result.reasonCode, observedAt: new Date(observed).toISOString() };
+    results[id] = { status: result.status, reasonCode: result.reasonCode, observedAt: new Date(observed).toISOString(), url: typeof result.url === 'string' ? result.url : null };
   }
   return { generatedAt: new Date(generated).toISOString(), results };
 }
@@ -68,11 +74,12 @@ function clusterMembers(failing) {
 }
 
 // What the Worker saw for this URL: 'pass' (reached it, healthy), 'fail', or 'unavailable'.
-function classify(worker, id, at) {
+function classify(worker, id, url, at) {
   const result = id ? worker?.results?.[id] : null;
-  if (!result) return { kind: 'unavailable' };
+  // A result for a different URL (the Worker was deployed from an older registry) is not a second opinion.
+  if (!result || result.url !== url) return { kind: 'unavailable' };
   const observed = time(result.observedAt);
-  if (observed === null || Math.abs(at - observed) > VANTAGE.resultSkewSeconds * 1000) return { kind: 'unavailable', result };
+  if (observed === null || observed - at > VANTAGE.resultSkewSeconds * 1000 || at - observed > VANTAGE.resultBeforeSeconds * 1000) return { kind: 'unavailable', result };
   if (result.status === 'operational') return { kind: 'pass', result };
   if (FAILING.has(result.status)) return { kind: 'fail', result };
   return { kind: 'unavailable', result };
@@ -100,11 +107,11 @@ export function reconcileVantages({ registry, probes, probedIds, worker, previou
     // The Worker cannot measure rendering; a slow or failed render is only held back inside a
     // cluster of simultaneous failures, and only when the Worker reached the same URL.
     if (f.def.type === 'browser' && !inCluster) continue;
-    const seen = classify(worker, httpFor(f.def), f.at);
+    const httpId = httpFor(f.def), seen = classify(worker, httpId, httpId && defs.get(httpId).url, f.at);
     if (seen.kind !== 'pass') continue;
-    const runs = (previous.suspects?.[f.id]?.runs || 0) + 1;
-    const since = previous.suspects?.[f.id]?.since || f.evidence.observedAt;
-    suspects[f.id] = { runs, since };
+    const recent = (previous.suspects?.[f.id]?.at || []).filter(t => f.at - time(t) < VANTAGE.persistentWindowSeconds * 1000 && time(t) <= f.at);
+    const held = [...recent, f.evidence.observedAt], runs = held.length;
+    suspects[f.id] = { at: held, runs };
     const event = { at: f.evidence.observedAt, probe: f.id, component: f.component, runner: { status: f.evidence.status, reasonCode: f.evidence.reasonCode },
       worker: { status: seen.result.status, reasonCode: seen.result.reasonCode, observedAt: seen.result.observedAt }, cluster: inCluster, runs };
     if (runs >= VANTAGE.persistentRuns) { events.push({ ...event, outcome: 'counted_persistent' }); continue; }
@@ -112,8 +119,14 @@ export function reconcileVantages({ registry, probes, probedIds, worker, previou
     replaced[f.id] = { status: 'unknown', reasonCode: 'probe_path_suspect', observedAt: f.evidence.observedAt, ...(f.evidence.edge ? { edge: f.evidence.edge } : {}),
       suspectOf: { status: f.evidence.status, reasonCode: f.evidence.reasonCode }, worker: event.worker, cluster: inCluster };
   }
-  // A probe that was not measured this run keeps its streak; one that was and is not suspect resets.
-  for (const [id, entry] of Object.entries(previous.suspects || {})) if (!probedIds.has(id) && !suspects[id]) suspects[id] = entry;
+  // Holds age out of the window on their own; a healthy run does not erase them (flapping must not
+  // reset the valve). Entries for probes no longer in the registry or with no live hold are dropped.
+  const ref = Math.max(0, ...failing.map(f => f.at), ...Object.values(probes).map(p => time(p?.observedAt) ?? 0));
+  for (const [id, entry] of Object.entries(previous.suspects || {})) {
+    if (suspects[id] || !defs.has(id)) continue;
+    const at = (entry.at || []).filter(t => ref - time(t) < VANTAGE.persistentWindowSeconds * 1000);
+    if (at.length) suspects[id] = { at, runs: at.length };
+  }
   return { probes: replaced, events, suspects, summary: { failing: failing.length, held: Object.keys(replaced).length, cluster: cluster.size, workerAvailable: Boolean(worker) } };
 }
 

@@ -14,6 +14,7 @@ test('worker probes only http checks, tokenless, and publishes one document', as
   assert.equal(document.schemaVersion, 1);
   assert.equal(document.cycleSeconds, CYCLE_SECONDS);
   assert.deepEqual(Object.keys(document.results).sort(), probesToRun().map(p => p.id).sort());
+  assert.ok(Object.entries(document.results).every(([id, r]) => r.url === probesToRun().find(p => p.id === id).url));
   assert.ok(seen.every(s => !s.token && !JSON.stringify(s.headers).toLowerCase().includes('x-ec-status-monitor')));
   assert.equal(JSON.parse(env.VANTAGE.m.get('latest')).generatedAt, new Date(now).toISOString());
 });
@@ -52,6 +53,9 @@ test('free tier: cron writes, invocations and subrequests stay inside the limits
   assert.ok(perDay <= 100000);
   assert.equal(config.triggers.crons.length, 1);
   assert.ok(probesToRun().length <= SUBREQUEST_BUDGET && SUBREQUEST_BUDGET <= 49);
-  const budget = await probeAll(probesToRun(), { now: () => now, fetcher: async () => new Response('', { status: 302, headers: { location: 'https://x.example/' } }) });
+  // Redirect hops inside safeFetch spend the budget too: endless redirects stop at the cap.
+  let calls = 0;
+  const budget = await probeAll(probesToRun(), { now: () => now, fetchImpl: async url => { calls++; return new Response('', { status: 302, headers: { location: `${url}x` } }); } });
   assert.equal(Object.keys(budget).length, probesToRun().length);
+  assert.ok(calls <= SUBREQUEST_BUDGET, `${calls} network calls exceed the budget`);
 });

@@ -16,22 +16,25 @@ const JSON_HEADERS = { 'content-type': 'application/json', 'cache-control': 'no-
 export const probesToRun = (reg = registry) => reg.probes.filter(p => p.type === 'http');
 
 // A guarded host that answers 429 to the tokenless Worker says nothing about availability.
-function publicResult(evidence) {
-  const base = { observedAt: evidence.observedAt };
+function publicResult(evidence, probe) {
+  // The URL lets the collector reject a result measured against a stale probe definition.
+  const base = { observedAt: evidence.observedAt, url: probe.url };
   if (evidence.httpStatus === 429) return { status: 'unknown', reasonCode: 'automation_blocked', ...base };
   return { status: evidence.status, reasonCode: evidence.reasonCode, ...base, ...(evidence.responseMs !== undefined ? { responseMs: evidence.responseMs } : {}), ...(evidence.httpStatus ? { httpStatus: evidence.httpStatus } : {}) };
 }
 
-export async function probeAll(probes = probesToRun(), { fetcher = safeFetch, now = Date.now, concurrency = 4 } = {}) {
+export async function probeAll(probes = probesToRun(), { fetcher, fetchImpl = fetch, now = Date.now, concurrency = 4 } = {}) {
   const results = {};
   let used = 0;
-  const budgeted = (...args) => { if (++used > SUBREQUEST_BUDGET) throw new Error('subrequest_budget'); return fetcher(...args); };
+  // Every network call, including each redirect hop inside safeFetch, spends the budget.
+  const counted = (...args) => { if (++used > SUBREQUEST_BUDGET) throw new Error('subrequest_budget'); return fetchImpl(...args); };
+  const budgeted = fetcher ? (...args) => { if (++used > SUBREQUEST_BUDGET) throw new Error('subrequest_budget'); return fetcher(...args); } : (url, init, token) => safeFetch(url, init, token, counted);
   let next = 0;
   await Promise.all(Array.from({ length: Math.min(probes.length, concurrency) }, async () => {
     while (next < probes.length) {
       const probe = probes[next++];
       // No monitor token: the Worker has none and never needs one.
-      results[probe.id] = publicResult(await httpProbe(probe, { fetcher: budgeted, now, token: null }));
+      results[probe.id] = publicResult(await httpProbe(probe, { fetcher: budgeted, now, token: null }), probe);
     }
   }));
   return results;

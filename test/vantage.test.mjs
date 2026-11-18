@@ -12,8 +12,9 @@ const registry = {
 };
 const fail = (offset = 0, reasonCode = 'timeout') => ({ status: 'major_outage', reasonCode, observedAt: iso(offset) });
 const ok = (offset = 0) => ({ status: 'operational', reasonCode: 'ok', observedAt: iso(offset) });
-const doc = results => ({ generatedAt: iso(-30), results });
-const run = (probes, worker, extra = {}) => reconcileVantages({ registry, probes, probedIds: new Set(Object.keys(probes)), worker: worker && parseWorkerDocument({ schemaVersion: 1, ...doc(worker) }, now), ...extra });
+const urlOf = id => `https://${id.replace('-http', '')}.example/`;
+const doc = (results, shift = 0) => ({ generatedAt: iso(shift - 30), results: Object.fromEntries(Object.entries(results).map(([id, r]) => [id, { url: urlOf(id), ...r }])) });
+const run = (probes, worker, extra = {}, shift = 0) => reconcileVantages({ registry, probes, probedIds: new Set(Object.keys(probes)), worker: worker && parseWorkerDocument({ schemaVersion: 1, ...doc(worker, shift) }, now + shift * 1000), ...extra });
 
 test('runner-only failure becomes probe_path_suspect (unknown, never counts) and is recorded', () => {
   const verdict = run({ 'a-http': fail() }, { 'a-http': ok(-20) });
@@ -100,19 +101,38 @@ test('feed, edge and cached probes are never touched', () => {
   assert.deepEqual(Object.keys(verdict.probes), ['e-http']);
 });
 
-test('persistent valve: the runner failure counts again after persistentRuns consecutive holds', () => {
+test('persistent valve: 3 holds inside 30 minutes count again, consecutive or flapping', () => {
   let previous = {};
   const outcomes = [];
   for (let i = 0; i < VANTAGE.persistentRuns; i++) {
-    const verdict = run({ 'a-http': fail() }, { 'a-http': ok(-20) }, { previous });
+    const verdict = run({ 'a-http': fail(i * 300) }, { 'a-http': ok(i * 300 - 20) }, { previous }, i * 300);
     outcomes.push(verdict.events[0].outcome);
-    previous = nextVantageDocument(previous, verdict, now);
+    previous = nextVantageDocument(previous, verdict, now + i * 300000);
   }
   assert.deepEqual(outcomes, ['suspect', 'suspect', 'counted_persistent']);
-  const last = run({ 'a-http': fail() }, { 'a-http': ok(-20) }, { previous: { suspects: { 'a-http': { runs: VANTAGE.persistentRuns - 1, since: iso(-900) } } } });
-  assert.deepEqual(last.probes, {});
-  // A healthy run resets the streak.
-  assert.equal(nextVantageDocument({ suspects: {} }, run({ 'a-http': ok() }, { 'a-http': ok() }, { previous: { suspects: { 'a-http': { runs: 2 } } } }), now).suspects['a-http'], undefined);
+  // Flapping: a healthy run between holds does not reset the valve.
+  previous = {};
+  const flap = [];
+  for (const [i, bad] of [true, false, true, false, true].entries()) {
+    const probes = { 'a-http': bad ? fail(i * 300) : ok(i * 300) };
+    const verdict = run(probes, { 'a-http': ok(i * 300 - 20) }, { previous }, i * 300);
+    if (bad) flap.push(verdict.events[0].outcome);
+    previous = nextVantageDocument(previous, verdict, now + i * 300000);
+  }
+  assert.deepEqual(flap, ['suspect', 'suspect', 'counted_persistent']);
+  // Holds older than the window age out.
+  const old = { suspects: { 'a-http': { at: [iso(-3000), iso(-2900)], runs: 2 } } };
+  assert.equal(run({ 'a-http': fail() }, { 'a-http': ok(-20) }, { previous: old }).events[0].outcome, 'suspect');
+  // Probes removed from the registry are pruned.
+  assert.equal(run({ 'a-http': ok() }, { 'a-http': ok() }, { previous: { suspects: { gone: { at: [iso(-60)], runs: 1 } } } }).suspects.gone, undefined);
+});
+
+test('a worker result for a different URL, or one that predates the failure, does not hold it back', () => {
+  const probes = { 'a-http': fail() };
+  assert.deepEqual(run(probes, { 'a-http': { ...ok(-20), url: 'https://old.example/' } }).probes, {});
+  assert.deepEqual(run(probes, { 'a-http': { ...ok(-VANTAGE.resultBeforeSeconds - 10) } }).probes, {});
+  assert.equal(run(probes, { 'a-http': ok(-VANTAGE.resultBeforeSeconds + 10) }).probes['a-http'].reasonCode, 'probe_path_suspect');
+  assert.equal(run(probes, { 'a-http': ok(60) }).probes['a-http'].reasonCode, 'probe_path_suspect');
 });
 
 test('suspect checks never reach 2-of-4: unknown neither confirms nor clears', async () => {

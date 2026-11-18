@@ -9,10 +9,10 @@ export function monitorHeaders(url, token, headers = {}) {
   if (token && allowMonitorHeader(url)) clean['x-ec-status-monitor'] = token;
   return clean;
 }
-export async function safeFetch(url, options, token) {
+export async function safeFetch(url, options, token, fetchImpl = fetch) {
   let current = url;
   for (let i = 0; i < 6; i++) {
-    const response = await fetch(current, { ...options, redirect: 'manual', headers: monitorHeaders(current, token, options.headers) });
+    const response = await fetchImpl(current, { ...options, redirect: 'manual', headers: monitorHeaders(current, token, options.headers) });
     if (![301, 302, 303, 307, 308].includes(response.status)) return response;
     const location = response.headers.get('location'); await response.body?.cancel();
     if (!location) return response;

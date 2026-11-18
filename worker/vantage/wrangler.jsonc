@@ -1,7 +1,7 @@
 {
   // Second vantage for the public status page (see ../../scripts/vantage.mjs).
   // FREE TIER ONLY: one cron every 2 minutes = 720 invocations a day (limit 100,000 requests),
-  // one KV write per run = 720 writes a day (limit 1,000), 10 subrequests per run (limit 50),
+  // one KV write per run = 720 writes a day (limit 1,000), about 11 subrequests per run, hard-capped at 45 including redirects (limit 50),
   // no CPU-heavy work (limit 10 ms CPU; waiting on fetch is not CPU). The collector reads
   // /v1/latest about 270 times a day (KV limit 100,000 reads). test/vantage-worker.test.mjs
   // fails if any of these grows past the free tier.

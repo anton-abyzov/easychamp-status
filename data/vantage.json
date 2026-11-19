@@ -1,6 +1,13 @@
 {
   "schemaVersion": 1,
-  "suspects": {},
+  "suspects": {
+    "soccer-nationals-http": {
+      "at": [
+        "2026-11-19T19:20:12.089Z"
+      ],
+      "runs": 1
+    }
+  },
   "events": [
     {
       "at": "2026-11-19T01:08:05.367Z",
@@ -48,6 +55,23 @@
         "status": "operational",
         "reasonCode": "ok",
         "observedAt": "2026-11-19T18:00:43.342Z"
+      },
+      "cluster": false,
+      "runs": 1,
+      "outcome": "suspect"
+    },
+    {
+      "at": "2026-11-19T19:20:12.089Z",
+      "probe": "soccer-nationals-http",
+      "component": "soccer-nationals",
+      "runner": {
+        "status": "major_outage",
+        "reasonCode": "network_error"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-19T19:18:44.234Z"
       },
       "cluster": false,
       "runs": 1,

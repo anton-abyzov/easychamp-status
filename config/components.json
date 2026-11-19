@@ -455,11 +455,10 @@
       "group": "results",
       "name": "Match results & schedules",
       "freshness": true,
-      "coverage": "Scheduled result imports and verified destination freshness",
+      "coverage": "Confirms the scheduled result-import jobs (league feeds, UPSL, external sources) ran on schedule. It does not confirm that results landed.",
       "maxSuccessHours": 8,
-      "maxDestinationHours": 1,
       "maxGraceSeconds": 3600,
-      "measurementKind": "destination_validation"
+      "measurementKind": "scheduled_run"
     },
     {
       "id": "scraper-sofifa",

@@ -8,10 +8,10 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-19T10:31:23.649Z",
-      "updatedAt": "2026-11-19T10:31:23.649Z",
+      "updatedAt": "2026-11-19T10:41:03.159Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-19T10:17:00.000Z",
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "feed-england-1795084283649-monitor-2026-11-19T10:31:23.649Z-investigating",
@@ -24,6 +24,18 @@
             "reasonCode": "run_failed",
             "observedAt": "2026-11-19T10:30:06.000Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "feed-england-1795084283649-monitor-2026-11-19T10:41:03.159Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-19T10:41:03.159Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "verified",
+            "observedAt": "2026-11-19T10:40:06.000Z"
           }
         }
       ],
@@ -39,7 +51,7 @@
       "status": "degraded",
       "reasonCode": "run_failed",
       "openedAt": "2026-11-19T10:31:23.649Z",
-      "updatedAt": "2026-11-19T10:31:23.649Z",
+      "updatedAt": "2026-11-19T10:41:03.159Z",
       "resolvedAt": null,
       "deadlineAt": "2026-11-19T10:17:00.000Z",
       "stage": "investigating",
@@ -55,6 +67,18 @@
             "reasonCode": "run_failed",
             "observedAt": "2026-11-19T10:30:06.000Z",
             "confirmedStatus": "degraded"
+          }
+        },
+        {
+          "id": "feed-results-1795084283649-monitor-2026-11-19T10:41:03.159Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-19T10:41:03.159Z",
+          "message": "Latest evidence is unknown: Destination freshness unverified. The incident remains open; recovery is unconfirmed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "unknown",
+            "reasonCode": "verification_unavailable",
+            "observedAt": "2026-11-19T10:40:06.000Z"
           }
         }
       ],

@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { viewState, verifyFreshness } from '../public/model.mjs';
@@ -91,7 +92,8 @@ test('destination aggregate historical completion cannot certify the latest exec
 });
 
 test('feed-results is execution-only and says so in its public coverage text', () => {
-  const component = registry.components.find(c => c.id === 'feed-results');
+  const real = JSON.parse(readFileSync(new URL('../config/components.json', import.meta.url), 'utf8'));
+  const component = real.components.find(c => c.id === 'feed-results');
   assert.equal(component.measurementKind, 'scheduled_run');
   assert.equal(component.maxDestinationHours, undefined);
   assert.match(component.coverage, /ran on schedule/);

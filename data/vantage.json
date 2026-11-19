@@ -1,6 +1,13 @@
 {
   "schemaVersion": 1,
-  "suspects": {},
+  "suspects": {
+    "snap-http": {
+      "at": [
+        "2026-11-19T18:01:31.087Z"
+      ],
+      "runs": 1
+    }
+  },
   "events": [
     {
       "at": "2026-11-19T01:08:05.367Z",
@@ -31,6 +38,23 @@
         "status": "operational",
         "reasonCode": "ok",
         "observedAt": "2026-11-19T17:18:43.416Z"
+      },
+      "cluster": false,
+      "runs": 1,
+      "outcome": "suspect"
+    },
+    {
+      "at": "2026-11-19T18:01:31.087Z",
+      "probe": "snap-http",
+      "component": "snap",
+      "runner": {
+        "status": "degraded",
+        "reasonCode": "slow"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-19T18:00:43.342Z"
       },
       "cluster": false,
       "runs": 1,

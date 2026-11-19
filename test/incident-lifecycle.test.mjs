@@ -370,13 +370,16 @@ test('the collector pipeline closes the stuck feed incident from a real freshnes
   // The October 25, 2026 production shape, through sanitizeFreshness and viewState.
   const component = registry.components.find(c => c.id === 'feed-results');
   const now = Date.parse('2026-10-25T16:26:32.129Z');
-  const raw = { id: 'feed-results', status: 'unknown', reasonCode: 'verification_unavailable', measurementKind: 'destination_validation', observedAt: '2026-10-25T16:20:09.000Z', lastCompletedSuccessAt: '2026-10-25T16:03:11.000Z', lastDestinationVerifiedAt: null, nextDueAt: '2026-10-25T16:21:00.000Z', lastAttemptAt: null, lastAttemptStartedAt: null, graceSeconds: 3600, lastAttemptOutcome: 'unknown', destinationVerification: 'unavailable', lastAttemptDeadlineSeconds: null, suspended: null, schedule: null, timeZone: null, metrics: null };
+  const raw = { id: 'feed-results', status: 'operational', reasonCode: 'verified', measurementKind: 'scheduled_run', observedAt: '2026-10-25T16:20:09.000Z', lastCompletedSuccessAt: '2026-10-25T16:03:11.000Z', lastDestinationVerifiedAt: null, nextDueAt: '2026-10-25T16:21:00.000Z', lastAttemptAt: '2026-10-25T16:03:00.000Z', lastAttemptStartedAt: null, graceSeconds: 3600, lastAttemptOutcome: 'succeeded', destinationVerification: 'unavailable', lastAttemptDeadlineSeconds: null, suspended: false, schedule: '*/15 * * * *', timeZone: 'Etc/UTC', metrics: null };
   const state = { schemaVersion: 1, generatedAt: new Date(now).toISOString(), probes: {}, freshness: { 'feed-results': sanitizeFreshness(raw, component, now) }, counters: {} };
   const current = viewState(registry, state, now).components.find(c => c.id === 'feed-results');
-  assert.equal(current.status, 'unknown'); assert.equal(current.reasonCode, 'verification_unavailable');
+  assert.equal(current.status, 'operational'); assert.equal(current.reasonCode, 'verified');
   const incident = { id: 'feed-results-1791424102502', componentId: 'feed-results', title: 'Match results & schedules: degraded service', status: 'degraded', reasonCode: 'run_failed', openedAt: '2026-10-08T01:48:22.502Z', updatedAt: '2026-10-23T23:56:01.333Z', resolvedAt: null, stage: 'investigating', updates: [] };
   const payload = { schemaVersion: 1, incidents: [incident] };
-  const observation = recordObservation(current, { evidence: { 'feed-results': { observedAt: '2026-10-25T16:15:09.000Z', status: 'unknown' } }, bad: 0, good: 0, confirmedStatus: null, failedAttemptAt: null });
+  const first = recordObservation(current, { evidence: { 'feed-results': { observedAt: '2026-10-25T16:05:09.000Z', status: 'unknown' } }, bad: 0, good: 0, confirmedStatus: null, failedAttemptAt: null });
+  advanceIncidents(payload, current, first, state.generatedAt);
+  assert.equal(payload.incidents[0].resolvedAt, null, 'one successful observation does not close it');
+  const observation = recordObservation(current, { ...first.counter, evidence: { 'feed-results': { observedAt: '2026-10-25T16:15:09.000Z', status: 'operational' } } });
   advanceIncidents(payload, current, observation, state.generatedAt);
   assert.equal(payload.incidents[0].resolvedAt, state.generatedAt); assert.doesNotThrow(() => incidentDocument(payload));
   const failedLater = { ...raw, lastAttemptOutcome: 'failed', lastAttemptAt: '2026-10-25T16:10:00.000Z' };

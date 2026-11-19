@@ -89,3 +89,11 @@ test('destination aggregate historical completion cannot certify the latest exec
   }
   assert.equal(viewState(r,{generatedAt:at(-1),probes:{},freshness:{[c.id]:receipt}},now).measurements.find(m=>m.id==='scheduled-runs').status,'operational');
 });
+
+test('feed-results is execution-only and says so in its public coverage text', () => {
+  const component = registry.components.find(c => c.id === 'feed-results');
+  assert.equal(component.measurementKind, 'scheduled_run');
+  assert.equal(component.maxDestinationHours, undefined);
+  assert.match(component.coverage, /ran on schedule/);
+  assert.match(component.coverage, /does not confirm that results landed/);
+});

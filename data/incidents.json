@@ -2,6 +2,36 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "soccer-nationals-1795109153736",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: availability issue",
+      "status": "major_outage",
+      "reasonCode": "http_error",
+      "openedAt": "2026-11-19T17:25:53.736Z",
+      "updatedAt": "2026-11-19T17:25:53.736Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1795109153736-monitor-2026-11-19T17:25:53.736Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-19T17:25:53.736Z",
+          "message": "Two fresh observations confirmed major outage: Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-11-19T17:25:21.441Z",
+            "confirmedStatus": "major_outage"
+          }
+        }
+      ],
+      "issue": {
+        "number": 174,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/174"
+      }
+    },
+    {
       "id": "feed-results-1795084283649",
       "componentId": "feed-results",
       "title": "Match results & schedules: degraded service",

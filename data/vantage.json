@@ -1,5 +1,30 @@
 {
   "schemaVersion": 1,
-  "suspects": {},
-  "events": []
+  "suspects": {
+    "home-http": {
+      "at": [
+        "2026-11-19T01:08:05.367Z"
+      ],
+      "runs": 1
+    }
+  },
+  "events": [
+    {
+      "at": "2026-11-19T01:08:05.367Z",
+      "probe": "home-http",
+      "component": "home",
+      "runner": {
+        "status": "degraded",
+        "reasonCode": "slow"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-19T01:06:42.865Z"
+      },
+      "cluster": false,
+      "runs": 1,
+      "outcome": "suspect"
+    }
+  ]
 }

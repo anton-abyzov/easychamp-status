@@ -3,15 +3,17 @@
   "suspects": {
     "watch-http": {
       "at": [
-        "2026-11-20T17:07:28.396Z"
+        "2026-11-20T17:07:28.396Z",
+        "2026-11-20T17:19:33.359Z"
       ],
-      "runs": 1
+      "runs": 2
     },
     "soccer-nationals-http": {
       "at": [
-        "2026-11-20T17:07:27.009Z"
+        "2026-11-20T17:07:27.009Z",
+        "2026-11-20T17:19:34.450Z"
       ],
-      "runs": 1
+      "runs": 2
     }
   },
   "events": [
@@ -149,6 +151,40 @@
       },
       "cluster": false,
       "runs": 1,
+      "outcome": "suspect"
+    },
+    {
+      "at": "2026-11-20T17:19:33.359Z",
+      "probe": "watch-http",
+      "component": "watch",
+      "runner": {
+        "status": "degraded",
+        "reasonCode": "slow"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-20T17:18:43.226Z"
+      },
+      "cluster": false,
+      "runs": 2,
+      "outcome": "suspect"
+    },
+    {
+      "at": "2026-11-20T17:19:34.450Z",
+      "probe": "soccer-nationals-http",
+      "component": "soccer-nationals",
+      "runner": {
+        "status": "degraded",
+        "reasonCode": "slow"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-20T17:18:43.474Z"
+      },
+      "cluster": false,
+      "runs": 2,
       "outcome": "suspect"
     }
   ]

@@ -1,6 +1,13 @@
 {
   "schemaVersion": 1,
-  "suspects": {},
+  "suspects": {
+    "assistant-health": {
+      "at": [
+        "2026-11-20T02:11:03.796Z"
+      ],
+      "runs": 1
+    }
+  },
   "events": [
     {
       "at": "2026-11-19T01:08:05.367Z",
@@ -65,6 +72,23 @@
         "status": "operational",
         "reasonCode": "ok",
         "observedAt": "2026-11-19T19:18:44.234Z"
+      },
+      "cluster": false,
+      "runs": 1,
+      "outcome": "suspect"
+    },
+    {
+      "at": "2026-11-20T02:11:03.796Z",
+      "probe": "assistant-health",
+      "component": "assistant",
+      "runner": {
+        "status": "degraded",
+        "reasonCode": "slow"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-20T02:10:29.744Z"
       },
       "cluster": false,
       "runs": 1,

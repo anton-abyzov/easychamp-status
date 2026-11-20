@@ -8,9 +8,9 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-11-20T17:08:07.992Z",
-      "updatedAt": "2026-11-20T17:22:01.948Z",
-      "resolvedAt": null,
-      "stage": "monitoring",
+      "updatedAt": "2026-11-20T17:31:10.714Z",
+      "resolvedAt": "2026-11-20T17:31:10.714Z",
+      "stage": "resolved",
       "updates": [
         {
           "id": "soccer-nationals-1795194487992-monitor-2026-11-20T17:08:07.992Z-investigating",
@@ -49,8 +49,25 @@
             "reasonCode": "ok",
             "observedAt": "2026-11-20T17:21:32.724Z"
           }
+        },
+        {
+          "id": "soccer-nationals-1795194487992-monitor-2026-11-20T17:31:10.714Z-resolved",
+          "stage": "resolved",
+          "at": "2026-11-20T17:31:10.714Z",
+          "message": "Two fresh successful observations confirmed recovery.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-20T17:30:41.085Z"
+          }
         }
       ],
+      "postmortem": {
+        "state": "draft",
+        "summary": "Automated evidence-only draft. Soccer Nationals league site: availability issue. First confirmed issue: 2026-11-20T17:08:07.992Z. Recovery confirmed by two fresh successful observations: 2026-11-20T17:31:10.714Z. Confirmed incident duration: 23 minutes. Root cause, user impact, remediation and prevention require owner review; the monitor has not established them.",
+        "generatedAt": "2026-11-20T17:31:10.714Z"
+      },
       "issue": {
         "number": 175,
         "url": "https://github.com/anton-abyzov/easychamp-status/issues/175"

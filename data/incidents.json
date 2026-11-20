@@ -8,9 +8,9 @@
       "status": "major_outage",
       "reasonCode": "http_error",
       "openedAt": "2026-11-20T17:08:07.992Z",
-      "updatedAt": "2026-11-20T17:20:07.434Z",
+      "updatedAt": "2026-11-20T17:22:01.948Z",
       "resolvedAt": null,
-      "stage": "investigating",
+      "stage": "monitoring",
       "updates": [
         {
           "id": "soccer-nationals-1795194487992-monitor-2026-11-20T17:08:07.992Z-investigating",
@@ -36,6 +36,18 @@
             "reasonCode": "http_error",
             "observedAt": "2026-11-20T17:19:34.450Z",
             "confirmedStatus": "major_outage"
+          }
+        },
+        {
+          "id": "soccer-nationals-1795194487992-monitor-2026-11-20T17:22:01.948Z-monitoring",
+          "stage": "monitoring",
+          "at": "2026-11-20T17:22:01.948Z",
+          "message": "One fresh successful observation received. The incident remains open pending a second fresh successful observation.",
+          "source": "monitor",
+          "evidence": {
+            "status": "operational",
+            "reasonCode": "ok",
+            "observedAt": "2026-11-20T17:21:32.724Z"
           }
         }
       ],

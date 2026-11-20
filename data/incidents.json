@@ -2,6 +2,36 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "soccer-nationals-1795194487992",
+      "componentId": "soccer-nationals",
+      "title": "Soccer Nationals league site: degraded performance",
+      "status": "degraded",
+      "reasonCode": "slow",
+      "openedAt": "2026-11-20T17:08:07.992Z",
+      "updatedAt": "2026-11-20T17:08:07.992Z",
+      "resolvedAt": null,
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "soccer-nationals-1795194487992-monitor-2026-11-20T17:08:07.992Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-20T17:08:07.992Z",
+          "message": "Two fresh observations confirmed needs attention: Response slower than target. Latest check: major outage, Unexpected HTTP response.",
+          "source": "monitor",
+          "evidence": {
+            "status": "major_outage",
+            "reasonCode": "http_error",
+            "observedAt": "2026-11-20T17:07:27.009Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 175,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/175"
+      }
+    },
+    {
       "id": "soccer-nationals-1795109153736",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: availability issue",

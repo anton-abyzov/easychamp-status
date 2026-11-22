@@ -2,6 +2,37 @@
   "schemaVersion": 1,
   "incidents": [
     {
+      "id": "scraper-pesmaster-1795327946781",
+      "componentId": "scraper-pesmaster",
+      "title": "PES Master player data: degraded service",
+      "status": "degraded",
+      "reasonCode": "run_failed",
+      "openedAt": "2026-11-22T06:12:26.781Z",
+      "updatedAt": "2026-11-22T06:12:26.781Z",
+      "resolvedAt": null,
+      "deadlineAt": "2026-11-21T22:00:00.000Z",
+      "stage": "investigating",
+      "updates": [
+        {
+          "id": "scraper-pesmaster-1795327946781-monitor-2026-11-22T06:12:26.781Z-investigating",
+          "stage": "investigating",
+          "at": "2026-11-22T06:12:26.781Z",
+          "message": "Two fresh observations confirmed needs attention: Scheduled import failed.",
+          "source": "monitor",
+          "evidence": {
+            "status": "degraded",
+            "reasonCode": "run_failed",
+            "observedAt": "2026-11-22T06:10:10.000Z",
+            "confirmedStatus": "degraded"
+          }
+        }
+      ],
+      "issue": {
+        "number": 176,
+        "url": "https://github.com/anton-abyzov/easychamp-status/issues/176"
+      }
+    },
+    {
       "id": "soccer-nationals-1795194487992",
       "componentId": "soccer-nationals",
       "title": "Soccer Nationals league site: availability issue",

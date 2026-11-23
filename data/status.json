@@ -1,106 +1,77 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-23T22:08:37.177Z",
+  "generatedAt": "2026-11-23T22:12:16.872Z",
   "probes": {
     "console-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-23T22:07:34.216Z",
-      "edge": "SJC",
-      "responseMs": 647,
+      "observedAt": "2026-11-23T22:12:14.452Z",
+      "edge": "DFW",
+      "responseMs": 347,
       "httpStatus": 200
     },
     "home-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-23T22:07:34.290Z",
-      "edge": "SJC",
-      "responseMs": 723,
+      "observedAt": "2026-11-23T22:12:14.446Z",
+      "edge": "DFW",
+      "responseMs": 343,
       "httpStatus": 200
     },
     "coach-http": {
-      "status": "unknown",
-      "reasonCode": "probe_path_suspect",
-      "observedAt": "2026-11-23T22:07:51.569Z",
-      "suspectOf": {
-        "status": "major_outage",
-        "reasonCode": "timeout"
-      },
-      "worker": {
-        "status": "operational",
-        "reasonCode": "ok",
-        "observedAt": "2026-11-23T22:06:43.302Z"
-      },
-      "cluster": true
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-11-23T22:12:14.434Z",
+      "edge": "DFW",
+      "responseMs": 329,
+      "httpStatus": 200
     },
     "club-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-23T22:07:42.514Z",
-      "edge": "SJC",
-      "responseMs": 972,
+      "observedAt": "2026-11-23T22:12:14.746Z",
+      "edge": "DFW",
+      "responseMs": 300,
       "httpStatus": 200
     },
     "sim-http": {
-      "status": "unknown",
-      "reasonCode": "probe_path_suspect",
-      "observedAt": "2026-11-23T22:07:41.542Z",
-      "edge": "SJC",
-      "suspectOf": {
-        "status": "degraded",
-        "reasonCode": "slow"
-      },
-      "worker": {
-        "status": "operational",
-        "reasonCode": "ok",
-        "observedAt": "2026-11-23T22:06:43.945Z"
-      },
-      "cluster": true
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-11-23T22:12:14.767Z",
+      "edge": "DFW",
+      "responseMs": 332,
+      "httpStatus": 200
     },
     "snap-http": {
-      "status": "unknown",
-      "reasonCode": "probe_path_suspect",
-      "observedAt": "2026-11-23T22:08:00.327Z",
-      "suspectOf": {
-        "status": "major_outage",
-        "reasonCode": "timeout"
-      },
-      "worker": {
-        "status": "operational",
-        "reasonCode": "ok",
-        "observedAt": "2026-11-23T22:06:43.945Z"
-      },
-      "cluster": true
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-11-23T22:12:14.762Z",
+      "edge": "DFW",
+      "responseMs": 310,
+      "httpStatus": 200
     },
     "watch-http": {
-      "status": "unknown",
-      "reasonCode": "probe_path_suspect",
-      "observedAt": "2026-11-23T22:07:52.290Z",
-      "suspectOf": {
-        "status": "major_outage",
-        "reasonCode": "timeout"
-      },
-      "worker": {
-        "status": "operational",
-        "reasonCode": "ok",
-        "observedAt": "2026-11-23T22:06:43.749Z"
-      },
-      "cluster": true
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-11-23T22:12:14.796Z",
+      "edge": "DFW",
+      "responseMs": 357,
+      "httpStatus": 200
     },
     "predictions-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-23T22:07:45.467Z",
-      "edge": "SJC",
-      "responseMs": 126,
+      "observedAt": "2026-11-23T22:12:14.853Z",
+      "edge": "DFW",
+      "responseMs": 91,
       "httpStatus": 200
     },
     "signin-http": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-23T22:07:45.341Z",
-      "edge": "SJC",
-      "responseMs": 2827,
+      "observedAt": "2026-11-23T22:12:15.009Z",
+      "edge": "DFW",
+      "responseMs": 263,
       "httpStatus": 200
     },
     "home-render": {
@@ -146,19 +117,12 @@
       "lcpMs": 836
     },
     "soccer-nationals-http": {
-      "status": "unknown",
-      "reasonCode": "probe_path_suspect",
-      "observedAt": "2026-11-23T22:08:03.468Z",
-      "suspectOf": {
-        "status": "major_outage",
-        "reasonCode": "timeout"
-      },
-      "worker": {
-        "status": "operational",
-        "reasonCode": "ok",
-        "observedAt": "2026-11-23T22:06:45.013Z"
-      },
-      "cluster": true
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-11-23T22:12:15.636Z",
+      "edge": "DFW",
+      "responseMs": 869,
+      "httpStatus": 200
     },
     "soccer-nationals-render": {
       "status": "operational",
@@ -167,36 +131,35 @@
       "lcpMs": 1708
     },
     "assistant-health": {
-      "status": "degraded",
-      "reasonCode": "slow",
-      "observedAt": "2026-11-23T22:07:42.108Z",
-      "edge": "SJC",
-      "responseMs": 8795,
+      "status": "operational",
+      "reasonCode": "ok",
+      "observedAt": "2026-11-23T22:12:14.399Z",
+      "responseMs": 370,
       "httpStatus": 200
     },
     "edge-mia": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-23T22:03:00.000Z",
-      "windowStart": "2026-11-23T21:57:00.000Z",
-      "windowEnd": "2026-11-23T22:03:00.000Z",
-      "requests": 85,
+      "observedAt": "2026-11-23T22:09:00.000Z",
+      "windowStart": "2026-11-23T22:03:00.000Z",
+      "windowEnd": "2026-11-23T22:09:00.000Z",
+      "requests": 57,
       "originErrors": 0,
       "errorMinutes": 0,
       "errorShare": 0,
-      "measuredUntil": "2026-11-23T22:03:00.000Z"
+      "measuredUntil": "2026-11-23T22:09:00.000Z"
     },
     "edge-atl": {
       "status": "operational",
       "reasonCode": "ok",
-      "observedAt": "2026-11-23T22:03:00.000Z",
-      "windowStart": "2026-11-23T21:57:00.000Z",
-      "windowEnd": "2026-11-23T22:03:00.000Z",
-      "requests": 179,
+      "observedAt": "2026-11-23T22:09:00.000Z",
+      "windowStart": "2026-11-23T22:03:00.000Z",
+      "windowEnd": "2026-11-23T22:09:00.000Z",
+      "requests": 71,
       "originErrors": 0,
       "errorMinutes": 0,
       "errorShare": 0,
-      "measuredUntil": "2026-11-23T22:03:00.000Z"
+      "measuredUntil": "2026-11-23T22:09:00.000Z"
     }
   },
   "freshness": {
@@ -205,7 +168,7 @@
       "status": "unknown",
       "reasonCode": "verification_unavailable",
       "measurementKind": "destination_validation",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": null,
       "lastDestinationVerifiedAt": null,
       "nextDueAt": null,
@@ -225,7 +188,7 @@
       "status": "unknown",
       "reasonCode": "in_progress",
       "measurementKind": "destination_validation",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T03:11:39.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-23T22:00:00.000Z",
@@ -245,7 +208,7 @@
       "status": "unknown",
       "reasonCode": "verification_unavailable",
       "measurementKind": "destination_validation",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": null,
       "lastDestinationVerifiedAt": null,
       "nextDueAt": null,
@@ -265,7 +228,7 @@
       "status": "unknown",
       "reasonCode": "verification_unavailable",
       "measurementKind": "destination_validation",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": null,
       "lastDestinationVerifiedAt": null,
       "nextDueAt": null,
@@ -285,7 +248,7 @@
       "status": "unknown",
       "reasonCode": "verification_unavailable",
       "measurementKind": "destination_validation",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": null,
       "lastDestinationVerifiedAt": null,
       "nextDueAt": null,
@@ -305,18 +268,18 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:46:19.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T21:57:26.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:01:00.000Z",
-      "lastAttemptAt": "2026-11-23T21:46:00.000Z",
+      "nextDueAt": "2026-11-23T22:12:00.000Z",
+      "lastAttemptAt": "2026-11-23T21:57:00.000Z",
       "lastAttemptStartedAt": null,
       "graceSeconds": 3600,
       "lastAttemptOutcome": "succeeded",
       "destinationVerification": "unavailable",
       "lastAttemptDeadlineSeconds": null,
       "suspended": false,
-      "schedule": "1,16,31,46 * * * *",
+      "schedule": "12,27,42,57 * * * *",
       "timeZone": "Etc/UTC",
       "metrics": null
     },
@@ -325,7 +288,7 @@
       "status": "unknown",
       "reasonCode": "invalid_evidence",
       "measurementKind": "destination_validation",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T06:00:08.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-24T06:00:00.000Z",
@@ -345,11 +308,11 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:47:22.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T22:02:28.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:02:00.000Z",
-      "lastAttemptAt": "2026-11-23T21:47:00.000Z",
+      "nextDueAt": "2026-11-23T22:17:00.000Z",
+      "lastAttemptAt": "2026-11-23T22:02:00.000Z",
       "lastAttemptStartedAt": null,
       "graceSeconds": 900,
       "lastAttemptOutcome": "succeeded",
@@ -362,19 +325,19 @@
     },
     "feed-spain": {
       "id": "feed-spain",
-      "status": "unknown",
-      "reasonCode": "in_progress",
+      "status": "operational",
+      "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:45:23.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T22:00:28.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:00:00.000Z",
+      "nextDueAt": "2026-11-23T22:15:00.000Z",
       "lastAttemptAt": "2026-11-23T22:00:00.000Z",
-      "lastAttemptStartedAt": "2026-11-23T22:00:00.000Z",
+      "lastAttemptStartedAt": null,
       "graceSeconds": 900,
-      "lastAttemptOutcome": "running",
+      "lastAttemptOutcome": "succeeded",
       "destinationVerification": "unavailable",
-      "lastAttemptDeadlineSeconds": 780,
+      "lastAttemptDeadlineSeconds": null,
       "suspended": false,
       "schedule": "0,15,30,45 * * * *",
       "timeZone": "Etc/UTC",
@@ -385,11 +348,11 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:53:22.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T22:08:27.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:08:00.000Z",
-      "lastAttemptAt": "2026-11-23T21:53:00.000Z",
+      "nextDueAt": "2026-11-23T22:23:00.000Z",
+      "lastAttemptAt": "2026-11-23T22:08:00.000Z",
       "lastAttemptStartedAt": null,
       "graceSeconds": 900,
       "lastAttemptOutcome": "succeeded",
@@ -405,11 +368,11 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:51:21.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T22:06:29.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:06:00.000Z",
-      "lastAttemptAt": "2026-11-23T21:51:00.000Z",
+      "nextDueAt": "2026-11-23T22:21:00.000Z",
+      "lastAttemptAt": "2026-11-23T22:06:00.000Z",
       "lastAttemptStartedAt": null,
       "graceSeconds": 900,
       "lastAttemptOutcome": "succeeded",
@@ -425,11 +388,11 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:49:21.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T22:04:28.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:04:00.000Z",
-      "lastAttemptAt": "2026-11-23T21:49:00.000Z",
+      "nextDueAt": "2026-11-23T22:19:00.000Z",
+      "lastAttemptAt": "2026-11-23T22:04:00.000Z",
       "lastAttemptStartedAt": null,
       "graceSeconds": 900,
       "lastAttemptOutcome": "succeeded",
@@ -445,7 +408,7 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T21:57:26.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-23T22:12:00.000Z",
@@ -462,19 +425,19 @@
     },
     "feed-ucl": {
       "id": "feed-ucl",
-      "status": "operational",
-      "reasonCode": "verified",
+      "status": "unknown",
+      "reasonCode": "in_progress",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T21:55:21.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-23T22:10:00.000Z",
-      "lastAttemptAt": "2026-11-23T21:55:00.000Z",
-      "lastAttemptStartedAt": null,
+      "lastAttemptAt": "2026-11-23T22:10:00.000Z",
+      "lastAttemptStartedAt": "2026-11-23T22:10:00.000Z",
       "graceSeconds": 900,
-      "lastAttemptOutcome": "succeeded",
+      "lastAttemptOutcome": "running",
       "destinationVerification": "unavailable",
-      "lastAttemptDeadlineSeconds": null,
+      "lastAttemptDeadlineSeconds": 780,
       "suspended": false,
       "schedule": "10,25,40,55 * * * *",
       "timeZone": "Etc/UTC",
@@ -485,7 +448,7 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T21:59:26.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-23T22:14:00.000Z",
@@ -505,11 +468,11 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:46:19.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T22:01:25.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:01:00.000Z",
-      "lastAttemptAt": "2026-11-23T21:46:00.000Z",
+      "nextDueAt": "2026-11-23T22:16:00.000Z",
+      "lastAttemptAt": "2026-11-23T22:01:00.000Z",
       "lastAttemptStartedAt": null,
       "graceSeconds": 900,
       "lastAttemptOutcome": "succeeded",
@@ -525,11 +488,11 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:48:26.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T22:03:32.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:03:00.000Z",
-      "lastAttemptAt": "2026-11-23T21:48:00.000Z",
+      "nextDueAt": "2026-11-23T22:18:00.000Z",
+      "lastAttemptAt": "2026-11-23T22:03:00.000Z",
       "lastAttemptStartedAt": null,
       "graceSeconds": 900,
       "lastAttemptOutcome": "succeeded",
@@ -545,7 +508,7 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T21:17:33.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-23T23:17:00.000Z",
@@ -565,7 +528,7 @@
       "status": "unknown",
       "reasonCode": "inactive",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": null,
       "lastDestinationVerifiedAt": null,
       "nextDueAt": null,
@@ -585,7 +548,7 @@
       "status": "unknown",
       "reasonCode": "inactive",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": null,
       "lastDestinationVerifiedAt": null,
       "nextDueAt": null,
@@ -602,19 +565,19 @@
     },
     "feed-external-sync": {
       "id": "feed-external-sync",
-      "status": "unknown",
-      "reasonCode": "in_progress",
+      "status": "operational",
+      "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:03:22.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T22:03:24.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:00:00.000Z",
+      "nextDueAt": "2026-11-23T23:00:00.000Z",
       "lastAttemptAt": "2026-11-23T22:00:00.000Z",
-      "lastAttemptStartedAt": "2026-11-23T22:00:00.000Z",
+      "lastAttemptStartedAt": null,
       "graceSeconds": 1620,
-      "lastAttemptOutcome": "running",
+      "lastAttemptOutcome": "succeeded",
       "destinationVerification": "unavailable",
-      "lastAttemptDeadlineSeconds": 1500,
+      "lastAttemptDeadlineSeconds": null,
       "suspended": false,
       "schedule": "0 * * * *",
       "timeZone": "Etc/UTC",
@@ -625,11 +588,11 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:55:05.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T22:05:05.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:05:00.000Z",
-      "lastAttemptAt": "2026-11-23T21:55:00.000Z",
+      "nextDueAt": "2026-11-23T22:15:00.000Z",
+      "lastAttemptAt": "2026-11-23T22:05:00.000Z",
       "lastAttemptStartedAt": null,
       "graceSeconds": 1620,
       "lastAttemptOutcome": "succeeded",
@@ -645,12 +608,12 @@
       "status": "unknown",
       "reasonCode": "in_progress",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
-      "lastCompletedSuccessAt": "2026-11-23T21:50:07.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
+      "lastCompletedSuccessAt": "2026-11-23T22:00:08.000Z",
       "lastDestinationVerifiedAt": null,
-      "nextDueAt": "2026-11-23T22:00:00.000Z",
-      "lastAttemptAt": "2026-11-23T22:00:00.000Z",
-      "lastAttemptStartedAt": "2026-11-23T22:00:00.000Z",
+      "nextDueAt": "2026-11-23T22:10:00.000Z",
+      "lastAttemptAt": "2026-11-23T22:10:00.000Z",
+      "lastAttemptStartedAt": "2026-11-23T22:10:00.000Z",
       "graceSeconds": 660,
       "lastAttemptOutcome": "running",
       "destinationVerification": "unavailable",
@@ -665,7 +628,7 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T06:36:27.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-24T06:35:00.000Z",
@@ -685,7 +648,7 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T06:40:27.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-24T06:40:00.000Z",
@@ -705,7 +668,7 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T03:00:04.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-30T03:00:00.000Z",
@@ -725,7 +688,7 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T07:01:09.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-24T07:00:00.000Z",
@@ -745,7 +708,7 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "scheduled_run",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": "2026-11-23T07:24:19.000Z",
       "lastDestinationVerifiedAt": null,
       "nextDueAt": "2026-11-30T07:00:00.000Z",
@@ -765,7 +728,7 @@
       "status": "operational",
       "reasonCode": "verified",
       "measurementKind": "cluster_resources",
-      "observedAt": "2026-11-23T22:00:08.000Z",
+      "observedAt": "2026-11-23T22:10:08.000Z",
       "lastCompletedSuccessAt": null,
       "lastDestinationVerifiedAt": null,
       "nextDueAt": null,
@@ -779,8 +742,8 @@
       "schedule": null,
       "timeZone": null,
       "metrics": {
-        "sampleAt": "2026-11-23T22:00:08.000Z",
-        "cpuUtilizationPct": 35.7,
+        "sampleAt": "2026-11-23T22:10:08.000Z",
+        "cpuUtilizationPct": 37.2,
         "memoryUtilizationPct": 35.3,
         "diskUtilizationPct": 82.8,
         "nodesReady": 3,
@@ -988,12 +951,12 @@
     "signin": {
       "evidence": {
         "signin-http": {
-          "observedAt": "2026-11-23T22:07:45.341Z",
+          "observedAt": "2026-11-23T22:12:15.009Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 44,
+      "good": 45,
       "recent": [
         [
           "operational",
@@ -1104,12 +1067,12 @@
     "predictions": {
       "evidence": {
         "predictions-http": {
-          "observedAt": "2026-11-23T22:07:45.467Z",
+          "observedAt": "2026-11-23T22:12:14.853Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 1494,
+      "good": 1495,
       "recent": [
         [
           "operational",
@@ -1154,12 +1117,12 @@
     "feed-results": {
       "evidence": {
         "feed-results": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 139,
+      "good": 140,
       "recent": [
         [
           "operational",
@@ -1181,7 +1144,7 @@
     "scraper-sofifa": {
       "evidence": {
         "scraper-sofifa": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "unknown"
         }
       },
@@ -1195,7 +1158,7 @@
     "scraper-pesmaster": {
       "evidence": {
         "scraper-pesmaster": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "unknown"
         }
       },
@@ -1222,7 +1185,7 @@
     "scraper-fbref": {
       "evidence": {
         "scraper-fbref": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "unknown"
         }
       },
@@ -1236,7 +1199,7 @@
     "scraper-fifaindex": {
       "evidence": {
         "scraper-fifaindex": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "unknown"
         }
       },
@@ -1250,7 +1213,7 @@
     "scraper-news": {
       "evidence": {
         "scraper-news": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "unknown"
         }
       },
@@ -1264,7 +1227,7 @@
     "player-catalogue-validation": {
       "evidence": {
         "player-catalogue-validation": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "unknown"
         }
       },
@@ -1316,17 +1279,13 @@
     "assistant": {
       "evidence": {
         "assistant-health": {
-          "observedAt": "2026-11-23T22:07:42.108Z",
-          "status": "degraded"
+          "observedAt": "2026-11-23T22:12:14.399Z",
+          "status": "operational"
         }
       },
-      "bad": 1,
-      "good": 0,
+      "bad": 0,
+      "good": 1,
       "recent": [
-        [
-          "operational",
-          "ok"
-        ],
         [
           "operational",
           "ok"
@@ -1334,11 +1293,15 @@
         [
           "degraded",
           "slow"
+        ],
+        [
+          "operational",
+          "ok"
         ]
       ],
       "confirmedStatus": null,
       "failedAttemptAt": null,
-      "failureUndated": true,
+      "failureUndated": false,
       "availability": {
         "confirmed": null,
         "reasonCode": null,
@@ -1350,12 +1313,12 @@
     "feed-england": {
       "evidence": {
         "feed-england": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 645,
+      "good": 646,
       "recent": [
         [
           "operational",
@@ -1377,12 +1340,12 @@
     "feed-spain": {
       "evidence": {
         "feed-spain": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
-          "status": "unknown"
+          "observedAt": "2026-11-23T22:10:08.000Z",
+          "status": "operational"
         }
       },
       "bad": 0,
-      "good": 0,
+      "good": 1,
       "recent": [
         [
           "operational",
@@ -1404,12 +1367,12 @@
     "feed-france": {
       "evidence": {
         "feed-france": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 743,
+      "good": 744,
       "recent": [
         [
           "operational",
@@ -1431,12 +1394,12 @@
     "feed-germany": {
       "evidence": {
         "feed-germany": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 743,
+      "good": 744,
       "recent": [
         [
           "operational",
@@ -1458,12 +1421,12 @@
     "feed-italy": {
       "evidence": {
         "feed-italy": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 743,
+      "good": 744,
       "recent": [
         [
           "operational",
@@ -1485,12 +1448,12 @@
     "feed-mls": {
       "evidence": {
         "feed-mls": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 743,
+      "good": 744,
       "recent": [
         [
           "operational",
@@ -1512,12 +1475,12 @@
     "feed-ucl": {
       "evidence": {
         "feed-ucl": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
-          "status": "operational"
+          "observedAt": "2026-11-23T22:10:08.000Z",
+          "status": "unknown"
         }
       },
       "bad": 0,
-      "good": 2,
+      "good": 0,
       "recent": [
         [
           "operational",
@@ -1539,12 +1502,12 @@
     "feed-ligamx-apertura": {
       "evidence": {
         "feed-ligamx-apertura": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 743,
+      "good": 744,
       "recent": [
         [
           "operational",
@@ -1566,12 +1529,12 @@
     "feed-ligamx-clausura": {
       "evidence": {
         "feed-ligamx-clausura": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 743,
+      "good": 744,
       "recent": [
         [
           "operational",
@@ -1593,12 +1556,12 @@
     "feed-nations-league": {
       "evidence": {
         "feed-nations-league": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 743,
+      "good": 744,
       "recent": [
         [
           "operational",
@@ -1620,12 +1583,12 @@
     "feed-upsl": {
       "evidence": {
         "feed-upsl": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 743,
+      "good": 744,
       "recent": [
         [
           "operational",
@@ -1647,7 +1610,7 @@
     "feed-ussl": {
       "evidence": {
         "feed-ussl": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "unknown"
         }
       },
@@ -1661,7 +1624,7 @@
     "feed-world-cup": {
       "evidence": {
         "feed-world-cup": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "unknown"
         }
       },
@@ -1675,12 +1638,12 @@
     "feed-external-sync": {
       "evidence": {
         "feed-external-sync": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
-          "status": "unknown"
+          "observedAt": "2026-11-23T22:10:08.000Z",
+          "status": "operational"
         }
       },
       "bad": 0,
-      "good": 0,
+      "good": 1,
       "recent": [
         [
           "operational",
@@ -1702,12 +1665,12 @@
     "feed-external-demand": {
       "evidence": {
         "feed-external-demand": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 529,
+      "good": 530,
       "recent": [
         [
           "operational",
@@ -1729,7 +1692,7 @@
     "feed-upsl-demand": {
       "evidence": {
         "feed-upsl-demand": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "unknown"
         }
       },
@@ -1756,12 +1719,12 @@
     "feed-reconcile": {
       "evidence": {
         "feed-reconcile": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 743,
+      "good": 744,
       "recent": [
         [
           "operational",
@@ -1783,12 +1746,12 @@
     "feed-reconcile-nations": {
       "evidence": {
         "feed-reconcile-nations": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 92,
+      "good": 93,
       "recent": [
         [
           "operational",
@@ -1810,12 +1773,12 @@
     "player-ratings-scrape": {
       "evidence": {
         "player-ratings-scrape": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 115,
+      "good": 116,
       "recent": [
         [
           "operational",
@@ -1837,12 +1800,12 @@
     "player-ratings-import": {
       "evidence": {
         "player-ratings-import": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 90,
+      "good": 91,
       "recent": [
         [
           "operational",
@@ -1864,12 +1827,12 @@
     "news-seo-refresh": {
       "evidence": {
         "news-seo-refresh": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 88,
+      "good": 89,
       "recent": [
         [
           "operational",
@@ -1891,12 +1854,12 @@
     "cluster-resources": {
       "evidence": {
         "cluster-resources": {
-          "observedAt": "2026-11-23T22:00:08.000Z",
+          "observedAt": "2026-11-23T22:10:08.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 743,
+      "good": 744,
       "recent": [
         [
           "operational",
@@ -1918,12 +1881,12 @@
     "access-miami": {
       "evidence": {
         "edge-mia": {
-          "observedAt": "2026-11-23T22:03:00.000Z",
+          "observedAt": "2026-11-23T22:09:00.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 1095,
+      "good": 1096,
       "recent": [
         [
           "operational",
@@ -1945,12 +1908,12 @@
     "access-atlanta": {
       "evidence": {
         "edge-atl": {
-          "observedAt": "2026-11-23T22:03:00.000Z",
+          "observedAt": "2026-11-23T22:09:00.000Z",
           "status": "operational"
         }
       },
       "bad": 0,
-      "good": 1081,
+      "good": 1082,
       "recent": [
         [
           "operational",

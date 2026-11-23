@@ -1,6 +1,37 @@
 {
   "schemaVersion": 1,
-  "suspects": {},
+  "suspects": {
+    "coach-http": {
+      "at": [
+        "2026-11-23T22:07:51.569Z"
+      ],
+      "runs": 1
+    },
+    "sim-http": {
+      "at": [
+        "2026-11-23T22:07:41.542Z"
+      ],
+      "runs": 1
+    },
+    "watch-http": {
+      "at": [
+        "2026-11-23T22:07:52.290Z"
+      ],
+      "runs": 1
+    },
+    "snap-http": {
+      "at": [
+        "2026-11-23T22:08:00.327Z"
+      ],
+      "runs": 1
+    },
+    "soccer-nationals-http": {
+      "at": [
+        "2026-11-23T22:08:03.468Z"
+      ],
+      "runs": 1
+    }
+  },
   "events": [
     {
       "at": "2026-11-19T01:08:05.367Z",
@@ -237,6 +268,91 @@
         "observedAt": "2026-11-23T18:32:42.484Z"
       },
       "cluster": false,
+      "runs": 1,
+      "outcome": "suspect"
+    },
+    {
+      "at": "2026-11-23T22:07:51.569Z",
+      "probe": "coach-http",
+      "component": "coach",
+      "runner": {
+        "status": "major_outage",
+        "reasonCode": "timeout"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-23T22:06:43.302Z"
+      },
+      "cluster": true,
+      "runs": 1,
+      "outcome": "suspect"
+    },
+    {
+      "at": "2026-11-23T22:07:41.542Z",
+      "probe": "sim-http",
+      "component": "sim",
+      "runner": {
+        "status": "degraded",
+        "reasonCode": "slow"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-23T22:06:43.945Z"
+      },
+      "cluster": true,
+      "runs": 1,
+      "outcome": "suspect"
+    },
+    {
+      "at": "2026-11-23T22:07:52.290Z",
+      "probe": "watch-http",
+      "component": "watch",
+      "runner": {
+        "status": "major_outage",
+        "reasonCode": "timeout"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-23T22:06:43.749Z"
+      },
+      "cluster": true,
+      "runs": 1,
+      "outcome": "suspect"
+    },
+    {
+      "at": "2026-11-23T22:08:00.327Z",
+      "probe": "snap-http",
+      "component": "snap",
+      "runner": {
+        "status": "major_outage",
+        "reasonCode": "timeout"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-23T22:06:43.945Z"
+      },
+      "cluster": true,
+      "runs": 1,
+      "outcome": "suspect"
+    },
+    {
+      "at": "2026-11-23T22:08:03.468Z",
+      "probe": "soccer-nationals-http",
+      "component": "soccer-nationals",
+      "runner": {
+        "status": "major_outage",
+        "reasonCode": "timeout"
+      },
+      "worker": {
+        "status": "operational",
+        "reasonCode": "ok",
+        "observedAt": "2026-11-23T22:06:45.013Z"
+      },
+      "cluster": true,
       "runs": 1,
       "outcome": "suspect"
     }
